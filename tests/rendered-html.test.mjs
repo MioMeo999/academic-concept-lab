@@ -12,6 +12,13 @@ for (const [pathname, expected] of [
   ["/concept-lab", "How should rigorous research"],
   ["/concept-lab/theory/person-environment-fit", "Person–Environment Fit"],
   ["/concept-lab/paper/tuned-out-or-dialed-in", "Tuned Out"],
+  ["/concept-lab/prototypes", "Three visual arguments"],
+  ["/concept-lab/prototypes/editorial-atlas/theory", "Person–Environment Fit"],
+  ["/concept-lab/prototypes/editorial-atlas/study", "Tuned Out or Dialed In"],
+  ["/concept-lab/prototypes/analytical-studio/theory", "Person–Environment Fit"],
+  ["/concept-lab/prototypes/analytical-studio/study", "Tuned Out or Dialed In"],
+  ["/concept-lab/prototypes/illustrated-journal/theory", "Person–Environment Fit"],
+  ["/concept-lab/prototypes/illustrated-journal/study", "Tuned Out or Dialed In"],
 ]) {
   test(`server renders ${pathname}`, async () => {
     const response = await render(pathname);
