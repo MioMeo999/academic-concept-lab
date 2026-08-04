@@ -38,3 +38,20 @@ for (const pathname of [
     assert.match(html, /Where every claim came from/);
   });
 }
+
+// Regression guard. app/globals.css is imported by the root layout, so any
+// generic class name it defines outranks the same name in sketchnote.css.
+// That once absolutely positioned record body copy on top of the hero.
+test("globals.css does not redefine class names the lab owns", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const base = new URL("../app/", import.meta.url);
+  const globals = await readFile(new URL("globals.css", base), "utf8");
+  const lab = await readFile(new URL("concept-lab/sketchnote.css", base), "utf8");
+
+  const classesIn = (css) =>
+    new Set([...css.matchAll(/^\s*\.([a-zA-Z][\w-]*)/gm)].map((m) => m[1]));
+
+  const owned = classesIn(lab);
+  const collisions = [...classesIn(globals)].filter((c) => owned.has(c));
+  assert.deepEqual(collisions, [], `globals.css must not redefine: ${collisions.join(", ")}`);
+});
