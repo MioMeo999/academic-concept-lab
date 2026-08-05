@@ -222,3 +222,17 @@
   footer.site nav{ display:flex; flex-direction:column; gap:.25rem; }
   footer.site nav a{ font-size:.9rem; color:var(--pen-2); text-decoration:none; }
   footer.site nav a:hover{ color:var(--red); }
+
+  /* facets demo — one letter per dimension of a multi-factor model */
+  .facet-key{ font-family:var(--hand); font-size:1.5rem; font-weight:700; line-height:1;
+    width:2.6rem; height:2.6rem; cursor:pointer; background:transparent; color:var(--pen-3);
+    border:2.4px solid var(--grey); border-radius:18px 24px 16px 22px / 22px 16px 24px 18px;
+    transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s ease; }
+  .facet-key:hover{ border-color:var(--pen); color:var(--pen); transform:translateY(-2px); }
+  .facet-key[aria-pressed="true"]{ background:var(--teal); border-color:var(--teal); color:var(--paper); }
+
+  /* an ordered succession of models within a field */
+  .model-row{ display:grid; grid-template-columns:minmax(0,1fr); gap:.8rem; margin-top:1rem; }
+  @media(min-width:760px){ .model-row{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  .model-year{ font-size:1.5rem; font-weight:700; color:var(--teal); line-height:1; }
+  .model-src{ font-family:var(--read); font-size:.82rem; color:var(--pen-3); font-style:italic; margin-top:.2rem; }

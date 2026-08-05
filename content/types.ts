@@ -43,20 +43,28 @@ type RecordBase = {
   topics: string[];
   /** Chips on the library card. */
   facts: string[];
+  /** Optional badge for a record whose standing needs flagging up front —
+   *  e.g. a research field rather than a single theory. */
+  statusChip?: string;
   provenance: Provenance[];
 };
 
 /* ---------------- theory ---------------- */
 
 /** An interactive teaching model. Never a calculation — see `caption`. */
+/** A facet of a multi-dimensional model, one per segmented-control option. */
+export type Facet = { initial: string; label: string; body: string };
+
 export type TheoryDemo = {
-  type: "scale-pair" | "dual-path";
+  type: "scale-pair" | "dual-path" | "facets";
   start?: number;
   label: string;
   options: string[];
   caption: string;
   /** scale-pair only: the word circled between the two figures. */
   centre?: string;
+  /** facets only: supplied by the record, since the content is record-specific. */
+  facets?: Facet[];
 };
 
 export type Origin = {
@@ -111,6 +119,40 @@ export type Interaction = { kicker: string; title: string; body: string };
 
 export type Expansion = { title: string; icon: string; colour: string; body: string };
 
+/* Some records are not a single theory at all but a research field with
+   converging questions and competing answers. Saying so on the record's face is
+   more honest than flattening it into a framework it does not have. */
+export type ConceptualStatus = {
+  flag: string;
+  body: string;
+  questions: string[];
+};
+
+/* An ordered set of models within a field — e.g. a four-factor structure
+   superseded by a five-factor one — where the succession is itself the point. */
+export type Model = {
+  year: string;
+  name: string;
+  source: string;
+  body: string;
+  note?: string;
+};
+
+/* A literature that applies the field to a particular setting, anchored to the
+   studies that make it up rather than stated as settled conclusions. */
+export type AppliedWork = {
+  year: string;
+  authors: string;
+  work: string;
+  body: string;
+};
+
+/* Blocks carry generic headings so they can be reused across records; a record
+   overrides them by key. Without this, reusing the two-category block outside
+   Job Demands–Resources would render "Everything in a job goes in one of two
+   buckets" over content about music. */
+export type Headings = Record<string, { toc: string; title: string }>;
+
 export type TheoryRecord = RecordBase & {
   kind: "theory";
 
@@ -127,6 +169,15 @@ export type TheoryRecord = RecordBase & {
   fullSources: Source[];
 
   /* optional blocks — include only what this theory actually has */
+  headings?: Headings;
+  /** Reading order by block key. Keys omitted keep their declared position. */
+  order?: string[];
+  conceptualStatus?: ConceptualStatus;
+  models?: Model[];
+  modelsLede?: string;
+  modelsNote?: string;
+  applied?: AppliedWork[];
+  appliedLede?: string;
   demo?: TheoryDemo;
   categories?: Category[];
   categoriesLede?: string;

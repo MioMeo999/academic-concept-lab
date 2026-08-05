@@ -13,7 +13,7 @@ import { TheoryDemo } from "./TheoryDemo";
    shape of one about correspondence.
    ------------------------------------------------------------------------- */
 
-type Block = { toc: string; title: string; colour: string; body: ReactNode };
+type Block = { key: string; toc: string; title: string; colour: string; body: ReactNode };
 
 function SourceList({ items }: { items: Source[] }) {
   return (
@@ -34,13 +34,54 @@ function SourceList({ items }: { items: Source[] }) {
 
 export function TheoryBody({ record: r }: { record: TheoryRecord }) {
   const B: Block[] = [];
-  const add = (toc: string, title: string, colour: string, body: ReactNode) => B.push({ toc, title, colour, body });
+
+  /* Blocks ship with a default heading; a record overrides it by key, so the
+     two-category block reads "Everything in a job goes in one of two buckets"
+     for Job Demands-Resources and "Person-Music Fit: the two sides" elsewhere.
+     A record may also set `order` to sequence the blocks it uses. */
+  const add = (key: string, defToc: string, defTitle: string, colour: string, body: ReactNode) =>
+    B.push({
+      key,
+      toc: r.headings?.[key]?.toc ?? defToc,
+      title: r.headings?.[key]?.title ?? defTitle,
+      colour,
+      body,
+    });
+
+  /* conceptual status — for records that are a field rather than one theory */
+  if (r.conceptualStatus) {
+    const cs = r.conceptualStatus;
+    add("conceptualStatus", "What this is", "What this is, and what it is not", "var(--red)", (
+      <>
+        <div className="sk-box red tilt-l2" style={{ maxWidth: 700 }}>
+          <div style={{ display: "flex", gap: ".7rem", alignItems: "flex-start" }}>
+            <Icon id="i-warn" style={{ width: 30, height: 30, color: "var(--red)", flex: "none" }} />
+            <div>
+              <h3 style={{ fontSize: "1.15rem", color: "var(--red)" }}>{cs.flag}</h3>
+              <Rich className="read" as="p" style={{ fontSize: ".95rem", lineHeight: 1.6, color: "var(--pen-2)", marginTop: ".4rem" }} html={cs.body} />
+            </div>
+          </div>
+        </div>
+        <p className="k" style={{ marginTop: "1.2rem" }}>what the field sets out to explain</p>
+        <div style={{ marginTop: ".5rem" }}>
+          {cs.questions.map((q, i) => (
+            <div className="bullet" key={q}>
+              <svg style={{ color: "var(--teal)" }} aria-hidden="true"><use href="#i-q" /></svg>
+              <Rich className="read" as="span" style={{ fontSize: ".95rem", lineHeight: 1.6, color: "var(--pen-2)" }} html={`<b>0${i + 1}</b> &nbsp; ${q}`} />
+            </div>
+          ))}
+        </div>
+      </>
+    ));
+  }
 
   /* the idea — always */
-  add("The idea", "The idea", "var(--teal)", (
+  add("idea", "The idea", "The idea", "var(--teal)", (
     <>
       <Rich className="lede" as="p" html={r.ideaLede} />
-      {r.demo && <TheoryDemo demo={r.demo} />}
+      {/* the demo sits with the models block when there is one, so it lands
+          beside the thing it illustrates rather than ahead of it */}
+      {r.demo && !r.models && <TheoryDemo demo={r.demo} />}
       <div className="tilt-r2" style={{ marginTop: "1.1rem", maxWidth: 660 }}>
         <Cloud colour="#2E7D8F">
           <div style={{ display: "flex", gap: ".6rem", alignItems: "flex-start" }}>
@@ -52,9 +93,68 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
     </>
   ));
 
+  /* an ordered succession of models, where the succession is the point */
+  if (r.models) {
+    add("models", "The models", "How the structure has been modelled", "var(--teal)", (
+      <>
+        <Rich className="lede" as="p" html={r.modelsLede ?? ""} />
+        {r.demo && <TheoryDemo demo={r.demo} />}
+        <div className="model-row">
+          {r.models.map((m, i) => (
+            <div className={`sk-box ${i % 2 ? "tilt-r2" : "tilt-l2"}`} key={m.name}>
+              <div className="model-year">{m.year}</div>
+              <h3 style={{ fontSize: "1.05rem", marginTop: ".3rem" }}>{m.name}</h3>
+              <div className="model-src">{m.source}</div>
+              <Rich className="read" as="p" style={{ fontSize: ".89rem", lineHeight: 1.55, color: "var(--pen-2)", marginTop: ".5rem" }} html={m.body} />
+              {m.note && (
+                <div style={{ display: "flex", gap: ".45rem", alignItems: "flex-start", marginTop: ".6rem" }}>
+                  <Icon id="i-star" style={{ width: 18, height: 18, color: "var(--red)", flex: "none", marginTop: 3 }} />
+                  <Rich className="read" as="span" style={{ fontSize: ".85rem", lineHeight: 1.5, color: "var(--red)" }} html={m.note} />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        {r.modelsNote && (
+          <div className="tilt-r2" style={{ marginTop: "1.1rem", maxWidth: 680 }}>
+            <Cloud colour="#E24E1B">
+              <div style={{ display: "flex", gap: ".55rem", alignItems: "flex-start" }}>
+                <Icon id="i-warn" style={{ width: 24, height: 24, color: "var(--red)", flex: "none" }} />
+                <Rich className="read" as="p" style={{ fontSize: ".9rem", lineHeight: 1.55, color: "var(--pen-2)" }} html={r.modelsNote} />
+              </div>
+            </Cloud>
+          </div>
+        )}
+      </>
+    ));
+  }
+
+  /* an applied literature, anchored to the studies that make it up */
+  if (r.applied) {
+    add("applied", "Applied", "Where the field meets the workplace", "var(--teal)", (
+      <>
+        <Rich className="lede" as="p" html={r.appliedLede ?? ""} />
+        {r.applied.map((a, i) => (
+          <div className={`sk-box ${i % 2 ? "tilt-r2" : "tilt-l2"}`} style={{ marginTop: "1rem" }} key={a.work}>
+            <div className="study-hd">
+              <div style={{ display: "flex", alignItems: "center", gap: ".7rem" }}>
+                <span className="study-n">{a.year}</span>
+                <div>
+                  <h3 style={{ fontSize: "1.02rem" }}>{a.authors}</h3>
+                  <Rich className="model-src" as="div" html={a.work} />
+                </div>
+              </div>
+            </div>
+            <Rich className="read" as="p" style={{ fontSize: ".9rem", lineHeight: 1.6, color: "var(--pen-2)", marginTop: ".6rem" }} html={a.body} />
+          </div>
+        ))}
+      </>
+    ));
+  }
+
   /* two categories */
   if (r.categories) {
-    add("Two buckets", "Everything in a job goes in one of two buckets", "var(--teal)", (
+    add("categories", "Two buckets", "Everything in a job goes in one of two buckets", "var(--teal)", (
       <>
         <Rich className="lede" as="p" html={r.categoriesLede ?? ""} />
         <div className="grid2" style={{ marginTop: "1rem" }}>
@@ -82,7 +182,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
 
   /* dual pathways */
   if (r.pathways) {
-    add("Two roads", "Two roads out of the same job", "var(--teal)", (
+    add("pathways", "Two roads", "Two roads out of the same job", "var(--teal)", (
       <>
         <Rich className="lede" as="p" html={r.pathwaysLede ?? ""} />
         {r.pathways.map((p) => (
@@ -122,7 +222,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
 
   /* challenge vs hindrance */
   if (r.demandTypes) {
-    add("Challenge vs hindrance", "Not all demands are the same kind of hard", "var(--red)", (
+    add("demandTypes", "Challenge vs hindrance", "Not all demands are the same kind of hard", "var(--red)", (
       <>
         <Rich className="lede" as="p" html={r.demandTypesLede ?? ""} />
         <div className="grid2" style={{ marginTop: "1rem" }}>
@@ -151,7 +251,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
 
   /* interactions */
   if (r.interactions) {
-    add("Where they cross", "Where the two roads cross", "var(--teal)", (
+    add("interactions", "Where they cross", "Where the two roads cross", "var(--teal)", (
       <>
         <Rich className="lede" as="p" html={r.interactionsLede ?? ""} />
         <div className="grid2" style={{ marginTop: "1rem" }}>
@@ -169,7 +269,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
 
   /* later expansions */
   if (r.expansions) {
-    add("What got added", "What got added later", "var(--teal)", (
+    add("expansions", "What got added", "What got added later", "var(--teal)", (
       <>
         <Rich className="lede" as="p" html={r.expansionsLede ?? ""} />
         <div className="grid2" style={{ marginTop: "1rem" }}>
@@ -191,7 +291,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
 
   /* core processes (PEF) */
   if (r.coreProcesses) {
-    add("Two flavours", "Two flavours of correspondence", "var(--teal)", (
+    add("coreProcesses", "Two flavours", "Two flavours of correspondence", "var(--teal)", (
       <>
         <p className="lede">Same word, two different questions. Which one a study means changes what its answer is worth.</p>
         <div className="grid2" style={{ marginTop: "1rem" }}>
@@ -226,7 +326,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
 
   /* fit targets (PEF) */
   if (r.fitTargets) {
-    add("Where fit shows up", "Where fit shows up", "var(--teal)", (
+    add("fitTargets", "Where fit shows up", "Where fit shows up", "var(--teal)", (
       <>
         <Rich className="lede" as="p" html={'Four targets. A good match with one <span class="hl">does not guarantee</span> a good match with another.'} />
         <div className="grid4" style={{ marginTop: "1rem" }}>
@@ -249,7 +349,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
 
   /* work adjustment (PEF) */
   if (r.workAdjustment) {
-    add("A continuing relationship", "A continuing relationship", "var(--teal)", (
+    add("workAdjustment", "A continuing relationship", "A continuing relationship", "var(--teal)", (
       <>
         <Rich className="body" as="p" html={r.workAdjustment.replace("Satisfaction", "<b>Satisfaction</b>").replace("satisfactoriness", "<b>satisfactoriness</b>")} />
         <div className="grid2" style={{ marginTop: "1rem" }}>
@@ -269,7 +369,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
   }
 
   /* the trail — always */
-  add("The trail", "The trail", "var(--teal)", (
+  add("trail", "The trail", "The trail", "var(--teal)", (
     <>
       <Rich className="lede" as="p" html={r.trailLede} />
       <svg style={{ width: "100%", height: 58, color: "var(--teal)", margin: ".9rem 0 .3rem" }} viewBox="0 0 400 58" preserveAspectRatio="none" aria-hidden="true">
@@ -295,7 +395,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
   ));
 
   /* don't conclude — always */
-  add("Don’t conclude", "Don’t conclude", "var(--red)", (
+  add("oversimplifications", "Don’t conclude", "Don’t conclude", "var(--red)", (
     <>
       <Rich className="lede" as="p" html={r.oversimplificationsLede} />
       <div className="grid2" style={{ marginTop: "1rem" }}>
@@ -314,14 +414,14 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
   ));
 
   /* still open — always */
-  add("Still open", "Still open", "var(--teal)", (
+  add("qualifications", "Still open", "Still open", "var(--teal)", (
     <div style={{ marginTop: ".4rem" }}>
       {r.qualifications.map((q) => <Bullet icon="i-q" colour="var(--teal)" html={q} key={q} />)}
     </div>
   ));
 
   /* sources — always */
-  add("Sources", "Sources", "var(--teal)", (
+  add("sources", "Sources", "Sources", "var(--teal)", (
     <>
       <div className="sk-box tilt-l2" style={{ marginTop: ".7rem" }}>
         <div style={{ display: "flex", gap: ".6rem", alignItems: "center", marginBottom: ".4rem" }}>
@@ -340,7 +440,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
   ));
 
   /* provenance — always */
-  add("Provenance", "Where every claim came from", "var(--teal)", (
+  add("provenance", "Provenance", "Where every claim came from", "var(--teal)", (
     <div className="prov" style={{ marginTop: ".8rem" }}>
       {r.provenance.map((p) => (
         <div className="prov-item" key={p.label}>
@@ -354,12 +454,26 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
     </div>
   ));
 
-  const toc = B.map((b, i) => [pad2(i + 1), b.toc, `s${i + 1}`] as [string, string, string]);
+  /* Blocks are declared in a fixed order above, but the order a record should
+     be *read* in is the record's business. Music Preference needs its applied
+     literature after the explanatory blocks, not before them. Keys absent from
+     `order` keep their declared position at the end. */
+  const blocks = r.order
+    ? [...B].sort((a, b) => {
+        const rank = (k: string) => {
+          const i = r.order!.indexOf(k);
+          return i < 0 ? Number.MAX_SAFE_INTEGER : i;
+        };
+        return rank(a.key) - rank(b.key);
+      })
+    : B;
+
+  const toc = blocks.map((b, i) => [pad2(i + 1), b.toc, `s${i + 1}`] as [string, string, string]);
 
   return (
     <RecordShell record={r} toc={toc}>
-      {B.map((b, i) => (
-        <span key={b.toc} style={{ display: "contents" }}>
+      {blocks.map((b, i) => (
+        <span key={b.key} style={{ display: "contents" }}>
           {i > 0 && <Divider />}
           <section className="rec" id={`s${i + 1}`}>
             <SecHead num={pad2(i + 1)} title={b.title} colour={b.colour} />

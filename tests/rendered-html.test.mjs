@@ -12,9 +12,6 @@ for (const [pathname, expected] of [
   ["/concept-lab", "Academic Concept"],
   ["/concept-lab/library", "The library"],
   ["/concept-lab/about", "How we cite"],
-  ["/concept-lab/theory/person-environment-fit", "Person–Environment Fit"],
-  ["/concept-lab/theory/job-demands-resources", "Job Demands–Resources"],
-  ["/concept-lab/study/tuned-out-or-dialed-in", "Tuned Out"],
 ]) {
   test(`server renders ${pathname}`, async () => {
     const response = await render(pathname);
@@ -26,16 +23,29 @@ for (const [pathname, expected] of [
   });
 }
 
-// Provenance is the field that makes everything else trustworthy: every record
-// page must render its marks.
-for (const pathname of [
-  "/concept-lab/theory/person-environment-fit",
-  "/concept-lab/theory/job-demands-resources",
-  "/concept-lab/study/tuned-out-or-dialed-in",
-]) {
-  test(`${pathname} shows provenance`, async () => {
-    const html = await (await render(pathname)).text();
-    assert.match(html, /Where every claim came from/);
+/* Record coverage is derived from what the library actually links to, rather
+   than a hand-kept list here. A new record is covered the moment it appears in
+   the library — and if it never appears there, that is itself the bug. */
+const libraryHtml = await (await render("/concept-lab/library")).text();
+const recordPaths = [...new Set([...libraryHtml.matchAll(/\/concept-lab\/(?:theory|study)\/[a-z0-9-]+/g)].map((m) => m[0]))];
+
+test("the library links to every record", () => {
+  assert.ok(recordPaths.length >= 4, `library links to only ${recordPaths.length} records`);
+});
+
+for (const pathname of recordPaths) {
+  test(`record page ${pathname}`, async () => {
+    const response = await render(pathname);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
+    // Provenance is the field that makes everything else trustworthy.
+    assert.match(html, /Where every claim came from/, `${pathname} renders no provenance block`);
+    // Section numbering and the contents rail are generated together; a
+    // mismatch means a block was added without a heading.
+    const sections = (html.match(/<section class="rec"/g) ?? []).length;
+    const tocEntries = (html.match(/<span class="num">/g) ?? []).length;
+    assert.equal(sections, tocEntries, `${pathname}: ${sections} sections but ${tocEntries} contents entries`);
   });
 }
 

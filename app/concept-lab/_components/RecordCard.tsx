@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { AnyRecord } from "@/content/types";
 import { KIND, recordHref } from "@/content/records";
+import { DISCIPLINES } from "@/content/disciplines";
 import { GoArrow, Icon, Ribbon } from "./Sketch";
 import { SaveButton } from "./SaveButton";
 
@@ -36,6 +37,16 @@ export function RecordCard({ record }: { record: AnyRecord }) {
           </div>
         </div>
         <h3>{record.title}</h3>
+        {/* With more than one discipline in the library, which field a record
+            belongs to is part of knowing what you are about to open. */}
+        <div style={{ display: "flex", gap: ".4rem", flexWrap: "wrap", margin: ".45rem 0 .1rem" }}>
+          <span className="chip grey" style={{ fontSize: ".72rem" }}>
+            {DISCIPLINES[record.discipline]?.name ?? record.discipline}
+          </span>
+          {record.statusChip && (
+            <span className="chip red" style={{ fontSize: ".72rem" }}>{record.statusChip}</span>
+          )}
+        </div>
         <p className="ck">{record.hook}</p>
         <div className="facts">
           {record.facts.map((f) => (

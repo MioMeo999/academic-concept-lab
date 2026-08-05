@@ -46,6 +46,40 @@ export function TheoryDemo({ demo }: { demo: Demo }) {
     </div>
   );
 
+  /* facets: one dimension of a multi-factor model at a time. The states live on
+     the record rather than in here, because the content is record-specific. */
+  if (demo.type === "facets") {
+    const facets = demo.facets ?? [];
+    if (!facets.length) return null;
+    const f = facets[clamp(i, facets.length)];
+    return (
+      <div className="sk-box tilt-l" style={{ marginTop: "1.1rem" }}>
+        <div style={{ display: "flex", gap: ".4rem", justifyContent: "center", flexWrap: "wrap" }}>
+          {facets.map((x, n) => (
+            <button
+              key={x.initial}
+              type="button"
+              className="facet-key"
+              aria-pressed={n === i}
+              aria-label={x.label}
+              onClick={() => setI(n)}
+            >
+              {x.initial}
+            </button>
+          ))}
+        </div>
+        <p style={{ fontSize: "1.35rem", fontWeight: 700, textAlign: "center", marginTop: ".9rem" }}>{f.label}</p>
+        <p
+          className="read"
+          style={{ fontSize: ".95rem", lineHeight: 1.6, marginTop: ".4rem", maxWidth: "54ch", marginInline: "auto", color: "var(--pen-2)", textAlign: "center" }}
+        >
+          {f.body}
+        </p>
+        <p className="k" style={{ marginTop: ".9rem", textAlign: "center" }}>{demo.caption}</p>
+      </div>
+    );
+  }
+
   if (demo.type === "scale-pair") {
     const states = DEMOS["scale-pair"];
     const s = states[clamp(i, states.length)];
