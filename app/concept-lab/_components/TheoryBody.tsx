@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { Source, TheoryRecord } from "@/content/types";
 import { ArrowSmall, Bullet, Cloud, Divider, Icon, Rich, SecHead, pad2 } from "./Sketch";
 import { RecordShell } from "./RecordShell";
+import { RECORDS, KIND, recordHref } from "@/content/records";
 import { TheoryDemo } from "./TheoryDemo";
 
 /* ---------------------------------------------------------------------------
@@ -108,6 +109,56 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
         </div>
       </>
     ));
+  }
+
+  /* a colloquial name, or an unqualified one, corrected to what the literature uses */
+  if (r.terminology) {
+    add("terminology", "What to call it", "What to call it", "var(--red)", (
+      <>
+        <Rich className="lede" as="p" html={r.terminologyLede ?? ""} />
+        <div style={{ marginTop: "1rem" }}>
+          {r.terminology.map((t, i) => (
+            <div className={`sk-box tight ${i % 2 ? "tilt-r2" : "tilt-l2"}`} style={{ marginTop: ".7rem" }} key={t.now}>
+              <div className="term-shift">
+                <span className="term-was">{t.was}</span>
+                <svg style={{ width: 30, height: 20, color: "var(--red)", flex: "none" }} viewBox="0 0 40 20" aria-hidden="true">
+                  <path d="M4 10c10-.3 21-.4 31 0" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" />
+                  <path d="M27 4c3.4 2.4 6.6 4.4 9.4 6-2.8 1.6-5.6 3.6-8.4 6" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span className="term-now" style={{ color: "var(--red)" }}>{t.now}</span>
+              </div>
+              <Rich className="read" as="p" style={{ fontSize: ".88rem", lineHeight: 1.55, color: "var(--pen-2)", marginTop: ".5rem" }} html={t.note} />
+            </div>
+          ))}
+        </div>
+      </>
+    ));
+  }
+
+  /* an explicit relation to another record already in the library */
+  if (r.relatedTo) {
+    const links = r.relatedTo
+      .map((l) => ({ link: l, target: RECORDS.find((x) => x.id === l.recordId) }))
+      .filter((x) => x.target);
+    if (links.length) {
+      add("relatedTo", "Where it sits", "Where this sits in the library", "var(--teal)", (
+        <>
+          <Rich className="lede" as="p" html={r.relatedToLede ?? ""} />
+          {links.map(({ link, target }) => {
+            const k = KIND[target!.kind];
+            return (
+              <a className="rel-card" href={recordHref(target!)} key={link.recordId}>
+                <span className="rel-relation">this record {link.relation}</span>
+                <span className="rel-title">{target!.title}</span>
+                <span className="rel-hook">{target!.hook}</span>
+                <Rich className="rel-body read" as="span" html={link.body} />
+                <span className="rel-go" style={{ color: k.colour }}>{k.cta} →</span>
+              </a>
+            );
+          })}
+        </>
+      ));
+    }
   }
 
   /* conceptual status — for records that are a field rather than one theory */

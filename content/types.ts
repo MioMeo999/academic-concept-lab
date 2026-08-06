@@ -171,6 +171,15 @@ export type AppliedWork = {
   body: string;
 };
 
+/** A term the field has revised, or a colloquial name that will not find the
+ *  literature. Used by both theory and method records. */
+export type TermShift = { was: string; now: string; note: string };
+
+/* One record's explicit relation to another already in the library — e.g. a
+   subtype of a broader framework. Turns a flat list of records into a
+   structure the reader can navigate. */
+export type RecordLink = { recordId: string; relation: string; body: string };
+
 /* Blocks carry generic headings so they can be reused across records; a record
    overrides them by key. Without this, reusing the two-category block outside
    Job Demands–Resources would render "Everything in a job goes in one of two
@@ -200,6 +209,10 @@ export type TheoryRecord = RecordBase & {
   demoIn?: string;
   conceptualStatus?: ConceptualStatus;
   disambiguation?: Disambiguation;
+  relatedTo?: RecordLink[];
+  relatedToLede?: string;
+  terminology?: TermShift[];
+  terminologyLede?: string;
   models?: Model[];
   modelsLede?: string;
   modelsNote?: string;
@@ -281,8 +294,6 @@ export type ProcedureStep = { n: string; title: string; body: string };
 export type CraftColumn = { title: string; asks: string; colour: string };
 
 /** A term the field has revised. Using the old one dates the work. */
-export type TermShift = { was: string; now: string; note: string };
-
 /** A marker of quality, for auditing your own analysis or someone else's. */
 export type QualityMarker = { n: string; title: string; body: string };
 

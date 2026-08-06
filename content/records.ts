@@ -2,6 +2,7 @@ import type { AnyRecord, RecordKind } from "./types";
 import { personEnvironmentFit, jobDemandsResources } from "./theory";
 import { musicPreference } from "./music-preference";
 import { workplaceDesign } from "./workplace-design";
+import { personOrganisationFit } from "./person-organisation-fit";
 import { ipa } from "./ipa";
 import { rta } from "./rta";
 import { tunedOutPaper } from "./paper";
@@ -11,7 +12,7 @@ import { tunedOutPaper } from "./paper";
  * appears in the library, in search, in the filters, in saved, and in the
  * "elsewhere" block on every other record, with no route or template change.
  */
-export const RECORDS: AnyRecord[] = [personEnvironmentFit, jobDemandsResources, workplaceDesign, musicPreference, ipa, rta, tunedOutPaper];
+export const RECORDS: AnyRecord[] = [personEnvironmentFit, personOrganisationFit, jobDemandsResources, workplaceDesign, musicPreference, ipa, rta, tunedOutPaper];
 
 export const KIND: Record<RecordKind, {
   label: string; nav: string; colour: string; fill: string; stroke: string; cls: string; path: string; cta: string;

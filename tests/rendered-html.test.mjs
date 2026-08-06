@@ -49,6 +49,22 @@ for (const pathname of recordPaths) {
   });
 }
 
+// Cross-record links (the `relatedTo` block) resolve to real pages. A wrong
+// recordId renders nothing at all, so nothing else would notice.
+test("every internal record link resolves", async () => {
+  const seen = new Set();
+  for (const pathname of recordPaths) {
+    const html = await (await render(pathname)).text();
+    for (const m of html.matchAll(/\/concept-lab\/(?:theory|study|method)\/[a-z0-9-]+/g)) {
+      if (m[0] !== pathname) seen.add(m[0]);
+    }
+  }
+  for (const target of seen) {
+    assert.ok(recordPaths.includes(target), `link to ${target} does not match any record page`);
+  }
+  assert.ok(seen.size > 0, "no cross-record links found at all");
+});
+
 // Regression guard. app/globals.css is imported by the root layout, so any
 // generic class name it defines outranks the same name in sketchnote.css.
 // That once absolutely positioned record body copy on top of the hero.
