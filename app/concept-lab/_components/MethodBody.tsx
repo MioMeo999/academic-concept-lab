@@ -3,6 +3,7 @@ import type { MethodRecord, Source } from "@/content/types";
 import { Cloud, Divider, Icon, Rich, SecHead, pad2 } from "./Sketch";
 import { RecordShell } from "./RecordShell";
 import { QuestionFit } from "./QuestionFit";
+import { SchoolPicker } from "./SchoolPicker";
 
 /* ---------------------------------------------------------------------------
    Section-driven method template.
@@ -92,6 +93,49 @@ export function MethodBody({ record: r }: { record: MethodRecord }) {
       <>
         <Rich className="lede" as="p" html={r.questionFitLede ?? ""} />
         <QuestionFit items={r.questionFit} note={r.questionFitNote} />
+      </>
+    ));
+  }
+
+  /* which of several similarly-named approaches this actually is */
+  if (r.schools) {
+    add("schools", "Which one is it?", "Three approaches, one family name", "var(--red)", (
+      <>
+        <Rich className="lede" as="p" html={r.schoolsLede ?? ""} />
+        <SchoolPicker schools={r.schools} note={r.schoolsNote} />
+      </>
+    ));
+  }
+
+  /* topic label versus analytic code, shown rather than described */
+  if (r.codingExamples) {
+    add("codingExamples", "Coding", "A label names the topic; a code makes a claim", "var(--teal)", (
+      <>
+        <Rich className="lede" as="p" html={r.codingExamplesLede ?? ""} />
+        <div className="code-table">
+          <div className="code-head">
+            <span>The extract</span>
+            <span>Topic label</span>
+            <span>Analytic code</span>
+          </div>
+          {r.codingExamples.map((c) => (
+            <div className="code-row" key={c.extract}>
+              <span className="code-extract">“{c.extract}”</span>
+              <span className="code-weak">{c.weak}</span>
+              <span className="code-strong">{c.strong}</span>
+            </div>
+          ))}
+        </div>
+        {r.codingExamplesNote && (
+          <div className="tilt-r2" style={{ marginTop: "1.1rem", maxWidth: 680 }}>
+            <Cloud colour="#2E7D8F">
+              <div style={{ display: "flex", gap: ".55rem", alignItems: "flex-start" }}>
+                <Icon id="i-star" style={{ width: 24, height: 24, color: "var(--teal)", flex: "none" }} />
+                <Rich className="read" as="p" style={{ fontSize: ".9rem", lineHeight: 1.55, color: "var(--pen-2)" }} html={r.codingExamplesNote} />
+              </div>
+            </Cloud>
+          </div>
+        )}
       </>
     ));
   }

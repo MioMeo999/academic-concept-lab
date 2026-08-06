@@ -295,6 +295,15 @@ export type LearningStage = { n: string; title: string; body: string; read?: str
 /** A published study worth reading to see the method done well. */
 export type Exemplar = { year: string; authors: string; work: string; body: string };
 
+/* Where several approaches share a family name and differ in their assumptions
+   rather than only their steps. Naming which one you are doing is a
+   methodological commitment, not a label. */
+export type School = { name: string; blurb: string; marks: string[]; isThis: boolean };
+
+/** An extract, the label that only names its topic, and the code that makes a
+ *  claim about it. The contrast teaches faster than the rule does. */
+export type CodingExample = { extract: string; weak: string; strong: string };
+
 /** A candidate research question, and whether the method actually fits it. */
 export type QuestionFit = { question: string; fits: boolean; why: string };
 
@@ -312,6 +321,14 @@ export type MethodRecord = RecordBase & {
   questionFit?: QuestionFit[];
   questionFitLede?: string;
   questionFitNote?: string;
+
+  schools?: School[];
+  schoolsLede?: string;
+  schoolsNote?: string;
+
+  codingExamples?: CodingExample[];
+  codingExamplesLede?: string;
+  codingExamplesNote?: string;
 
   procedure?: ProcedureStep[];
   procedureLede?: string;
