@@ -10,7 +10,12 @@ import { SaveButton } from "./SaveButton";
 export function RecordCard({ record }: { record: AnyRecord }) {
   const k = KIND[record.kind];
   const art =
-    record.kind === "theory" ? (
+    record.kind === "method" ? (
+      <div style={{ display: "flex", alignItems: "flex-end", gap: ".25rem", flex: "none" }}>
+        <Icon id="i-eye" style={{ width: 28, height: 28, color: "var(--gold-deep)" }} />
+        <Icon id="i-person" style={{ width: 30, height: 30 }} />
+      </div>
+    ) : record.kind === "theory" ? (
       <div style={{ display: "flex", alignItems: "flex-end", gap: ".05rem", flex: "none" }}>
         <Icon id="i-person" style={{ width: 28, height: 28, color: "var(--red)" }} />
         <Icon id="i-door" style={{ width: 34, height: 34 }} />
@@ -30,7 +35,7 @@ export function RecordCard({ record }: { record: AnyRecord }) {
       </Link>
       <div className="inner">
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: ".7rem" }}>
-          <Ribbon text={k.label.toUpperCase()} fill={k.fill} stroke={k.stroke} tilt={record.kind === "theory" ? "tilt-l" : "tilt-r"} />
+          <Ribbon text={k.label.toUpperCase()} fill={k.fill} stroke={k.stroke} tilt={record.kind === "study" ? "tilt-r" : "tilt-l"} />
           <div style={{ display: "flex", alignItems: "center", gap: ".5rem" }}>
             {art}
             <SaveButton id={record.id} />

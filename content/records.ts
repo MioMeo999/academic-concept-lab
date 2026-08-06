@@ -2,6 +2,7 @@ import type { AnyRecord, RecordKind } from "./types";
 import { personEnvironmentFit, jobDemandsResources } from "./theory";
 import { musicPreference } from "./music-preference";
 import { workplaceDesign } from "./workplace-design";
+import { ipa } from "./ipa";
 import { tunedOutPaper } from "./paper";
 
 /**
@@ -9,7 +10,7 @@ import { tunedOutPaper } from "./paper";
  * appears in the library, in search, in the filters, in saved, and in the
  * "elsewhere" block on every other record, with no route or template change.
  */
-export const RECORDS: AnyRecord[] = [personEnvironmentFit, jobDemandsResources, workplaceDesign, musicPreference, tunedOutPaper];
+export const RECORDS: AnyRecord[] = [personEnvironmentFit, jobDemandsResources, workplaceDesign, musicPreference, ipa, tunedOutPaper];
 
 export const KIND: Record<RecordKind, {
   label: string; nav: string; colour: string; fill: string; stroke: string; cls: string; path: string; cta: string;
@@ -21,6 +22,10 @@ export const KIND: Record<RecordKind, {
   study: {
     label: "Evidence record", nav: "Empirical study", colour: "var(--red)",
     fill: "#E24E1B", stroke: "#B23C10", cls: "red", path: "study", cta: "Read the evidence",
+  },
+  method: {
+    label: "Method record", nav: "Research method", colour: "var(--gold-deep)",
+    fill: "#C9922A", stroke: "#9C7018", cls: "gold", path: "method", cta: "Learn the method",
   },
 };
 

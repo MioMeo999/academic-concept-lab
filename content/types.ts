@@ -1,9 +1,16 @@
 /* ---------------------------------------------------------------------------
    Content model.
 
-   Two record kinds share a shell but not a template, because a theory and an
-   empirical study are different objects: a theory has no sample, date or
-   result, and a study's method has to stay welded to its finding.
+   Three record kinds share a shell but not a template, because they are
+   different objects:
+
+     a theory is a LENS     — no sample, date or result; it has to demonstrate
+     a study is an ARGUMENT — its method must stay welded to its finding
+     a method is a PRACTICE — you get better at it by doing it, so the page has
+                              to be usable at the desk, not only readable
+
+   Forcing any of the three into another's shape loses what makes it that kind
+   of thing.
 
    The theory template is SECTION-DRIVEN. Every block marked optional below
    renders only if the record carries data for it, and section numbers plus the
@@ -12,7 +19,7 @@
    off one template.
    ------------------------------------------------------------------------- */
 
-export type RecordKind = "theory" | "study";
+export type RecordKind = "theory" | "study" | "method";
 
 export type ProvenanceGlyph = "●" | "■" | "▲" | "✦" | "?";
 
@@ -262,4 +269,83 @@ export type PaperRecord = RecordBase & {
   implications: string[];
 };
 
-export type AnyRecord = TheoryRecord | PaperRecord;
+/* ---------------- research method ---------------- */
+
+/** The intellectual commitments a method rests on. */
+export type Commitment = { title: string; icon: string; colour: string; body: string };
+
+/** A step in the procedure. `rule` marks a step whose order is load-bearing. */
+export type ProcedureStep = { n: string; title: string; body: string };
+
+/** One column of a close-reading pass, and what it asks of the reader. */
+export type CraftColumn = { title: string; asks: string; colour: string };
+
+/** A term the field has revised. Using the old one dates the work. */
+export type TermShift = { was: string; now: string; note: string };
+
+/** A marker of quality, for auditing your own analysis or someone else's. */
+export type QualityMarker = { n: string; title: string; body: string };
+
+/** Two ways of writing the same finding — one flat, one doing real work. */
+export type ThemeContrast = { weak: string[]; strong: string[]; note: string };
+
+/** A stage in learning the method by doing it. */
+export type LearningStage = { n: string; title: string; body: string; read?: string };
+
+/** A published study worth reading to see the method done well. */
+export type Exemplar = { year: string; authors: string; work: string; body: string };
+
+/** A candidate research question, and whether the method actually fits it. */
+export type QuestionFit = { question: string; fits: boolean; why: string };
+
+export type MethodRecord = RecordBase & {
+  kind: "method";
+  /** e.g. "IPA" — used where the full name will not fit. */
+  abbr?: string;
+  ideaLede: string;
+  originsNote: string;
+
+  commitments?: Commitment[];
+  commitmentsLede?: string;
+  doubleHermeneutic?: { quote: string; body: string };
+
+  questionFit?: QuestionFit[];
+  questionFitLede?: string;
+  questionFitNote?: string;
+
+  procedure?: ProcedureStep[];
+  procedureLede?: string;
+  cardinalRule?: string;
+
+  craft?: CraftColumn[];
+  craftLede?: string;
+  attendTo?: string[];
+
+  terminology?: TermShift[];
+  terminologyLede?: string;
+
+  qualityMarkers?: QualityMarker[];
+  qualityMarkersLede?: string;
+
+  themeContrast?: ThemeContrast;
+  themeContrastLede?: string;
+
+  stages?: LearningStage[];
+  stagesLede?: string;
+
+  exemplars?: Exemplar[];
+  exemplarsLede?: string;
+
+  misuses: string[];
+  misusesLede: string;
+  qualifications: string[];
+
+  coreReading: Source[];
+  coreReadingLabel?: string;
+  fullSources: Source[];
+
+  headings?: Headings;
+  order?: string[];
+};
+
+export type AnyRecord = TheoryRecord | PaperRecord | MethodRecord;

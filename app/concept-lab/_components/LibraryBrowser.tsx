@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import type { AnyRecord } from "@/content/types";
+import type { AnyRecord, RecordKind } from "@/content/types";
 import type { Discipline } from "@/content/disciplines";
 import { Icon } from "./Sketch";
 import { RecordCard } from "./RecordCard";
@@ -17,7 +17,8 @@ type Props = {
 
 export function LibraryBrowser({ records, disciplines, onlySaved = false }: Props) {
   const [q, setQ] = useState("");
-  const [kind, setKind] = useState<"all" | "theory" | "study">("all");
+  // Derived from RecordKind so a new kind never needs a change here.
+  const [kind, setKind] = useState<"all" | RecordKind>("all");
   const [discipline, setDiscipline] = useState("all");
   const { ids, ready } = useSaved();
 
@@ -54,7 +55,7 @@ export function LibraryBrowser({ records, disciplines, onlySaved = false }: Prop
         <div className="field">
           <span className="k">Kind</span>
           <div className="pills" role="group" aria-label="Record kind">
-            {([["all", "All", ""], ["theory", "Theory", "teal"], ["study", "Empirical", "red"]] as const).map(([v, label, cls]) => (
+            {([["all", "All", ""], ["theory", "Theory", "teal"], ["study", "Empirical", "red"], ["method", "Method", "gold"]] as const).map(([v, label, cls]) => (
               <button key={v} className={`pill ${cls}`} type="button" aria-pressed={kind === v} onClick={() => setKind(v)}>{label}</button>
             ))}
           </div>

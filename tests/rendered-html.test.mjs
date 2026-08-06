@@ -27,10 +27,10 @@ for (const [pathname, expected] of [
    than a hand-kept list here. A new record is covered the moment it appears in
    the library — and if it never appears there, that is itself the bug. */
 const libraryHtml = await (await render("/concept-lab/library")).text();
-const recordPaths = [...new Set([...libraryHtml.matchAll(/\/concept-lab\/(?:theory|study)\/[a-z0-9-]+/g)].map((m) => m[0]))];
+const recordPaths = [...new Set([...libraryHtml.matchAll(/\/concept-lab\/(?:theory|study|method)\/[a-z0-9-]+/g)].map((m) => m[0]))];
 
 test("the library links to every record", () => {
-  assert.ok(recordPaths.length >= 4, `library links to only ${recordPaths.length} records`);
+  assert.ok(recordPaths.length >= 6, `library links to only ${recordPaths.length} records`);
 });
 
 for (const pathname of recordPaths) {

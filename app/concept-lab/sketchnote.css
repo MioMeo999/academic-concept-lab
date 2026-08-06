@@ -236,3 +236,41 @@
   @media(min-width:760px){ .model-row{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
   .model-year{ font-size:1.5rem; font-weight:700; color:var(--teal); line-height:1; }
   .model-src{ font-family:var(--read); font-size:.82rem; color:var(--pen-3); font-style:italic; margin-top:.2rem; }
+
+  /* ---- method records: the third dialect, in gold ---- */
+  .chip.gold{ border-color:var(--gold-deep); color:var(--gold-deep); }
+  .pill.gold[aria-pressed="true"]{ background:var(--gold-deep); border-color:var(--gold-deep); }
+  .sk-box.gold::before, .sk-box.gold::after{ border-color:var(--gold-deep); }
+
+  /* the double hermeneutic, set apart */
+  .dh-quote{ margin:.6rem 0 0; padding:0 0 0 1rem; border-left:3.5px solid var(--gold-deep);
+    font-size:1.08rem; line-height:1.5; font-style:italic; color:var(--pen); }
+
+  /* numbered procedure / pathway */
+  .proc-list{ list-style:none; margin:1rem 0 0; padding:0; display:flex; flex-direction:column; gap:.9rem; }
+  .proc-list li{ display:grid; grid-template-columns:2.4rem 1fr; gap:.8rem; align-items:start; }
+  .proc-n{ font-size:1.15rem; font-weight:700; color:var(--teal); text-align:right; line-height:1.2; }
+  .proc-n.gold{ color:var(--gold-deep); }
+
+  /* the four-column close pass */
+  .craft-cols{ display:grid; gap:.7rem; grid-template-columns:minmax(0,1fr); margin-top:1rem; }
+  @media(min-width:700px){ .craft-cols{ grid-template-columns:repeat(4,minmax(0,1fr)); } }
+  .craft-col{ border-top:4px solid var(--pen); padding:.6rem .2rem 0; }
+
+  /* was -> now terminology */
+  .term-shift{ display:flex; align-items:center; gap:.7rem; flex-wrap:wrap; }
+  .term-was{ font-size:.95rem; color:var(--pen-3); text-decoration:line-through;
+    text-decoration-color:var(--red); text-decoration-thickness:2px; }
+  .term-now{ font-size:1.05rem; font-weight:700; color:var(--gold-deep); }
+
+  /* question-fit interactive */
+  .qfit-list{ display:flex; flex-direction:column; gap:.4rem; margin-top:.6rem; }
+  .qfit-chip{ text-align:left; cursor:pointer; font-family:var(--read); font-size:.9rem; line-height:1.4;
+    background:transparent; color:var(--pen-2); border:2px solid var(--grey); padding:.5rem .7rem;
+    border-radius:16px 22px 14px 20px / 20px 14px 22px 16px;
+    transition:border-color .16s ease, background .16s ease, color .16s ease; }
+  .qfit-chip:hover{ border-color:var(--pen); color:var(--pen); }
+  .qfit-chip[aria-pressed="true"]{ border-color:var(--pen); background:rgba(255,255,255,.65); color:var(--pen); font-weight:600; }
+  .qfit-verdict{ margin-top:1rem; padding:.9rem 1rem; border-radius:18px 26px 16px 24px / 24px 16px 26px 18px;
+    border:2.2px solid var(--teal); background:rgba(46,125,143,.06); }
+  .qfit-verdict.misfits{ border-color:var(--red); background:rgba(226,78,27,.06); }

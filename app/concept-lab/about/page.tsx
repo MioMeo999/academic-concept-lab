@@ -79,7 +79,7 @@ export default function AboutPage() {
       <section>
         <SecHead num="02" title="How the site is built" colour="var(--teal)" />
         <p className="body">
-          Two record kinds, one shell. <b>Theory</b> and <b>empirical study</b> use different templates because they are different objects — but they share the header,
+          Three record kinds, one shell. <b>Theory</b>, <b>empirical study</b> and <b>research method</b> use different templates because they are different objects — a theory is a lens, a study is an argument, a method is a practice — but they share the header,
           breadcrumbs, contents rail, saved state, library card and provenance block.
         </p>
         <p className="body" style={{ marginTop: ".8rem" }}>
