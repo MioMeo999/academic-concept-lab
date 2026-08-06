@@ -30,8 +30,8 @@ export function Icon({ id, style, className }: { id: string; style?: CSSProperti
 
 export function Divider() {
   return (
-    <svg className="divider" viewBox="0 0 400 14" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M2 8c20-8 40 6 60-1s40 7 60 0 40 6 60-1 40 7 60 0 40 6 60-1 30 5 46-1" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" />
+    <svg className="divider" data-draw="" viewBox="0 0 400 14" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M2 8c20-8 40 6 60-1s40 7 60 0 40 6 60-1 40 7 60 0 40 6 60-1 30 5 46-1" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" pathLength={1} data-ink="" />
     </svg>
   );
 }
@@ -41,9 +41,9 @@ export function Divider() {
 export function Banner({ children, tilt = "tilt-l2" }: { children: ReactNode; tilt?: string }) {
   return (
     <span className={`banner ${tilt}`}>
-      <svg viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M4 9c130-6 262-7 392-1 3 16 3 32 0 49-130 6-266 6-392 0-3-16-3-32 0-48z" fill="none" stroke="#1C1B19" strokeWidth={2.8} strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
-        <path d="M11 14c126-5 254-6 380-1" fill="none" stroke="#1C1B19" strokeWidth={1.5} opacity={0.33} vectorEffect="non-scaling-stroke" />
+      <svg viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true" data-draw="">
+        <path d="M4 9c130-6 262-7 392-1 3 16 3 32 0 49-130 6-266 6-392 0-3-16-3-32 0-48z" fill="none" stroke="#1C1B19" strokeWidth={2.8} strokeLinejoin="round" vectorEffect="non-scaling-stroke" pathLength={1} data-ink="" />
+        <path d="M11 14c126-5 254-6 380-1" fill="none" stroke="#1C1B19" strokeWidth={1.5} opacity={0.33} vectorEffect="non-scaling-stroke" pathLength={1} data-ink="" />
       </svg>
       <span>{children}</span>
     </span>
@@ -55,10 +55,11 @@ export function Banner({ children, tilt = "tilt-l2" }: { children: ReactNode; ti
 export function Cloud({ children, colour = "#E24E1B", className = "" }: { children: ReactNode; colour?: string; className?: string }) {
   return (
     <div className={`cloud ${className}`}>
-      <svg className="frame" viewBox="0 0 340 100" preserveAspectRatio="none" aria-hidden="true">
+      <svg className="frame" viewBox="0 0 340 100" preserveAspectRatio="none" aria-hidden="true" data-draw="">
         <path
           d="M18 32C18 14 44 2 66 11 84 -1 112 1 124 13 144 1 174 1 192 13 214 1 246 3 258 15 284 6 320 12 324 32 338 42 338 62 324 74 322 92 288 101 264 91 244 101 210 101 192 91 172 101 138 101 120 91 96 101 58 97 52 83 24 85 4 67 8 49 2 43 6 36 18 32Z"
           fill="none" stroke={colour} strokeWidth={2.4} strokeLinejoin="round" vectorEffect="non-scaling-stroke"
+          pathLength={1} data-ink=""
         />
       </svg>
       {children}
@@ -108,8 +109,8 @@ export function Bullet({ icon, colour, html, size = ".93rem" }: { icon: string; 
 export function SecHead({ num, title, colour }: { num: string; title: string; colour: string }) {
   return (
     <div className="sec-hd">
-      <svg style={{ width: 38, height: 38, flex: "none" }} viewBox="0 0 40 40" aria-hidden="true">
-        <path d="M20 3.5c9.4-.2 16.8 7 16.5 16.4-.3 9.2-7.3 16.4-16.5 16.2C10.6 35.9 3.6 28.8 3.5 19.8 3.4 10.5 10.7 3.7 20 3.5z" fill="none" stroke={colour} strokeWidth={2.4} />
+      <svg style={{ width: 38, height: 38, flex: "none" }} viewBox="0 0 40 40" aria-hidden="true" data-draw="">
+        <path d="M20 3.5c9.4-.2 16.8 7 16.5 16.4-.3 9.2-7.3 16.4-16.5 16.2C10.6 35.9 3.6 28.8 3.5 19.8 3.4 10.5 10.7 3.7 20 3.5z" fill="none" stroke={colour} strokeWidth={2.4} pathLength={1} data-ink="" />
         <text x={20} y={26} textAnchor="middle" fontSize={15} fontWeight={700} fill={colour} fontFamily="Ink Free, Comic Sans MS, cursive">{num}</text>
       </svg>
       <h2>{title}</h2>

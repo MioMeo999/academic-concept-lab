@@ -6,7 +6,13 @@ import { Crumbs } from "../_components/RecordShell";
 
 export const metadata: Metadata = { title: "Library" };
 
-export default function LibraryPage() {
+type Search = { kind?: string; discipline?: string };
+
+export default async function LibraryPage({ searchParams }: { searchParams: Promise<Search> }) {
+  const sp = await searchParams;
+  const kind = sp.kind === "theory" || sp.kind === "study" || sp.kind === "method" ? sp.kind : undefined;
+  const discipline = sp.discipline && DISCIPLINES[sp.discipline] ? sp.discipline : undefined;
+
   return (
     <div className="wrap">
       <Crumbs items={[{ label: "Home", href: "/concept-lab" }, { label: "Library" }]} />
@@ -16,7 +22,7 @@ export default function LibraryPage() {
           Every record, filterable. The library is the surface that scales — no record ever needs to appear in the main navigation.
         </p>
       </section>
-      <LibraryBrowser records={RECORDS} disciplines={DISCIPLINES} />
+      <LibraryBrowser records={RECORDS} disciplines={DISCIPLINES} initialKind={kind} initialDiscipline={discipline} />
     </div>
   );
 }

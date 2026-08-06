@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import "./sketchnote.css";
 import { Sprite } from "./_components/Sprite";
+import { Reveal } from "./_components/Reveal";
 
 export const metadata: Metadata = {
   title: { default: "Academic Concept Lab", template: "%s · Academic Concept Lab" },
@@ -23,6 +24,7 @@ export default function ConceptLabLayout({ children }: { children: React.ReactNo
   return (
     <div className="acl">
       <Sprite />
+      <Reveal />
       <header className="site">
         <div className="wrap site-in">
           <Link className="brand" href="/concept-lab">

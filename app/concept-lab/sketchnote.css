@@ -49,8 +49,8 @@
   .sk-box.tight{ padding:.6rem .7rem; }
   .sk-box.fill{ background:rgba(255,255,255,.5); }
 
-  .hl{ background:linear-gradient(100deg, rgba(255,224,102,0) 1%, rgba(255,224,102,.95) 3.5%, rgba(255,224,102,.8) 96%, rgba(255,224,102,0) 99%); padding:0 .12em; }
-  .hl-t{ background:linear-gradient(100deg, rgba(126,209,222,0) 1%, rgba(126,209,222,.72) 3.5%, rgba(126,209,222,.55) 96%, rgba(126,209,222,0) 99%); padding:0 .12em; }
+  .hl{ background:linear-gradient(100deg, rgba(255,224,102,0) 1%, rgba(255,224,102,.95) 3.5%, rgba(255,224,102,.8) 96%, rgba(255,224,102,0) 99%); background-repeat:no-repeat; background-position:0 0; background-size:100% 100%; padding:0 .12em; }
+  .hl-t{ background:linear-gradient(100deg, rgba(126,209,222,0) 1%, rgba(126,209,222,.72) 3.5%, rgba(126,209,222,.55) 96%, rgba(126,209,222,0) 99%); background-repeat:no-repeat; background-position:0 0; background-size:100% 100%; padding:0 .12em; }
 
   .banner{ position:relative; display:inline-block; padding:.8rem 1.4rem .9rem; }
   .banner > svg{ position:absolute; inset:-2px -4px; width:calc(100% + 8px); height:calc(100% + 4px); overflow:visible; }
@@ -324,3 +324,91 @@
   .rel-body{ display:block; font-size:.9rem; line-height:1.6; color:var(--pen-2);
     margin-top:.7rem; padding-top:.7rem; border-top:1.6px dashed rgba(28,27,25,.22); }
   .rel-go{ display:block; font-size:.92rem; font-weight:700; margin-top:.7rem; }
+
+  /* =========================================================================
+     Entrance animation: the drawing draws itself.
+
+     The site's premise is that everything here is hand-drawn, so lines ink in
+     along their own path and highlighter wipes across. `pathLength=1` on each
+     path normalises the geometry, so one keyframe works for a 400-unit banner
+     and a 40-unit bubble alike.
+
+     Every hidden starting state is scoped to `.anim-ready`, a class only the
+     Reveal component adds — so with JavaScript off nothing is ever hidden.
+     The whole block sits inside a no-preference query, so a reader who asked
+     for stillness sees the finished drawing immediately.
+     ===================================================================== */
+  @media (prefers-reduced-motion:no-preference){
+    .anim-ready [data-draw] path[data-ink]{ stroke-dasharray:1; stroke-dashoffset:1; }
+    .anim-ready [data-draw].is-in path[data-ink]{
+      animation:ink-draw .85s cubic-bezier(.62,.04,.3,1) forwards; }
+    /* the banner's inner rule follows the outline a beat later */
+    .anim-ready [data-draw].is-in path[data-ink]:nth-of-type(2){ animation-delay:.16s; }
+    @keyframes ink-draw{ to{ stroke-dashoffset:0; } }
+
+    /* highlighter is a stroke of a pen, so it wipes rather than fades */
+    .anim-ready [data-reveal="hl"] .hl,
+    .anim-ready [data-reveal="hl"] .hl-t{ background-size:0% 100%; }
+    .anim-ready [data-reveal="hl"].is-in .hl,
+    .anim-ready [data-reveal="hl"].is-in .hl-t{
+      background-size:100% 100%; transition:background-size .62s cubic-bezier(.4,0,.2,1) .2s; }
+
+    /* The quietest possible settle. Deliberately transform-only: if an effect
+       ever fails to run, content must still be readable, and an element that
+       is 9px low is a non-event where an element stuck at opacity 0 is a
+       missing section. Nothing on this site hides content to animate it. */
+    .anim-ready [data-reveal="rise"]{ transform:translateY(9px); }
+    .anim-ready [data-reveal="rise"].is-in{ transform:none;
+      transition:transform .55s cubic-bezier(.22,.9,.24,1); }
+    .anim-ready [data-reveal="rise"].is-in:nth-child(2){ transition-delay:.07s; }
+    .anim-ready [data-reveal="rise"].is-in:nth-child(3){ transition-delay:.14s; }
+
+    /* hover: the pen goes over the line a second time */
+    .card .inner::after, .rel-card::after{ transition:inset .22s cubic-bezier(.22,.9,.24,1); }
+    .card:hover .inner::after{ inset:5px -5px -6px 5px; }
+  }
+
+  /* ---- landing page ---- */
+  .stat-strip{ display:flex; gap:1.4rem; flex-wrap:wrap; margin-top:1.4rem;
+    padding-top:.9rem; border-top:2px solid var(--pen); max-width:520px;
+    font-size:.85rem; color:var(--pen-3); }
+  .stat-strip b{ font-size:1.5rem; color:var(--pen); font-weight:700; margin-right:.25rem; }
+
+  /* the three kinds, as doors rather than an essay */
+  .doors{ display:grid; gap:.9rem; grid-template-columns:minmax(0,1fr); margin-top:.9rem; }
+  @media(min-width:860px){ .doors{ grid-template-columns:repeat(3,minmax(0,1fr)); } }
+  .door{ position:relative; display:flex; flex-direction:column; gap:.45rem;
+    padding:1.1rem 1.15rem 1.2rem; text-decoration:none; color:inherit;
+    border:2.4px solid var(--pen); border-radius:20px 30px 18px 26px / 26px 18px 30px 20px;
+    transition:transform .22s cubic-bezier(.34,1.3,.5,1), background .2s ease; }
+  .door.teal{ border-color:var(--teal); background:rgba(46,125,143,.05); }
+  .door.red{ border-color:var(--red); background:rgba(226,78,27,.05); }
+  .door.gold{ border-color:var(--gold-deep); background:rgba(201,146,42,.07); }
+  .door:hover{ transform:translateY(-4px) rotate(-.35deg); }
+  .door.teal:hover{ background:rgba(46,125,143,.11); }
+  .door.red:hover{ background:rgba(226,78,27,.11); }
+  .door.gold:hover{ background:rgba(201,146,42,.14); }
+  .door-top{ display:flex; align-items:center; justify-content:space-between; gap:.6rem; }
+  .door-count{ font-size:1.9rem; font-weight:700; line-height:1; }
+  .door-count small{ font-size:.72rem; font-weight:400; letter-spacing:.06em; text-transform:uppercase; }
+  .door-line{ font-size:1.12rem; font-weight:700; line-height:1.2; }
+  .door-blurb{ font-family:var(--read); font-size:.88rem; line-height:1.55; color:var(--pen-2); }
+  .door-go{ font-size:.92rem; font-weight:700; margin-top:.2rem; }
+
+  /* why a starter record is a starter */
+  .starter-why{ font-family:var(--read); font-size:.86rem; line-height:1.55;
+    color:var(--pen-3); margin-top:.7rem; padding-left:.9rem;
+    border-left:3px solid var(--grey); }
+
+  /* the provenance marks, surfaced on the landing page */
+  .marks-row{ display:flex; gap:.4rem; flex-wrap:wrap; margin-top:1rem; }
+  .mark-chip{ display:inline-flex; align-items:center; gap:.4rem; font-size:.8rem; color:var(--pen-2);
+    border:1.8px solid var(--grey); padding:.35rem .65rem;
+    border-radius:14px 20px 12px 18px / 18px 12px 20px 14px; }
+
+  .disc-chip{ display:inline-flex; align-items:center; gap:.5rem; text-decoration:none; color:var(--pen-2);
+    font-size:.9rem; border:2px solid var(--grey); padding:.45rem .8rem;
+    border-radius:16px 22px 14px 20px / 20px 14px 22px 16px;
+    transition:border-color .16s ease, color .16s ease; }
+  .disc-chip:hover{ border-color:var(--teal); color:var(--teal); }
+  .disc-n{ font-size:.76rem; font-weight:700; color:var(--pen-3); }

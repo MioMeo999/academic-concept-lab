@@ -13,13 +13,16 @@ type Props = {
   disciplines: Record<string, Discipline>;
   /** Saved view filters to starred records and swaps the empty state. */
   onlySaved?: boolean;
+  /** Seeded from the URL, so a filtered library is linkable and shareable. */
+  initialKind?: "all" | RecordKind;
+  initialDiscipline?: string;
 };
 
-export function LibraryBrowser({ records, disciplines, onlySaved = false }: Props) {
+export function LibraryBrowser({ records, disciplines, onlySaved = false, initialKind, initialDiscipline }: Props) {
   const [q, setQ] = useState("");
   // Derived from RecordKind so a new kind never needs a change here.
-  const [kind, setKind] = useState<"all" | RecordKind>("all");
-  const [discipline, setDiscipline] = useState("all");
+  const [kind, setKind] = useState<"all" | RecordKind>(initialKind ?? "all");
+  const [discipline, setDiscipline] = useState(initialDiscipline ?? "all");
   const { ids, ready } = useSaved();
 
   const list = useMemo(() => {
