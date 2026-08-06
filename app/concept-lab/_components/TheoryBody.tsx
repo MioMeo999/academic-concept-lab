@@ -15,6 +15,36 @@ import { TheoryDemo } from "./TheoryDemo";
 
 type Block = { key: string; toc: string; title: string; colour: string; body: ReactNode };
 
+/** One side of a disambiguation: what this page covers, or what it does not. */
+function DisambigSide({
+  side,
+  tone,
+  sources,
+}: {
+  side: { title: string; blurb: string; items: string[] };
+  tone: "teal" | "red";
+  sources?: Source[];
+}) {
+  return (
+    <div className={`sk-box ${tone} ${tone === "teal" ? "tilt-l2" : "tilt-r2"}`}>
+      <div style={{ display: "flex", gap: ".55rem", alignItems: "center" }}>
+        <Icon id={tone === "teal" ? "i-check" : "i-x"} style={{ width: 22, height: 22, color: `var(--${tone})`, flex: "none" }} />
+        <h3 style={{ fontSize: "1.05rem", color: `var(--${tone})` }}>{side.title}</h3>
+      </div>
+      <Rich className="read" as="p" style={{ fontSize: ".9rem", lineHeight: 1.55, color: "var(--pen-2)", marginTop: ".45rem" }} html={side.blurb} />
+      <div style={{ display: "flex", flexWrap: "wrap", gap: ".3rem", marginTop: ".7rem" }}>
+        {side.items.map((x) => <span className="fact" key={x}>{x}</span>)}
+      </div>
+      {sources && sources.length > 0 && (
+        <div style={{ marginTop: ".9rem", paddingTop: ".7rem", borderTop: "1.6px dashed rgba(28,27,25,.22)" }}>
+          <p className="k">go here instead</p>
+          <div style={{ marginTop: ".35rem" }}><SourceList items={sources} /></div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function SourceList({ items }: { items: Source[] }) {
   return (
     <>
@@ -48,6 +78,38 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
       body,
     });
 
+  /* The demo belongs beside whatever it illustrates. Records say where with
+     `demoIn`; otherwise it sits with the models block, or the idea. */
+  const demoHome = r.demoIn ?? (r.models ? "models" : "idea");
+  const demoFor = (key: string) => (r.demo && demoHome === key ? <TheoryDemo demo={r.demo} /> : null);
+
+  /* disambiguation — where one name covers two different literatures */
+  if (r.disambiguation) {
+    const d = r.disambiguation;
+    add("disambiguation", "Two things, one name", "Two different literatures answer to this name", "var(--red)", (
+      <>
+        <div className="sk-box red tilt-l2" style={{ maxWidth: 720 }}>
+          <div style={{ display: "flex", gap: ".7rem", alignItems: "flex-start" }}>
+            <Icon id="i-warn" style={{ width: 30, height: 30, color: "var(--red)", flex: "none" }} />
+            <Rich className="read" as="p" style={{ fontSize: "1rem", lineHeight: 1.6, color: "var(--pen-2)" }} html={d.flag} />
+          </div>
+        </div>
+        <div className="grid2" style={{ marginTop: "1.1rem" }}>
+          <DisambigSide side={d.covered} tone="teal" />
+          <DisambigSide side={d.notCovered} tone="red" sources={d.notCovered.sources} />
+        </div>
+        <div className="tilt-r2" style={{ marginTop: "1.1rem", maxWidth: 680 }}>
+          <Cloud colour="#E24E1B">
+            <div style={{ display: "flex", gap: ".55rem", alignItems: "flex-start" }}>
+              <Icon id="i-star" style={{ width: 24, height: 24, color: "var(--red)", flex: "none" }} />
+              <Rich className="read" as="p" style={{ fontSize: ".9rem", lineHeight: 1.55, color: "var(--pen-2)" }} html={d.note} />
+            </div>
+          </Cloud>
+        </div>
+      </>
+    ));
+  }
+
   /* conceptual status — for records that are a field rather than one theory */
   if (r.conceptualStatus) {
     const cs = r.conceptualStatus;
@@ -79,9 +141,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
   add("idea", "The idea", "The idea", "var(--teal)", (
     <>
       <Rich className="lede" as="p" html={r.ideaLede} />
-      {/* the demo sits with the models block when there is one, so it lands
-          beside the thing it illustrates rather than ahead of it */}
-      {r.demo && !r.models && <TheoryDemo demo={r.demo} />}
+      {demoFor("idea")}
       <div className="tilt-r2" style={{ marginTop: "1.1rem", maxWidth: 660 }}>
         <Cloud colour="#2E7D8F">
           <div style={{ display: "flex", gap: ".6rem", alignItems: "flex-start" }}>
@@ -98,7 +158,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
     add("models", "The models", "How the structure has been modelled", "var(--teal)", (
       <>
         <Rich className="lede" as="p" html={r.modelsLede ?? ""} />
-        {r.demo && <TheoryDemo demo={r.demo} />}
+        {demoFor("models")}
         <div className="model-row">
           {r.models.map((m, i) => (
             <div className={`sk-box ${i % 2 ? "tilt-r2" : "tilt-l2"}`} key={m.name}>
@@ -185,6 +245,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
     add("pathways", "Two roads", "Two roads out of the same job", "var(--teal)", (
       <>
         <Rich className="lede" as="p" html={r.pathwaysLede ?? ""} />
+        {demoFor("pathways")}
         {r.pathways.map((p) => (
           <div style={{ marginTop: "1.1rem" }} key={p.title}>
             <div style={{ display: "flex", gap: ".5rem", alignItems: "center" }}>
@@ -254,6 +315,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
     add("interactions", "Where they cross", "Where the two roads cross", "var(--teal)", (
       <>
         <Rich className="lede" as="p" html={r.interactionsLede ?? ""} />
+        {demoFor("interactions")}
         <div className="grid2" style={{ marginTop: "1rem" }}>
           {r.interactions.map((x, i) => (
             <div className={`sk-box tight ${i ? "tilt-r2" : "tilt-l2"} fill`} key={x.title}>
@@ -272,6 +334,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
     add("expansions", "What got added", "What got added later", "var(--teal)", (
       <>
         <Rich className="lede" as="p" html={r.expansionsLede ?? ""} />
+        {demoFor("expansions")}
         <div className="grid2" style={{ marginTop: "1rem" }}>
           {r.expansions.map((e, i) => (
             <div className={`sk-box tight ${i % 2 ? "tilt-r2" : "tilt-l2"}`} key={e.title}>

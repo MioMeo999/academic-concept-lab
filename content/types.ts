@@ -55,6 +55,9 @@ type RecordBase = {
 /** A facet of a multi-dimensional model, one per segmented-control option. */
 export type Facet = { initial: string; label: string; body: string };
 
+/** dual-path only: the two lines whose weight moves as the control changes. */
+export type DemoRoad = { label: string; sub: string; colour: string; icon: string };
+
 export type TheoryDemo = {
   type: "scale-pair" | "dual-path" | "facets";
   start?: number;
@@ -65,6 +68,10 @@ export type TheoryDemo = {
   centre?: string;
   /** facets only: supplied by the record, since the content is record-specific. */
   facets?: Facet[];
+  /** dual-path only: override the two roads. Defaults to Job Demands–Resources. */
+  roads?: [DemoRoad, DemoRoad];
+  /** dual-path only: `a`/`b` are the two roads' weights, 0–1, one per option. */
+  states?: { a: number; b: number; t: string }[];
 };
 
 export type Origin = {
@@ -128,6 +135,16 @@ export type ConceptualStatus = {
   questions: string[];
 };
 
+/* Where one name covers two different literatures, the page's first job is to
+   say which one it is — and to send the reader to the right place for the
+   other, rather than pretending the ambiguity does not exist. */
+export type Disambiguation = {
+  flag: string;
+  covered: { title: string; blurb: string; items: string[] };
+  notCovered: { title: string; blurb: string; items: string[]; sources: Source[] };
+  note: string;
+};
+
 /* An ordered set of models within a field — e.g. a four-factor structure
    superseded by a five-factor one — where the succession is itself the point. */
 export type Model = {
@@ -172,7 +189,10 @@ export type TheoryRecord = RecordBase & {
   headings?: Headings;
   /** Reading order by block key. Keys omitted keep their declared position. */
   order?: string[];
+  /** Which block the demo sits in. Defaults to `models` if present, else `idea`. */
+  demoIn?: string;
   conceptualStatus?: ConceptualStatus;
+  disambiguation?: Disambiguation;
   models?: Model[];
   modelsLede?: string;
   modelsNote?: string;

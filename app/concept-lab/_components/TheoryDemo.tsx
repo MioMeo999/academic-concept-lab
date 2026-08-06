@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { TheoryDemo as Demo } from "@/content/types";
+import type { DemoRoad, TheoryDemo as Demo } from "@/content/types";
 
 /* Teaching analogies. Direction of relationship only — no magnitude is shown
    and none is implied. See each demo's caption. */
@@ -115,13 +115,22 @@ export function TheoryDemo({ demo }: { demo: Demo }) {
     );
   }
 
-  const states = DEMOS["dual-path"];
+  /* dual-path: two lines whose weights move together as the control changes.
+     Job Demands–Resources supplies the defaults; any record can override both
+     the roads and the states, which is how Workplace Design reuses this to show
+     the privacy–communication trade-off. */
+  const DEFAULT_ROADS: [DemoRoad, DemoRoad] = [
+    { label: "health impairment", sub: "demands → effort → exhaustion", colour: "var(--red)", icon: "i-warn" },
+    { label: "motivational", sub: "resources → engagement → commitment", colour: "var(--teal)", icon: "i-star" },
+  ];
+  const roads = demo.roads ?? DEFAULT_ROADS;
+  const states = demo.states ?? DEMOS["dual-path"].map((d) => ({ a: d.strain, b: d.motiv, t: d.t }));
   const s = states[clamp(i, states.length)];
   return (
     <div className="sk-box tilt-l" style={{ marginTop: "1.1rem" }}>
       <div style={{ display: "flex", gap: "1.4rem", flexWrap: "wrap", justifyContent: "center", textAlign: "left" }}>
-        <Road label="health impairment" sub="demands → effort → exhaustion" colour="var(--red)" weight={s.strain} icon="i-warn" />
-        <Road label="motivational" sub="resources → engagement → commitment" colour="var(--teal)" weight={s.motiv} icon="i-star" />
+        <Road label={roads[0].label} sub={roads[0].sub} colour={roads[0].colour} weight={s.a} icon={roads[0].icon} />
+        <Road label={roads[1].label} sub={roads[1].sub} colour={roads[1].colour} weight={s.b} icon={roads[1].icon} />
       </div>
       <div style={{ textAlign: "center" }}>{seg}</div>
       <p className="read" style={{ fontSize: ".92rem", lineHeight: 1.55, marginTop: ".75rem", maxWidth: "56ch", marginInline: "auto", color: "var(--pen-2)", textAlign: "center" }}>{s.t}</p>
