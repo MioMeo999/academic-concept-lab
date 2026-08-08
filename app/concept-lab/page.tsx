@@ -16,7 +16,7 @@ import { RecordCard } from "./_components/RecordCard";
    than sliced.
    ------------------------------------------------------------------------- */
 
-const KIND_ORDER: RecordKind[] = ["theory", "study", "method"];
+const KIND_ORDER: RecordKind[] = ["theory", "mechanism", "method", "study"];
 
 const DIALECT: Record<RecordKind, { icon: string; line: string; blurb: string }> = {
   theory: {
@@ -34,6 +34,11 @@ const DIALECT: Record<RecordKind, { icon: string; line: string; blurb: string }>
     line: "A method is a practice",
     blurb: "You do not learn one by reading about it. The page has to work at the desk, beside real material.",
   },
+  mechanism: {
+    icon: "i-star",
+    line: "A mechanism is a pathway",
+    blurb: "Not why something happens, but through what. A biological route the psychology has to travel down.",
+  },
 };
 
 /** Chosen, not sliced: one way in per kind, with the reason it is the way in. */
@@ -41,6 +46,7 @@ const START_HERE: { id: string; why: string }[] = [
   { id: "person-environment-fit", why: "The framework three other records hang off. Start here and the rest of the library has a spine." },
   { id: "ipa", why: "The most hands-on record on the site — a method you could start using on a transcript this week." },
   { id: "tuned-out-or-dialed-in", why: "The only evidence record so far, and the clearest example of method kept welded to finding." },
+  { id: "hpa-axis", why: "Where the psychology meets the body — and the one record that is a physical system rather than an idea." },
 ];
 
 const MARKS: { glyph: string; colour: string; label: string }[] = [

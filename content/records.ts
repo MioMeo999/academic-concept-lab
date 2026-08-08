@@ -5,6 +5,7 @@ import { workplaceDesign } from "./workplace-design";
 import { personOrganisationFit } from "./person-organisation-fit";
 import { ipa } from "./ipa";
 import { rta } from "./rta";
+import { hpaAxis } from "./hpa-axis";
 import { tunedOutPaper } from "./paper";
 
 /**
@@ -12,7 +13,7 @@ import { tunedOutPaper } from "./paper";
  * appears in the library, in search, in the filters, in saved, and in the
  * "elsewhere" block on every other record, with no route or template change.
  */
-export const RECORDS: AnyRecord[] = [personEnvironmentFit, personOrganisationFit, jobDemandsResources, workplaceDesign, musicPreference, ipa, rta, tunedOutPaper];
+export const RECORDS: AnyRecord[] = [personEnvironmentFit, personOrganisationFit, jobDemandsResources, workplaceDesign, musicPreference, hpaAxis, ipa, rta, tunedOutPaper];
 
 export const KIND: Record<RecordKind, {
   label: string; nav: string; colour: string; fill: string; stroke: string; cls: string; path: string; cta: string;
@@ -28,6 +29,10 @@ export const KIND: Record<RecordKind, {
   method: {
     label: "Method record", nav: "Research method", colour: "var(--gold-deep)",
     fill: "#C9922A", stroke: "#9C7018", cls: "gold", path: "method", cta: "Learn the method",
+  },
+  mechanism: {
+    label: "Mechanism record", nav: "Mechanism", colour: "var(--plum-deep)",
+    fill: "#8A5470", stroke: "#6E3E58", cls: "plum", path: "mechanism", cta: "Trace the pathway",
   },
 };
 

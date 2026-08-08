@@ -3,6 +3,7 @@ import type { Source, TheoryRecord } from "@/content/types";
 import { ArrowSmall, Bullet, Cloud, Divider, Icon, Rich, SecHead, pad2 } from "./Sketch";
 import { RecordShell } from "./RecordShell";
 import { RECORDS, KIND, recordHref } from "@/content/records";
+import { Cascade } from "./Cascade";
 import { TheoryDemo } from "./TheoryDemo";
 
 /* ---------------------------------------------------------------------------
@@ -188,21 +189,66 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
     ));
   }
 
-  /* the idea — always */
-  add("idea", "The idea", "The idea", "var(--teal)", (
+  /* the idea — unless another block already opens the record */
+  if (r.ideaLede) {
+    add("idea", "The idea", "The idea", "var(--teal)", (
     <>
       <Rich className="lede" as="p" html={r.ideaLede} />
       {demoFor("idea")}
-      <div className="tilt-r2" style={{ marginTop: "1.1rem", maxWidth: 660 }}>
-        <Cloud colour="#2E7D8F">
-          <div style={{ display: "flex", gap: ".6rem", alignItems: "flex-start" }}>
-            <Icon id="i-q" style={{ width: 26, height: 26, color: "var(--teal)", flex: "none" }} />
-            <Rich className="read" as="p" style={{ fontSize: ".91rem", lineHeight: 1.55, color: "var(--teal)" }} html={r.originsNote} />
-          </div>
-        </Cloud>
-      </div>
+      {r.originsNote && (
+        <div className="tilt-r2" style={{ marginTop: "1.1rem", maxWidth: 660 }}>
+          <Cloud colour="#2E7D8F">
+            <div style={{ display: "flex", gap: ".6rem", alignItems: "flex-start" }}>
+              <Icon id="i-q" style={{ width: 26, height: 26, color: "var(--teal)", flex: "none" }} />
+              <Rich className="read" as="p" style={{ fontSize: ".91rem", lineHeight: 1.55, color: "var(--teal)" }} html={r.originsNote} />
+            </div>
+          </Cloud>
+        </div>
+      )}
     </>
-  ));
+    ));
+  }
+
+  /* a signalling chain, drawn as a schematic */
+  if (r.cascade) {
+    add("cascade", "The cascade", "The cascade", "var(--plum-deep)", (
+      <>
+        <Rich className="lede" as="p" html={r.cascadeLede ?? ""} />
+        <Cascade data={r.cascade} />
+      </>
+    ));
+  }
+
+  /* how the thing is measured, and what each approach can actually tell you */
+  if (r.measures) {
+    add("measures", "Measuring it", "Measuring it, and what each measure can say", "var(--teal)", (
+      <>
+        <Rich className="lede" as="p" html={r.measuresLede ?? ""} />
+        <div className="measure-table">
+          <div className="measure-head">
+            <span>Method</span><span>What it tells you</span><span>The catch</span>
+          </div>
+          {r.measures.map((m) => (
+            <div className="measure-row" key={m.method}>
+              <span className="measure-method">{m.method}</span>
+              <Rich className="measure-tells" as="span" html={m.tells} />
+              <Rich className="measure-caution" as="span" html={m.caution} />
+            </div>
+          ))}
+        </div>
+        {r.measuresNote && (
+          <div className="tilt-r2" style={{ marginTop: "1.1rem", maxWidth: 690 }}>
+            <Cloud colour="#E24E1B">
+              <div style={{ display: "flex", gap: ".55rem", alignItems: "flex-start" }}>
+                <Icon id="i-warn" style={{ width: 24, height: 24, color: "var(--red)", flex: "none" }} />
+                <Rich className="read" as="p" style={{ fontSize: ".9rem", lineHeight: 1.55, color: "var(--pen-2)" }} html={r.measuresNote} />
+              </div>
+            </Cloud>
+          </div>
+        )}
+      </>
+    ));
+  }
 
   /* an ordered succession of models, where the succession is the point */
   if (r.models) {

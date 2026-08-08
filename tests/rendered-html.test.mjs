@@ -25,12 +25,17 @@ for (const [pathname, expected] of [
 
 /* Record coverage is derived from what the library actually links to, rather
    than a hand-kept list here. A new record is covered the moment it appears in
-   the library — and if it never appears there, that is itself the bug. */
+   the library — and if it never appears there, that is itself the bug.
+
+   The path segments below must stay in step with KIND in content/records.ts.
+   A kind missing from this pattern silently drops every record of that kind
+   out of the suite, which is how the first mechanism record nearly shipped
+   untested. The count assertion underneath is the backstop. */
 const libraryHtml = await (await render("/concept-lab/library")).text();
-const recordPaths = [...new Set([...libraryHtml.matchAll(/\/concept-lab\/(?:theory|study|method)\/[a-z0-9-]+/g)].map((m) => m[0]))];
+const recordPaths = [...new Set([...libraryHtml.matchAll(/\/concept-lab\/(?:theory|study|method|mechanism)\/[a-z0-9-]+/g)].map((m) => m[0]))];
 
 test("the library links to every record", () => {
-  assert.ok(recordPaths.length >= 6, `library links to only ${recordPaths.length} records`);
+  assert.ok(recordPaths.length >= 9, `library links to only ${recordPaths.length} records`);
 });
 
 for (const pathname of recordPaths) {
@@ -55,7 +60,7 @@ test("every internal record link resolves", async () => {
   const seen = new Set();
   for (const pathname of recordPaths) {
     const html = await (await render(pathname)).text();
-    for (const m of html.matchAll(/\/concept-lab\/(?:theory|study|method)\/[a-z0-9-]+/g)) {
+    for (const m of html.matchAll(/\/concept-lab\/(?:theory|study|method|mechanism)\/[a-z0-9-]+/g)) {
       if (m[0] !== pathname) seen.add(m[0]);
     }
   }

@@ -58,7 +58,7 @@ export function LibraryBrowser({ records, disciplines, onlySaved = false, initia
         <div className="field">
           <span className="k">Kind</span>
           <div className="pills" role="group" aria-label="Record kind">
-            {([["all", "All", ""], ["theory", "Theory", "teal"], ["study", "Empirical", "red"], ["method", "Method", "gold"]] as const).map(([v, label, cls]) => (
+            {([["all", "All", ""], ["theory", "Theory", "teal"], ["study", "Empirical", "red"], ["method", "Method", "gold"], ["mechanism", "Mechanism", "plum"]] as const).map(([v, label, cls]) => (
               <button key={v} className={`pill ${cls}`} type="button" aria-pressed={kind === v} onClick={() => setKind(v)}>{label}</button>
             ))}
           </div>

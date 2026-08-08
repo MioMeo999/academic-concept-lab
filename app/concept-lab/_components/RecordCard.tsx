@@ -10,7 +10,12 @@ import { SaveButton } from "./SaveButton";
 export function RecordCard({ record }: { record: AnyRecord }) {
   const k = KIND[record.kind];
   const art =
-    record.kind === "method" ? (
+    record.kind === "mechanism" ? (
+      <div style={{ display: "flex", alignItems: "flex-end", gap: ".2rem", flex: "none" }}>
+        <Icon id="i-star" style={{ width: 26, height: 26, color: "var(--plum-deep)" }} />
+        <Icon id="i-arrowb" style={{ width: 28, height: 28, color: "var(--pen-3)" }} />
+      </div>
+    ) : record.kind === "method" ? (
       <div style={{ display: "flex", alignItems: "flex-end", gap: ".25rem", flex: "none" }}>
         <Icon id="i-eye" style={{ width: 28, height: 28, color: "var(--gold-deep)" }} />
         <Icon id="i-person" style={{ width: 30, height: 30 }} />

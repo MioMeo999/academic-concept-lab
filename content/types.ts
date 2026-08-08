@@ -4,10 +4,19 @@
    Three record kinds share a shell but not a template, because they are
    different objects:
 
-     a theory is a LENS     — no sample, date or result; it has to demonstrate
-     a study is an ARGUMENT — its method must stay welded to its finding
-     a method is a PRACTICE — you get better at it by doing it, so the page has
-                              to be usable at the desk, not only readable
+     a theory is a LENS      — no sample, date or result; it has to demonstrate
+     a study is an ARGUMENT  — its method must stay welded to its finding
+     a method is a PRACTICE  — you get better at it by doing it, so the page
+                               has to be usable at the desk, not only readable
+     a mechanism is a PATHWAY — it does not explain why something happens, but
+                               through what. A biological system is not a
+                               psychological theory, and labelling it as one
+                               would contradict the record's own first line.
+
+   Mechanism shares the theory template: the two differ in what they ARE, and
+   so in label, colour and filter — but their content happens to decompose into
+   the same section blocks. The template splits when a record needs it to, not
+   before.
 
    Forcing any of the three into another's shape loses what makes it that kind
    of thing.
@@ -19,7 +28,7 @@
    off one template.
    ------------------------------------------------------------------------- */
 
-export type RecordKind = "theory" | "study" | "method";
+export type RecordKind = "theory" | "study" | "method" | "mechanism";
 
 export type ProvenanceGlyph = "●" | "■" | "▲" | "✦" | "?";
 
@@ -180,6 +189,20 @@ export type TermShift = { was: string; now: string; note: string };
    structure the reader can navigate. */
 export type RecordLink = { recordId: string; relation: string; body: string };
 
+/** How a construct is actually measured, and what each approach can and cannot
+ *  tell you. Every measurable thing has one of these. */
+export type Measure = { method: string; tells: string; caution: string };
+
+/** A schematic signalling chain: nodes with the messenger carried between
+ *  them, plus the loop that regulates it. Deliberately schematic — see the
+ *  caption rendered beneath it. */
+export type Cascade = {
+  nodes: { label: string; sub: string }[];
+  messengers: string[];
+  feedback: string;
+  caption: string;
+};
+
 /* Blocks carry generic headings so they can be reused across records; a record
    overrides them by key. Without this, reusing the two-category block outside
    Job Demands–Resources would render "Everything in a job goes in one of two
@@ -187,11 +210,13 @@ export type RecordLink = { recordId: string; relation: string; body: string };
 export type Headings = Record<string, { toc: string; title: string }>;
 
 export type TheoryRecord = RecordBase & {
-  kind: "theory";
+  kind: "theory" | "mechanism";
 
   /* required */
-  ideaLede: string;
-  originsNote: string;
+  /** Optional: a record whose conceptual-status or cascade block already does
+   *  this work skips the generic opener rather than rendering a blank one. */
+  ideaLede?: string;
+  originsNote?: string;
   origins: Origin[];
   trailLede: string;
   oversimplifications: string[];
@@ -211,6 +236,11 @@ export type TheoryRecord = RecordBase & {
   disambiguation?: Disambiguation;
   relatedTo?: RecordLink[];
   relatedToLede?: string;
+  cascade?: Cascade;
+  cascadeLede?: string;
+  measures?: Measure[];
+  measuresLede?: string;
+  measuresNote?: string;
   terminology?: TermShift[];
   terminologyLede?: string;
   models?: Model[];
