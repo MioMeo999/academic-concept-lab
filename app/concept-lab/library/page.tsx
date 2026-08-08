@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { RECORDS } from "@/content/records";
+import { RECORDS, KIND } from "@/content/records";
 import { DISCIPLINES } from "@/content/disciplines";
+import type { RecordKind } from "@/content/types";
 import { LibraryBrowser } from "../_components/LibraryBrowser";
 import { Crumbs } from "../_components/RecordShell";
 
@@ -10,7 +11,9 @@ type Search = { kind?: string; discipline?: string };
 
 export default async function LibraryPage({ searchParams }: { searchParams: Promise<Search> }) {
   const sp = await searchParams;
-  const kind = sp.kind === "theory" || sp.kind === "study" || sp.kind === "method" ? sp.kind : undefined;
+  // Validated against KIND itself, not a hand-kept list — a hardcoded triple
+  // here silently sent ?kind=mechanism to an unfiltered library.
+  const kind = sp.kind && sp.kind in KIND ? (sp.kind as RecordKind) : undefined;
   const discipline = sp.discipline && DISCIPLINES[sp.discipline] ? sp.discipline : undefined;
 
   return (

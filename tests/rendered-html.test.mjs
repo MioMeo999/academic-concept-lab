@@ -70,6 +70,27 @@ test("every internal record link resolves", async () => {
   assert.ok(seen.size > 0, "no cross-record links found at all");
 });
 
+// Every door on the landing page must land on a genuinely filtered library.
+// A hardcoded list of kinds in the library route once accepted three of four,
+// so ?kind=mechanism quietly returned everything.
+test("every landing-page filter link actually filters", async () => {
+  const home = await (await render("/concept-lab")).text();
+  const links = [...new Set([...home.matchAll(/\/concept-lab\/library\?(kind|discipline)=([a-z-]+)/g)].map((m) => m[0]))];
+  assert.ok(links.length >= 4, `expected several filter links, found ${links.length}`);
+
+  const total = recordPaths.length;
+  for (const href of links) {
+    const html = await (await render(href.replace(/&amp;/g, "&"))).text();
+    const m = html.match(/(\d+) of (\d+) records/);
+    assert.ok(m, `${href} rendered no result count`);
+    assert.ok(
+      Number(m[1]) < Number(m[2]),
+      `${href} returned ${m[0]} — the filter was ignored`,
+    );
+    assert.equal(Number(m[2]), total, `${href} reports a different library size`);
+  }
+});
+
 // Regression guard. app/globals.css is imported by the root layout, so any
 // generic class name it defines outranks the same name in sketchnote.css.
 // That once absolutely positioned record body copy on top of the hero.
