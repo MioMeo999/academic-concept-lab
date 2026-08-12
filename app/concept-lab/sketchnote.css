@@ -184,6 +184,12 @@
   .chain{ display:flex; align-items:stretch; gap:.2rem; overflow-x:auto; padding-bottom:.4rem; }
   .chain .node{ flex:1; min-width:126px; }
   .chain .arw{ flex:none; width:26px; align-self:center; color:var(--red); }
+  /* phones: the chain runs down the page instead of sideways off it */
+  @media(max-width:699px){
+    .chain{ flex-direction:column; overflow-x:visible; padding-bottom:0; }
+    .chain .node{ flex:none; min-width:0; }
+    .chain .arw{ transform:rotate(90deg); margin:0 auto; }
+  }
 
   .anat{ display:grid; gap:.55rem; margin-top:.7rem; grid-template-columns:minmax(0,1fr); }
   @media(min-width:700px){ .anat{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
@@ -459,3 +465,74 @@
   .measure-method{ font-size:.95rem; font-weight:700; color:var(--teal); }
   .measure-tells{ font-family:var(--read); font-size:.88rem; line-height:1.5; color:var(--pen-2); }
   .measure-caution{ font-family:var(--read); font-size:.86rem; line-height:1.5; color:var(--red); }
+
+
+  /* =========================================================================
+     Small screens.
+
+     The layout systems above are mobile-first: everything stacks by default
+     and opens into columns as width allows. Collected here are the pieces
+     where stacking alone is not enough — patterns authored for a wide page
+     that need a different shape on a narrow one, not just a narrower one.
+     ===================================================================== */
+
+  /* hand-tilted cards can overhang by a pixel or two; that must never become
+     a page-level horizontal scroll. `clip` (not `hidden`) keeps the sticky
+     masthead working. */
+  .acl{ overflow-x:clip; }
+
+  /* A table head only makes sense against columns. Once rows stack, the head
+     is three orphaned labels — so it goes, and each cell carries its own
+     label instead (data-label, set in the templates). */
+  @media(max-width:819px){
+    .code-head, .measure-head{ display:none; }
+    .code-row, .measure-row{ gap:.6rem; }
+    .code-row [data-label]::before, .measure-row [data-label]::before{
+      content:attr(data-label); display:block; margin-bottom:.15rem;
+      font-family:var(--read); font-size:.68rem; font-weight:700; font-style:normal;
+      letter-spacing:.1em; text-transform:uppercase; color:var(--pen-3); }
+  }
+
+  /* The contents rail is desktop-only, but a record can run to eleven
+     sections — a phone reader still needs the map. It becomes a fold-out
+     box, drawn like everything else, closed by default. */
+  .contents-m{ position:relative; margin-top:1.2rem; padding:.65rem .95rem .75rem; }
+  .contents-m::before, .contents-m::after{ content:""; position:absolute; inset:0; pointer-events:none;
+    border:2.2px solid var(--pen); border-radius:18px 26px 16px 24px / 24px 16px 26px 18px; }
+  .contents-m::after{ inset:2px -2px -3px 2px; opacity:.4; border-width:1.6px;
+    border-radius:24px 16px 26px 18px / 18px 26px 16px 24px; }
+  .contents-m summary{ cursor:pointer; list-style:none; display:flex; align-items:center;
+    justify-content:space-between; gap:.6rem; }
+  .contents-m summary::-webkit-details-marker{ display:none; }
+  .contents-m summary::after{ content:"+"; color:var(--red); font-size:1.2rem; line-height:1; font-weight:700; }
+  .contents-m[open] summary::after{ content:"–"; }
+  .contents-m ol{ list-style:none; margin:.55rem 0 0; padding:.65rem 0 0;
+    border-top:1.6px dashed rgba(28,27,25,.22); }
+  .contents-m li{ margin-bottom:.35rem; }
+  .contents-m a{ display:grid; grid-template-columns:24px 1fr; gap:.4rem; align-items:center;
+    font-size:.92rem; color:var(--pen-2); text-decoration:none; line-height:1.3; }
+  .contents-m a:hover{ color:var(--red); }
+  .contents-m .num{ font-size:.7rem; color:var(--teal); font-weight:700; text-align:center; }
+  @media(min-width:980px){ .contents-m{ display:none; } }
+
+  @media(max-width:640px){
+    /* thumbs, not cursors: every tappable chip gets a taller hit area */
+    .pill, .seg button, .school-tab, .qfit-chip{ padding:.6rem .85rem; }
+    .facet-key{ width:3rem; height:3rem; }
+
+    /* filters take the full width of the phone */
+    .filters{ flex-direction:column; align-items:stretch; gap:.9rem; }
+    .field input, .field select{ width:100%; min-width:0; }
+
+    /* the drawn banner keeps more of a narrow screen for the title */
+    .banner{ padding:.7rem 1.05rem .8rem; }
+
+    /* the cascade's feedback rail slims down, leaving room for the nodes */
+    .cascade{ padding:1rem .9rem .9rem 3rem; }
+    .cascade-feedback{ left:.3rem; width:2.2rem; }
+    .cascade-feedback-label{ left:-.35rem; }
+
+    /* the masthead wraps compactly */
+    .site-in{ padding:.65rem 0; gap:.5rem .8rem; }
+    nav.site a{ padding:.3rem .45rem; font-size:.88rem; }
+  }

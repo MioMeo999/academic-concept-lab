@@ -16,6 +16,8 @@ export function Rich({
   as?: ElementType;
   className?: string;
   style?: CSSProperties;
+  /* labels a stacked table cell on small screens (see .code-row/.measure-row) */
+  "data-label"?: string;
 }) {
   return <Tag {...rest} dangerouslySetInnerHTML={{ __html: html }} />;
 }

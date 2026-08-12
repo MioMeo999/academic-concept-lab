@@ -230,9 +230,9 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
           </div>
           {r.measures.map((m) => (
             <div className="measure-row" key={m.method}>
-              <span className="measure-method">{m.method}</span>
-              <Rich className="measure-tells" as="span" html={m.tells} />
-              <Rich className="measure-caution" as="span" html={m.caution} />
+              <span className="measure-method" data-label="Method">{m.method}</span>
+              <Rich className="measure-tells" as="span" data-label="What it tells you" html={m.tells} />
+              <Rich className="measure-caution" as="span" data-label="The catch" html={m.caution} />
             </div>
           ))}
         </div>

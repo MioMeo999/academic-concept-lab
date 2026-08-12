@@ -47,10 +47,13 @@ for (const pathname of recordPaths) {
     // Provenance is the field that makes everything else trustworthy.
     assert.match(html, /Where every claim came from/, `${pathname} renders no provenance block`);
     // Section numbering and the contents rail are generated together; a
-    // mismatch means a block was added without a heading.
+    // mismatch means a block was added without a heading. Each entry renders
+    // twice: once in the desktop rail, once in the mobile fold-out box.
     const sections = (html.match(/<section class="rec"/g) ?? []).length;
     const tocEntries = (html.match(/<span class="num">/g) ?? []).length;
-    assert.equal(sections, tocEntries, `${pathname}: ${sections} sections but ${tocEntries} contents entries`);
+    assert.equal(tocEntries, sections * 2, `${pathname}: ${sections} sections but ${tocEntries} contents entries`);
+    // Small screens get no contents rail — the fold-out box is their only map.
+    assert.match(html, /class="contents-m"/, `${pathname} renders no mobile contents box`);
   });
 }
 

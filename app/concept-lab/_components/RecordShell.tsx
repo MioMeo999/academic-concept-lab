@@ -75,6 +75,24 @@ export function RecordShell({
       </section>
 
       <div className="layout">
+        {/* Phones get no rail, but a record can run to eleven sections — the
+            map becomes a fold-out box instead of disappearing. Desktop never
+            renders it (see .contents-m in sketchnote.css). */}
+        <details className="contents-m">
+          <summary>
+            <span className="cat">Contents — {toc.length} sections</span>
+          </summary>
+          <ol>
+            {toc.map(([num, label, id]) => (
+              <li key={id}>
+                <a href={`#${id}`}>
+                  <span className="num">{num}</span>
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </details>
         <aside className="contents" aria-label="Contents">
           <span className="cat">Contents</span>
           <ol>

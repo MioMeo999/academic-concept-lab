@@ -120,9 +120,9 @@ export function MethodBody({ record: r }: { record: MethodRecord }) {
           </div>
           {r.codingExamples.map((c) => (
             <div className="code-row" key={c.extract}>
-              <span className="code-extract">“{c.extract}”</span>
-              <span className="code-weak">{c.weak}</span>
-              <span className="code-strong">{c.strong}</span>
+              <span className="code-extract" data-label="The extract">“{c.extract}”</span>
+              <span className="code-weak" data-label="Topic label">{c.weak}</span>
+              <span className="code-strong" data-label="Analytic code">{c.strong}</span>
             </div>
           ))}
         </div>
