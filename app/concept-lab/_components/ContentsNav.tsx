@@ -21,18 +21,31 @@ export function ContentsNav({ toc }: { toc: Toc }) {
     const headerOffsetPx = headerOffset.endsWith("rem")
       ? parseFloat(headerOffset) * rootFontSize
       : parseFloat(headerOffset);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible[0]?.target.id) setActiveId(visible[0].target.id);
-      },
-      { rootMargin: `-${headerOffsetPx}px 0px -55% 0px`, threshold: [0, 0.1, 0.35] },
-    );
+    const updateActive = () => {
+      const marker = headerOffsetPx + 24;
+      const current = sections.reduce(
+        (latest, section) => section.getBoundingClientRect().top <= marker ? section : latest,
+        sections[0],
+      );
+      setActiveId(current.id);
+    };
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        updateActive();
+      });
+    };
 
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    updateActive();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, [toc]);
 
   const link = ([num, label, id]: [string, string, string]) => (

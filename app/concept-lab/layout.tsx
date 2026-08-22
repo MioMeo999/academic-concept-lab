@@ -5,7 +5,6 @@ import { Sprite } from "./_components/Sprite";
 import { Reveal } from "./_components/Reveal";
 
 export const metadata: Metadata = {
-  title: { default: "Academic Concept Lab", template: "%s · Academic Concept Lab" },
   description: "Serious theory and evidence, explained without being flattened. Every claim carries a mark saying where it came from.",
 };
 
