@@ -74,7 +74,23 @@ export const affectiveEventsTheory: TheoryRecord = {
       "Work attitudes can influence behaviour through a judgement-driven route.",
       "Dispositions and time shape the affective experience around these relationships.",
     ],
-    caption: "● Source-grounded relationships are shown as proposed theoretical directions. Arrow presence is not effect magnitude or proof of causation.",
+    topology: {
+      edges: [
+        { from: 0, to: 1 },
+        { from: 0, to: 3 },
+        { from: 1, to: 2 },
+        { from: 2, to: 3 },
+        { from: 2, to: 4 },
+        { from: 3, to: 5 },
+        { from: 6, to: 2, label: "Affective reactions / affective experience" },
+      ],
+      temporalContext: {
+        label: "Time and cycles",
+        body: "Affect fluctuates through endogenous patterns and exogenous event shocks.",
+        colour: "var(--plum-deep)",
+      },
+    },
+    caption: "Source-grounded relationships are shown as proposed theoretical directions. Arrow presence is not effect magnitude or proof of causation.",
   },
 
   workday: {
@@ -96,7 +112,7 @@ export const affectiveEventsTheory: TheoryRecord = {
       { label: "about the job", title: "Beliefs and evaluations", body: "What the person thinks the job offers, demands, or means, including comparisons with standards, values, or goals.", colour: "var(--gold-deep)" },
       { label: "overall judgement", title: "Job satisfaction", body: "An evaluative work attitude. It can reflect affective experience and beliefs, but it is not simply a mood score.", colour: "var(--teal)" },
     ],
-    note: "■ The four-part distinction is a faithful teaching separation of constructs discussed across the foundational and empirical sources; it is not a mechanical formula for satisfaction.",
+    note: "The four-part distinction is a faithful teaching separation of constructs discussed across the foundational and empirical sources; it is not a mechanical formula for satisfaction.",
   },
 
   pathwaysLede: "AET places two routes beside one another: one closer to current affective experience, the other closer to an overall judgement. Real behaviour can draw on both.",
@@ -178,7 +194,7 @@ export const affectiveEventsTheory: TheoryRecord = {
     lede: "AET gives the reader a map of the territory. It does not claim to specify every mechanism under every arrow.",
     map: ["Work conditions matter", "Events matter", "Affect moves within a person", "Attitudes differ from momentary affect", "Behaviour can follow more than one route", "Time and individual differences matter"],
     stops: ["the complete appraisal sequence", "a universal event taxonomy", "every attention or regulation mechanism", "a deterministic prediction from traits", "effect magnitude from a diagram arrow"],
-    note: "■ Later work on appraisal, emotion regulation, attention, event structure, motivation, and context can elaborate the macrostructure. Those elaborations should not be silently presented as though they were all specified by the 1996 model.",
+    note: "Later work on appraisal, emotion regulation, attention, event structure, motivation, and context can elaborate the macrostructure. Those elaborations should not be silently presented as though they were all specified by the 1996 model.",
   },
 
   trailLede: "The trail runs from a 1996 organising framework to diary studies, field tests, process models, and within-person research that treats affective fluctuation as something to explain rather than discard as noise.",

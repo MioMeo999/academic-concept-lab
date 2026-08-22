@@ -106,6 +106,7 @@ export function ModelReveal({ data }: { data: ModelRevealData }) {
   const [shown, setShown] = useState(0);
   const [reduced, setReduced] = useState(false);
   const last = data.stages.length - 1;
+  const showTopology = Boolean(data.topology && shown >= last);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -127,21 +128,56 @@ export function ModelReveal({ data }: { data: ModelRevealData }) {
         <button type="button" onClick={() => setShown(last)} disabled={shown >= last}>Show the whole map</button>
       </div>
 
-      <div className="aet-model-visual" aria-label="Progressive Affective Events Theory model">
-        {data.stages.map((stage, index) => (
-          <span key={stage.label} className="aet-model-piece">
-            <span
-              className={`aet-model-node ${index <= shown ? "is-visible" : "is-next"}`}
-              style={{ "--aet-colour": stage.colour } as CSSProperties}
-              aria-hidden={index <= shown ? undefined : "true"}
-            >
-              <span className="aet-model-label">{stage.label}</span>
-              <span className="aet-model-body">{stage.body}</span>
+      {showTopology ? (
+        <div className="aet-model-topology" aria-label="Affective Events Theory branched macrostructure">
+          {Array.from(new Set(data.topology!.edges.map((edge) => edge.from))).map((from) => {
+            const source = data.stages[from];
+            const edges = data.topology!.edges.filter((edge) => edge.from === from);
+            return (
+              <div className="aet-topology-group" key={source.label}>
+                <div className="aet-topology-source" style={{ "--aet-colour": source.colour } as CSSProperties}>
+                  <span className="aet-model-label">{source.label}</span>
+                  <span className="aet-model-body">{source.body}</span>
+                </div>
+                <div className="aet-topology-edges" aria-label={`${source.label} relationships`}>
+                  {edges.map((edge) => {
+                    const target = data.stages[edge.to];
+                    return (
+                      <div className="aet-topology-edge" key={`${edge.from}-${edge.to}-${edge.label ?? ""}`}>
+                        <span className="aet-topology-arrow" aria-hidden="true">→</span>
+                        <span className="aet-topology-target" style={{ "--aet-colour": target.colour } as CSSProperties}>
+                          {edge.label ?? target.label}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+          <aside className="aet-topology-context" style={{ "--aet-colour": data.topology!.temporalContext.colour } as CSSProperties}>
+            <span className="aet-model-label">{data.topology!.temporalContext.label}</span>
+            <span className="aet-model-body">{data.topology!.temporalContext.body}</span>
+            <span className="aet-topology-context-note">frames the relationships above — not a downstream outcome</span>
+          </aside>
+        </div>
+      ) : (
+        <div className="aet-model-visual" aria-label="Progressive Affective Events Theory model">
+          {data.stages.map((stage, index) => (
+            <span key={stage.label} className="aet-model-piece">
+              <span
+                className={`aet-model-node ${index <= shown ? "is-visible" : "is-next"}`}
+                style={{ "--aet-colour": stage.colour } as CSSProperties}
+                aria-hidden={index <= shown ? undefined : "true"}
+              >
+                <span className="aet-model-label">{stage.label}</span>
+                <span className="aet-model-body">{stage.body}</span>
+              </span>
+              {index < last && <span className="aet-model-arrow" aria-hidden="true">↓</span>}
             </span>
-            {index < last && <span className="aet-model-arrow" aria-hidden="true">↓</span>}
-          </span>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       <div className="aet-linear" aria-label="Linear text alternative for the Affective Events Theory model">
         <p className="k">read it as a sentence</p>

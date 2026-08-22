@@ -109,10 +109,22 @@ export type ModelStage = {
   colour: string;
 };
 
+export type ModelTopologyEdge = {
+  from: number;
+  to: number;
+  label?: string;
+};
+
+export type ModelTopology = {
+  edges: ModelTopologyEdge[];
+  temporalContext: ModelStage;
+};
+
 export type ModelReveal = {
   stages: ModelStage[];
   linear: string[];
   caption: string;
+  topology?: ModelTopology;
 };
 
 export type SimpleModel = {
