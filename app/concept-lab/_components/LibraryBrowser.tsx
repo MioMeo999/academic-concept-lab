@@ -67,7 +67,7 @@ export function LibraryBrowser({ records, disciplines, onlySaved = false, initia
 
       <div className="resultline">
         <span className="k">{pending ? "…" : `${list.length} of ${records.length} records`}</span>
-        {!onlySaved && <Link href="/concept-lab/saved" style={{ fontSize: ".9rem" }}>Saved ({ready ? ids.length : 0}) →</Link>}
+        {!onlySaved && <Link className="quiet-link" href="/concept-lab/saved" style={{ fontSize: ".9rem" }}>Saved ({ready ? ids.length : 0}) →</Link>}
       </div>
 
       {pending ? null : list.length ? (

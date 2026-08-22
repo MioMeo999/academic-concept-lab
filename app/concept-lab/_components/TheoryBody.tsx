@@ -603,7 +603,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
   add("provenance", "Provenance", "Where every claim came from", "var(--teal)", (
     <div className="prov" style={{ marginTop: ".8rem" }}>
       {r.provenance.map((p) => (
-        <div className="prov-item" key={p.label}>
+        <div className="prov-item" key={p.label} data-reveal="rise">
           <span className="g" style={{ color: p.colour }}>{p.glyph}</span>
           <div>
             <h4>{p.label}</h4>

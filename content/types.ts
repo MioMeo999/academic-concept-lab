@@ -1,7 +1,7 @@
 /* ---------------------------------------------------------------------------
    Content model.
 
-   Three record kinds share a shell but not a template, because they are
+   Four record kinds share a shell but not a template, because they are
    different objects:
 
      a theory is a LENS      — no sample, date or result; it has to demonstrate

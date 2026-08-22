@@ -7,13 +7,13 @@ export async function generateMetadata(): Promise<Metadata> {
   const host = requestHeaders.get("host") ?? "localhost:3000";
   const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
   const imageUrl = `${protocol}://${host}/og.png`;
-  const description = "Three visual directions for an evidence-grounded academic learning platform.";
+  const description = "Theory, evidence, mechanisms and methods, drawn out with sources still attached.";
   return {
-    title: { default: "Concept Lab", template: "%s · Concept Lab" },
+    title: { default: "Academic Concept Lab", template: "%s · Academic Concept Lab" },
     description,
     icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
-    openGraph: { title: "Concept Lab", description, type: "website", images: [{ url: imageUrl, width: 1536, height: 896, alt: "Concept Lab — three directions, one evidence base" }] },
-    twitter: { card: "summary_large_image", title: "Concept Lab", description, images: [imageUrl] },
+    openGraph: { title: "Academic Concept Lab", description, type: "website", images: [{ url: imageUrl, width: 1536, height: 896, alt: "Academic Concept Lab — theory, evidence, mechanisms and methods" }] },
+    twitter: { card: "summary_large_image", title: "Academic Concept Lab", description, images: [imageUrl] },
   };
 }
 

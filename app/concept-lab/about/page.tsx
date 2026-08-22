@@ -63,7 +63,7 @@ export default function AboutPage() {
         </p>
         <div className="prov" style={{ marginTop: "1rem", maxWidth: 900 }}>
           {MARKS.map(([glyph, colour, label, note]) => (
-            <div className="prov-item" key={label}>
+            <div className="prov-item" key={label} data-reveal="rise">
               <span className="g" style={{ color: colour }}>{glyph}</span>
               <div>
                 <h4>{label}</h4>
@@ -79,7 +79,7 @@ export default function AboutPage() {
       <section>
         <SecHead num="02" title="How the site is built" colour="var(--teal)" />
         <p className="body">
-          Three record kinds, one shell. <b>Theory</b>, <b>empirical study</b> and <b>research method</b> use different templates because they are different objects — a theory is a lens, a study is an argument, a method is a practice — but they share the header,
+          Four record kinds, one shell. <b>Theory</b>, <b>mechanism</b>, <b>empirical study</b> and <b>research method</b> use different templates because they are different objects — a theory is a lens, a mechanism is a pathway, a study is an argument, and a method is a practice — but they share the header,
           breadcrumbs, contents rail, saved state, library card and provenance block.
         </p>
         <p className="body" style={{ marginTop: ".8rem" }}>
@@ -96,6 +96,7 @@ export default function AboutPage() {
               <code>/concept-lab/saved</code> starred records<br />
               <code>/concept-lab/theory/[slug]</code> theory record<br />
               <code>/concept-lab/study/[slug]</code> study record<br />
+              <code>/concept-lab/mechanism/[slug]</code> mechanism record<br />
               <code>/concept-lab/about</code> this page
             </div>
           </div>

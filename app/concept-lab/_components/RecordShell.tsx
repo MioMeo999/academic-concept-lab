@@ -4,6 +4,7 @@ import { DISCIPLINES } from "@/content/disciplines";
 import { KIND, otherRecords, recordHref } from "@/content/records";
 import { Banner, Divider, Rich } from "./Sketch";
 import { SaveButton } from "./SaveButton";
+import { ContentsNav } from "./ContentsNav";
 
 export function Crumbs({ items }: { items: { label: string; href?: string }[] }) {
   return (
@@ -76,36 +77,9 @@ export function RecordShell({
 
       <div className="layout">
         {/* Phones get no rail, but a record can run to eleven sections — the
-            map becomes a fold-out box instead of disappearing. Desktop never
-            renders it (see .contents-m in sketchnote.css). */}
-        <details className="contents-m">
-          <summary>
-            <span className="cat">Contents — {toc.length} sections</span>
-          </summary>
-          <ol>
-            {toc.map(([num, label, id]) => (
-              <li key={id}>
-                <a href={`#${id}`}>
-                  <span className="num">{num}</span>
-                  {label}
-                </a>
-              </li>
-            ))}
-          </ol>
-        </details>
-        <aside className="contents" aria-label="Contents">
-          <span className="cat">Contents</span>
-          <ol>
-            {toc.map(([num, label, id]) => (
-              <li key={id}>
-                <a href={`#${id}`}>
-                  <span className="num">{num}</span>
-                  {label}
-                </a>
-              </li>
-            ))}
-          </ol>
-        </aside>
+            map becomes a fold-out box instead of disappearing. The same
+            component keeps the desktop rail and mobile map in sync. */}
+        <ContentsNav toc={toc} />
         <div>{children}</div>
       </div>
 
@@ -117,7 +91,7 @@ export function RecordShell({
           {otherRecords(record).map((o) => {
             const ok = KIND[o.kind];
             return (
-              <article className="card" key={o.id}>
+              <article className="card" key={o.id} data-reveal="rise">
                 <Link className="hitbox" href={recordHref(o)}>
                   <span>{o.title}</span>
                 </Link>

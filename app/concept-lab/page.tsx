@@ -11,7 +11,7 @@ import { RecordCard } from "./_components/RecordCard";
    architecture in prose and then showed the first four records by registry
    order, which is neither curation nor navigation.
 
-   So: the three kinds become doors with live counts, the provenance system
+   So: the four kinds become doors with live counts, the provenance system
    gets surfaced rather than mentioned, and the records shown are chosen rather
    than sliced.
    ------------------------------------------------------------------------- */
@@ -89,7 +89,7 @@ export default function ConceptLabHome() {
 
       {/* The architecture, made navigable rather than described. */}
       <section>
-        <span className="k">three kinds of record — pick a way in</span>
+        <span className="k">four kinds of record — pick a way in</span>
         <div className="doors">
           {counts.map(({ kind, n }) => {
             const k = KIND[kind];
@@ -113,11 +113,11 @@ export default function ConceptLabHome() {
 
       <Divider />
 
-      {/* Three ways in, chosen for a reason that is stated. */}
+      {/* Four ways in, chosen for a reason that is stated. */}
       <section>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap" }}>
           <h2 style={{ fontSize: "clamp(1.4rem,3.6vw,1.9rem)" }}>Start here</h2>
-          <Link href="/concept-lab/library" style={{ fontSize: ".92rem" }}>See all {RECORDS.length} records →</Link>
+          <Link className="quiet-link" href="/concept-lab/library" style={{ fontSize: ".92rem" }}>See all {RECORDS.length} records →</Link>
         </div>
         <p className="lede" style={{ marginTop: ".4rem" }}>
           One of each kind, picked because of what it shows you — not because it came first.

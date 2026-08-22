@@ -32,6 +32,12 @@ for (const [pathname, expected] of [
    out of the suite, which is how the first mechanism record nearly shipped
    untested. The count assertion underneath is the backstop. */
 const libraryHtml = await (await render("/concept-lab/library")).text();
+const homeHtml = await (await render("/concept-lab")).text();
+
+test("home describes all four record kinds", () => {
+  assert.match(homeHtml, /four kinds of record/);
+});
+
 const recordPaths = [...new Set([...libraryHtml.matchAll(/\/concept-lab\/(?:theory|study|method|mechanism)\/[a-z0-9-]+/g)].map((m) => m[0]))];
 
 test("the library links to every record", () => {

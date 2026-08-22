@@ -212,7 +212,7 @@ export function StudyBody({ record: r }: { record: PaperRecord }) {
     /* 09 provenance */
     <div key="s9" className="prov" style={{ marginTop: ".8rem" }}>
       {r.provenance.map((p) => (
-        <div className="prov-item" key={p.label}>
+        <div className="prov-item" key={p.label} data-reveal="rise">
           <span className="g" style={{ color: p.colour }}>{p.glyph}</span>
           <div>
             <h4>{p.label}</h4>
