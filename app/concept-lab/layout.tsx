@@ -3,6 +3,7 @@ import Link from "next/link";
 import "./sketchnote.css";
 import { Sprite } from "./_components/Sprite";
 import { Reveal } from "./_components/Reveal";
+import { SiteNav } from "./_components/SiteNav";
 
 export const metadata: Metadata = {
   description: "Serious theory and evidence, explained without being flattened. Every claim carries a mark saying where it came from.",
@@ -12,13 +13,6 @@ export const metadata: Metadata = {
  * The library is the only surface that grows: no record is ever listed in the
  * nav, so it stays this length whether there are 3 records or 300.
  */
-const NAV = [
-  ["/concept-lab", "Home"],
-  ["/concept-lab/library", "Library"],
-  ["/concept-lab/saved", "Saved"],
-  ["/concept-lab/about", "About"],
-] as const;
-
 export default function ConceptLabLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="acl">
@@ -33,11 +27,7 @@ export default function ConceptLabLayout({ children }: { children: React.ReactNo
             </svg>
             Academic Concept Lab
           </Link>
-          <nav className="site" aria-label="Main">
-            {NAV.map(([href, label]) => (
-              <Link key={href} href={href}>{label}</Link>
-            ))}
-          </nav>
+          <SiteNav />
         </div>
       </header>
 
@@ -51,11 +41,7 @@ export default function ConceptLabLayout({ children }: { children: React.ReactNo
               Serious theory and evidence, explained without being flattened. Every claim carries a mark saying where it came from.
             </p>
           </div>
-          <nav aria-label="Footer">
-            {NAV.map(([href, label]) => (
-              <Link key={href} href={href}>{label}</Link>
-            ))}
-          </nav>
+          <SiteNav footer />
         </div>
       </footer>
     </div>

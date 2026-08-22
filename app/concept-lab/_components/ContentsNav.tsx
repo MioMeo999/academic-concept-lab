@@ -48,6 +48,12 @@ export function ContentsNav({ toc }: { toc: Toc }) {
     };
   }, [toc]);
 
+  const activeIndex = Math.max(0, toc.findIndex((entry) => entry[2] === activeId));
+  const activeEntry = toc[activeIndex] ?? toc[0];
+  const currentPosition = activeEntry
+    ? activeEntry[0] + " / " + String(toc.length).padStart(2, "0") + " · " + activeEntry[1]
+    : "01 / " + String(toc.length).padStart(2, "0");
+
   const link = ([num, label, id]: [string, string, string]) => (
     <a
       href={`#${id}`}
@@ -67,7 +73,8 @@ export function ContentsNav({ toc }: { toc: Toc }) {
         onToggle={(event) => setMobileOpen(event.currentTarget.open)}
       >
         <summary>
-          <span className="cat">Contents — {toc.length} sections</span>
+          <span className="cat">Contents</span>
+          <span className="contents-current">{currentPosition}</span>
         </summary>
         <ol>
           {toc.map((entry) => <li key={entry[2]}>{link(entry)}</li>)}

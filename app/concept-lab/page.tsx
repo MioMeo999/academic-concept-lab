@@ -124,7 +124,7 @@ export default function ConceptLabHome() {
         </p>
         <div className="lib" style={{ marginTop: "1.2rem" }}>
           {starters.map((s) => (
-            <div key={s.id} data-reveal="rise">
+            <div className="starter-item" key={s.id} data-reveal="rise">
               <RecordCard record={s.record!} />
               <p className="starter-why">{s.why}</p>
             </div>
