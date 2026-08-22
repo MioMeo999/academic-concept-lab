@@ -285,6 +285,39 @@ export type SDTRecordContent = {
   scope: SDTScope;
 };
 
+export type SETOpeningCase = { label: string; quote: string; body: string };
+export type SETReciprocityMode = { label: string; short: string; body: string };
+export type SETResource = { label: string; body: string };
+export type SETRuleCase = { label: string; rule: string; body: string };
+export type SETDimension = { label: string; body: string };
+export type SETPowerModel = {
+  values: string[];
+  alternatives: string[];
+  note: string;
+};
+export type SETHedonicCell = { label: string; body: string; colour: string };
+export type SETConstraintExample = { desired: string; constrained: string; body: string };
+export type SETChainStep = { label: string; body: string };
+export type SETAuditCase = { label: string; claim: string; answers: string[]; verdict: string };
+export type SETFamilyNode = { label: string; kind: "root" | "branch" | "synthesis" | "remedy"; body: string };
+export type SETScope = { explains: string[]; stops: string[]; note: string };
+
+export type SETRecordContent = {
+  opening: { cases: SETOpeningCase[]; note: string };
+  reciprocity: SETReciprocityMode[];
+  resources: SETResource[];
+  rules: SETRuleCase[];
+  dimensions: SETDimension[];
+  power: SETPowerModel;
+  relationshipStages: SETChainStep[];
+  hedonic: SETHedonicCell[];
+  constraints: SETConstraintExample[];
+  chain: SETChainStep[];
+  audit: SETAuditCase[];
+  family: SETFamilyNode[];
+  scope: SETScope;
+};
+
 export type Origin = {
   year: string;
   author: string;
@@ -469,6 +502,7 @@ export type TheoryRecord = RecordBase & {
   evidenceXrays?: EvidenceXray[];
   scopeMap?: ScopeMap;
   sdt?: SDTRecordContent;
+  set?: SETRecordContent;
 };
 
 /* ---------------- empirical study ---------------- */

@@ -3,6 +3,7 @@ import type { Source, TheoryRecord } from "@/content/types";
 import { ArrowSmall, Bullet, Cloud, Divider, Icon, Rich, SecHead, pad2 } from "./Sketch";
 import { RecordShell } from "./RecordShell";
 import { SDTBody } from "./SDTBody";
+import { SETBody } from "./SETBody";
 import { RECORDS, KIND, recordHref } from "@/content/records";
 import { Cascade } from "./Cascade";
 import { TheoryDemo } from "./TheoryDemo";
@@ -77,6 +78,7 @@ function SourceList({ items }: { items: Source[] }) {
 
 export function TheoryBody({ record: r }: { record: TheoryRecord }) {
   if (r.sdt) return <SDTBody record={r} />;
+  if (r.set) return <SETBody record={r} />;
 
   const B: Block[] = [];
 
