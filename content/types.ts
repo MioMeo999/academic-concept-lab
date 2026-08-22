@@ -90,6 +90,91 @@ export type TheoryDemo = {
   states?: { a: number; b: number; t: string }[];
 };
 
+/** A small classification exercise whose explanation matters more than a score. */
+export type ClassificationItem = {
+  scenario: string;
+  answer: "feature" | "event";
+  explanation: string;
+};
+
+export type ClassificationExercise = {
+  items: ClassificationItem[];
+  note: string;
+};
+
+/** A model that can be drawn in stages while retaining a linear text reading. */
+export type ModelStage = {
+  label: string;
+  body: string;
+  colour: string;
+};
+
+export type ModelReveal = {
+  stages: ModelStage[];
+  linear: string[];
+  caption: string;
+};
+
+export type SimpleModel = {
+  lede: string;
+  first: string;
+  second: string;
+  note: string;
+};
+
+export type WorkdayEvent = {
+  time: string;
+  label: string;
+  detail: string;
+  tone: "steady" | "negative" | "positive" | "activated";
+};
+
+export type WorkdayTimeline = {
+  events: WorkdayEvent[];
+  caption: string;
+  takeaway: string;
+};
+
+export type ConceptComparison = {
+  label: string;
+  title: string;
+  body: string;
+  colour: string;
+};
+
+export type ConceptComparisonBlock = {
+  lede: string;
+  cards: ConceptComparison[];
+  note: string;
+};
+
+export type ReactionContrast = {
+  event: string;
+  perspectives: { label: string; reading: string; reaction: string }[];
+  takeaway: string;
+  boundary: string;
+};
+
+export type EvidenceXray = {
+  title: string;
+  label: "empirical study" | "process model";
+  citation: string;
+  design?: string;
+  testedLabel: string;
+  tested: string;
+  foundLabel: string;
+  found: string;
+  notTested: string;
+  doi?: string;
+};
+
+export type ScopeMap = {
+  lede: string;
+  map: string[];
+  stops: string[];
+  note: string;
+};
+
 export type Origin = {
   year: string;
   author: string;
@@ -265,6 +350,14 @@ export type TheoryRecord = RecordBase & {
   coreProcesses?: CoreProcess[];
   fitTargets?: FitTarget[];
   workAdjustment?: string;
+  classification?: ClassificationExercise;
+  simpleModel?: SimpleModel;
+  modelReveal?: ModelReveal;
+  workday?: WorkdayTimeline;
+  conceptComparison?: ConceptComparisonBlock;
+  reactionContrast?: ReactionContrast;
+  evidenceXrays?: EvidenceXray[];
+  scopeMap?: ScopeMap;
 };
 
 /* ---------------- empirical study ---------------- */

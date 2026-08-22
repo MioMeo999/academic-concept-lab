@@ -5,6 +5,16 @@ import { RecordShell } from "./RecordShell";
 import { RECORDS, KIND, recordHref } from "@/content/records";
 import { Cascade } from "./Cascade";
 import { TheoryDemo } from "./TheoryDemo";
+import {
+  ConceptComparison,
+  EvidenceXray,
+  FeatureEventExercise,
+  ModelReveal,
+  ReactionContrast,
+  ScopeMap,
+  SimpleModel,
+  WorkdayTimeline,
+} from "./TheoryPatterns";
 
 /* ---------------------------------------------------------------------------
    Section-driven theory template.
@@ -206,6 +216,44 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
         </div>
       )}
     </>
+    ));
+  }
+
+  /* a compact classification: the distinction is the lesson, not the score */
+  if (r.classification) {
+    add("classification", "Feature or event?", "Feature or event?", "var(--red)", (
+      <>
+        <p className="lede">Work features are relatively enduring aspects of the situation. Work events are changes or occurrences that become affectively significant. The distinction is useful before we ask what anyone felt.</p>
+        <FeatureEventExercise data={r.classification} />
+      </>
+    ));
+  }
+
+  /* start with the deliberately incomplete event-to-affect shortcut */
+  if (r.simpleModel) {
+    add("simpleModel", "The first shortcut", "The simple model — and why it is not enough", "var(--red)", (
+      <SimpleModel data={r.simpleModel} />
+    ));
+  }
+
+  /* the full macrostructure, revealed as a drawing rather than a finished map */
+  if (r.modelReveal) {
+    add("modelReveal", "Build the model", "Build the AET macrostructure", "var(--teal)", (
+      <ModelReveal data={r.modelReveal} />
+    ));
+  }
+
+  /* within-person variation over a constructed workday */
+  if (r.workday) {
+    add("workday", "One workday", "One workday, many affective moments", "var(--red)", (
+      <WorkdayTimeline data={r.workday} />
+    ));
+  }
+
+  /* current affect, accumulated experience, beliefs, and satisfaction are not one thing */
+  if (r.conceptComparison) {
+    add("conceptComparison", "Affect ≠ satisfaction", "Affect is not job satisfaction", "var(--teal)", (
+      <ConceptComparison data={r.conceptComparison} />
     ));
   }
 
@@ -423,6 +471,27 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
           ))}
         </div>
       </>
+    ));
+  }
+
+  if (r.reactionContrast) {
+    add("reactionContrast", "Same event, different reaction", "The same event does not guarantee the same reaction", "var(--red)", (
+      <ReactionContrast data={r.reactionContrast} />
+    ));
+  }
+
+  if (r.evidenceXrays) {
+    add("evidenceXrays", "Evidence X-ray", "What has actually been tested?", "var(--teal)", (
+      <>
+        <p className="lede">These studies support parts of the AET picture. None should be used as blanket validation of every arrow in the macrostructure.</p>
+        <EvidenceXray items={r.evidenceXrays} />
+      </>
+    ));
+  }
+
+  if (r.scopeMap) {
+    add("scopeMap", "Where it stops", "What AET explains — and where it stops", "var(--teal)", (
+      <ScopeMap data={r.scopeMap} />
     ));
   }
 

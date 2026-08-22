@@ -7,13 +7,14 @@ import { ipa } from "./ipa";
 import { rta } from "./rta";
 import { hpaAxis } from "./hpa-axis";
 import { tunedOutPaper } from "./paper";
+import { affectiveEventsTheory } from "./affective-events-theory";
 
 /**
  * The registry. Adding a record means appending one entry here — it then
  * appears in the library, in search, in the filters, in saved, and in the
  * "elsewhere" block on every other record, with no route or template change.
  */
-export const RECORDS: AnyRecord[] = [personEnvironmentFit, personOrganisationFit, jobDemandsResources, workplaceDesign, musicPreference, hpaAxis, ipa, rta, tunedOutPaper];
+export const RECORDS: AnyRecord[] = [personEnvironmentFit, personOrganisationFit, jobDemandsResources, workplaceDesign, musicPreference, affectiveEventsTheory, hpaAxis, ipa, rta, tunedOutPaper];
 
 export const KIND: Record<RecordKind, {
   label: string; nav: string; colour: string; fill: string; stroke: string; cls: string; path: string; cta: string;
