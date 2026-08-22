@@ -66,7 +66,7 @@ function WorkModel({ record }: { record: TheoryRecord }) {
           <ul>{model.context.map((item) => <li key={item}>{item}</li>)}</ul>
         </div>
         <div className="sdt-work-group gold">
-          <span className="k">individual orientations</span>
+          <span className="k">person-level influences</span>
           <ul>{model.person.map((item) => <li key={item}>{item}</li>)}</ul>
         </div>
       </div>
@@ -286,7 +286,6 @@ export function SDTBody({ record: r }: { record: TheoryRecord }) {
   add("sources", "Sources", "Sources", "var(--teal)", (
     <>
       <div className="sk-box tilt-l2" style={{ marginTop: ".7rem" }}><div style={{ display: "flex", gap: ".6rem", alignItems: "center", marginBottom: ".4rem" }}><Icon id="i-book" style={{ width: 26, height: 26, color: "var(--red)" }} /><h3>{r.minimumReadingLabel ?? "If you read five things"}</h3></div><SourceList items={r.minimumReading} /></div>
-      <div style={{ marginTop: "1.1rem" }}><span className="k">the full trail</span><div style={{ marginTop: ".4rem" }}><SourceList items={r.fullSources} /></div></div>
     </>
   ));
 

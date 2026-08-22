@@ -61,7 +61,7 @@ export const selfDeterminationTheory: TheoryRecord = {
     },
     context: {
       contextItems: ["managerial behaviour", "job design", "feedback", "rewards", "participation and choice", "climate and relationships"],
-      personItems: ["causality orientations", "aspirations and goals"],
+      personItems: ["causality orientations: autonomy, controlled, and impersonal", "goals / aspirations: valued outcomes and goal contents people pursue"],
       experiences: [
         { label: "need-supportive conditions", body: "The context may help people experience choice, effectiveness, and connection.", colour: "var(--teal)" },
         { label: "need-thwarting conditions", body: "The context may actively pressure, undermine, exclude, or obstruct those experiences.", colour: "var(--red)" },
@@ -87,7 +87,7 @@ export const selfDeterminationTheory: TheoryRecord = {
     },
     workModel: {
       context: ["leadership, job design, feedback, rewards", "participation, choice, climate, relationships"],
-      person: ["causality orientations", "aspirations and goals"],
+      person: ["causality orientations: autonomy, controlled, and impersonal", "goals / aspirations: valued outcomes and goal contents people pursue"],
       needs: ["satisfaction", "frustration"],
       motivations: ["autonomous", "controlled", "amotivation"],
       outcomes: ["work attitudes", "behaviour", "performance quality / quantity", "wellness / ill-being"],
