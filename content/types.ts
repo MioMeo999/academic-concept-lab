@@ -187,6 +187,104 @@ export type ScopeMap = {
   note: string;
 };
 
+export type SDTOpeningCase = { label: string; quote: string; body: string };
+
+export type SDTMotive = {
+  statement: string;
+  regulation: string;
+  explanation: string;
+  relativeAutonomy: string;
+  motivationKind: "intrinsic" | "extrinsic" | "amotivation";
+  family: "autonomous" | "controlled" | "amotivation";
+  colour: string;
+};
+
+export type SDTRegulation = {
+  label: string;
+  descriptor: string;
+  body: string;
+  kind: "amotivation" | "controlled" | "autonomous" | "intrinsic";
+  colour: string;
+};
+
+export type SDTInternalisation = {
+  lede: string;
+  branches: { label: string; quote: string; body: string; colour: string }[];
+  note: string;
+};
+
+export type SDTNeed = {
+  label: string;
+  question: string;
+  meaning: string;
+  distinction: string;
+  colour: string;
+};
+
+export type SDTMatrixCase = {
+  label: string;
+  title: string;
+  body: string;
+  colour: string;
+};
+
+export type SDTContextModel = {
+  contextItems: string[];
+  personItems: string[];
+  experiences: { label: string; body: string; colour: string }[];
+  outcomes: string[];
+  note: string;
+};
+
+export type SDTRewardComparison = {
+  reward: string;
+  cases: { label: string; quote: string; meaning: string; body: string; colour: string }[];
+  note: string;
+};
+
+export type SDTNeedComparison = {
+  pairs: { label: string; low: string; thwart: string; body: string; colour: string }[];
+  note: string;
+};
+
+export type SDTWorkModel = {
+  context: string[];
+  person: string[];
+  needs: string[];
+  motivations: string[];
+  outcomes: string[];
+  note: string;
+};
+
+export type SDTMiniTheory = {
+  acronym: string;
+  title: string;
+  question: string;
+  emphasis: "core" | "neighbour";
+  colour: string;
+};
+
+export type SDTScope = {
+  explains: string[];
+  stops: string[];
+  note: string;
+};
+
+export type SDTRecordContent = {
+  opening: { cases: SDTOpeningCase[]; note: string };
+  motives: SDTMotive[];
+  regulations: SDTRegulation[];
+  internalisation: SDTInternalisation;
+  needs: SDTNeed[];
+  autonomyMatrix: { cases: SDTMatrixCase[]; note: string };
+  context: SDTContextModel;
+  rewards: SDTRewardComparison;
+  needComparison: SDTNeedComparison;
+  workModel: SDTWorkModel;
+  miniTheories: SDTMiniTheory[];
+  scope: SDTScope;
+};
+
 export type Origin = {
   year: string;
   author: string;
@@ -370,6 +468,7 @@ export type TheoryRecord = RecordBase & {
   reactionContrast?: ReactionContrast;
   evidenceXrays?: EvidenceXray[];
   scopeMap?: ScopeMap;
+  sdt?: SDTRecordContent;
 };
 
 /* ---------------- empirical study ---------------- */

@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { Source, TheoryRecord } from "@/content/types";
 import { ArrowSmall, Bullet, Cloud, Divider, Icon, Rich, SecHead, pad2 } from "./Sketch";
 import { RecordShell } from "./RecordShell";
+import { SDTBody } from "./SDTBody";
 import { RECORDS, KIND, recordHref } from "@/content/records";
 import { Cascade } from "./Cascade";
 import { TheoryDemo } from "./TheoryDemo";
@@ -75,6 +76,8 @@ function SourceList({ items }: { items: Source[] }) {
 }
 
 export function TheoryBody({ record: r }: { record: TheoryRecord }) {
+  if (r.sdt) return <SDTBody record={r} />;
+
   const B: Block[] = [];
 
   /* Blocks ship with a default heading; a record overrides it by key, so the
