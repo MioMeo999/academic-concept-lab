@@ -370,6 +370,61 @@ export type GestaltRecordContent = {
   lineage: { lede: string; nodes: ASACard[]; note: string };
 };
 
+export type GTTMTreeNode = {
+  label: string;
+  sub?: string;
+  relation?: "head" | "strong prolongation" | "weak prolongation" | "progression" | "span";
+  children?: GTTMTreeNode[];
+};
+
+export type GTTMSurfaceEvent = AudioEvent & {
+  id: number;
+  note: string;
+  harmony: string;
+  beat: string;
+};
+
+export type GTTMReductionState = {
+  label: string;
+  body: string;
+  included: number[];
+};
+
+export type GTTMAnalysisSpec = {
+  surface: {
+    events: GTTMSurfaceEvent[];
+    key: string;
+    meter: string;
+    tempo: string;
+    timbre: string;
+    gain: string;
+    harmony: string;
+  };
+  grouping: { local: string[]; higher: string[]; boundaries: string[]; rationale: string };
+  meter: { tactus: string; levels: string[]; strengths: string[]; relation: string };
+  timeSpans: { spans: string[]; heads: string[]; dependency: string; tree: GTTMTreeNode };
+  prolongation: { relations: string[]; interpretation: string; tree: GTTMTreeNode };
+  reductions: GTTMReductionState[];
+};
+
+export type GTTMLens = { key: "group" | "meter" | "importance" | "relation"; label: string; question: string; colour: string };
+
+export type GTTMRecordContent = {
+  analysis: GTTMAnalysisSpec;
+  opening: { lede: string; lenses: GTTMLens[]; note: string };
+  generative: { lede: string; cards: ASACard[]; note: string };
+  listener: { lede: string; cards: ASACard[]; note: string };
+  groupingMeter: { lede: string; grouping: string[]; meter: string[]; note: string };
+  rules: { lede: string; cards: ASACard[]; note: string };
+  spans: { lede: string; cards: ASACard[]; note: string };
+  reduction: { lede: string; note: string };
+  prolongation: { lede: string; cards: ASACard[]; note: string };
+  finalModel: { lede: string; stages: ASACard[]; note: string };
+  evidence: { lede: string; items: EvidenceXray[] };
+  scope: { lede: string; explains: string[]; stops: string[]; note: string };
+  lineage: { lede: string; nodes: ASACard[]; note: string };
+};
+
 export type TonalCard = { label: string; body: string; colour: string };
 
 export type TonalProfileItem = {
@@ -727,6 +782,7 @@ export type TheoryRecord = RecordBase & {
   sdt?: SDTRecordContent;
   set?: SETRecordContent;
   gestalt?: GestaltRecordContent;
+  gttm?: GTTMRecordContent;
 };
 
 /* ---------------- empirical study ---------------- */

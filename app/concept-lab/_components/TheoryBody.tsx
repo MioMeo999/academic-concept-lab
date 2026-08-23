@@ -8,6 +8,7 @@ import { ASABody } from "./ASABody";
 import { MeyerBody } from "./MeyerBody";
 import { TonalBody } from "./TonalBody";
 import { GestaltBody } from "./GestaltBody";
+import { GTTMBody } from "./GTTMBody";
 import { RECORDS, KIND, recordHref } from "@/content/records";
 import { Cascade } from "./Cascade";
 import { TheoryDemo } from "./TheoryDemo";
@@ -87,6 +88,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
   if (r.meyer) return <MeyerBody record={r} />;
   if (r.tonal) return <TonalBody record={r} />;
   if (r.gestalt) return <GestaltBody record={r} />;
+  if (r.gttm) return <GTTMBody record={r} />;
 
   const B: Block[] = [];
 
