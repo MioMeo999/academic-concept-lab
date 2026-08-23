@@ -13,7 +13,7 @@ const cMajorContext: TonalContext = {
   label: "C major · scale context",
   body: "A short synthetic C-major context establishes a tonal home before the probe arrives.",
   events: scaleEvents([60, 62, 64, 65, 67, 69, 71, 72]),
-  controls: "C4–C5 ascending scale; 180-ms triangle tones; 50-ms gaps; 500-ms probe delay; probe held for 500 ms.",
+  controls: "MIDI 60–72 (C4–C5; pitch class carried across the octave); ascending scale rhythm with 180-ms triangle tones and 50-ms gaps; fixed peak gain 0.12; 500-ms probe delay; probe held for 500 ms.",
   colour: "var(--teal)",
 };
 
@@ -22,7 +22,7 @@ const cMajorCadence: TonalContext = {
   label: "C major · IV–V–I",
   body: "F major, G major, then C major make the C-major context explicit for the fixed C probe.",
   events: chordProgression([[65, 69, 72], [67, 71, 74], [60, 64, 67]]),
-  controls: "Three simultaneous triads; 420-ms triangle components; 180-ms gaps; 500-ms probe delay; same C4 probe and 500-ms duration.",
+  controls: "MIDI triad pitches in a three-chord cadence; three simultaneous triads with 420-ms triangle components and 180-ms gaps; fixed peak gain 0.12; 500-ms probe delay; same C4 pitch class/register and 500-ms probe duration.",
   colour: "var(--teal)",
   role: "tonic / scale degree 1",
 };
@@ -32,7 +32,7 @@ const fMajorCadence: TonalContext = {
   label: "F major · ii–V–I",
   body: "G minor, C major, then F major establish F as the current tonal centre.",
   events: chordProgression([[67, 70, 74], [60, 64, 67], [65, 69, 72]]),
-  controls: "Three simultaneous triads; 420-ms triangle components; 180-ms gaps; 500-ms probe delay; same C4 probe and 500-ms duration.",
+  controls: "MIDI triad pitches in a three-chord cadence; three simultaneous triads with 420-ms triangle components and 180-ms gaps; fixed peak gain 0.12; 500-ms probe delay; same C4 pitch class/register and 500-ms probe duration.",
   colour: "var(--gold-deep)",
   role: "dominant / scale degree 5",
 };
@@ -42,7 +42,7 @@ const aMinorCadence: TonalContext = {
   label: "A minor · iv–V–i",
   body: "D minor, E major, then A minor establish an A-minor context in which C belongs to the tonic triad.",
   events: chordProgression([[62, 65, 69], [64, 68, 71], [57, 60, 64]]),
-  controls: "Three simultaneous triads; 420-ms triangle components; 180-ms gaps; 500-ms probe delay; same C4 probe and 500-ms duration.",
+  controls: "MIDI triad pitches in a three-chord cadence; three simultaneous triads with 420-ms triangle components and 180-ms gaps; fixed peak gain 0.12; 500-ms probe delay; same C4 pitch class/register and 500-ms probe duration.",
   colour: "var(--plum-deep)",
   role: "mediant / tonic-triad member",
 };
@@ -52,7 +52,7 @@ const dMajorCadence: TonalContext = {
   label: "D major · IV–V–I",
   body: "G major, A major, then D major establish D major, where C natural falls outside the diatonic collection.",
   events: chordProgression([[67, 71, 74], [69, 73, 76], [62, 66, 69]]),
-  controls: "Three simultaneous triads; 420-ms triangle components; 180-ms gaps; 500-ms probe delay; same C4 probe and 500-ms duration.",
+  controls: "MIDI triad pitches in a three-chord cadence; three simultaneous triads with 420-ms triangle components and 180-ms gaps; fixed peak gain 0.12; 500-ms probe delay; same C4 pitch class/register and 500-ms probe duration.",
   colour: "var(--red)",
   role: "nondiatonic / chromatic tone",
 };
