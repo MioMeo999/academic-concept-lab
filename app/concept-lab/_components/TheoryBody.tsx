@@ -4,6 +4,7 @@ import { ArrowSmall, Bullet, Cloud, Divider, Icon, Rich, SecHead, pad2 } from ".
 import { RecordShell } from "./RecordShell";
 import { SDTBody } from "./SDTBody";
 import { SETBody } from "./SETBody";
+import { MeyerBody } from "./MeyerBody";
 import { RECORDS, KIND, recordHref } from "@/content/records";
 import { Cascade } from "./Cascade";
 import { TheoryDemo } from "./TheoryDemo";
@@ -79,6 +80,7 @@ function SourceList({ items }: { items: Source[] }) {
 export function TheoryBody({ record: r }: { record: TheoryRecord }) {
   if (r.sdt) return <SDTBody record={r} />;
   if (r.set) return <SETBody record={r} />;
+  if (r.meyer) return <MeyerBody record={r} />;
 
   const B: Block[] = [];
 

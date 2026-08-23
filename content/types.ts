@@ -180,6 +180,105 @@ export type EvidenceXray = {
   doi?: string;
 };
 
+/** A small, deterministic musical phrase used by an audio teaching example. */
+export type AudioNote = {
+  pitch: number;
+  beats: number;
+};
+
+export type AudioChoice = {
+  label: string;
+  body: string;
+  notes: AudioNote[];
+};
+
+export type MeyerBranch = {
+  label: string;
+  body: string;
+  colour: string;
+};
+
+export type MeyerOutcome = {
+  label: string;
+  title: string;
+  body: string;
+  notes: AudioNote[];
+  colour: string;
+};
+
+export type MeyerRecordContent = {
+  opening: {
+    lede: string;
+    context: AudioNote[];
+    choices: AudioChoice[];
+    note: string;
+  };
+  embodied: {
+    lede: string;
+    points: string[];
+    note: string;
+  };
+  branches: {
+    lede: string;
+    current: string;
+    items: MeyerBranch[];
+    note: string;
+  };
+  style: {
+    lede: string;
+    cards: MeyerBranch[];
+    note: string;
+  };
+  outcomes: {
+    lede: string;
+    context: AudioNote[];
+    variants: MeyerOutcome[];
+    question: string;
+    note: string;
+  };
+  delay: {
+    lede: string;
+    steps: string[];
+    note: string;
+  };
+  resolution: {
+    lede: string;
+    note: string;
+  };
+  meaning: {
+    lede: string;
+    stages: { label: string; question: string; body: string; colour: string }[];
+    note: string;
+  };
+  gestalt: {
+    lede: string;
+    cards: MeyerBranch[];
+    note: string;
+  };
+  listener: {
+    lede: string;
+    cards: MeyerBranch[];
+    note: string;
+  };
+  evidence: {
+    lede: string;
+    items: EvidenceXray[];
+  };
+  scope: {
+    lede: string;
+    explains: string[];
+    stops: string[];
+    note: string;
+  };
+  lineage: {
+    lede: string;
+    nodes: MeyerBranch[];
+    note: string;
+  };
+  explains: string[];
+  stops: string[];
+};
+
 export type ScopeMap = {
   lede: string;
   map: string[];
@@ -501,6 +600,7 @@ export type TheoryRecord = RecordBase & {
   reactionContrast?: ReactionContrast;
   evidenceXrays?: EvidenceXray[];
   scopeMap?: ScopeMap;
+  meyer?: MeyerRecordContent;
   sdt?: SDTRecordContent;
   set?: SETRecordContent;
 };
