@@ -7,6 +7,7 @@ import { ProbeToneLab } from "./ProbeToneLab";
 import { RecordShell } from "./RecordShell";
 import { TonalShiftVisual } from "./TonalShiftVisual";
 import { Bullet, Cloud, Divider, Icon, Rich, SecHead, pad2 } from "./Sketch";
+import { EvidenceXray } from "./TheoryPatterns";
 
 type Block = { key: string; title: string; colour: string; body: ReactNode };
 
@@ -80,6 +81,8 @@ export function TonalBody({ record: r }: { record: TheoryRecord }) {
   add("culture", "Culture changes the map", "var(--red)", <><Rich className="lede" as="p" html={data.culture.lede} /><Cards items={data.culture.cards} /><Note>{data.culture.note}</Note></>);
 
   add("process", "A profile is not a process", "var(--plum-deep)", <><Rich className="lede" as="p" html={data.process.lede} /><div className="tonal-profile-process"><div><span className="k">PROFILE</span><strong>pattern in ratings</strong><p>Describes expressed tonal organisation.</p></div><b>≠</b><div><span className="k">PROCESS</span><strong>key-finding over time</strong><p>Asks how a tonal centre is recognised, maintained, or revised.</p></div></div><Cards items={data.process.cards} /><Note>{data.process.note}</Note></>);
+
+  if (r.evidenceXrays) add("evidenceXrays", "What has actually been tested?", "var(--teal)", <><Rich className="lede" as="p" html={r.conceptualStatus?.body ?? "Read each study as an argument with a design, result, and boundary."} /><EvidenceXray items={r.evidenceXrays} /></>);
 
   add("scope", "What Tonal Hierarchy explains", "var(--teal)", <><Rich className="lede" as="p" html={data.scope.lede} /><div className="tonal-scope-grid"><div className="sk-box teal tilt-l2"><p className="k">EXPLAINS WELL</p><ul>{data.scope.explains.map((item) => <li key={item}>→ {item}</li>)}</ul></div></div></>);
 

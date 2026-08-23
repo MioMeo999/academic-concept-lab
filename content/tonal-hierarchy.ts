@@ -103,7 +103,7 @@ export const tonalHierarchy: TheoryRecord = {
   statusChip: "empirical cognitive framework",
   topics: ["tonal hierarchy", "probe-tone method", "pitch perception", "key profiles", "music cognition"],
   facts: ["fit ≠ liking", "context changes function", "profiles are patterns", "keys have neighbourhoods", "home can move"],
-  order: ["opening", "context", "measurement", "profile", "sameNote", "dimensions", "representation", "neighbourhood", "keySpace", "dynamics", "distribution", "development", "culture", "process", "scope", "stops", "lineage", "trail", "oversimplifications", "qualifications", "sources", "related", "provenance"],
+  order: ["opening", "context", "measurement", "profile", "sameNote", "dimensions", "representation", "neighbourhood", "keySpace", "dynamics", "distribution", "development", "culture", "process", "evidenceXrays", "scope", "stops", "lineage", "trail", "oversimplifications", "qualifications", "sources", "related", "provenance"],
   trailLede: "The research trail moves from probe-tone judgments and psychological pitch representation to key profiles, dynamic tonal organisation, development, cultural boundaries, and later critiques of key finding.",
   originsNote: "This record teaches Tonal Hierarchy as an empirical cognitive framework and representational research programme. The probe profile is not presented as a complete causal theory of key detection.",
   oversimplificationsLede: "The most dangerous shortcuts are the ones that turn a context-dependent measurement into a universal property of a note.",
