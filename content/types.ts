@@ -425,6 +425,56 @@ export type GTTMRecordContent = {
   lineage: { lede: string; nodes: ASACard[]; note: string };
 };
 
+export type NarmourRelationStatus = "REALIZED" | "DENIED" | "NOT STRONGLY DIAGNOSTIC";
+
+export type NarmourRelation = {
+  label: string;
+  status: NarmourRelationStatus;
+  detail: string;
+};
+
+export type NarmourCandidate = {
+  label: string;
+  body: string;
+  events: AudioEvent[];
+  physicalMovement: string;
+  intervalSizes: string;
+  relations: NarmourRelation[];
+  colour: string;
+};
+
+export type NarmourStimulusFamily = {
+  label: string;
+  interval: string;
+  semitones: number;
+  body: string;
+  candidates: NarmourCandidate[];
+};
+
+export type NarmourRecordContent = {
+  analysisNote: string;
+  opening: { lede: string; question: string; note: string };
+  twoNotes: { lede: string; cards: ASACard[]; note: string };
+  thirdNote: { lede: string; cards: ASACard[]; note: string };
+  implications: { lede: string; cards: ASACard[]; note: string };
+  small: { lede: string; cards: ASACard[]; note: string };
+  large: { lede: string; cards: ASACard[]; note: string };
+  testable: { lede: string; cards: ASACard[]; note: string };
+  moreThanDirection: { lede: string; cards: ASACard[]; note: string };
+  realiseDeny: { lede: string; question: string; note: string };
+  process: { lede: string; cards: ASACard[]; note: string };
+  systems: { lede: string; cards: ASACard[]; note: string };
+  loop: { lede: string; note: string };
+  cuddy: { lede: string; evidence: EvidenceXray; note: string };
+  schellenberg96: { lede: string; evidence: EvidenceXray; note: string };
+  schellenberg97: { lede: string; evidence: EvidenceXray; note: string };
+  development: { lede: string; evidence: EvidenceXray; note: string };
+  styleLearning: { lede: string; cards: ASACard[]; note: string };
+  scope: { lede: string; explains: string[]; stops: string[]; note: string };
+  families: NarmourStimulusFamily[];
+  matrix: { lede: string; candidates: NarmourCandidate[]; note: string };
+};
+
 export type TonalCard = { label: string; body: string; colour: string };
 
 export type TonalProfileItem = {
@@ -783,6 +833,7 @@ export type TheoryRecord = RecordBase & {
   set?: SETRecordContent;
   gestalt?: GestaltRecordContent;
   gttm?: GTTMRecordContent;
+  narmour?: NarmourRecordContent;
 };
 
 /* ---------------- empirical study ---------------- */
