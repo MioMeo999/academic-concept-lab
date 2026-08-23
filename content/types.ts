@@ -200,6 +200,13 @@ export type AudioPreset = {
   variable: string;
   controls: string;
   colour: string;
+  markers?: AudioMarker[];
+};
+
+export type AudioMarker = {
+  after: number;
+  label: string;
+  colour?: string;
 };
 
 export type TonalProbe = {
@@ -330,6 +337,35 @@ export type ASARecordContent = {
   attention: { lede: string; cards: ASACard[]; note: string };
   music: { lede: string; cards: ASACard[]; note: string };
   evidence: { lede: string; items: EvidenceXray[] };
+  scope: { lede: string; explains: string[]; stops: string[]; note: string };
+  lineage: { lede: string; nodes: ASACard[]; note: string };
+};
+
+export type GestaltWholeCase = {
+  label: string;
+  before: string;
+  central: string;
+  after: string;
+  role: string;
+  colour: string;
+};
+
+export type GestaltRecordContent = {
+  opening: { lede: string; presets: AudioPreset[]; note: string };
+  problem: { lede: string; cards: ASACard[]; note: string };
+  whole: { lede: string; cases: GestaltWholeCase[]; note: string };
+  proximity: { lede: string; cards: ASACard[]; note: string };
+  similarity: { lede: string; cards: ASACard[]; note: string };
+  conflict: { lede: string; presets: AudioPreset[]; question: string; note: string };
+  laws: { lede: string; cards: ASACard[]; note: string };
+  continuation: { lede: string; options: ASACard[]; note: string };
+  closure: { lede: string; cards: ASACard[]; note: string };
+  pragnanz: { lede: string; historical: string; problem: string; later: string[]; note: string };
+  hierarchy: { lede: string; levels: ASACard[]; note: string };
+  gttm: { lede: string; stages: ASACard[]; note: string };
+  deliege: { lede: string; evidence: EvidenceXray; note: string };
+  frankland: { lede: string; evidence: EvidenceXray; note: string };
+  culture: { lede: string; cards: ASACard[]; note: string };
   scope: { lede: string; explains: string[]; stops: string[]; note: string };
   lineage: { lede: string; nodes: ASACard[]; note: string };
 };
@@ -690,6 +726,7 @@ export type TheoryRecord = RecordBase & {
   tonal?: TonalRecordContent;
   sdt?: SDTRecordContent;
   set?: SETRecordContent;
+  gestalt?: GestaltRecordContent;
 };
 
 /* ---------------- empirical study ---------------- */

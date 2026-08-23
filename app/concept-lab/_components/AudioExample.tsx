@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
-import type { AudioEvent, AudioNote } from "@/content/types";
+import type { AudioEvent, AudioMarker, AudioNote } from "@/content/types";
 
 let activePlayback: (() => void) | null = null;
 let activePlaybackOwner: symbol | null = null;
@@ -20,7 +20,7 @@ function notesToEvents(notes: AudioNote[]): AudioEvent[] {
   });
 }
 
-function AudioPitchLine({ events }: { events: AudioEvent[] }) {
+function AudioPitchLine({ events, markers = [] }: { events: AudioEvent[]; markers?: AudioMarker[] }) {
   const pitches = events.map((event) => event.pitch);
   const min = Math.min(...pitches, 60);
   const max = Math.max(...pitches, 72);
@@ -32,14 +32,28 @@ function AudioPitchLine({ events }: { events: AudioEvent[] }) {
     return `${x},${y}`;
   }).join(" ");
 
+  const markerDescription = markers.length ? `; marked boundaries: ${markers.map((marker) => marker.label).join(", ")}` : "";
+
   return (
-    <svg className="music-pitch-line" viewBox="0 0 200 44" role="img" aria-label="Visual pitch contour of the example">
+    <svg className="music-pitch-line" viewBox="0 0 200 44" role="img" aria-label={`Visual pitch contour of the example${markerDescription}`}>
       <path d="M8 37c42 2 91 1 184 0" fill="none" stroke="currentColor" strokeWidth="1.2" opacity=".25" />
       <polyline points={points} fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" />
       {events.map((event, index) => {
         const x = 10 + ((event.start + event.duration / 2) / total) * 180;
         const y = 34 - ((event.pitch - min) / span) * 24;
         return <circle key={`${event.pitch}-${event.start}-${index}`} cx={x} cy={y} r="2.8" fill="currentColor" />;
+      })}
+      {markers.map((marker) => {
+        const left = events[marker.after - 1];
+        const right = events[marker.after];
+        const time = right ? (left.start + right.start) / 2 : (left?.start ?? 0) + (left?.duration ?? 0);
+        const x = 10 + (time / total) * 180;
+        return (
+          <g key={`${marker.after}-${marker.label}`}>
+            <line x1={x} x2={x} y1="6" y2="39" stroke={marker.colour ?? "var(--red)"} strokeWidth="1.5" strokeDasharray="3 2" />
+            <text x={x} y="5" textAnchor="middle" fill={marker.colour ?? "currentColor"} fontSize="5" fontFamily="var(--cat)">{marker.label}</text>
+          </g>
+        );
       })}
     </svg>
   );
@@ -51,12 +65,14 @@ export function AudioExample({
   events,
   description,
   colour = "var(--teal)",
+  markers,
 }: {
   label: string;
   notes?: AudioNote[];
   events?: AudioEvent[];
   description: string;
   colour?: string;
+  markers?: AudioMarker[];
 }) {
   const [playing, setPlaying] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
@@ -146,7 +162,7 @@ export function AudioExample({
         </div>
         <span className="music-audio-state" aria-live="polite">{playing ? "playing" : unavailable ? "audio unavailable" : "ready"}</span>
       </div>
-      <AudioPitchLine events={scheduledEvents} />
+      <AudioPitchLine events={scheduledEvents} markers={markers} />
       <div className="music-audio-controls">
         <button type="button" className="music-audio-play" onClick={() => void play()} aria-label={`${playing ? "Replay" : "Play"} ${label}`}>
           {playing ? "Replay" : "Play"}

@@ -52,6 +52,7 @@ export function AudioPresetCompare({
         events={preset.events}
         description={preset.body}
         colour={preset.colour}
+        markers={preset.markers}
       />
 
       <details className="music-static-fallback">
