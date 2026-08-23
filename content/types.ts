@@ -169,7 +169,7 @@ export type ReactionContrast = {
 
 export type EvidenceXray = {
   title: string;
-  label: "empirical study" | "process model";
+  label: "empirical study" | "process model" | "review";
   citation: string;
   design?: string;
   testedLabel: string;
@@ -184,6 +184,22 @@ export type EvidenceXray = {
 export type AudioNote = {
   pitch: number;
   beats: number;
+};
+
+/** A scheduled synthetic tone used by reusable music-perception examples. */
+export type AudioEvent = {
+  pitch: number;
+  start: number;
+  duration: number;
+};
+
+export type AudioPreset = {
+  label: string;
+  body: string;
+  events: AudioEvent[];
+  variable: string;
+  controls: string;
+  colour: string;
 };
 
 export type AudioChoice = {
@@ -277,6 +293,26 @@ export type MeyerRecordContent = {
   };
   explains: string[];
   stops: string[];
+};
+
+export type ASACard = { label: string; body: string; colour: string };
+
+export type ASARecordContent = {
+  opening: { lede: string; presets: AudioPreset[]; note: string };
+  problem: { lede: string; layers: ASACard[]; note: string };
+  source: { lede: string; source: ASACard; stream: ASACard; note: string };
+  grouping: { lede: string; sequential: string[]; simultaneous: string[]; note: string };
+  cues: { lede: string; sequential: string[]; simultaneous: string[]; note: string };
+  competition: { lede: string; cards: ASACard[]; note: string };
+  bistability: { lede: string; states: ASACard[]; note: string };
+  groupFuse: { lede: string; presets: AudioPreset[]; question: string; note: string };
+  oldNew: { lede: string; steps: string[]; note: string };
+  organisation: { lede: string; primitive: string[]; schema: string[]; note: string };
+  attention: { lede: string; cards: ASACard[]; note: string };
+  music: { lede: string; cards: ASACard[]; note: string };
+  evidence: { lede: string; items: EvidenceXray[] };
+  scope: { lede: string; explains: string[]; stops: string[]; note: string };
+  lineage: { lede: string; nodes: ASACard[]; note: string };
 };
 
 export type ScopeMap = {
@@ -601,6 +637,7 @@ export type TheoryRecord = RecordBase & {
   evidenceXrays?: EvidenceXray[];
   scopeMap?: ScopeMap;
   meyer?: MeyerRecordContent;
+  asa?: ASARecordContent;
   sdt?: SDTRecordContent;
   set?: SETRecordContent;
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
-import type { AudioNote } from "@/content/types";
+import type { AudioEvent, AudioNote } from "@/content/types";
 
 let activePlayback: (() => void) | null = null;
 let activePlaybackOwner: symbol | null = null;
@@ -10,14 +10,25 @@ function frequencyFor(pitch: number) {
   return 440 * Math.pow(2, (pitch - 69) / 12);
 }
 
-function AudioPitchLine({ notes }: { notes: AudioNote[] }) {
-  const pitches = notes.map((note) => note.pitch);
+function notesToEvents(notes: AudioNote[]): AudioEvent[] {
+  let start = 0;
+  return notes.map((note) => {
+    const duration = Math.max(note.beats * 0.42, 0.08);
+    const event = { pitch: note.pitch, start, duration };
+    start += duration;
+    return event;
+  });
+}
+
+function AudioPitchLine({ events }: { events: AudioEvent[] }) {
+  const pitches = events.map((event) => event.pitch);
   const min = Math.min(...pitches, 60);
   const max = Math.max(...pitches, 72);
   const span = Math.max(max - min, 1);
-  const points = notes.map((note, index) => {
-    const x = 10 + (index / Math.max(notes.length - 1, 1)) * 180;
-    const y = 34 - ((note.pitch - min) / span) * 24;
+  const total = Math.max(...events.map((event) => event.start + event.duration), 1);
+  const points = events.map((event) => {
+    const x = 10 + ((event.start + event.duration / 2) / total) * 180;
+    const y = 34 - ((event.pitch - min) / span) * 24;
     return `${x},${y}`;
   }).join(" ");
 
@@ -25,10 +36,10 @@ function AudioPitchLine({ notes }: { notes: AudioNote[] }) {
     <svg className="music-pitch-line" viewBox="0 0 200 44" role="img" aria-label="Visual pitch contour of the example">
       <path d="M8 37c42 2 91 1 184 0" fill="none" stroke="currentColor" strokeWidth="1.2" opacity=".25" />
       <polyline points={points} fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" />
-      {notes.map((note, index) => {
-        const x = 10 + (index / Math.max(notes.length - 1, 1)) * 180;
-        const y = 34 - ((note.pitch - min) / span) * 24;
-        return <circle key={`${note.pitch}-${index}`} cx={x} cy={y} r="2.8" fill="currentColor" />;
+      {events.map((event, index) => {
+        const x = 10 + ((event.start + event.duration / 2) / total) * 180;
+        const y = 34 - ((event.pitch - min) / span) * 24;
+        return <circle key={`${event.pitch}-${event.start}-${index}`} cx={x} cy={y} r="2.8" fill="currentColor" />;
       })}
     </svg>
   );
@@ -37,11 +48,13 @@ function AudioPitchLine({ notes }: { notes: AudioNote[] }) {
 export function AudioExample({
   label,
   notes,
+  events,
   description,
   colour = "var(--teal)",
 }: {
   label: string;
-  notes: AudioNote[];
+  notes?: AudioNote[];
+  events?: AudioEvent[];
   description: string;
   colour?: string;
 }) {
@@ -51,6 +64,7 @@ export function AudioExample({
   const sourcesRef = useRef<OscillatorNode[]>([]);
   const timerRef = useRef<number | null>(null);
   const ownerRef = useRef<symbol>(Symbol("audio-example"));
+  const scheduledEvents = events ?? notesToEvents(notes ?? []);
 
   const stop = useCallback(() => {
     sourcesRef.current.forEach((source) => {
@@ -78,32 +92,35 @@ export function AudioExample({
 
     const AudioContextConstructor = window.AudioContext ||
       (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-    if (!AudioContextConstructor) {
+    if (!AudioContextConstructor || !scheduledEvents.length) {
       setUnavailable(true);
       return;
     }
 
     const context = contextRef.current ?? new AudioContextConstructor();
     contextRef.current = context;
-    await context.resume();
+    try {
+      await context.resume();
+    } catch {
+      setUnavailable(true);
+      return;
+    }
 
     const start = context.currentTime + 0.03;
-    let offset = 0;
-    notes.forEach((note) => {
-      const duration = Math.max(note.beats * 0.42, 0.08);
-      const when = start + offset;
+    scheduledEvents.forEach((event) => {
+      const duration = Math.max(event.duration, 0.08);
+      const when = start + Math.max(event.start, 0);
       const oscillator = context.createOscillator();
       const gain = context.createGain();
       oscillator.type = "triangle";
-      oscillator.frequency.setValueAtTime(frequencyFor(note.pitch), when);
+      oscillator.frequency.setValueAtTime(frequencyFor(event.pitch), when);
       gain.gain.setValueAtTime(0.0001, when);
-      gain.gain.exponentialRampToValueAtTime(0.16, when + Math.min(0.035, duration / 3));
+      gain.gain.exponentialRampToValueAtTime(0.12, when + Math.min(0.035, duration / 3));
       gain.gain.exponentialRampToValueAtTime(0.0001, when + duration);
       oscillator.connect(gain).connect(context.destination);
       oscillator.start(when);
       oscillator.stop(when + duration + 0.02);
       sourcesRef.current.push(oscillator);
-      offset += duration;
     });
 
     activePlayback = stop;
@@ -117,8 +134,8 @@ export function AudioExample({
         activePlayback = null;
         activePlaybackOwner = null;
       }
-    }, offset * 1000 + 160);
-  }, [notes, stop]);
+    }, (Math.max(...scheduledEvents.map((event) => event.start + event.duration), 0) * 1000) + 180);
+  }, [scheduledEvents, stop]);
 
   return (
     <div className="music-audio" style={{ "--music-colour": colour } as CSSProperties}>
@@ -129,7 +146,7 @@ export function AudioExample({
         </div>
         <span className="music-audio-state" aria-live="polite">{playing ? "playing" : unavailable ? "audio unavailable" : "ready"}</span>
       </div>
-      <AudioPitchLine notes={notes} />
+      <AudioPitchLine events={scheduledEvents} />
       <div className="music-audio-controls">
         <button type="button" className="music-audio-play" onClick={() => void play()} aria-label={`${playing ? "Replay" : "Play"} ${label}`}>
           {playing ? "Replay" : "Play"}
