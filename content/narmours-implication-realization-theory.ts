@@ -110,6 +110,13 @@ const evidence: EvidenceXray[] = [
 
 const narmour: NarmourRecordContent = {
   analysisNote: "Constructed teaching examples. These controlled three-tone stimuli are original synthetic examples, not reproductions of a published Narmour experiment.",
+  finalModelNote: "This branched architecture is Concept Lab synthesis: a teaching map of the theory’s relations, not a neural processing diagram or a claim that the theory is a deterministic pipeline.",
+  identity: {
+    knowledgeForm: "Formal cognitive theory / model of melodic implication and expectancy",
+    status: "Foundational formal cognitive model",
+    discipline: "Music Psychology / Music Cognition",
+    branch: "Expectation & Prediction",
+  },
   opening: {
     lede: "Begin with a tiny melodic problem: after two tones, what kinds of third tone feel more available? Narmour’s Implication–Realization Theory does not name one correct answer. It describes several local tendencies that a continuation may fulfil, partially fulfil, or deny.",
     question: "Which continuation feels more strongly implied?",
@@ -210,8 +217,8 @@ const narmour: NarmourRecordContent = {
   },
   cuddy: { lede: "Cuddy and Lunney tested quantified portions of the bottom-up model in a controlled continuation-rating task.", evidence: evidence[2], note: "Evidence for quantified local predictors, not confirmation of the complete I–R theory." },
   schellenberg96: { lede: "Schellenberg showed that a quantified I–R model could predict continuation judgments across materials and listener groups, while also exposing redundancy among its predictors.", evidence: evidence[3], note: "Predictive success and overspecification can coexist." },
-  schellenberg97: { lede: "Schellenberg’s later empirical simplification retained predictive performance with pitch proximity and pitch reversal. It should not be retroactively attributed to Narmour.", evidence: evidence[4], note: "A simplified empirical model is not the full theory it simplifies." },
-  development: { lede: "Developmental evidence separates the trajectories of proximity and reversal without turning either into a simple innate/learned binary.", evidence: evidence[5], note: "Proximity across tested ages does not prove innateness; older reversal expectations do not prove pure learning." },
+  schellenberg97: { lede: "Schellenberg’s later empirical simplification retained predictive performance with pitch proximity and pitch reversal. Here pitch reversal is described qualitatively as a composite of reversal after proximity is disrupted and symmetric or registral-return-like patterns; no unverified formula or weights are shown. It should not be retroactively attributed to Narmour.", evidence: evidence[4], note: "A simplified empirical model is not the full theory it simplifies." },
+  development: { lede: "Developmental evidence separates the trajectories of proximity and reversal without turning either into a simple innate/learned binary. The reversal result concerns direction changes after disruption of proximity and symmetric patterns.", evidence: evidence[5], note: "Proximity across tested ages does not prove innateness; older reversal expectations do not prove pure learning." },
   styleLearning: {
     lede: "Minimal three-tone experiments deliberately strip away much of real musical context. Return to the top-down system before treating their predictors as a complete account of expectation.",
     cards: cards([

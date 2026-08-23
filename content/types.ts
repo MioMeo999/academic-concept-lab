@@ -453,6 +453,8 @@ export type NarmourStimulusFamily = {
 
 export type NarmourRecordContent = {
   analysisNote: string;
+  finalModelNote: string;
+  identity: { knowledgeForm: string; status: string; discipline: string; branch: string };
   opening: { lede: string; question: string; note: string };
   twoNotes: { lede: string; cards: ASACard[]; note: string };
   thirdNote: { lede: string; cards: ASACard[]; note: string };
