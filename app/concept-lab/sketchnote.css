@@ -1052,3 +1052,11 @@
     .aet-workday-card h3{ font-size:.95rem; }
     .aet-xray-head h3{ font-size:1rem; }
   }
+
+  /* Desktop browsers usually resolve --hand to an installed handwriting face;
+     mobile browsers often fall through to their generic cursive face instead.
+     Keep the desktop sketch unchanged, but use the bundled readable handwriting
+     face on narrow screens so the same visual language survives mobile. */
+  @media(max-width:699px){
+    :root{ --hand:"Patrick Hand","Ink Free","Bradley Hand","Segoe Print",cursive; }
+  }

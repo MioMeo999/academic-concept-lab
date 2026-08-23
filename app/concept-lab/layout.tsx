@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import "@fontsource/patrick-hand/400.css";
 import "./sketchnote.css";
 import { Sprite } from "./_components/Sprite";
 import { Reveal } from "./_components/Reveal";
