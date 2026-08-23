@@ -126,7 +126,7 @@ export const tonalHierarchy: TheoryRecord = {
     "Exact empirical profile values require direct source verification before they are displayed.",
   ],
   minimumReadingLabel: "If you read seven things",
-  minimumReading: tonalEvidence.slice(0, 7).map(({ citation, contribution, doi }) => ({ citation, contribution, doi })),
+  minimumReading: tonalEvidence.slice(0, 7).map(({ citation, found, doi }) => ({ citation, contribution: found, doi })),
   fullSources: [
     { citation: "Krumhansl, C. L. (1990). <i>Cognitive Foundations of Musical Pitch</i>. Oxford University Press.", contribution: "Canonical synthesis of tonal hierarchies, pitch relations, key distances, harmonic hierarchies, modulation, and music cognition." },
   ],
