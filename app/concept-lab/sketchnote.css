@@ -1311,3 +1311,179 @@
     .music-lineage-connector{ margin-left:.2rem; }
     .music-misconception-grid{ grid-template-columns:minmax(0,1fr); }
   }
+
+  /* ---------- Tonal Hierarchy — pitch, context, and key-space vocabulary. */
+  .tonal-note{ max-width:70ch; margin-top:1rem; color:var(--pen-3); font-family:var(--read); font-size:.86rem; line-height:1.55; }
+  .tonal-interaction-heading{ display:flex; justify-content:space-between; align-items:flex-start; gap:.8rem; min-width:0; }
+  .tonal-interaction-title{ margin-top:.25rem; color:var(--tonal-colour,var(--teal)); font-family:var(--hand); font-size:1.35rem; line-height:1.12; }
+  .tonal-interaction-description{ max-width:58ch; margin-top:.28rem; color:var(--pen-2); font-family:var(--read); font-size:.84rem; line-height:1.5; }
+  .tonal-interaction-state{ color:var(--pen-3); font-family:var(--cat); font-size:.62rem; letter-spacing:.07em; white-space:nowrap; }
+  .tonal-probe-lab,.tonal-role-compare{ min-width:0; margin-top:1rem; padding:.85rem; border:2px solid var(--tonal-colour,var(--teal)); border-radius:18px 25px 15px 22px / 22px 15px 25px 18px; background:rgba(255,255,255,.32); }
+  .tonal-context-panel{ display:grid; grid-template-columns:minmax(0,1fr) minmax(15rem,1.05fr); gap:.75rem; align-items:start; margin-top:.8rem; padding:.7rem .75rem; border-left:2px solid var(--tonal-colour,var(--teal)); background:rgba(46,125,143,.035); }
+  .tonal-context-panel strong{ display:block; margin-top:.25rem; color:var(--tonal-colour,var(--teal)); font-family:var(--hand); font-size:1.08rem; line-height:1.15; }
+  .tonal-context-panel p{ margin-top:.28rem; color:var(--pen-2); font-family:var(--read); font-size:.8rem; line-height:1.45; }
+  .tonal-context-panel small{ display:block; margin-top:.4rem; color:var(--pen-3); font-family:var(--read); font-size:.72rem; line-height:1.4; }
+  .tonal-probe-grid{ display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:.4rem; margin-top:.8rem; }
+  .tonal-probe-button{ min-width:0; min-height:48px; padding:.35rem .25rem; border:1.7px solid var(--teal); border-radius:12px 16px 10px 15px / 15px 10px 16px 12px; background:transparent; color:var(--teal); cursor:pointer; }
+  .tonal-probe-button span,.tonal-probe-button small{ display:block; overflow-wrap:anywhere; }
+  .tonal-probe-button span{ font-family:var(--hand); font-size:1rem; font-weight:700; line-height:1.05; }
+  .tonal-probe-button small{ margin-top:.15rem; color:var(--pen-3); font-family:var(--cat); font-size:.58rem; line-height:1.1; }
+  .tonal-probe-button:hover,.tonal-probe-button[aria-pressed="true"]{ border-color:var(--red); color:var(--red); background:rgba(226,78,27,.09); }
+  .tonal-probe-button:focus-visible,.tonal-role-buttons button:focus-visible,.tonal-level-buttons button:focus-visible,.tonal-shift-buttons button:focus-visible,.tonal-rating-buttons button:focus-visible,.tonal-reveal-button:focus-visible{ outline:3px solid rgba(226,78,27,.35); outline-offset:3px; }
+  .tonal-selected-probe{ min-width:0; margin-top:.75rem; padding:.7rem .75rem; border:1.7px dashed var(--red); border-radius:15px 21px 13px 19px / 19px 13px 21px 15px; }
+  .tonal-selected-probe-heading{ display:flex; justify-content:space-between; align-items:flex-end; gap:.6rem; min-width:0; }
+  .tonal-selected-probe-heading strong{ display:block; margin-top:.2rem; color:var(--red); font-family:var(--hand); font-size:1.7rem; line-height:1; }
+  .tonal-probe-question{ max-width:28ch; color:var(--pen-3); font-family:var(--read); font-size:.78rem; line-height:1.4; text-align:right; }
+  .tonal-role-reveal{ margin-top:.75rem; padding-top:.65rem; border-top:1.4px dashed rgba(28,27,25,.2); }
+  .tonal-role-reveal strong{ display:block; margin-top:.2rem; color:var(--tonal-colour,var(--red)); font-family:var(--hand); font-size:1.1rem; }
+  .tonal-role-reveal p{ max-width:60ch; margin-top:.25rem; color:var(--pen-2); font-family:var(--read); font-size:.82rem; line-height:1.5; }
+  .tonal-rating-panel{ margin-top:.75rem; padding-top:.65rem; border-top:1.4px dashed rgba(28,27,25,.2); }
+  .tonal-rating-panel p,.tonal-exploratory-profile p{ margin-top:.25rem; color:var(--pen-3); font-family:var(--read); font-size:.78rem; line-height:1.45; }
+  .tonal-rating-buttons{ display:flex; flex-wrap:wrap; gap:.35rem; margin-top:.5rem; }
+  .tonal-rating-buttons button{ min-width:44px; min-height:44px; padding:.3rem .55rem; border:1.5px solid var(--gold-deep); border-radius:10px 14px 9px 12px / 12px 9px 14px 10px; background:transparent; color:var(--gold-deep); cursor:pointer; font-family:var(--cat); font-size:.7rem; }
+  .tonal-rating-buttons button:hover,.tonal-rating-buttons button[aria-pressed="true"]{ border-color:var(--red); color:var(--red); background:rgba(226,78,27,.09); }
+  .tonal-reveal-button{ min-height:44px; margin-top:.75rem; padding:.45rem .7rem; border:1.6px solid var(--red); border-radius:12px 16px 10px 15px / 15px 10px 16px 12px; background:transparent; color:var(--red); cursor:pointer; font-family:var(--cat); font-size:.68rem; letter-spacing:.03em; }
+  .tonal-exploratory-profile{ margin-top:.8rem; padding:.7rem .75rem; border:1.7px solid var(--teal); border-radius:14px 20px 12px 18px / 18px 12px 20px 14px; background:rgba(46,125,143,.035); }
+  .tonal-profile-heading{ display:flex; justify-content:space-between; gap:.6rem; color:var(--pen-3); font-family:var(--read); font-size:.74rem; }
+  .tonal-personal-bars{ display:grid; gap:.3rem; margin-top:.65rem; }
+  .tonal-personal-bar{ display:grid; grid-template-columns:2rem minmax(0,1fr) 1.25rem; gap:.4rem; align-items:center; min-width:0; color:var(--pen-2); font-family:var(--cat); font-size:.62rem; }
+  .tonal-personal-bar i{ display:block; min-width:2px; height:.55rem; border-radius:50%; background:linear-gradient(90deg,var(--teal),var(--red)); width:var(--tonal-profile-width,0%); }
+  .tonal-personal-bar small{ color:var(--pen-3); text-align:right; }
+  .tonal-static-fallback{ margin-top:.75rem; color:var(--pen-2); font-family:var(--read); font-size:.8rem; line-height:1.5; }
+  .tonal-static-fallback summary{ color:var(--teal); cursor:pointer; font-family:var(--cat); font-size:.66rem; letter-spacing:.04em; }
+  .tonal-static-fallback p{ margin-top:.35rem; }
+  .tonal-role-buttons{ display:flex; flex-wrap:wrap; gap:.45rem; margin-top:.8rem; }
+  .tonal-role-buttons button,.tonal-level-buttons button,.tonal-shift-buttons button{ min-height:44px; max-width:100%; padding:.45rem .7rem; border:1.6px solid var(--teal); border-radius:12px 16px 10px 15px / 15px 10px 16px 12px; background:transparent; color:var(--teal); cursor:pointer; font-family:var(--cat); font-size:.66rem; letter-spacing:.03em; overflow-wrap:anywhere; }
+  .tonal-role-buttons button:hover,.tonal-role-buttons button[aria-pressed="true"],.tonal-level-buttons button:hover,.tonal-level-buttons button[aria-pressed="true"],.tonal-shift-buttons button:hover,.tonal-shift-buttons button[aria-pressed="true"]{ border-color:var(--red); color:var(--red); background:rgba(226,78,27,.09); }
+  .tonal-role-result{ display:grid; grid-template-columns:minmax(0,1fr) minmax(15rem,1.05fr); gap:.75rem; align-items:start; margin-top:.75rem; padding:.7rem .75rem; border-left:2px solid var(--red); }
+  .tonal-role-result strong{ display:block; margin-top:.22rem; color:var(--red); font-family:var(--hand); font-size:1.6rem; line-height:1; }
+  .tonal-role-result p{ margin-top:.3rem; color:var(--pen-2); font-family:var(--read); font-size:.8rem; line-height:1.45; }
+  .tonal-role-result small{ display:block; margin-top:.4rem; color:var(--pen-3); font-family:var(--read); font-size:.72rem; line-height:1.4; }
+  .tonal-role-reading{ margin-top:.75rem; padding:.65rem .75rem; border-top:1.4px dashed rgba(28,27,25,.2); }
+  .tonal-role-reading strong{ display:block; margin-top:.2rem; color:var(--tonal-colour,var(--red)); font-family:var(--hand); font-size:1.1rem; }
+  .tonal-role-reading p{ margin-top:.25rem; color:var(--pen-2); font-family:var(--read); font-size:.82rem; line-height:1.5; }
+  .tonal-card-grid{ display:grid; grid-template-columns:minmax(0,1fr); gap:.7rem; margin-top:1rem; }
+  .tonal-card{ min-width:0; border-color:var(--tonal-colour,var(--teal)); background:rgba(255,255,255,.32); }
+  .tonal-card .read{ margin-top:.4rem; color:var(--pen-2); font-size:.84rem; line-height:1.52; }
+  .tonal-context-equation{ display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:.45rem; margin-top:1rem; color:var(--teal); font-family:var(--cat); font-size:.68rem; letter-spacing:.05em; text-align:center; }
+  .tonal-context-equation span,.tonal-context-equation strong{ max-width:100%; padding:.45rem .6rem; border:1.6px solid var(--teal); border-radius:11px 16px 10px 14px / 14px 10px 16px 11px; overflow-wrap:anywhere; }
+  .tonal-context-equation strong{ border-color:var(--red); color:var(--red); }
+  .tonal-context-equation b{ color:var(--red); font-size:1rem; }
+  .tonal-flow{ display:flex; flex-wrap:wrap; align-items:center; gap:.35rem; margin-top:1rem; }
+  .tonal-flow span{ display:flex; align-items:center; gap:.35rem; min-width:0; color:var(--teal); font-family:var(--hand); font-size:.96rem; text-align:center; }
+  .tonal-flow strong{ max-width:100%; padding:.45rem .55rem; border:1.7px solid var(--teal); border-radius:12px 17px 10px 15px / 15px 10px 17px 12px; overflow-wrap:anywhere; }
+  .tonal-flow b{ color:var(--red); font-family:var(--read); }
+  .tonal-profile{ min-width:0; margin-top:1rem; }
+  .tonal-profile-legend{ color:var(--pen-3); font-family:var(--read); font-size:.78rem; line-height:1.4; }
+  .tonal-profile-groups{ display:grid; gap:.7rem; margin-top:.75rem; }
+  .tonal-profile-group{ min-width:0; padding:.7rem; border-left:2px solid var(--teal); background:rgba(46,125,143,.035); }
+  .tonal-profile-group.triad{ border-color:var(--gold-deep); background:rgba(201,146,42,.04); }
+  .tonal-profile-group.diatonic{ border-color:var(--red); background:rgba(226,78,27,.035); }
+  .tonal-profile-group.nondiatonic{ border-color:var(--plum-deep); background:rgba(116,77,114,.035); }
+  .tonal-profile-items{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.45rem; margin-top:.5rem; }
+  .tonal-profile-item{ position:relative; display:grid; grid-template-columns:2.2rem minmax(0,1fr); gap:.25rem .4rem; align-items:start; min-width:0; padding:.45rem .5rem; border:1.3px dashed rgba(28,27,25,.24); }
+  .tonal-profile-ink{ grid-row:span 2; align-self:center; width:1.35rem; height:1.35rem; border:1.8px solid var(--teal); border-radius:50%; background:rgba(46,125,143,.16); }
+  .tonal-profile-group.triad .tonal-profile-ink{ width:1.15rem; height:1.15rem; border-color:var(--gold-deep); background:rgba(201,146,42,.16); }
+  .tonal-profile-group.diatonic .tonal-profile-ink{ width:.9rem; height:.9rem; border-color:var(--red); background:rgba(226,78,27,.14); }
+  .tonal-profile-group.nondiatonic .tonal-profile-ink{ width:.62rem; height:.62rem; border-color:var(--plum-deep); background:rgba(116,77,114,.12); }
+  .tonal-profile-item strong{ color:var(--pen); font-family:var(--hand); font-size:1.05rem; line-height:1; }
+  .tonal-profile-item small{ color:var(--pen-3); font-family:var(--cat); font-size:.58rem; line-height:1.25; overflow-wrap:anywhere; }
+  .tonal-profile-item p{ grid-column:2; color:var(--pen-2); font-family:var(--read); font-size:.75rem; line-height:1.4; }
+  .tonal-key-space{ min-width:0; margin-top:1rem; }
+  .tonal-level-buttons,.tonal-shift-buttons{ display:flex; flex-wrap:wrap; gap:.45rem; }
+  .tonal-key-space-state{ min-width:0; margin-top:.7rem; padding:.65rem .75rem; border-left:2px solid var(--plum-deep); background:rgba(116,77,114,.035); }
+  .tonal-key-space-state p{ margin-top:.25rem; color:var(--pen-2); font-family:var(--read); font-size:.82rem; line-height:1.5; }
+  .tonal-neighbourhood-map{ position:relative; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.6rem; min-height:190px; margin-top:.8rem; padding:1.2rem .8rem; border:1.7px dashed var(--plum-deep); border-radius:50%; background:radial-gradient(circle at center,rgba(138,84,112,.1),rgba(255,255,255,.18) 62%,transparent 63%); overflow:hidden; }
+  .tonal-key-node{ z-index:1; display:flex; justify-content:center; align-items:center; min-width:0; min-height:42px; padding:.35rem; border:1.5px solid var(--teal); border-radius:12px 17px 10px 15px / 15px 10px 17px 12px; color:var(--teal); background:rgba(245,243,236,.88); font-family:var(--hand); font-size:.88rem; line-height:1.15; text-align:center; overflow-wrap:anywhere; }
+  .tonal-key-node.central{ grid-column:2; grid-row:2; border-color:var(--red); color:var(--red); font-weight:700; }
+  .tonal-key-node.relation-0{ grid-column:1; grid-row:1; }
+  .tonal-key-node.relation-1{ grid-column:3; grid-row:1; }
+  .tonal-key-node.relation-2{ grid-column:1; grid-row:3; }
+  .tonal-key-node.relation-3{ grid-column:3; grid-row:3; }
+  .tonal-key-node.relation-4{ grid-column:2; grid-row:1; }
+  .tonal-key-node.relation-5{ grid-column:2; grid-row:3; }
+  .tonal-torus-lines{ position:absolute; inset:19% 15%; border:1.3px dashed var(--gold-deep); border-radius:50%; transform:rotate(-12deg); pointer-events:none; }
+  .tonal-torus-lines i{ position:absolute; inset:16% 8%; border:1px solid rgba(156,112,24,.55); border-radius:50%; transform:rotate(28deg); }
+  .tonal-torus-lines i:nth-child(2){ inset:8% 22%; transform:rotate(-48deg); }
+  .tonal-torus-lines i:nth-child(3){ inset:25% -4%; transform:rotate(76deg); }
+  .tonal-space-explain{ display:grid; grid-template-columns:minmax(12rem,.8fr) minmax(0,1.2fr); gap:1rem; align-items:center; margin-top:1rem; }
+  .tonal-space-circle{ position:relative; display:grid; place-items:center; width:min(100%,220px); aspect-ratio:1; margin-inline:auto; border:1.8px solid var(--teal); border-radius:50%; color:var(--teal); font-family:var(--hand); font-size:.9rem; }
+  .tonal-space-circle::before{ content:""; position:absolute; inset:16%; border:1.5px dashed var(--red); border-radius:50%; }
+  .tonal-space-circle span{ position:absolute; padding:.2rem .3rem; background:var(--paper); }
+  .tonal-space-circle span:nth-child(1){ top:-.45rem; }
+  .tonal-space-circle span:nth-child(2){ right:-.35rem; bottom:22%; }
+  .tonal-space-circle span:nth-child(3){ bottom:-.45rem; left:20%; }
+  .tonal-space-explain > div:last-child{ min-width:0; padding:.8rem; border-left:2px solid var(--plum-deep); }
+  .tonal-space-explain strong{ display:block; margin-top:.25rem; color:var(--plum-deep); font-family:var(--hand); font-size:1.15rem; line-height:1.2; }
+  .tonal-space-explain p{ margin-top:.35rem; color:var(--pen-2); font-family:var(--read); font-size:.82rem; line-height:1.5; }
+  .tonal-shift-visual{ min-width:0; margin-top:1rem; }
+  .tonal-shift-track{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.6rem; margin-top:.85rem; }
+  .tonal-shift-state{ position:relative; min-width:0; padding:.7rem .65rem 1rem; border:1.7px solid var(--red); border-radius:14px 20px 12px 18px / 18px 12px 20px 14px; opacity:.46; }
+  .tonal-shift-state.selected{ opacity:1; background:rgba(226,78,27,.07); transform:translateY(-3px) rotate(-.35deg); }
+  .tonal-shift-state strong{ display:block; margin-top:.3rem; color:var(--red); font-family:var(--hand); font-size:1.05rem; line-height:1.1; }
+  .tonal-shift-state p{ margin-top:.3rem; color:var(--pen-2); font-family:var(--read); font-size:.79rem; line-height:1.45; }
+  .tonal-shift-arrow{ position:absolute; top:50%; right:-.55rem; z-index:1; color:var(--red); font-family:var(--read); font-size:1.35rem; }
+  .tonal-shift-caption{ margin-top:.6rem; color:var(--pen-3); font-family:var(--read); font-size:.8rem; line-height:1.45; }
+  .tonal-exposure-flow{ display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:.4rem; margin-top:1rem; color:var(--gold-deep); font-family:var(--hand); font-size:1rem; text-align:center; }
+  .tonal-exposure-flow span{ max-width:100%; padding:.45rem .55rem; border:1.6px solid var(--gold-deep); border-radius:11px 16px 10px 14px / 14px 10px 16px 11px; overflow-wrap:anywhere; }
+  .tonal-exposure-flow b{ color:var(--red); }
+  .tonal-profile-process{ display:grid; grid-template-columns:minmax(0,1fr) 2rem minmax(0,1fr); gap:.6rem; align-items:center; margin-top:1rem; }
+  .tonal-profile-process > div{ min-width:0; padding:.75rem; border:1.7px solid var(--teal); }
+  .tonal-profile-process > div:nth-child(3){ border-color:var(--red); }
+  .tonal-profile-process strong{ display:block; margin-top:.25rem; color:var(--teal); font-family:var(--hand); font-size:1.05rem; }
+  .tonal-profile-process > div:nth-child(3) strong{ color:var(--red); }
+  .tonal-profile-process p{ margin-top:.25rem; color:var(--pen-2); font-family:var(--read); font-size:.8rem; line-height:1.45; }
+  .tonal-profile-process > b{ color:var(--red); font-size:1.35rem; text-align:center; }
+  .tonal-scope-grid{ display:grid; grid-template-columns:minmax(0,1fr); gap:.8rem; margin-top:1rem; }
+  .tonal-scope-grid ul{ list-style:none; margin:.7rem 0 0; padding:0; }
+  .tonal-scope-grid li{ margin-top:.4rem; color:var(--pen-2); font-family:var(--read); font-size:.84rem; line-height:1.48; }
+  .tonal-misconception-grid{ margin-top:1rem; }
+  .tonal-cloud-row{ display:flex; gap:.55rem; align-items:flex-start; }
+  .tonal-source-box{ margin-top:1rem; }
+  .tonal-source-heading{ display:flex; gap:.6rem; align-items:center; margin-bottom:.4rem; }
+  .tonal-source-heading h3{ color:var(--teal); font-family:var(--hand); font-size:1.15rem; }
+  .tonal-more-sources{ margin-top:1.1rem; }
+  .tonal-more-sources .src-item{ margin-top:.45rem; }
+  .tonal-lineage{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.65rem; margin-top:1rem; }
+  .tonal-lineage article{ min-width:0; padding:.7rem .8rem; border-left:2px solid var(--tonal-colour,var(--plum-deep)); background:rgba(116,77,114,.035); }
+  .tonal-lineage article strong{ display:block; margin-top:.2rem; color:var(--tonal-colour,var(--plum-deep)); font-family:var(--hand); font-size:1.05rem; line-height:1.15; }
+  .tonal-lineage article .read{ margin-top:.25rem; color:var(--pen-2); font-size:.82rem; line-height:1.5; }
+  .tonal-final-model{ min-width:0; margin-top:1.15rem; padding:.9rem; border:2px dashed var(--plum-deep); border-radius:19px 27px 16px 24px / 24px 16px 27px 19px; background:rgba(116,77,114,.035); }
+  .tonal-final-core{ display:flex; flex-direction:column; align-items:center; gap:.3rem; margin-top:.7rem; }
+  .tonal-final-core span,.tonal-final-lateral span,.tonal-final-temporal span{ max-width:100%; padding:.45rem .65rem; border:1.7px solid var(--teal); border-radius:12px 18px 10px 16px / 16px 10px 18px 12px; color:var(--teal); font-family:var(--hand); text-align:center; overflow-wrap:anywhere; }
+  .tonal-final-core b,.tonal-final-lateral b,.tonal-final-temporal b{ color:var(--red); }
+  .tonal-final-lateral,.tonal-final-temporal{ display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:.45rem; margin-top:.65rem; text-align:center; }
+  .tonal-final-lateral span:last-child{ border-color:var(--gold-deep); color:var(--gold-deep); }
+  .tonal-final-temporal span:first-child{ border-color:var(--red); color:var(--red); }
+  .tonal-final-temporal span:last-child{ border-color:var(--plum-deep); color:var(--plum-deep); }
+  .tonal-final-influences{ display:flex; flex-wrap:wrap; justify-content:center; gap:.35rem; margin-top:.7rem; padding:.55rem; border:1.5px dashed var(--pen-3); color:var(--pen-2); font-family:var(--cat); font-size:.62rem; letter-spacing:.04em; text-align:center; }
+  .tonal-final-influences span{ max-width:100%; overflow-wrap:anywhere; }
+  .tonal-final-boundary{ margin-top:.75rem; color:var(--plum-deep); font-family:var(--hand); font-size:1.05rem; text-align:center; }
+  .tonal-provenance{ margin-top:.8rem; }
+
+  @media(min-width:700px){
+    .tonal-card-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .tonal-profile-groups{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  }
+
+  @media(max-width:640px){
+    .tonal-interaction-heading,.tonal-selected-probe-heading,.tonal-profile-heading{ flex-direction:column; align-items:flex-start; gap:.3rem; }
+    .tonal-interaction-state{ align-self:flex-start; }
+    .tonal-context-panel,.tonal-role-result,.tonal-space-explain{ grid-template-columns:minmax(0,1fr); }
+    .tonal-probe-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .tonal-probe-question{ max-width:none; text-align:left; }
+    .tonal-profile-items{ grid-template-columns:minmax(0,1fr); }
+    .tonal-flow{ flex-direction:column; align-items:stretch; }
+    .tonal-flow span{ flex-direction:column; }
+    .tonal-flow b{ transform:rotate(90deg); }
+    .tonal-space-circle{ width:min(100%,190px); }
+    .tonal-shift-track{ grid-template-columns:minmax(0,1fr); }
+    .tonal-shift-state.selected{ transform:rotate(-.35deg); }
+    .tonal-shift-arrow{ position:static; display:block; margin:.3rem auto -.7rem; text-align:center; transform:rotate(90deg); }
+    .tonal-profile-process{ grid-template-columns:minmax(0,1fr); }
+    .tonal-profile-process > b{ transform:rotate(90deg); }
+    .tonal-lineage{ grid-template-columns:minmax(0,1fr); }
+    .tonal-neighbourhood-map{ min-height:230px; border-radius:25px; }
+    .tonal-key-node{ font-size:.8rem; }
+    .tonal-final-core span,.tonal-final-lateral span,.tonal-final-temporal span{ max-width:100%; }
+  }

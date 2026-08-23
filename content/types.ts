@@ -202,6 +202,25 @@ export type AudioPreset = {
   colour: string;
 };
 
+export type TonalProbe = {
+  pitchClass: string;
+  note: string;
+  midi: number;
+  role: string;
+  body: string;
+  colour: string;
+};
+
+export type TonalContext = {
+  id: string;
+  label: string;
+  body: string;
+  events: AudioEvent[];
+  controls: string;
+  colour: string;
+  role?: string;
+};
+
 export type AudioChoice = {
   label: string;
   body: string;
@@ -313,6 +332,36 @@ export type ASARecordContent = {
   evidence: { lede: string; items: EvidenceXray[] };
   scope: { lede: string; explains: string[]; stops: string[]; note: string };
   lineage: { lede: string; nodes: ASACard[]; note: string };
+};
+
+export type TonalCard = { label: string; body: string; colour: string };
+
+export type TonalProfileItem = {
+  note: string;
+  pitchClass: string;
+  role: string;
+  level: "anchor" | "triad" | "diatonic" | "nondiatonic";
+  body: string;
+};
+
+export type TonalRecordContent = {
+  opening: { lede: string; context: TonalContext; probes: TonalProbe[]; note: string };
+  context: { lede: string; cards: TonalCard[]; note: string };
+  measurement: { lede: string; cards: TonalCard[]; note: string };
+  probeLab: { lede: string; context: TonalContext; probes: TonalProbe[]; note: string };
+  profile: { lede: string; items: TonalProfileItem[]; note: string };
+  sameNote: { lede: string; probe: TonalProbe; contexts: TonalContext[]; note: string };
+  dimensions: { lede: string; cards: TonalCard[]; note: string };
+  representation: { lede: string; cards: TonalCard[]; note: string };
+  neighbourhood: { lede: string; note: string; levels: { label: string; body: string; relations: string[] }[] };
+  keySpace: { lede: string; note: string };
+  dynamics: { lede: string; note: string; states: TonalCard[] };
+  distribution: { lede: string; note: string; cards: TonalCard[] };
+  development: { lede: string; note: string; cards: TonalCard[] };
+  culture: { lede: string; note: string; cards: TonalCard[] };
+  process: { lede: string; note: string; cards: TonalCard[] };
+  scope: { lede: string; explains: string[]; stops: string[]; note: string };
+  lineage: { lede: string; note: string; nodes: TonalCard[] };
 };
 
 export type ScopeMap = {
@@ -638,6 +687,7 @@ export type TheoryRecord = RecordBase & {
   scopeMap?: ScopeMap;
   meyer?: MeyerRecordContent;
   asa?: ASARecordContent;
+  tonal?: TonalRecordContent;
   sdt?: SDTRecordContent;
   set?: SETRecordContent;
 };

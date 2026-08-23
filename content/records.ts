@@ -12,13 +12,14 @@ import { selfDeterminationTheory } from "./self-determination-theory";
 import { socialExchangeTheory } from "./social-exchange-theory";
 import { meyersExpectancyTheory } from "./meyers-expectancy-theory";
 import { auditorySceneAnalysis } from "./auditory-scene-analysis";
+import { tonalHierarchy } from "./tonal-hierarchy";
 
 /**
  * The registry. Adding a record means appending one entry here — it then
  * appears in the library, in search, in the filters, in saved, and in the
  * "elsewhere" block on every other record, with no route or template change.
  */
-export const RECORDS: AnyRecord[] = [personEnvironmentFit, personOrganisationFit, jobDemandsResources, workplaceDesign, musicPreference, affectiveEventsTheory, selfDeterminationTheory, socialExchangeTheory, meyersExpectancyTheory, auditorySceneAnalysis, hpaAxis, ipa, rta, tunedOutPaper];
+export const RECORDS: AnyRecord[] = [personEnvironmentFit, personOrganisationFit, jobDemandsResources, workplaceDesign, musicPreference, affectiveEventsTheory, selfDeterminationTheory, socialExchangeTheory, meyersExpectancyTheory, auditorySceneAnalysis, tonalHierarchy, hpaAxis, ipa, rta, tunedOutPaper];
 
 export const KIND: Record<RecordKind, {
   label: string; nav: string; colour: string; fill: string; stroke: string; cls: string; path: string; cta: string;

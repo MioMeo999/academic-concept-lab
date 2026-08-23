@@ -6,6 +6,7 @@ import { SDTBody } from "./SDTBody";
 import { SETBody } from "./SETBody";
 import { ASABody } from "./ASABody";
 import { MeyerBody } from "./MeyerBody";
+import { TonalBody } from "./TonalBody";
 import { RECORDS, KIND, recordHref } from "@/content/records";
 import { Cascade } from "./Cascade";
 import { TheoryDemo } from "./TheoryDemo";
@@ -83,6 +84,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
   if (r.set) return <SETBody record={r} />;
   if (r.asa) return <ASABody record={r} />;
   if (r.meyer) return <MeyerBody record={r} />;
+  if (r.tonal) return <TonalBody record={r} />;
 
   const B: Block[] = [];
 
