@@ -10,6 +10,7 @@ import { TonalBody } from "./TonalBody";
 import { GestaltBody } from "./GestaltBody";
 import { GTTMBody } from "./GTTMBody";
 import { NarmourBody } from "./NarmourBody";
+import { HuronBody } from "./HuronBody";
 import { RECORDS, KIND, recordHref } from "@/content/records";
 import { Cascade } from "./Cascade";
 import { TheoryDemo } from "./TheoryDemo";
@@ -91,6 +92,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
   if (r.gestalt) return <GestaltBody record={r} />;
   if (r.gttm) return <GTTMBody record={r} />;
   if (r.narmour) return <NarmourBody record={r} />;
+  if (r.huron) return <HuronBody record={r} />;
 
   const B: Block[] = [];
 

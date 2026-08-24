@@ -477,6 +477,76 @@ export type NarmourRecordContent = {
   matrix: { lede: string; candidates: NarmourCandidate[]; note: string };
 };
 
+export type HuronResponseKey = "imagination" | "tension" | "prediction" | "reaction" | "appraisal";
+
+export type HuronResponseWindow = {
+  key: HuronResponseKey;
+  label: string;
+  epoch: string;
+  question: string;
+  body: string;
+  function: string;
+  boundary: string;
+  colour: string;
+  start: number;
+  end: number;
+};
+
+export type HuronTimingPreset = {
+  label: string;
+  body: string;
+  events: AudioEvent[];
+  expectedOnset: string;
+  actualOnset: string;
+  delay: string;
+  tempo: string;
+  pitch: string;
+  timbre: string;
+  gain: string;
+  held: string;
+  variable: string;
+  colour: string;
+  markers?: AudioMarker[];
+};
+
+export type HuronLens = {
+  label: string;
+  question: string;
+  body: string;
+  boundary: string;
+  colour: string;
+};
+
+export type HuronExpectationSource = {
+  label: string;
+  question: string;
+  body: string;
+  memory: string;
+  colour: string;
+};
+
+export type HuronRecordContent = {
+  identity: { knowledgeForm: string; status: string; discipline: string; branch: string };
+  finalModelNote: string;
+  opening: { lede: string; question: string; note: string; timing: { lede: string; presets: HuronTimingPreset[]; question: string; note: string } };
+  overview: { lede: string; cards: ASACard[]; note: string };
+  timeline: { lede: string; windows: HuronResponseWindow[]; note: string };
+  imagination: { lede: string; cards: ASACard[]; note: string };
+  tension: { lede: string; cards: ASACard[]; note: string };
+  outcome: { lede: string; cards: ASACard[]; note: string };
+  prediction: { lede: string; cards: ASACard[]; note: string };
+  parallel: { lede: string; cards: ASACard[]; note: string };
+  appraisal: { lede: string; cards: ASACard[]; note: string };
+  surprise: { lede: string; event: string; events: AudioEvent[]; lenses: HuronLens[]; note: string };
+  valence: { lede: string; steps: { label: string; body: string; colour: string }[]; note: string };
+  sourcesOfExpectation: { lede: string; sources: HuronExpectationSource[]; note: string };
+  schematicVeridical: { lede: string; cards: ASACard[]; note: string };
+  dynamic: { lede: string; cards: ASACard[]; note: string };
+  evidence: { lede: string; items: EvidenceXray[]; note: string };
+  adaptive: { lede: string; cards: ASACard[]; note: string };
+  scope: { lede: string; explains: string[]; stops: string[]; note: string };
+};
+
 export type TonalCard = { label: string; body: string; colour: string };
 
 export type TonalProfileItem = {
@@ -836,6 +906,7 @@ export type TheoryRecord = RecordBase & {
   gestalt?: GestaltRecordContent;
   gttm?: GTTMRecordContent;
   narmour?: NarmourRecordContent;
+  huron?: HuronRecordContent;
 };
 
 /* ---------------- empirical study ---------------- */
