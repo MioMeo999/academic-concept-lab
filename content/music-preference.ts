@@ -18,6 +18,8 @@ export const musicPreference: TheoryRecord = {
   oneSentence:
     "Musical preference is not a single theory but a research field: how preferences are structured, why people differ, what shapes them, and what happens when people choose their own music.",
   discipline: "music-psych",
+  knowledgeForm: "framework",
+  knowledgeFormQualifier: "Research field / person–music fit and preference",
   statusChip: "Research field",
   topics: ["music preference", "personality", "MUSIC model", "STOMP", "familiarity", "identity", "music at work", "self-selection"],
   facts: ["a field, not one theory", "4 → 5 factor models", "1995 → 2011", "7 sources"],

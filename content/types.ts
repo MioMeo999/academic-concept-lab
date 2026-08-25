@@ -32,6 +32,20 @@ export type RecordKind = "theory" | "study" | "method" | "mechanism";
 
 export type ProvenanceGlyph = "●" | "■" | "▲" | "✦" | "?";
 
+export type KnowledgeForm =
+  | "theory"
+  | "framework"
+  | "formal-model"
+  | "computational-model"
+  | "perceptual-tradition";
+
+export type LiteratureStanding =
+  | "historical-anchor"
+  | "foundational"
+  | "influential"
+  | "active-developing"
+  | "contested";
+
 /** Where a claim came from. Required on every record — it is the field that
  *  makes everything else on the page trustworthy. */
 export type Provenance = {
@@ -56,6 +70,11 @@ type RecordBase = {
   hook: string;
   oneSentence: string;
   discipline: string;
+  /** Optional Atlas metadata; existing records remain valid without it. */
+  primaryBranch?: string;
+  knowledgeForm?: KnowledgeForm;
+  knowledgeFormQualifier?: string;
+  literatureStanding?: LiteratureStanding[];
   topics: string[];
   /** Chips on the library card. */
   facts: string[];
