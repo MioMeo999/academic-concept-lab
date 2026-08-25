@@ -13,6 +13,7 @@ import { NarmourBody } from "./NarmourBody";
 import { HuronBody } from "./HuronBody";
 import { StatisticalBody } from "./StatisticalBody";
 import { IdyomBody } from "./IdyomBody";
+import { PredictiveProcessingBody } from "./PredictiveProcessingBody";
 import { RECORDS, KIND, recordHref } from "@/content/records";
 import { Cascade } from "./Cascade";
 import { TheoryDemo } from "./TheoryDemo";
@@ -97,6 +98,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
   if (r.huron) return <HuronBody record={r} />;
   if (r.statistical) return <StatisticalBody record={r} />;
   if (r.idyom) return <IdyomBody record={r} />;
+  if (r.predictiveProcessing) return <PredictiveProcessingBody record={r} />;
 
   const B: Block[] = [];
 

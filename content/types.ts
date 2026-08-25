@@ -679,6 +679,58 @@ export type IdyomRecordContent = {
   stops: IdyomSection;
 };
 
+export type PredictiveCard = { label: string; body: string; colour: string };
+
+export type PredictiveSection = {
+  lede: string;
+  cards: PredictiveCard[];
+  note: string;
+};
+
+export type PredictivePrecisionContext = {
+  label: string;
+  history: string;
+  sigmaMs: number;
+  targetOffsetMs: number;
+  colour: string;
+  interpretation: string;
+};
+
+export type PredictiveOmissionInteraction = {
+  lede: string;
+  preceding: string[];
+  expected: string;
+  note: string;
+};
+
+export type PredictiveFinalModel = {
+  lede: string;
+  nodes: PredictiveCard[];
+  note: string;
+};
+
+export type PredictiveProcessingRecordContent = {
+  identity: { knowledgeForm: string; status: string; discipline: string; branch: string };
+  opening: PredictiveSection;
+  nextNote: PredictiveSection;
+  generative: PredictiveSection;
+  messagePassing: PredictiveSection;
+  error: PredictiveSection;
+  precision: PredictiveSection;
+  firstSecond: PredictiveSection;
+  attention: PredictiveSection;
+  precisionInteraction: { lede: string; contexts: [PredictivePrecisionContext, PredictivePrecisionContext]; note: string };
+  omission: PredictiveOmissionInteraction;
+  hierarchy: PredictiveSection;
+  zeroError: PredictiveSection;
+  pcm: PredictiveSection;
+  culture: PredictiveSection;
+  activeInference: PredictiveSection;
+  signals: { lede: string; items: EvidenceXray[]; note: string };
+  critical: PredictiveSection;
+  finalModel: PredictiveFinalModel;
+};
+
 export type TonalCard = { label: string; body: string; colour: string };
 
 export type TonalProfileItem = {
@@ -1041,6 +1093,7 @@ export type TheoryRecord = RecordBase & {
   huron?: HuronRecordContent;
   statistical?: StatisticalRecordContent;
   idyom?: IdyomRecordContent;
+  predictiveProcessing?: PredictiveProcessingRecordContent;
 };
 
 /* ---------------- empirical study ---------------- */

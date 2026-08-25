@@ -35,6 +35,22 @@ const libraryHtml = await (await render("/concept-lab/library")).text();
 const homeHtml = await (await render("/concept-lab")).text();
 const statisticalHtml = await (await render("/concept-lab/theory/statistical-learning-of-music")).text();
 const idyomHtml = await (await render("/concept-lab/theory/idyom-information-dynamics-of-music")).text();
+const predictiveProcessingHtml = await (await render("/concept-lab/theory/predictive-processing-in-music")).text();
+
+test("Predictive Processing in Music preserves its model boundaries", () => {
+  assert.match(predictiveProcessingHtml, /Predictive Processing in Music/);
+  assert.match(predictiveProcessingHtml, /PREDICTIVE PROCESSING/);
+  assert.match(predictiveProcessingHtml, /PREDICTIVE CODING/);
+  assert.match(predictiveProcessingHtml, /Predictive Coding of Music/);
+  assert.match(predictiveProcessingHtml, /IDyOM information content/);
+  assert.match(predictiveProcessingHtml, /Same deviation\. Different precision/);
+  assert.match(predictiveProcessingHtml, /same \+120 ms displacement/);
+  assert.match(predictiveProcessingHtml, /The note that never came/);
+  assert.match(predictiveProcessingHtml, /25 non-musicians/);
+  assert.match(predictiveProcessingHtml, /24/);
+  assert.match(predictiveProcessingHtml, /Rethinking Predictive Processing/);
+  assert.match(predictiveProcessingHtml, /Where every claim came from/);
+});
 
 test("IDyOM renders validated probability teaching systems", () => {
   assert.match(idyomHtml, /What did the model expect/);
