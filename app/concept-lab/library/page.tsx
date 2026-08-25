@@ -3,6 +3,7 @@ import { RECORDS, KIND } from "@/content/records";
 import { DISCIPLINES } from "@/content/disciplines";
 import type { RecordKind } from "@/content/types";
 import { LibraryBrowser } from "../_components/LibraryBrowser";
+import { DisciplineNav } from "../_components/DisciplineNav";
 import { Crumbs } from "../_components/RecordShell";
 
 export const metadata: Metadata = { title: "Library" };
@@ -25,7 +26,8 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
           Every record, filterable. The library is the surface that scales — no record ever needs to appear in the main navigation.
         </p>
       </section>
-      <LibraryBrowser records={RECORDS} disciplines={DISCIPLINES} initialKind={kind} initialDiscipline={discipline} />
+      <DisciplineNav disciplines={DISCIPLINES} current={discipline} />
+      <LibraryBrowser records={RECORDS} disciplines={DISCIPLINES} initialKind={kind} initialDiscipline={discipline} showDisciplineSelect={false} />
     </div>
   );
 }

@@ -36,7 +36,7 @@ export const KIND: Record<RecordKind, {
     fill: "#2E7D8F", stroke: "#22606E", cls: "teal", path: "theory", cta: "Read the theory",
   },
   study: {
-    label: "Evidence record", nav: "Empirical study", colour: "var(--red)",
+    label: "Study record", nav: "Study", colour: "var(--red)",
     fill: "#E24E1B", stroke: "#B23C10", cls: "red", path: "study", cta: "Read the evidence",
   },
   method: {

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { RECORDS, KIND } from "@/content/records";
 import { DISCIPLINES } from "@/content/disciplines";
 import type { RecordKind } from "@/content/types";
+import { getBranchesForDiscipline, getDisciplineOrientation, getDisciplineRecordCount } from "@/content/atlas";
 import { Banner, Divider, Icon } from "./_components/Sketch";
 import { RecordCard } from "./_components/RecordCard";
 
@@ -62,6 +63,10 @@ export default function ConceptLabHome() {
   const disciplineCounts = Object.values(DISCIPLINES)
     .map((d) => ({ d, n: RECORDS.filter((r) => r.discipline === d.id).length }))
     .filter((x) => x.n > 0);
+  const majorDisciplines = ["ob", "music-psych"]
+    .map((id) => ({ d: DISCIPLINES[id], n: getDisciplineRecordCount(RECORDS, id), orientation: getDisciplineOrientation(id) }))
+    .filter((x) => x.d && x.n > 0);
+  const secondaryDisciplines = disciplineCounts.filter(({ d }) => !majorDisciplines.some((major) => major.d.id === d.id));
   const starters = START_HERE.map((s) => ({ ...s, record: RECORDS.find((r) => r.id === s.id) })).filter((s) => s.record);
 
   return (
@@ -82,6 +87,51 @@ export default function ConceptLabHome() {
           <span><b>{RECORDS.length}</b> records</span>
           <span><b>{counts.length}</b> kinds</span>
           <span><b>{disciplineCounts.length}</b> disciplines</span>
+        </div>
+      </section>
+
+      <Divider />
+
+      {/* The atlas begins with the two disciplines that currently carry the most questions. */}
+      <section>
+        <span className="k">explore by discipline</span>
+        <p className="lede atlas-discovery-lede">
+          Start with the field that frames your question. Each surface opens the live library, where records remain traceable to their kind and evidence.
+        </p>
+        <div className="discipline-panels">
+          {majorDisciplines.map(({ d, n, orientation }) => (
+            <article className="discipline-panel" key={d.id} data-reveal="rise">
+              <div className="discipline-panel-head">
+                <span className="atlas-index">{d.id === "ob" ? "01" : "02"}</span>
+                <div>
+                  <h2>{d.name}</h2>
+                  <span className="discipline-count"><b>{n}</b> {n === 1 ? "record" : "records"}</span>
+                </div>
+              </div>
+              <p className="read discipline-orientation">{orientation?.summary}</p>
+              <div className="discipline-themes" aria-label={`${d.name} current themes`}>
+                {orientation?.themes.map((theme) => <span key={theme}>{theme}</span>)}
+              </div>
+              {d.id === "music-psych" && (
+                <p className="discipline-branch-note">
+                  <b>{getBranchesForDiscipline(d.id).length}</b> current branches in the atlas
+                </p>
+              )}
+              <Link className="discipline-explore" href={`/concept-lab/library?discipline=${d.id}`}>
+                Explore {d.short} <span aria-hidden="true">→</span>
+              </Link>
+            </article>
+          ))}
+        </div>
+        <div className="secondary-disciplines">
+          <span className="k">also in the lab</span>
+          <div className="secondary-disciplines-list">
+            {secondaryDisciplines.map(({ d, n }) => (
+              <Link className="disc-chip" href={`/concept-lab/library?discipline=${d.id}`} key={d.id}>
+                {d.name}<span className="disc-n">{n}</span>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -156,18 +206,6 @@ export default function ConceptLabHome() {
         </div>
       </section>
 
-      <Divider />
-
-      <section style={{ paddingBottom: "1rem" }}>
-        <span className="k">or browse by discipline</span>
-        <div style={{ display: "flex", gap: ".45rem", flexWrap: "wrap", marginTop: ".7rem" }}>
-          {disciplineCounts.map(({ d, n }) => (
-            <Link className="disc-chip" href={`/concept-lab/library?discipline=${d.id}`} key={d.id}>
-              {d.name}<span className="disc-n">{n}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }

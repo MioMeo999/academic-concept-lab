@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { AnyRecord } from "@/content/types";
 import { KIND, recordHref } from "@/content/records";
 import { DISCIPLINES } from "@/content/disciplines";
+import { getBranch, getKnowledgeFormLabel } from "@/content/atlas";
 import { GoArrow, Icon, Ribbon } from "./Sketch";
 import { SaveButton } from "./SaveButton";
 
@@ -9,6 +10,11 @@ import { SaveButton } from "./SaveButton";
  *  thing you are about to open before reading the title. */
 export function RecordCard({ record }: { record: AnyRecord }) {
   const k = KIND[record.kind];
+  const discipline = DISCIPLINES[record.discipline];
+  const branch = record.primaryBranch ? getBranch(record.primaryBranch, record.discipline) : undefined;
+  const editorialStatusNote = ["Subtype of P–E Fit", "Commonly confused", "Research field", "A system, not a theory"].includes(record.statusChip ?? "")
+    ? record.statusChip
+    : undefined;
   const art =
     record.kind === "mechanism" ? (
       <div style={{ display: "flex", alignItems: "flex-end", gap: ".2rem", flex: "none" }}>
@@ -41,31 +47,31 @@ export function RecordCard({ record }: { record: AnyRecord }) {
       <div className="inner">
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: ".7rem" }}>
           <Ribbon text={k.label.toUpperCase()} fill={k.fill} stroke={k.stroke} tilt={record.kind === "study" ? "tilt-r" : "tilt-l"} />
-          <div style={{ display: "flex", alignItems: "center", gap: ".5rem" }}>
-            {art}
-            <SaveButton id={record.id} />
-          </div>
+          {art}
         </div>
+        <p className="card-context">
+          {discipline?.name ?? record.discipline}
+          {branch && <><span aria-hidden="true"> · </span>{branch.label}</>}
+        </p>
         <h3>{record.title}</h3>
-        {/* With more than one discipline in the library, which field a record
-            belongs to is part of knowing what you are about to open. */}
-        <div style={{ display: "flex", gap: ".4rem", flexWrap: "wrap", margin: ".45rem 0 .1rem" }}>
-          <span className="chip grey" style={{ fontSize: ".72rem" }}>
-            {DISCIPLINES[record.discipline]?.name ?? record.discipline}
-          </span>
-          {record.statusChip && (
-            <span className="chip red" style={{ fontSize: ".72rem" }}>{record.statusChip}</span>
-          )}
-        </div>
         <p className="ck">{record.hook}</p>
+        {record.oneSentence && <p className="card-summary">{record.oneSentence}</p>}
+        {editorialStatusNote && <p className="card-status-note">{editorialStatusNote}</p>}
         <div className="facts">
           {record.facts.map((f) => (
             <span className="fact" key={f}>{f}</span>
           ))}
         </div>
-        <div className="go">
-          <span>{k.cta}</span>
-          <GoArrow />
+        <div className="card-footer">
+          <div className="card-footer-labels">
+            <span className={`chip ${k.cls}`}>{k.label}</span>
+            {record.knowledgeForm && <span className="chip form-badge">{getKnowledgeFormLabel(record.knowledgeForm)}</span>}
+          </div>
+          <SaveButton id={record.id} />
+          <Link className="go" href={recordHref(record)}>
+            <span>{k.cta}</span>
+            <GoArrow />
+          </Link>
         </div>
       </div>
     </article>

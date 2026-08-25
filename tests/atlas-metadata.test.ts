@@ -7,10 +7,15 @@ import {
   CORE_MUSIC_PSYCHOLOGY_RECORD_IDS,
   getBranch,
   getBranchesForDiscipline,
+  getDisciplineRecordCount,
+  getPresentationGroupsForDiscipline,
   getKnowledgeFormLabel,
   getLearningPathsForDiscipline,
   getRelatedRecordsForRecord,
   getRelationsForRecord,
+  getUnbranchedRecords,
+  groupRecordsByBranch,
+  groupRecordsByDiscipline,
   KNOWLEDGE_FORM_LABELS,
   LEARNING_PATHS,
   validateAtlasMetadata,
@@ -142,6 +147,29 @@ test("learning paths preserve the approved deterministic order", () => {
     ["gestalt-principles-in-music", "auditory-scene-analysis", "tonal-hierarchy", "generative-theory-of-tonal-music"],
     ["meyers-expectancy-theory", "narmours-implication-realization-theory", "hurons-itpra-theory"],
     ["statistical-learning-of-music", "idyom-information-dynamics-of-music", "predictive-processing-in-music"],
+  ]);
+});
+
+test("atlas presentation groups stay registry-backed and live", () => {
+  assert.equal(getDisciplineRecordCount(RECORDS, "ob"), 8);
+  assert.equal(getDisciplineRecordCount(RECORDS, "music-psych"), 11);
+  assert.deepEqual(groupRecordsByDiscipline(RECORDS).map(({ discipline, records }) => [discipline.id, records.length]), [
+    ["ob", 8],
+    ["music-psych", 11],
+    ["qual-methods", 2],
+    ["psychobiology", 1],
+  ]);
+  assert.deepEqual(groupRecordsByBranch(RECORDS, "music-psych").map(({ branch, records }) => [branch.id, records.length]), [
+    ["perception-organisation", 2],
+    ["musical-structure-grammar", 2],
+    ["expectation-prediction", 6],
+  ]);
+  assert.deepEqual(getUnbranchedRecords(RECORDS, "music-psych").map((record) => record.id), ["music-preference"]);
+  assert.deepEqual(getPresentationGroupsForDiscipline(RECORDS, "ob").map((group) => [group.id, group.records.length]), [
+    ["work-fit", 2],
+    ["work-experience", 3],
+    ["motivation-exchange", 2],
+    ["study-evidence", 1],
   ]);
 });
 
