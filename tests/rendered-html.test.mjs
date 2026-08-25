@@ -34,6 +34,25 @@ for (const [pathname, expected] of [
 const libraryHtml = await (await render("/concept-lab/library")).text();
 const homeHtml = await (await render("/concept-lab")).text();
 const statisticalHtml = await (await render("/concept-lab/theory/statistical-learning-of-music")).text();
+const idyomHtml = await (await render("/concept-lab/theory/idyom-information-dynamics-of-music")).text();
+
+test("IDyOM renders validated probability teaching systems", () => {
+  assert.match(idyomHtml, /What did the model expect/);
+  assert.match(idyomHtml, /PROBABILITY DISTRIBUTION/i);
+  assert.match(idyomHtml, /Same surprise\. Different uncertainty/);
+  assert.match(idyomHtml, /sum = <!-- -->1\.000/);
+  assert.match(idyomHtml, /3\.321928/);
+  assert.match(idyomHtml, /0\.921928/);
+  assert.match(idyomHtml, /1\.368996/);
+  assert.match(idyomHtml, /Old experience\. New pattern/);
+  assert.match(idyomHtml, /Five configurations/);
+  assert.match(idyomHtml, /The model only knows what you represent/);
+  assert.match(idyomHtml, /A corpus isn’t a culture/);
+  assert.match(idyomHtml, /Predictive uncertainty in auditory sequence processing/);
+  assert.match(idyomHtml, /did not disprove the entire Narmour architecture/);
+  assert.match(idyomHtml, /not a hierarchical cortical architecture/);
+  assert.match(idyomHtml, /Where every claim came from/);
+});
 
 test("statistical learning record renders its audited teaching systems", () => {
   assert.match(statisticalHtml, /Research framework \/ mechanism family/);

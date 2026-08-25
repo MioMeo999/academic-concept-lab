@@ -2058,3 +2058,111 @@
     .stat-related{ grid-template-columns:minmax(0,1fr); }
     .stat-trail-item{ grid-template-columns:4rem minmax(0,1fr); }
   }
+
+  /* ---------- IDyOM — probability becoming information. */
+  .idyom-mark{ display:inline-block; color:var(--red); font-family:var(--cat); font-size:.72em; font-weight:700; vertical-align:.12em; }
+  .idyom-note{ max-width:72ch; margin-top:1rem; color:var(--pen-3); font-family:var(--read); font-size:.82rem; line-height:1.55; overflow-wrap:anywhere; }
+  .idyom-identity{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.6rem; margin-top:1rem; padding:.7rem .75rem; border-top:1.5px dashed rgba(28,27,25,.25); border-bottom:1.5px dashed rgba(28,27,25,.25); }
+  .idyom-identity > div{ min-width:0; }
+  .idyom-identity p{ margin-top:.25rem; color:var(--pen-2); font-family:var(--read); font-size:.78rem; line-height:1.4; overflow-wrap:anywhere; }
+  .idyom-card-grid{ display:grid; grid-template-columns:minmax(0,1fr); gap:.7rem; margin-top:1rem; }
+  .idyom-card{ min-width:0; border-color:var(--idyom-colour,var(--teal)); background:rgba(255,255,255,.3); }
+  .idyom-card .read{ margin-top:.4rem; color:var(--pen-2); font-size:.84rem; line-height:1.52; overflow-wrap:anywhere; }
+  .idyom-toggle{ display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.8rem; }
+  .idyom-toggle button{ min-width:44px; min-height:44px; max-width:100%; padding:.45rem .7rem; border:1.6px solid var(--teal); border-radius:12px 17px 10px 15px / 15px 10px 17px 12px; background:transparent; color:var(--teal); cursor:pointer; font-family:var(--cat); font-size:.66rem; letter-spacing:.03em; overflow-wrap:anywhere; }
+  .idyom-toggle button[aria-pressed="true"]{ background:rgba(46,125,143,.1); }
+  .idyom-toggle button:focus-visible{ outline:3px solid rgba(226,78,27,.34); outline-offset:3px; }
+  .idyom-interaction-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:.8rem; min-width:0; }
+  .idyom-interaction-head h3{ margin-top:.25rem; color:var(--red); font-family:var(--hand); font-size:1.45rem; line-height:1.1; overflow-wrap:anywhere; }
+  .idyom-state{ flex:none; color:var(--pen-3); font-family:var(--cat); font-size:.64rem; letter-spacing:.07em; white-space:nowrap; }
+  .idyom-signature,.idyom-microworld{ min-width:0; margin-top:1rem; padding:.9rem; border-color:var(--red); background:rgba(226,78,27,.035); }
+  .idyom-context-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.7rem; margin-top:.9rem; }
+  .idyom-context-card{ min-width:0; padding:.7rem; border:1.6px solid var(--teal); background:rgba(255,255,255,.38); }
+  .idyom-context-card h3{ color:var(--teal); font-family:var(--hand); font-size:1.25rem; }
+  .idyom-distribution{ margin-top:.55rem; }
+  .idyom-distribution-head{ display:flex; justify-content:space-between; gap:.4rem; color:var(--pen-3); font-family:var(--cat); font-size:.62rem; letter-spacing:.04em; }
+  .idyom-prob-row{ display:grid; grid-template-columns:4.2rem minmax(0,1fr) 2.3rem; gap:.4rem; align-items:center; margin-top:.5rem; min-width:0; }
+  .idyom-prob-label{ color:var(--pen-2); font-family:var(--read); font-size:.75rem; overflow-wrap:anywhere; }
+  .idyom-prob-row.actual .idyom-prob-label,.idyom-prob-row.actual b{ color:var(--red); font-weight:700; }
+  .idyom-prob-track{ display:block; height:.55rem; border-radius:99px; background:rgba(28,27,25,.12); overflow:hidden; }
+  .idyom-prob-track i{ display:block; height:100%; border-radius:inherit; background:var(--teal); }
+  .idyom-prob-row.actual .idyom-prob-track i{ background:var(--red); }
+  .idyom-prob-row b{ color:var(--teal); font-family:var(--hand); font-size:.95rem; text-align:right; }
+  .idyom-measure-pair{ display:grid; gap:.65rem; margin-top:.6rem; }
+  .idyom-measure-pair > div{ min-width:0; padding:.55rem .6rem; border-left:2px solid var(--gold-deep); background:rgba(201,146,42,.055); }
+  .idyom-measure-pair strong{ display:block; margin-top:.22rem; color:var(--gold-deep); font-family:var(--hand); font-size:1.12rem; overflow-wrap:anywhere; }
+  .idyom-measure-pair small{ display:block; margin-top:.12rem; color:var(--pen-3); font-family:var(--read); font-size:.69rem; line-height:1.4; }
+  .idyom-signature-reveal{ margin-top:.85rem; padding:.65rem .7rem; border-left:3px solid var(--gold-deep); color:var(--pen-2); font-family:var(--read); font-size:.82rem; line-height:1.5; background:rgba(201,146,42,.05); overflow-wrap:anywhere; }
+  .idyom-caption{ margin-top:.8rem; color:var(--pen-3); font-family:var(--read); font-size:.78rem; line-height:1.5; overflow-wrap:anywhere; }
+  .idyom-microworld{ border-color:var(--teal); background:rgba(46,125,143,.035); }
+  .idyom-microworld .idyom-interaction-head h3{ color:var(--teal); }
+  .idyom-micro-lede{ margin-top:.65rem; line-height:1.5; }
+  .idyom-memory-compare{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.7rem; margin-top:.9rem; }
+  .idyom-memory-column{ min-width:0; padding:.7rem; border-top:2px solid var(--teal); background:rgba(46,125,143,.045); }
+  .idyom-memory-column.stm{ border-top-color:var(--red); background:rgba(226,78,27,.045); }
+  .idyom-memory-column strong{ display:block; margin-top:.25rem; color:var(--teal); font-family:var(--hand); font-size:1.35rem; }
+  .idyom-memory-column.stm strong{ color:var(--red); }
+  .idyom-memory-column p{ margin-top:.25rem; color:var(--pen-2); font-family:var(--read); font-size:.78rem; line-height:1.45; overflow-wrap:anywhere; }
+  .idyom-strength{ display:inline-block; margin-top:.35rem; padding:.2rem .35rem; border:1.3px solid var(--red); color:var(--red); font-family:var(--cat); font-size:.61rem; letter-spacing:.04em; }
+  .idyom-strength.high{ background:rgba(226,78,27,.1); }
+  .idyom-config-grid{ display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:.5rem; margin-top:1rem; }
+  .idyom-config{ min-width:0; padding:.65rem .55rem; border-top:2px solid var(--idyom-colour,var(--teal)); background:rgba(255,255,255,.32); }
+  .idyom-config b{ color:var(--idyom-colour,var(--teal)); font-family:var(--hand); font-size:1.15rem; }
+  .idyom-config p{ margin-top:.22rem; color:var(--pen-2); font-family:var(--read); font-size:.72rem; line-height:1.45; overflow-wrap:anywhere; }
+  .idyom-final-model{ min-width:0; margin-top:1rem; padding:.9rem; border:2px dashed var(--plum-deep); border-radius:19px 27px 16px 24px / 24px 16px 27px 19px; background:rgba(138,84,112,.035); }
+  .idyom-final-model > .lede{ margin-top:.45rem; font-size:.9rem; }
+  .idyom-constraints{ display:flex; flex-wrap:wrap; justify-content:center; gap:.4rem .7rem; margin-top:.85rem; }
+  .idyom-constraints span{ padding:.3rem .5rem; border:1.5px dashed var(--gold-deep); color:var(--gold-deep); font-family:var(--cat); font-size:.63rem; letter-spacing:.05em; }
+  .idyom-model-map{ display:flex; flex-direction:column; align-items:center; gap:.3rem; margin-top:.8rem; }
+  .idyom-model-memory,.idyom-model-branches{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.55rem; width:100%; max-width:680px; }
+  .idyom-model-node{ display:flex; flex-direction:column; min-width:0; width:min(100%,680px); padding:.65rem .75rem; border:2px solid var(--idyom-colour,var(--teal)); border-radius:15px 22px 13px 20px / 20px 13px 22px 15px; background:rgba(255,255,255,.42); }
+  .idyom-model-node b{ color:var(--idyom-colour,var(--teal)); font-family:var(--hand); font-size:1.05rem; overflow-wrap:anywhere; }
+  .idyom-model-node small{ margin-top:.18rem; color:var(--pen-2); font-family:var(--read); font-size:.76rem; line-height:1.45; overflow-wrap:anywhere; }
+  .idyom-model-arrow{ color:var(--red); font-size:1.2rem; line-height:1.15; }
+  .idyom-model-loop{ margin-top:.65rem; color:var(--plum-deep); font-family:var(--cat); font-size:.65rem; letter-spacing:.05em; text-align:center; text-transform:uppercase; }
+  .idyom-evidence-grid{ display:grid; gap:.7rem; margin-top:1rem; }
+  .idyom-evidence{ min-width:0; padding:.8rem; border-color:var(--teal); background:rgba(255,255,255,.3); }
+  .idyom-evidence header{ display:grid; grid-template-columns:minmax(0,1fr) 2rem; gap:.25rem .5rem; align-items:start; }
+  .idyom-evidence-kind{ color:var(--red); font-family:var(--cat); font-size:.62rem; letter-spacing:.06em; text-transform:uppercase; }
+  .idyom-evidence-number{ grid-column:2; grid-row:1 / span 2; color:var(--teal); font-family:var(--hand); font-size:1.2rem; text-align:right; }
+  .idyom-evidence h3{ grid-column:1; margin-top:.15rem; color:var(--teal); font-family:var(--hand); font-size:1.2rem; line-height:1.1; overflow-wrap:anywhere; }
+  .idyom-evidence-design{ margin-top:.4rem; font-size:.78rem; line-height:1.45; }
+  .idyom-evidence-grid-inner{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.55rem; margin-top:.7rem; }
+  .idyom-evidence-grid-inner > div{ min-width:0; padding:.5rem .55rem; border-top:1.5px solid rgba(28,27,25,.2); }
+  .idyom-evidence-grid-inner .read{ margin-top:.25rem; font-size:.76rem; line-height:1.45; overflow-wrap:anywhere; }
+  .idyom-evidence-limit{ grid-column:1 / -1; border-top-color:var(--red) !important; }
+  .idyom-evidence .doi{ margin-top:.6rem; overflow-wrap:anywhere; }
+  .idyom-trail{ display:grid; gap:.6rem; margin-top:1rem; }
+  .idyom-trail-item{ display:grid; grid-template-columns:4.5rem minmax(0,1fr); gap:.6rem; min-width:0; padding:.55rem .6rem; border-left:2px solid var(--teal); background:rgba(46,125,143,.035); }
+  .idyom-trail-item > span{ color:var(--teal); font-family:var(--hand); font-size:1.1rem; }
+  .idyom-trail-item h3{ color:var(--pen); font-family:var(--hand); font-size:1rem; line-height:1.1; overflow-wrap:anywhere; }
+  .idyom-trail-item i,.idyom-trail-item p{ display:block; margin-top:.22rem; color:var(--pen-2); font-family:var(--read); font-size:.75rem; line-height:1.45; overflow-wrap:anywhere; }
+  .idyom-misconceptions{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.7rem; margin-top:1rem; }
+  .idyom-misconceptions .sk-box{ min-width:0; padding:.75rem; border-color:var(--red); }
+  .idyom-misconceptions span{ display:block; color:var(--red); font-family:var(--hand); font-size:1.2rem; }
+  .idyom-misconceptions .read{ margin-top:.35rem; font-size:.84rem; line-height:1.5; overflow-wrap:anywhere; }
+  .idyom-open-list{ display:grid; gap:.5rem; margin-top:1rem; }
+  .idyom-open-list p{ min-width:0; padding:.65rem .7rem; border-left:2px solid var(--plum-deep); color:var(--pen-2); font-family:var(--read); font-size:.8rem; line-height:1.5; background:rgba(138,84,112,.035); overflow-wrap:anywhere; }
+  .idyom-source-heading h3{ margin-top:.25rem; color:var(--teal); font-family:var(--hand); font-size:1.15rem; }
+  .idyom-source-trail{ margin-top:1.1rem; }
+  .idyom-source-trail .src-item{ margin-top:.45rem; }
+  .idyom-related{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.65rem; margin-top:1rem; }
+  .idyom-related a{ min-width:0; padding:.7rem .75rem; border-left:2px solid var(--teal); color:inherit; text-decoration:none; background:rgba(46,125,143,.035); }
+  .idyom-related h3{ margin-top:.25rem; color:var(--teal); font-family:var(--hand); font-size:1.1rem; line-height:1.13; overflow-wrap:anywhere; }
+  .idyom-related p{ margin-top:.3rem; color:var(--pen-2); font-family:var(--read); font-size:.74rem; line-height:1.45; overflow-wrap:anywhere; }
+  .idyom-related strong{ display:block; margin-top:.55rem; font-family:var(--cat); font-size:.64rem; }
+  .idyom-provenance{ margin-top:.8rem; }
+  .idyom-provenance h3{ font-size:.9rem; }
+  @media (hover:hover) and (pointer:fine){ .idyom-toggle button:hover{ background:rgba(46,125,143,.1); } .idyom-related a:hover{ background:rgba(46,125,143,.09); } }
+  @media(min-width:700px){ .idyom-card-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media(min-width:1060px){ .idyom-card-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); } }
+  @media(max-width:640px){
+    .idyom-identity,.idyom-context-grid,.idyom-memory-compare,.idyom-related{ grid-template-columns:minmax(0,1fr); }
+    .idyom-config-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .idyom-interaction-head{ flex-direction:column; gap:.3rem; }
+    .idyom-state{ align-self:flex-start; }
+    .idyom-evidence-grid-inner,.idyom-misconceptions{ grid-template-columns:minmax(0,1fr); }
+    .idyom-evidence-limit{ grid-column:auto; }
+    .idyom-model-memory,.idyom-model-branches{ grid-template-columns:minmax(0,1fr); }
+    .idyom-trail-item{ grid-template-columns:4rem minmax(0,1fr); }
+  }

@@ -12,6 +12,7 @@ import { GTTMBody } from "./GTTMBody";
 import { NarmourBody } from "./NarmourBody";
 import { HuronBody } from "./HuronBody";
 import { StatisticalBody } from "./StatisticalBody";
+import { IdyomBody } from "./IdyomBody";
 import { RECORDS, KIND, recordHref } from "@/content/records";
 import { Cascade } from "./Cascade";
 import { TheoryDemo } from "./TheoryDemo";
@@ -95,6 +96,7 @@ export function TheoryBody({ record: r }: { record: TheoryRecord }) {
   if (r.narmour) return <NarmourBody record={r} />;
   if (r.huron) return <HuronBody record={r} />;
   if (r.statistical) return <StatisticalBody record={r} />;
+  if (r.idyom) return <IdyomBody record={r} />;
 
   const B: Block[] = [];
 

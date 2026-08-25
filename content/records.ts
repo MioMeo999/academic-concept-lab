@@ -18,13 +18,14 @@ import { generativeTheoryOfTonalMusic } from "./generative-theory-of-tonal-music
 import { narmoursImplicationRealizationTheory } from "./narmours-implication-realization-theory";
 import { huronsItpraTheory } from "./hurons-itpra-theory-of-expectation";
 import { statisticalLearningOfMusic } from "./statistical-learning-of-music";
+import { idyom } from "./idyom";
 
 /**
  * The registry. Adding a record means appending one entry here — it then
  * appears in the library, in search, in the filters, in saved, and in the
  * "elsewhere" block on every other record, with no route or template change.
  */
-export const RECORDS: AnyRecord[] = [personEnvironmentFit, personOrganisationFit, jobDemandsResources, workplaceDesign, musicPreference, affectiveEventsTheory, selfDeterminationTheory, socialExchangeTheory, meyersExpectancyTheory, auditorySceneAnalysis, tonalHierarchy, gestaltPrinciplesInMusic, generativeTheoryOfTonalMusic, narmoursImplicationRealizationTheory, huronsItpraTheory, statisticalLearningOfMusic, hpaAxis, ipa, rta, tunedOutPaper];
+export const RECORDS: AnyRecord[] = [personEnvironmentFit, personOrganisationFit, jobDemandsResources, workplaceDesign, musicPreference, affectiveEventsTheory, selfDeterminationTheory, socialExchangeTheory, meyersExpectancyTheory, auditorySceneAnalysis, tonalHierarchy, gestaltPrinciplesInMusic, generativeTheoryOfTonalMusic, narmoursImplicationRealizationTheory, huronsItpraTheory, statisticalLearningOfMusic, idyom, hpaAxis, ipa, rta, tunedOutPaper];
 
 export const KIND: Record<RecordKind, {
   label: string; nav: string; colour: string; fill: string; stroke: string; cls: string; path: string; cta: string;

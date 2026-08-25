@@ -622,6 +622,63 @@ export type StatisticalRecordContent = {
   evidence: { lede: string; items: EvidenceXray[]; note: string };
 };
 
+export type IdyomCard = { label: string; body: string; colour: string };
+
+export type IdyomSection = {
+  lede: string;
+  cards: IdyomCard[];
+  note: string;
+};
+
+export type IdyomDistribution = {
+  label: string;
+  entries: { event: string; probability: number }[];
+  actualEvent: string;
+};
+
+export type IdyomConfiguration = {
+  label: string;
+  body: string;
+  colour: string;
+};
+
+export type IdyomMicroWorld = {
+  lede: string;
+  stages: { label: string; body: string; strength: "low" | "high" }[];
+  note: string;
+};
+
+export type IdyomModel = {
+  lede: string;
+  steps: IdyomCard[];
+  constraints: string[];
+  note: string;
+};
+
+export type IdyomRecordContent = {
+  identity: { knowledgeForm: string; status: string; discipline: string; branch: string };
+  opening: IdyomSection;
+  distribution: IdyomSection;
+  uncertainty: IdyomSection;
+  information: IdyomSection;
+  signature: { lede: string; contexts: [IdyomDistribution, IdyomDistribution]; note: string };
+  learning: IdyomSection;
+  memories: IdyomSection;
+  configurations: { lede: string; items: IdyomConfiguration[]; note: string };
+  microWorld: IdyomMicroWorld;
+  context: IdyomSection;
+  backoff: IdyomSection;
+  viewpoints: IdyomSection;
+  representation: IdyomSection;
+  corpus: IdyomSection;
+  evidence: { lede: string; items: EvidenceXray[]; note: string };
+  narmour: IdyomSection;
+  mechanism: IdyomSection;
+  finalModel: IdyomModel;
+  explains: IdyomSection;
+  stops: IdyomSection;
+};
+
 export type TonalCard = { label: string; body: string; colour: string };
 
 export type TonalProfileItem = {
@@ -983,6 +1040,7 @@ export type TheoryRecord = RecordBase & {
   narmour?: NarmourRecordContent;
   huron?: HuronRecordContent;
   statistical?: StatisticalRecordContent;
+  idyom?: IdyomRecordContent;
 };
 
 /* ---------------- empirical study ---------------- */
