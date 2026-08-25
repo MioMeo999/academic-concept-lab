@@ -547,6 +547,81 @@ export type HuronRecordContent = {
   scope: { lede: string; explains: string[]; stops: string[]; note: string };
 };
 
+export type StatisticalCard = { label: string; body: string; colour: string };
+
+export type StatisticalSection = {
+  lede: string;
+  cards: StatisticalCard[];
+  note: string;
+};
+
+export type StatisticalTransition = {
+  from: string;
+  to: string;
+  count: number;
+  opportunities: number;
+  probability: string;
+  kind: "within" | "boundary";
+};
+
+export type StatisticalStream = {
+  units: { label: string; notes: string[] }[];
+  unitSequence: string[];
+  noteSequence: string[];
+  events: AudioEvent[];
+  eventFrequencies: { label: string; count: number; share: string }[];
+  transitions: StatisticalTransition[];
+  withinAudit: { direction: string; mean: string; range: string; distribution: string };
+  boundaryAudit: { direction: string; mean: string; range: string; distribution: string };
+  pitchMapping: { label: string; midi: number; frequency: string }[];
+  audioSpec: { duration: string; ioI: string; timbre: string; gain: string; envelope: string };
+  acousticAudit: string[];
+  note: string;
+};
+
+export type StatisticalWorld = {
+  label: string;
+  pairs: { from: string; to: string; count: number }[];
+  sequence: string[];
+  events: AudioEvent[];
+  marginalTotals: { label: string; count: number }[];
+  conditionals: { label: string; count: number; opportunities: number; probability: string }[];
+  framingTransitions: number;
+  note: string;
+};
+
+export type StatisticalWorlds = {
+  lede: string;
+  worlds: [StatisticalWorld, StatisticalWorld];
+  testContext: string;
+  audioSpec: string;
+  note: string;
+};
+
+export type StatisticalRecordContent = {
+  identity: { knowledgeForm: string; status: string; discipline: string; branch: string };
+  opening: StatisticalSection;
+  exposure: StatisticalSection;
+  frequency: StatisticalSection;
+  transition: StatisticalSection;
+  comparison: StatisticalSection;
+  hiddenLanguage: { lede: string; stream: StatisticalStream; note: string };
+  segmentation: StatisticalSection;
+  enculturation: StatisticalSection;
+  clocks: StatisticalSection;
+  newWorld: StatisticalSection;
+  liking: StatisticalSection;
+  worlds: StatisticalWorlds;
+  prediction: StatisticalSection;
+  tonalGestalt: StatisticalSection;
+  mechanism: StatisticalSection;
+  realMusic: StatisticalSection;
+  explains: StatisticalSection;
+  stops: StatisticalSection;
+  model: { lede: string; steps: StatisticalCard[]; note: string };
+  evidence: { lede: string; items: EvidenceXray[]; note: string };
+};
+
 export type TonalCard = { label: string; body: string; colour: string };
 
 export type TonalProfileItem = {
@@ -907,6 +982,7 @@ export type TheoryRecord = RecordBase & {
   gttm?: GTTMRecordContent;
   narmour?: NarmourRecordContent;
   huron?: HuronRecordContent;
+  statistical?: StatisticalRecordContent;
 };
 
 /* ---------------- empirical study ---------------- */

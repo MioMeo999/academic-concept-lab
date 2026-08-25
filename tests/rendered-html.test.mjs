@@ -33,6 +33,20 @@ for (const [pathname, expected] of [
    untested. The count assertion underneath is the backstop. */
 const libraryHtml = await (await render("/concept-lab/library")).text();
 const homeHtml = await (await render("/concept-lab")).text();
+const statisticalHtml = await (await render("/concept-lab/theory/statistical-learning-of-music")).text();
+
+test("statistical learning record renders its audited teaching systems", () => {
+  assert.match(statisticalHtml, /Research framework \/ mechanism family/);
+  assert.match(statisticalHtml, /A hidden musical language/);
+  assert.match(statisticalHtml, /Statistical structure/);
+  assert.match(statisticalHtml, /P\(Y \| X\)/);
+  assert.match(statisticalHtml, /0\.80 \(16\/20\)/);
+  assert.match(statisticalHtml, /0\.20 \(4\/20\)/);
+  assert.match(statisticalHtml, /matched marginal totals/);
+  assert.match(statisticalHtml, /Y<!--[\s\S]*?--> total = <!-- -->20/);
+  assert.match(statisticalHtml, /Z<!--[\s\S]*?--> total = <!-- -->20/);
+  assert.match(statisticalHtml, /constructed interaction is not the Saffran experiment/);
+});
 
 test("home describes all four record kinds", () => {
   assert.match(homeHtml, /four kinds of record/);
