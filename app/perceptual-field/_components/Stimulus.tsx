@@ -24,7 +24,7 @@ export type StimulusPreset = {
   markers?: { after: number; label: string }[];
 };
 
-export function Stimulus({ presets, note }: { presets: StimulusPreset[]; note: string }) {
+export function Stimulus({ presets, note, eventColours }: { presets: StimulusPreset[]; note: string; eventColours?: string[] }) {
   const [active, setActive] = useState(0);
   const [lit, setLit] = useState<number | null>(null);
   const [played, setPlayed] = useState<number[]>([]);
@@ -73,9 +73,16 @@ export function Stimulus({ presets, note }: { presets: StimulusPreset[]; note: s
 
   return (
     <div>
-      <div style={{ position: "relative" }} className="pf-scroller">
+      <div
+        style={{ position: "relative" }}
+        className="pf-scroller"
+        role="region"
+        aria-label="Eight-event sound field"
+        tabIndex={0}
+      >
         <FieldPlot
           events={preset.events}
+          eventColours={eventColours}
           groups={groups}
           boundaries={boundaries}
           lit={lit}
@@ -118,7 +125,7 @@ export function Stimulus({ presets, note }: { presets: StimulusPreset[]; note: s
                   fontSize: "clamp(20px, 2vw, 27px)",
                   fontWeight: 500,
                   letterSpacing: "-0.015em",
-                  color: on ? INK.charcoal : "#8f8f88",
+                  color: on ? INK.charcoal : "#62625b",
                   transition: "color 200ms",
                 }}
               >
@@ -185,6 +192,13 @@ export function Stimulus({ presets, note }: { presets: StimulusPreset[]; note: s
             {preset.controls}
           </p>
         </div>
+      </div>
+
+      <div className="pf-drawing-key">
+        <span className="pf-meta">drawing key</span>
+        <p className="pf-small">
+          Each event keeps the same pencil hue in both conditions. The gap moves; the coloured trace does not.
+        </p>
       </div>
 
       <p className="pf-note pf-note--warn" style={{ marginTop: 26, maxWidth: 640 }}>

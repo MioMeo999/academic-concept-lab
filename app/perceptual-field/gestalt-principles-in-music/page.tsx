@@ -31,11 +31,12 @@ import Link from "next/link";
 import { gestaltPrinciplesInMusic as G } from "../../../content/gestalt-principles-in-music";
 import { RECORDS } from "../../../content/records";
 import {
-  Arrow, Brace, Ghost, Grain, Hatch, INK, OpenBoundary, Ring, Rule,
+  Arrow, Brace, Ghost, Grain, Hatch, INK, OpenBoundary, PencilUnderline, Ring, Rule,
   Scumble, Strike, Wash, Wave, pigment,
 } from "../_components/marks";
 import { FieldPlot, type PlotGroup } from "../_components/FieldPlot";
 import { FieldRail, type RailState } from "../_components/FieldRail";
+import { PENCIL_TRACE, PencilPalette } from "../_components/PencilPalette";
 import { Stimulus } from "../_components/Stimulus";
 import { ConflictLab } from "../_components/ConflictLab";
 import { WholePart } from "../_components/WholePart";
@@ -55,6 +56,11 @@ const titleOf = (id: string) =>
 
 /* The constant material. Eight events, fixed once, carried down the margin. */
 const FIELD = g.opening.presets[0].events;
+
+/* A stable colour trace lets the reader recognise the same eight events while
+   the grouping marks around them change. The colours are editorial, not an
+   acoustic variable. */
+const TRACE = PENCIL_TRACE.slice(0, FIELD.length);
 
 /* Boundary identity, fixed for the whole page. */
 const X = INK.teal;
@@ -120,7 +126,7 @@ const RAIL: RailState[] = [
 
 export default function Page() {
   return (
-    <div className="pf-root">
+    <main className="pf-root">
       <Grain />
 
       {/* ================================================== running head === */}
@@ -151,6 +157,10 @@ export default function Page() {
               <p className="pf-meta" style={{ marginBottom: 20 }}>
                 music psychology · perceptual organisation · principle family
               </p>
+            </div>
+
+            <div style={{ gridColumn: "1 / -1", marginBottom: "clamp(28px, 4vh, 54px)" }}>
+              <PencilPalette />
             </div>
 
             <div className="pf-open-lede">
@@ -185,7 +195,7 @@ export default function Page() {
               style={{ position: "absolute", left: "-8%", top: "-14%", width: "116%", height: "96%", pointerEvents: "none" }}
             />
             <div style={{ position: "relative" }}>
-              <Stimulus presets={g.opening.presets} note={g.opening.note} />
+              <Stimulus presets={g.opening.presets} note={g.opening.note} eventColours={TRACE} />
             </div>
           </div>
         </section>
@@ -201,9 +211,9 @@ export default function Page() {
           </p>
 
           <h1 className="pf-title">
-            Gestalt Principles
+            <PencilUnderline colour={INK.teal} seed={421}>Gestalt</PencilUnderline> Principles
             <br />
-            <em>in Music</em>
+            <em>in <PencilUnderline colour={INK.vermilion} seed={422}>Music</PencilUnderline></em>
           </h1>
 
           <div className="pf-grid" style={{ marginTop: "clamp(34px, 5vh, 62px)", rowGap: 30 }}>
@@ -212,7 +222,7 @@ export default function Page() {
                 className="pf-display"
                 style={{ fontSize: "clamp(22px, 2.4vw, 34px)", fontStyle: "italic", fontWeight: 400, lineHeight: 1.2, letterSpacing: "-0.02em" }}
               >
-                {G.hook}
+                Where is the <PencilUnderline colour={INK.ochre} seed={423}>boundary?</PencilUnderline> Why do separate musical events become perceptual groups at all?
               </p>
             </div>
             <div style={{ gridColumn: "8 / span 5" }} className="pf-sentence-col">
@@ -318,7 +328,12 @@ export default function Page() {
                   blur={30}
                   style={{ position: "absolute", left: "-3%", top: "-10%", width: "106%", height: "110%", pointerEvents: "none" }}
                 />
-                <div className="pf-scroller">
+                <div
+                  className="pf-scroller"
+                  role="region"
+                  aria-label="Similarity grouping sound field"
+                  tabIndex={0}
+                >
                   <FieldPlot
                     events={FIELD}
                     eventColours={LIKE}
@@ -363,6 +378,7 @@ export default function Page() {
                 presets={g.conflict.presets}
                 question={g.conflict.question}
                 note={g.conflict.note}
+                eventColours={TRACE}
               />
             </Movement>
 
@@ -376,7 +392,7 @@ export default function Page() {
                 ))}
               </CardRow>
               <div style={{ marginTop: 40, maxWidth: 560, position: "relative" }}>
-                <p className="pf-body" style={{ fontFamily: "var(--mono)", fontSize: 13, letterSpacing: "0.02em", color: "#8d8d86", position: "relative", display: "inline-block", padding: "4px 0" }}>
+                <p className="pf-body" style={{ fontFamily: "var(--mono)", fontSize: 13, letterSpacing: "0.02em", color: "#62625b", position: "relative", display: "inline-block", padding: "4px 0" }}>
                   if proximity X, then group Y — always
                   <Strike width={340} height={22} colour={INK.vermilion} seed={169}
                     style={{ position: "absolute", left: -6, top: "50%", transform: "translateY(-50%)", width: "calc(100% + 12px)" }} />
@@ -465,7 +481,7 @@ export default function Page() {
                       </li>
                     ))}
                   </ul>
-                  <p className="pf-hand-sm" style={{ marginTop: 16, color: "#9a9a93", fontSize: 16 }}>
+                  <p className="pf-hand-sm" style={{ marginTop: 16, color: "#62625b", fontSize: 16 }}>
                     Drawn as ghosts: none of these is a classical Gestalt concept.
                   </p>
                 </div>
@@ -541,7 +557,7 @@ export default function Page() {
                   part two · what the evidence carries
                 </p>
               </div>
-              <p className="pf-hand" style={{ marginTop: 20, color: "#8d8d86", maxWidth: "34ch" }}>
+              <p className="pf-hand" style={{ marginTop: 20, color: "#62625b", maxWidth: "34ch" }}>
                 The colour goes out of the page from here, because the studies ahead test later
                 grouping rules — not classical Gestalt theory.
               </p>
@@ -596,12 +612,12 @@ export default function Page() {
                 </div>
 
                 <div style={{ padding: "34px 4px 36px" }}>
-                  <p className="pf-meta" style={{ marginBottom: 18, color: "#9d9d96" }}>out of scope — for this record</p>
+                  <p className="pf-meta" style={{ marginBottom: 18, color: "#62625b" }}>out of scope — for this record</p>
                   <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 11 }}>
                     {g.scope.stops.map((s) => (
                       <li key={s} style={{ display: "flex", gap: 11, alignItems: "baseline" }}>
                         <span style={{ color: "#c6c6bf", fontSize: 9, flex: "none" }}>○</span>
-                        <span className="pf-body" style={{ fontSize: 15.5, color: "#8d8d86" }}>{s}</span>
+                        <span className="pf-body" style={{ fontSize: 15.5, color: "#62625b" }}>{s}</span>
                       </li>
                     ))}
                   </ul>
@@ -727,7 +743,7 @@ export default function Page() {
                     </div>
                     <div>
                       <p className="pf-h3" style={{ marginBottom: 3 }}>{o.author}</p>
-                      <p style={{ fontFamily: "var(--read)", fontStyle: "italic", fontSize: 16, color: "#7a7a73", margin: "0 0 10px" }}>
+                      <p style={{ fontFamily: "var(--read)", fontStyle: "italic", fontSize: 16, color: "#707069", margin: "0 0 10px" }}>
                         {o.work}
                       </p>
                       <p className="pf-small" style={{ color: "var(--body)", maxWidth: "56ch" }}>{o.contribution}</p>
@@ -892,7 +908,7 @@ export default function Page() {
           .pf-stages { grid-template-columns: minmax(0, 1fr); }
         }
       `}</style>
-    </div>
+    </main>
   );
 }
 

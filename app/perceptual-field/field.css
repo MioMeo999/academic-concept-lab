@@ -20,20 +20,20 @@ html:has(.pf-root) {
   --ink: #121212;
   --body: #24241f;
   --soft: #6a6a63;
-  --faint: #a6a69e;
+  --faint: #74746d;
   --hair: #e2e2dc;
 
   --cobalt: #1f5fcc;
-  --sky: #4fa3e3;
-  --teal: #1fa898;
-  --emerald: #1f8a4c;
-  --ochre: #e0a02a;
+  --sky: #287fb8;
+  --teal: #16786e;
+  --emerald: #187340;
+  --ochre: #9c6500;
   --lemon: #f2c230;
-  --vermilion: #d9401f;
-  --coral: #e8695c;
-  --magenta: #c81e76;
-  --violet: #6b3fbf;
-  --lilac: #9b85d9;
+  --vermilion: #b7371f;
+  --coral: #aa4d42;
+  --magenta: #a91c68;
+  --violet: #5e369e;
+  --lilac: #7560b0;
   --graphite: #4a4a4a;
 
   --display: "Newsreader Variable", "Newsreader", Georgia, serif;
@@ -84,6 +84,61 @@ html:has(.pf-root) {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: clamp(14px, 1.7vw, 30px);
+}
+
+/* A palette is part of the argument: it gives the reader a compact key for
+   the coloured pencil traces that recur through the field. */
+.pf-palette {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.82fr) minmax(0, 3.18fr);
+  gap: clamp(20px, 3vw, 52px);
+  align-items: end;
+  border-top: 1px solid var(--hair);
+  border-bottom: 1px solid var(--hair);
+  padding: 18px 0 20px;
+}
+
+.pf-palette-intro {
+  display: grid;
+  gap: 7px;
+  align-self: start;
+}
+
+.pf-palette-intro .pf-meta { color: var(--ink); }
+
+.pf-palette-grid {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 12px clamp(8px, 1vw, 16px);
+  align-items: end;
+}
+
+.pf-palette-item {
+  min-width: 0;
+}
+
+.pf-palette-name,
+.pf-palette-role {
+  display: block;
+}
+
+.pf-palette-name {
+  margin-top: 3px;
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.pf-palette-role {
+  margin-top: 3px;
+  color: var(--soft);
+  font-family: var(--mono);
+  font-size: 9px;
+  line-height: 1.2;
+  letter-spacing: 0.025em;
 }
 
 /* The two-part page: a persistent left instrument, and the argument. */
@@ -277,6 +332,23 @@ html:has(.pf-root) {
   width: calc(100% + 6px);
 }
 
+.pf-pencil-word {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: baseline;
+  overflow: visible;
+}
+
+.pf-pencil-word > span:first-child {
+  position: relative;
+  z-index: 1;
+}
+
+.pf-pencil-word > svg {
+  z-index: 0;
+}
+
 .pf-swipe {
   position: relative;
   display: inline;
@@ -414,6 +486,21 @@ html:has(.pf-root) {
   transform: translateY(-5px) scale(1.1);
 }
 
+.pf-drawing-key {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 14px;
+  align-items: baseline;
+  margin-top: 24px;
+  padding: 11px 14px 12px;
+  border-left: 2px solid var(--teal);
+  background: linear-gradient(90deg, rgba(22, 120, 110, 0.07), rgba(22, 120, 110, 0));
+}
+
+.pf-drawing-key .pf-meta {
+  color: var(--teal);
+}
+
 /* ------------------------------------------------------------------- cards */
 
 .pf-card {
@@ -434,7 +521,7 @@ html:has(.pf-root) {
   font-family: var(--display);
   font-size: clamp(17px, 1.42vw, 22px);
   line-height: 1.42;
-  color: #8d8d86;
+  color: #62625b;
   padding: 10px 0;
   letter-spacing: -0.008em;
 }
@@ -495,6 +582,29 @@ html:has(.pf-root) {
 }
 
 .pf-link:hover { background-size: 100% 2px; }
+
+@media (max-width: 900px) {
+  .pf-palette {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .pf-palette-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .pf-palette-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px 10px;
+  }
+
+  .pf-drawing-key {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 5px;
+  }
+}
 
 /* ------------------------------------------------------ motion preference */
 

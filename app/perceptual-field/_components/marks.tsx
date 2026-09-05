@@ -31,16 +31,16 @@ const n2 = (v: number) => Math.round(v * 100) / 100;
 
 export const INK = {
   cobalt: "#1F5FCC",
-  sky: "#4FA3E3",
-  teal: "#1FA898",
-  emerald: "#1F8A4C",
-  ochre: "#E0A02A",
+  sky: "#287FB8",
+  teal: "#16786E",
+  emerald: "#187340",
+  ochre: "#9C6500",
   lemon: "#F2C230",
-  vermilion: "#D9401F",
-  coral: "#E8695C",
-  magenta: "#C81E76",
-  violet: "#6B3FBF",
-  lilac: "#9B85D9",
+  vermilion: "#B7371F",
+  coral: "#AA4D42",
+  magenta: "#A91C68",
+  violet: "#5E369E",
+  lilac: "#7560B0",
   graphite: "#4A4A4A",
   charcoal: "#1C1C1C",
   ghost: "#B9B9B9",
@@ -644,4 +644,32 @@ export function FlexRule({ colour = INK.charcoal, seed = 20, opacity = 0.42, wei
 export function MarginNote({ children, colour = INK.cobalt, style }:
 { children: ReactNode; colour?: string; style?: CSSProperties }) {
   return <p className="pf-hand" style={{ color: colour, ...style }}>{children}</p>;
+}
+
+/** A word underlined by a real pencil pass, so emphasis can live in the text
+    without turning the page into a parade of coloured text. */
+export function PencilUnderline({
+  children,
+  colour,
+  seed = 50,
+}: {
+  children: ReactNode;
+  colour: string;
+  seed?: number;
+}) {
+  return (
+    <span className="pf-pencil-word">
+      <span>{children}</span>
+      <Hatch
+        width={120}
+        height={14}
+        colour={colour}
+        seed={seed}
+        angle={-24}
+        gap={2.7}
+        opacity={0.9}
+        style={{ position: "absolute", left: -4, bottom: -8, width: "calc(100% + 8px)", height: 11, pointerEvents: "none" }}
+      />
+    </span>
+  );
 }

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <div className="pf-root">
+    <main className="pf-root">
       <Grain />
       <div className="pf-canvas">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 20, paddingTop: 26, flexWrap: "wrap" }}>
@@ -63,6 +63,6 @@ export default function Page() {
           </div>
         </section>
       </div>
-    </div>
+    </main>
   );
 }

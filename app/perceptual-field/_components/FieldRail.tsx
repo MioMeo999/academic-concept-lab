@@ -70,7 +70,7 @@ export function FieldRail({ events, states }: { events: PlotEvent[]; states: Rai
   return (
     <div className="pf-rail-inner" aria-hidden="true">
       <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 10 }}>
-        <span className="pf-num" style={{ color: INK.charcoal, opacity: 0.55 }}>{state.num}</span>
+        <span className="pf-num" style={{ color: INK.charcoal }}>{state.num}</span>
         <span className="pf-meta" style={{ fontSize: 9, letterSpacing: "0.2em" }}>
           {isRecord ? "the record" : "the field"}
         </span>
@@ -94,7 +94,7 @@ export function FieldRail({ events, states }: { events: PlotEvent[]; states: Rai
             {state.glyphLabel ? (
               <p
                 className="pf-meta"
-                style={{ marginTop: 14, fontSize: 9.5, letterSpacing: "0.14em", lineHeight: 1.7, color: "#8a8a83" }}
+                style={{ marginTop: 14, fontSize: 9.5, letterSpacing: "0.14em", lineHeight: 1.7, color: "#62625b" }}
               >
                 {state.glyphLabel}
               </p>
@@ -123,7 +123,7 @@ export function FieldRail({ events, states }: { events: PlotEvent[]; states: Rai
         key={state.id}
         className="pf-hand-sm"
         style={{
-          color: isRecord ? "#8a8a83" : INK.cobalt,
+          color: isRecord ? "#62625b" : INK.cobalt,
           fontSize: 17,
           lineHeight: 1.28,
           animation: "pf-rail-in 420ms ease both",

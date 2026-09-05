@@ -79,7 +79,13 @@ export function WholePart({ cases }: { cases: WholeCase[] }) {
         this event does not change
       </p>
 
-      <div style={{ position: "relative" }} className="pf-scroller">
+      <div
+        style={{ position: "relative" }}
+        className="pf-scroller"
+        role="region"
+        aria-label="Two possible organisations of the same sound field"
+        tabIndex={0}
+      >
         <svg
           viewBox={`0 0 ${W} ${H}`}
           width="100%"
@@ -200,7 +206,7 @@ export function WholePart({ cases }: { cases: WholeCase[] }) {
               >
                 <span
                   className="pf-meta"
-                  style={{ color: on ? cc : "#b0b0a9", display: "block", marginBottom: 5 }}
+                  style={{ color: on ? cc : "#62625b", display: "block", marginBottom: 5 }}
                 >
                   {c.label}
                 </span>
@@ -209,14 +215,14 @@ export function WholePart({ cases }: { cases: WholeCase[] }) {
                     fontFamily: "var(--mono)",
                     fontSize: 14,
                     letterSpacing: "0.02em",
-                    color: on ? INK.charcoal : "#a8a8a1",
+                    color: on ? INK.charcoal : "#62625b",
                     transition: "color 160ms",
                   }}
                 >
                   {c.before}{" "}
                   <span
                     style={{
-                      color: on ? cc : "#a8a8a1",
+                      color: on ? cc : "#62625b",
                       fontWeight: 600,
                       borderBottom: on ? `2px solid ${cc}` : "2px solid transparent",
                     }}

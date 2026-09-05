@@ -42,10 +42,12 @@ export function ConflictLab({
   presets,
   question,
   note,
+  eventColours,
 }: {
   presets: ConflictPreset[];
   question: string;
   note: string;
+  eventColours?: string[];
 }) {
   const [active, setActive] = useState(0);
   const [lean, setLean] = useState<Lean>("both");
@@ -122,7 +124,7 @@ export function ConflictLab({
                       fontSize: 21,
                       fontWeight: 500,
                       letterSpacing: "-0.015em",
-                      color: on ? INK.charcoal : "#93938c",
+                      color: on ? INK.charcoal : "#62625b",
                       lineHeight: 1.12,
                       transition: "color 180ms",
                     }}
@@ -137,7 +139,7 @@ export function ConflictLab({
                       fontSize: 10,
                       letterSpacing: "0.13em",
                       textTransform: "uppercase",
-                      color: on ? (marks.includes("+") ? INK.vermilion : marks === "Y" ? CUE.Y.colour : CUE.X.colour) : "#b3b3ac",
+                      color: on ? (marks.includes("+") ? INK.vermilion : marks === "Y" ? CUE.Y.colour : CUE.X.colour) : "#62625b",
                     }}
                   >
                     boundary {marks || "—"}
@@ -194,9 +196,15 @@ export function ConflictLab({
             />
           ) : null}
 
-          <div className="pf-scroller">
+          <div
+            className="pf-scroller"
+            role="region"
+            aria-label="Cue competition sound field"
+            tabIndex={0}
+          >
           <FieldPlot
             events={preset.events}
+            eventColours={eventColours}
             groups={groups}
             boundaries={boundaries}
             lit={lit}
@@ -232,7 +240,7 @@ export function ConflictLab({
                     style={{
                       fontFamily: "var(--print)",
                       fontSize: 16,
-                      color: on ? c : "#a0a099",
+                      color: on ? c : "#62625b",
                       borderBottom: on ? `1.5px solid ${c}` : "1.5px solid transparent",
                       paddingBottom: 2,
                       transition: "color 160ms",
