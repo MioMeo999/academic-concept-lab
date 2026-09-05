@@ -215,7 +215,7 @@ export function StudyBody({ record: r }: { record: PaperRecord }) {
         <div className="prov-item" key={p.label} data-reveal="rise">
           <span className="g" style={{ color: p.colour }}>{p.glyph}</span>
           <div>
-            <h4>{p.label}</h4>
+            <h3>{p.label}</h3>
             <p>{p.note}</p>
           </div>
         </div>

@@ -23,11 +23,12 @@ export default function ConceptLabLayout({ children }: { children: React.ReactNo
         <div className="wrap site-in">
           <Link className="brand" href="/concept-lab">
             <svg width={29} height={29} viewBox="0 0 40 40" aria-hidden="true">
-              <path d="M20 3.6c9.3-.3 16.6 6.9 16.4 16.2-.2 9.2-7.3 16.4-16.5 16.2C10.7 35.8 3.7 28.7 3.6 19.8 3.5 10.6 10.8 3.9 20 3.6z" fill="none" stroke="#1C1B19" strokeWidth={2.4} />
-              <path d="M13.5 24c2-6.5 4.2-9.8 6.6-9.8 2.3 0 4.5 3.3 6.5 9.8" fill="none" stroke="#E24E1B" strokeWidth={2.4} strokeLinecap="round" />
+              <path d="M20 3c2.8 6.6 4.3 9.4 9.8 10.1-5.4 1.3-7.6 3.9-9.8 10.6-2.2-6.7-4.4-9.3-9.8-10.6C15.7 12.4 17.2 9.6 20 3z" fill="#E24E1B" />
+              <path d="M20 23.7c2.1 5.9 3.7 8.4 8.6 9.1-4.8 1.1-6.8 3.1-8.6 7.1-1.8-4-3.8-6-8.6-7.1 4.9-.7 6.5-3.2 8.6-9.1z" fill="#2E7D8F" opacity=".82" />
             </svg>
             Academic Concept Lab
           </Link>
+          <span className="site-motto">ideas drawn out · knowledge in context · research made visible</span>
           <SiteNav />
         </div>
       </header>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cloud, Divider, Icon, SecHead } from "../_components/Sketch";
 import { Crumbs } from "../_components/RecordShell";
+import { ReadingCompass } from "../_components/VisualAtlas";
 
 export const metadata: Metadata = { title: "About & how we cite" };
 
@@ -46,11 +47,18 @@ export default function AboutPage() {
     <div className="wrap">
       <Crumbs items={[{ label: "Home", href: "/concept-lab" }, { label: "About" }]} />
 
-      <section className="hero" style={{ paddingTop: "1.2rem" }}>
-        <h1 className="title" style={{ fontSize: "clamp(1.9rem,5.4vw,3rem)" }}>About &amp; how we cite</h1>
-        <p className="lede" style={{ marginTop: ".9rem" }}>
-          A platform for reading academic work properly — theory explained until you can see it, evidence presented with its method still attached.
-        </p>
+      <section className="hero page-hero page-hero-about">
+        <div>
+          <span className="k">the margin notes</span>
+          <h1 className="title" style={{ fontSize: "clamp(2.1rem,5.4vw,4rem)" }}>About &amp; how we cite</h1>
+          <p className="lede" style={{ marginTop: ".9rem" }}>
+            A platform for reading academic work properly — theory explained until you can see it, evidence presented with its method still attached.
+          </p>
+        </div>
+        <div className="about-hero-note">
+          <ReadingCompass />
+          <p className="hand-note">read towards the question<br />then back through the evidence</p>
+        </div>
       </section>
 
       <Divider />
@@ -66,7 +74,7 @@ export default function AboutPage() {
             <div className="prov-item" key={label} data-reveal="rise">
               <span className="g" style={{ color: colour }}>{glyph}</span>
               <div>
-                <h4>{label}</h4>
+                <h3>{label}</h3>
                 <p>{note}</p>
               </div>
             </div>
@@ -126,7 +134,7 @@ export default function AboutPage() {
           Append one object to <code>content/theory.ts</code> (or <code>content/paper.ts</code>) and list it in <code>content/records.ts</code>. It then appears in the
           library, in search, in the filters, in saved, and on the other records’ “elsewhere” block — with no template, route or navigation change.
         </p>
-        <pre className="code" style={{ marginTop: "1rem" }}>{SHAPE}</pre>
+        <pre className="code" tabIndex={0} style={{ marginTop: "1rem" }}>{SHAPE}</pre>
         <div className="tilt-r2" style={{ marginTop: "1.1rem", maxWidth: 640 }}>
           <Cloud colour="#E24E1B">
             <div style={{ display: "flex", gap: ".55rem", alignItems: "flex-start" }}>

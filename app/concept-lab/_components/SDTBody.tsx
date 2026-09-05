@@ -290,7 +290,7 @@ export function SDTBody({ record: r }: { record: TheoryRecord }) {
   ));
 
   add("provenance", "Provenance", "Where every claim came from", "var(--teal)", (
-    <div className="prov" style={{ marginTop: ".8rem" }}>{r.provenance.map((item) => <div className="prov-item" key={item.label} data-reveal="rise"><span className="g" style={{ color: item.colour }}>{item.glyph}</span><div><h4>{item.label}</h4><p>{item.note}</p></div></div>)}</div>
+    <div className="prov" style={{ marginTop: ".8rem" }}>{r.provenance.map((item) => <div className="prov-item" key={item.label} data-reveal="rise"><span className="g" style={{ color: item.colour }} aria-hidden="true">{item.glyph}</span><div><h3>{item.label}</h3><p>{item.note}</p></div></div>)}</div>
   ));
 
   const toc = blocks.map((block, index) => [pad2(index + 1), block.toc, `s${index + 1}`] as [string, string, string]);

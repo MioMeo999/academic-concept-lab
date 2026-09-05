@@ -317,7 +317,7 @@ export function MeyerBody({ record: r }: { record: TheoryRecord }) {
     ));
   }
 
-  add("provenance", "Provenance", "Where every claim came from", "var(--teal)", <div className="prov music-provenance">{r.provenance.map((item) => <div className="prov-item" key={item.label} data-reveal="rise"><span className="g" style={{ color: item.colour }}>{item.glyph}</span><div><h4>{item.label}</h4><p>{item.note}</p></div></div>)}</div>);
+  add("provenance", "Provenance", "Where every claim came from", "var(--teal)", <div className="prov music-provenance">{r.provenance.map((item) => <div className="prov-item" key={item.label} data-reveal="rise"><span className="g" style={{ color: item.colour }} aria-hidden="true">{item.glyph}</span><div><h3>{item.label}</h3><p>{item.note}</p></div></div>)}</div>);
 
   const ordered = r.order ? [...blocks].sort((a, b) => {
     const rank = (key: string) => { const index = r.order!.indexOf(key); return index < 0 ? Number.MAX_SAFE_INTEGER : index; };

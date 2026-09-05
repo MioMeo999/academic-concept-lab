@@ -2,9 +2,10 @@ import Link from "next/link";
 import type { AnyRecord } from "@/content/types";
 import { DISCIPLINES } from "@/content/disciplines";
 import { KIND, otherRecords, recordHref } from "@/content/records";
-import { Banner, Divider, Rich } from "./Sketch";
+import { Divider, Rich } from "./Sketch";
 import { SaveButton } from "./SaveButton";
 import { ContentsNav } from "./ContentsNav";
+import { RecordKnowledgeOrbit } from "./VisualAtlas";
 
 export function Crumbs({ items }: { items: { label: string; href?: string }[] }) {
   return (
@@ -44,35 +45,34 @@ export function RecordShell({
         ]}
       />
 
-      <section className="hero" style={{ paddingTop: "1rem" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap" }}>
-          <div style={{ display: "flex", gap: ".5rem", flexWrap: "wrap" }}>
-            <span className={`chip ${k.cls}`}>{k.label}</span>
-            <span className="chip grey">{DISCIPLINES[record.discipline]?.name}</span>
+      <section className={`hero record-hero record-hero-${record.kind}`}>
+        <div className="record-hero-copy">
+          <div className="record-hero-topline">
+            <div className="record-hero-labels">
+              <span className={`chip ${k.cls}`}>{k.label}</span>
+              <span className="chip grey">{DISCIPLINES[record.discipline]?.name}</span>
+            </div>
+            <SaveButton id={record.id} />
           </div>
-          <SaveButton id={record.id} />
+
+          <span className="cat record-hero-index">{k.nav} · {record.statusChip ?? "a working record"}</span>
+          <h1 className="title">{record.title}</h1>
+          <p className="hook">{record.hook}</p>
+
+          {cite && (
+            <div className="sk-box record-source-card tilt-l2 fill">
+              <span className="k">the source</span>
+              <p className="read" style={{ fontSize: ".98rem", lineHeight: 1.5, marginTop: ".35rem" }}>
+                <Rich html={cite.authors} /> ({cite.year}).<br />
+                <i>{cite.journal}</i>, {cite.volume}.
+              </p>
+              <p className="cat" style={{ marginTop: ".4rem", textTransform: "none", letterSpacing: ".04em" }}>doi {cite.doi}</p>
+            </div>
+          )}
+
+          <p className="lede record-hero-lede">{record.oneSentence}</p>
         </div>
-
-        <div style={{ marginTop: ".9rem" }}>
-          <Banner tilt={record.kind === "theory" ? "tilt-l2" : "tilt-r2"}>
-            <h1 className="title">{record.title}</h1>
-          </Banner>
-        </div>
-
-        <p className="hook">{record.hook}</p>
-
-        {cite && (
-          <div className="sk-box tilt-l2 fill" style={{ marginTop: "1.2rem", maxWidth: 600 }}>
-            <span className="k">the source</span>
-            <p className="read" style={{ fontSize: ".98rem", lineHeight: 1.5, marginTop: ".35rem" }}>
-              <Rich html={cite.authors} /> ({cite.year}).<br />
-              <i>{cite.journal}</i>, {cite.volume}.
-            </p>
-            <p className="cat" style={{ marginTop: ".4rem", textTransform: "none", letterSpacing: ".04em" }}>doi {cite.doi}</p>
-          </div>
-        )}
-
-        <p className="lede" style={{ marginTop: "1.1rem", maxWidth: "60ch" }}>{record.oneSentence}</p>
+        <RecordKnowledgeOrbit record={record} />
       </section>
 
       <div className="layout">

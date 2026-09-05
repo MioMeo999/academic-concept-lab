@@ -3,8 +3,9 @@ import { RECORDS, KIND } from "@/content/records";
 import { DISCIPLINES } from "@/content/disciplines";
 import type { RecordKind } from "@/content/types";
 import { getBranchesForDiscipline, getDisciplineOrientation, getDisciplineRecordCount } from "@/content/atlas";
-import { Banner, Divider, Icon } from "./_components/Sketch";
+import { Divider, Icon } from "./_components/Sketch";
 import { RecordCard } from "./_components/RecordCard";
+import { AtlasConstellation } from "./_components/VisualAtlas";
 
 /* ---------------------------------------------------------------------------
    A landing page has one job: tell someone what this is, what is in it, why it
@@ -71,23 +72,29 @@ export default function ConceptLabHome() {
 
   return (
     <div className="wrap">
-      <section className="hero" data-reveal="hl">
-        <Banner>
-          <h1 className="title">Academic Concept&nbsp;Lab</h1>
-        </Banner>
-        <p className="tagline">
-          Theory, evidence and method — <span className="hl">drawn out</span> until you can actually see them.
-        </p>
-        <p className="lede" style={{ marginTop: "1rem" }}>
-          Academic work explained without being flattened. Every claim on every page carries a mark saying where it came from — and where it does not,
-          the page says so.
-        </p>
+      <section className="hero hero-home" data-reveal="hl">
+        <div className="hero-home-copy">
+          <span className="k hero-kicker">academic concept lab · a visual theory atlas</span>
+          <h1 className="title">Academic<br /><i>Concept Lab</i></h1>
+          <p className="tagline">
+            Theory, evidence and method — <span className="hl">drawn out</span> until you can actually see them.
+          </p>
+          <p className="lede" style={{ marginTop: "1rem" }}>
+            Academic work explained without being flattened. Every claim on every page carries a mark saying where it came from — and where it does not,
+            the page says so.
+          </p>
 
-        <div className="stat-strip" aria-label="What is in the library">
-          <span><b>{RECORDS.length}</b> records</span>
-          <span><b>{counts.length}</b> kinds</span>
-          <span><b>{disciplineCounts.length}</b> disciplines</span>
+          <div className="stat-strip" role="group" aria-label="What is in the library">
+            <span><b>{RECORDS.length}</b> records</span>
+            <span><b>{counts.length}</b> kinds</span>
+            <span><b>{disciplineCounts.length}</b> disciplines</span>
+          </div>
+          <Link className="hero-entry" href="/concept-lab/library">
+            <span className="hero-entry-arrow" aria-hidden="true">↗</span>
+            <span><b>Enter the atlas</b><small>follow an idea, then follow its evidence</small></span>
+          </Link>
         </div>
+        <AtlasConstellation counts={counts} />
       </section>
 
       <Divider />
@@ -109,7 +116,7 @@ export default function ConceptLabHome() {
                 </div>
               </div>
               <p className="read discipline-orientation">{orientation?.summary}</p>
-              <div className="discipline-themes" aria-label={`${d.name} current themes`}>
+              <div className="discipline-themes">
                 {orientation?.themes.map((theme) => <span key={theme}>{theme}</span>)}
               </div>
               {d.id === "music-psych" && (
