@@ -37,6 +37,7 @@ import {
 import { FieldPlot, type PlotGroup } from "../_components/FieldPlot";
 import { FieldRail, type RailState } from "../_components/FieldRail";
 import { PENCIL_TRACE, PencilPalette } from "../_components/PencilPalette";
+import { GroupingPlayground } from "../_components/GroupingPlayground";
 import { Stimulus } from "../_components/Stimulus";
 import { ConflictLab } from "../_components/ConflictLab";
 import { WholePart } from "../_components/WholePart";
@@ -197,6 +198,8 @@ export default function Page() {
             <div style={{ position: "relative" }}>
               <Stimulus presets={g.opening.presets} note={g.opening.note} eventColours={TRACE} />
             </div>
+
+            <GroupingPlayground events={FIELD} colours={TRACE} />
           </div>
         </section>
       </div>
