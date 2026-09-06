@@ -72,9 +72,9 @@ export default function ConceptLabHome() {
 
   return (
     <div className="wrap">
-      <section className="hero hero-home" data-reveal="hl">
+      <section className="home-canvas" data-reveal="hl">
         <div className="hero-home-copy">
-          <span className="k hero-kicker">academic concept lab · a visual theory atlas</span>
+          <span className="k hero-kicker">a living atlas of theories, evidence, methods and people</span>
           <h1 className="title">Academic<br /><i>Concept Lab</i></h1>
           <p className="tagline">
             Theory, evidence and method — <span className="hl">drawn out</span> until you can actually see them.
@@ -84,12 +84,12 @@ export default function ConceptLabHome() {
             the page says so.
           </p>
 
-          <div className="stat-strip" role="group" aria-label="What is in the library">
+          <div className="stat-strip home-canvas-stats" role="group" aria-label="What is in the library">
             <span><b>{RECORDS.length}</b> records</span>
             <span><b>{counts.length}</b> kinds</span>
             <span><b>{disciplineCounts.length}</b> disciplines</span>
           </div>
-          <Link className="hero-entry" href="/concept-lab/library">
+          <Link className="hero-entry home-canvas-entry" href="/concept-lab/library">
             <span className="hero-entry-arrow" aria-hidden="true">↗</span>
             <span><b>Enter the atlas</b><small>follow an idea, then follow its evidence</small></span>
           </Link>
@@ -100,12 +100,12 @@ export default function ConceptLabHome() {
       <Divider />
 
       {/* The atlas begins with the two disciplines that currently carry the most questions. */}
-      <section>
+      <section className="home-discovery">
         <span className="k">explore by discipline</span>
         <p className="lede atlas-discovery-lede">
           Start with the field that frames your question. Each surface opens the live library, where records remain traceable to their kind and evidence.
         </p>
-        <div className="discipline-panels">
+        <div className="discipline-panels home-discipline-panels">
           {majorDisciplines.map(({ d, n, orientation }) => (
             <article className="discipline-panel" key={d.id} data-reveal="rise">
               <div className="discipline-panel-head">
@@ -145,9 +145,9 @@ export default function ConceptLabHome() {
       <Divider />
 
       {/* The architecture, made navigable rather than described. */}
-      <section>
+      <section className="home-kinds">
         <span className="k">four kinds of record — pick a way in</span>
-        <div className="doors">
+        <div className="doors home-knowledge-doors">
           {counts.map(({ kind, n }) => {
             const k = KIND[kind];
             const d = DIALECT[kind];
@@ -171,7 +171,7 @@ export default function ConceptLabHome() {
       <Divider />
 
       {/* Four ways in, chosen for a reason that is stated. */}
-      <section>
+      <section className="home-start">
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap" }}>
           <h2 style={{ fontSize: "clamp(1.4rem,3.6vw,1.9rem)" }}>Start here</h2>
           <Link className="quiet-link" href="/concept-lab/library" style={{ fontSize: ".92rem" }}>See all {RECORDS.length} records →</Link>
@@ -192,7 +192,7 @@ export default function ConceptLabHome() {
       <Divider />
 
       {/* The differentiator, shown instead of mentioned. */}
-      <section>
+      <section className="home-trust">
         <span className="k">why you can check it</span>
         <div className="sk-box tilt-l2" style={{ marginTop: ".8rem" }}>
           <p className="read" style={{ fontSize: "1rem", lineHeight: 1.6, color: "var(--pen-2)", maxWidth: "62ch" }}>

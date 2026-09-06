@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import type { AnyRecord } from "@/content/types";
 import { DISCIPLINES } from "@/content/disciplines";
 import { KIND, otherRecords, recordHref } from "@/content/records";
@@ -60,27 +61,41 @@ export function RecordShell({
           <p className="hook">{record.hook}</p>
 
           {cite && (
-            <div className="sk-box record-source-card tilt-l2 fill">
+            <div className="record-source-card">
               <span className="k">the source</span>
-              <p className="read" style={{ fontSize: ".98rem", lineHeight: 1.5, marginTop: ".35rem" }}>
+              <p className="read">
                 <Rich html={cite.authors} /> ({cite.year}).<br />
                 <i>{cite.journal}</i>, {cite.volume}.
               </p>
-              <p className="cat" style={{ marginTop: ".4rem", textTransform: "none", letterSpacing: ".04em" }}>doi {cite.doi}</p>
+              <p className="cat record-source-doi">doi {cite.doi}</p>
             </div>
           )}
 
           <p className="lede record-hero-lede">{record.oneSentence}</p>
+          <div className="record-topic-strip" role="list" aria-label="Key terms">
+            {record.topics.slice(0, 5).map((topic, index) => <span role="listitem" key={topic} style={{ "--topic-line": index % 2 ? "var(--coral)" : "var(--blue)" } as CSSProperties}>{topic}</span>)}
+          </div>
         </div>
         <RecordKnowledgeOrbit record={record} />
       </section>
+
+      <nav className="record-reading-route" aria-label="Reading route">
+        <span className="record-reading-route-intro"><i>read this record as</i><b>{k.nav.toLowerCase()}</b></span>
+        {toc.slice(0, 4).map(([num, label, id]) => (
+          <a href={`#${id}`} key={id}>
+            <span>{num}</span>
+            <strong>{label}</strong>
+          </a>
+        ))}
+        <span className="record-reading-route-tail">then check the marks in the margin ↘</span>
+      </nav>
 
       <div className="layout">
         {/* Phones get no rail, but a record can run to eleven sections — the
             map becomes a fold-out box instead of disappearing. The same
             component keeps the desktop rail and mobile map in sync. */}
         <ContentsNav toc={toc} />
-        <div>{children}</div>
+        <div className="record-body">{children}</div>
       </div>
 
       <Divider />
