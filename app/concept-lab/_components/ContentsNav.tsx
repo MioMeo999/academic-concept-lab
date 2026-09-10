@@ -21,24 +21,49 @@ export function ContentsNav({ toc }: { toc: Toc }) {
     const headerOffsetPx = headerOffset.endsWith("rem")
       ? parseFloat(headerOffset) * rootFontSize
       : parseFloat(headerOffset);
-    const updateActive = () => {
+    const updateActiveFromGeometry = () => {
       const marker = headerOffsetPx + 24;
       const current = sections.reduce(
         (latest, section) => section.getBoundingClientRect().top <= marker ? section : latest,
         sections[0],
       );
-      setActiveId(current.id);
+      setActiveId((previous) => previous === current.id ? previous : current.id);
     };
+
+    // Section highlighting is a visibility concern, so let the browser track
+    // it instead of reading every section's geometry on every scroll event.
+    // The root margin creates a reading band just below the sticky header.
+    if (typeof IntersectionObserver !== "undefined") {
+      const visible = new Set<HTMLElement>();
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) visible.add(entry.target as HTMLElement);
+          else visible.delete(entry.target as HTMLElement);
+        });
+        const current = sections.find((section) => visible.has(section));
+        if (current) setActiveId((previous) => previous === current.id ? previous : current.id);
+      }, {
+        rootMargin: `-${headerOffsetPx + 16}px 0px -55% 0px`,
+        threshold: 0,
+      });
+
+      sections.forEach((section) => observer.observe(section));
+      updateActiveFromGeometry();
+      return () => observer.disconnect();
+    }
+
+    // Older browsers still get accurate tracking, but only one layout read per
+    // frame rather than one read per scroll event.
     let frame = 0;
     const onScroll = () => {
       if (frame) return;
       frame = requestAnimationFrame(() => {
         frame = 0;
-        updateActive();
+        updateActiveFromGeometry();
       });
     };
 
-    updateActive();
+    updateActiveFromGeometry();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {

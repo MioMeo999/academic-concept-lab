@@ -23,15 +23,14 @@ export function Reveal() {
     const root = document.querySelector(".acl");
     if (!root) return;
 
-    const wants = window.matchMedia("(prefers-reduced-motion: no-preference)").matches;
-    if (!wants) return;
-
-    root.classList.add("anim-ready");
-
     const targets = Array.from(root.querySelectorAll("[data-draw], [data-reveal]"));
     if (!targets.length) return;
 
     const show = (el: Element) => el.classList.add("is-in");
+    const showAll = () => targets.forEach(show);
+    const media = window.matchMedia("(prefers-reduced-motion: no-preference)");
+    let observer: IntersectionObserver | null = null;
+    let frame = 0;
 
     // Anything already on screen is revealed straight away, by geometry rather
     // than by observer. Two reasons: the hero should never flash hidden, and
@@ -41,34 +40,58 @@ export function Reveal() {
       const r = el.getBoundingClientRect();
       return r.top < window.innerHeight * 0.92 && r.bottom > 0;
     };
-    targets.forEach((t) => { if (onScreen(t)) show(t); });
+    const start = () => {
+      observer?.disconnect();
+      observer = null;
+      root.classList.remove("anim-ready");
 
-    const rest = targets.filter((t) => !t.classList.contains("is-in"));
-    if (!rest.length) return;
+      // Reduced motion and background tabs should always receive the finished
+      // page. This also handles a reader changing the OS setting mid-session.
+      if (!media.matches || document.visibilityState === "hidden") {
+        showAll();
+        return;
+      }
 
-    // No observer available: show everything rather than hide it. Content must
-    // never end up stranded because an enhancement failed.
-    if (typeof IntersectionObserver === "undefined") {
-      rest.forEach(show);
-      return;
-    }
+      root.classList.add("anim-ready");
+      targets.forEach((target) => { if (onScreen(target)) show(target); });
+      const rest = targets.filter((target) => !target.classList.contains("is-in"));
+      if (!rest.length) return;
 
-    // A shallow observer: mark once on entry, then stop watching. Re-drawing
-    // on every scroll past would be noise, not delight.
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            show(e.target);
-            io.unobserve(e.target);
+      // A shallow observer: mark once on entry, then stop watching. Re-drawing
+      // on every scroll past would be noise, not delight.
+      if (typeof IntersectionObserver === "undefined") {
+        showAll();
+        return;
+      }
+      observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              show(entry.target);
+              observer?.unobserve(entry.target);
+            }
           }
-        }
-      },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
-    );
+        },
+        { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+      );
+      rest.forEach((target) => observer?.observe(target));
+    };
 
-    rest.forEach((t) => io.observe(t));
-    return () => io.disconnect();
+    const scheduleStart = () => {
+      if (frame) cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(start);
+    };
+
+    scheduleStart();
+    media.addEventListener?.("change", scheduleStart);
+    document.addEventListener("visibilitychange", scheduleStart);
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      observer?.disconnect();
+      media.removeEventListener?.("change", scheduleStart);
+      document.removeEventListener("visibilitychange", scheduleStart);
+      root.classList.remove("anim-ready");
+    };
   }, [pathname]);
 
   return null;

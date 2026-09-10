@@ -33,7 +33,10 @@
   .k{ font-size:.75rem; letter-spacing:.11em; text-transform:uppercase; color:var(--pen-3); }
   .cat{ font-family:var(--cat); font-size:.63rem; letter-spacing:.12em; text-transform:uppercase; color:var(--pen-3); }
   .sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
-  @media (prefers-reduced-motion:reduce){ *{ animation-duration:.01ms !important; transition-duration:.01ms !important; } }
+  @media (prefers-reduced-motion:reduce){
+    html{ scroll-behavior:auto; }
+    *,*::before,*::after{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+  }
 
   /* ---------- drawn vocabulary ---------- */
   .sk-box{ position:relative; padding:.9rem 1rem; }
@@ -2391,6 +2394,14 @@
   .hero-entry b,.hero-entry small{ display:block; }
   .hero-entry b{ font-family:var(--hand); font-size:1.25rem; font-weight:400; }
   .hero-entry small{ margin-top:.12rem; color:var(--pen-3); font-family:var(--cat); font-size:.58rem; letter-spacing:.06em; text-transform:uppercase; }
+
+  @media (hover:hover) and (pointer:fine){
+    .hero-entry-arrow{ transition:transform var(--motion-quick) var(--ease-spring); }
+    .hero-entry:hover .hero-entry-arrow,.hero-entry:focus-visible .hero-entry-arrow{ transform:translateX(4px) rotate(-7deg); }
+    .discipline-explore{ transition:color var(--motion-quick) ease; }
+    .discipline-explore > span{ display:inline-block; transition:transform var(--motion-quick) var(--ease-spring); }
+    .discipline-explore:hover > span,.discipline-explore:focus-visible > span{ transform:translateX(4px); }
+  }
 
   .atlas-constellation{ position:relative; width:100%; max-width:700px; aspect-ratio:1.14; min-height:520px; margin-inline:auto; isolation:isolate; }
   .atlas-constellation-drawing,.record-orbit-drawing{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
