@@ -1,0 +1,814 @@
+/* ===========================================================================
+   Surface — the working surface.
+
+   A visual exploration for Academic Concept Lab. Everything is scoped to
+   .sf-root. This file does not extend, override, or reference sketchnote.css,
+   and production is untouched.
+
+   The thesis is two registers on one page that never merge:
+
+     TYPESET KNOWLEDGE — the scholarship. One measure, one grid, a real
+       hierarchy, an apparatus rail beside the text rather than boxes inside
+       it. Every claim, citation, boundary and qualification survives with the
+       drawing switched off. That is the acceptance test.
+
+     DRAWN THINKING — pigment and graphite, appearing only where thought is
+       happening: grouping, comparing, connecting, doubting, bounding,
+       revising. Never to fill a space that looked empty.
+
+   Rhythm is structural, not tonal. A section declares a register, and the
+   register moves the spine itself: at `ignition` the drawing column is wider
+   than the text; at `quiet` it collapses to an apparatus rail and the measure
+   opens up. The page therefore changes shape as the argument changes
+   temperature, instead of changing only its colour.
+   ========================================================================= */
+
+.sf-root {
+  /* -- pigments ---------------------------------------------------------
+     Named for how each sits in the mass, not for what it means. No hue in
+     this exploration encodes a claim class, evidence status, record kind or
+     provenance mark. Colour is material. */
+  --pg-cobalt: #1b4fd0;
+  --pg-sky: #3b93d6;
+  --pg-teal: #0f8b7c;
+  --pg-emerald: #1d8449;
+  --pg-lime: #74b326;
+  --pg-lemon: #e8bb1f;
+  --pg-ochre: #cf8a1c;
+  --pg-orange: #e26c25;
+  --pg-vermilion: #d93518;
+  --pg-coral: #ea6154;
+  --pg-magenta: #cc1f84;
+  --pg-violet: #7139c4;
+  --pg-lilac: #a385dd;
+  --pg-sand: #c5a97f;
+  --pg-warmgrey: #857d71;
+  --pg-graphite: #45454a;
+  --pg-charcoal: #1f1f23;
+
+  /* -- surface ---------------------------------------------------------- */
+  --paper: #ffffff;
+  --ink: #17171a;
+  --ink-2: #3d3d44;
+  --ink-3: #6b6b74;
+  --ink-4: #9a9aa3;
+  --hair: #e3e3e6;
+  --hair-2: #efeff1;
+
+  /* -- spine ------------------------------------------------------------ */
+  --rail: 7.5rem;
+  --measure: 33rem;
+  --gutter: 2.5rem;
+  --think: minmax(0, 1fr);
+  --shell: 82rem;
+  --pad: 2.5rem;
+
+  color-scheme: light;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sf-newsreader), Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  line-height: 1.62;
+  font-variant-numeric: oldstyle-num;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.sf-root *,
+.sf-root *::before,
+.sf-root *::after { box-sizing: border-box; }
+
+.sf-root :focus-visible {
+  outline: 2px solid var(--pg-cobalt);
+  outline-offset: 3px;
+}
+
+.sf-skip {
+  position: absolute; left: -9999px; top: 0; z-index: 50;
+  background: var(--ink); color: #fff; padding: .6rem 1rem;
+  font-family: var(--sf-instrument), system-ui, sans-serif; font-size: .8rem;
+}
+.sf-skip:focus { left: .5rem; top: .5rem; }
+
+/* --------------------------------------------------------------- marks -- */
+
+/* The one property that makes pigment behave like pigment: two colours that
+   cross darken each other instead of the later one covering the earlier. */
+.sf-root .sf-mass,
+.sf-root .sf-mark,
+.sf-root .sf-smudge { mix-blend-mode: multiply; }
+
+.sf-plate { display: block; width: 100%; overflow: visible; }
+
+.sf-hand {
+  font-family: var(--sf-caveat), "Segoe Script", cursive;
+  font-weight: 500;
+  mix-blend-mode: multiply;
+}
+.sf-glabel {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+}
+.sf-gfig {
+  font-family: var(--sf-newsreader), Georgia, serif;
+  font-variant-numeric: oldstyle-num;
+}
+
+/* ------------------------------------------------------------ masthead -- */
+
+.sf-mast {
+  position: sticky; top: 0; z-index: 20;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: saturate(1.4) blur(6px);
+  border-bottom: 1px solid var(--hair);
+}
+.sf-mast-in {
+  max-width: var(--shell); margin: 0 auto; padding: .7rem var(--pad);
+  display: flex; align-items: baseline; gap: 1.6rem; flex-wrap: wrap;
+}
+.sf-wordmark {
+  font-size: 1rem; font-weight: 620; letter-spacing: -.012em;
+  color: var(--ink); text-decoration: none; white-space: nowrap;
+}
+.sf-wordmark span { font-style: italic; font-weight: 380; color: var(--ink-3); }
+.sf-mast nav { display: flex; gap: 1.15rem; flex-wrap: wrap; margin-left: auto; }
+.sf-mast nav a {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .68rem; letter-spacing: .13em; text-transform: uppercase;
+  color: var(--ink-3); text-decoration: none; padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+}
+.sf-mast nav a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+.sf-mast nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--pg-vermilion); }
+
+/* ---------------------------------------------------------------- shell -- */
+
+.sf-shell { max-width: var(--shell); margin: 0 auto; padding: 0 var(--pad) 6rem; }
+
+.sf-status {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .6rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink-4); padding: .85rem 0 0;
+  display: flex; gap: .8rem; flex-wrap: wrap;
+}
+.sf-status b { font-weight: 600; color: var(--ink-3); }
+
+/* ------------------------------------------------------------ the spine -- */
+
+/*  rail        text                    gutter   thinking
+    ──────  ───────────────────────  ──────  ─────────────────
+    number  the scholarship          .       the drawing         */
+.sf-band {
+  display: grid;
+  grid-template-columns:
+    [rail-start] var(--rail)
+    [text-start] minmax(0, var(--measure))
+    [text-end gut-start] var(--gutter)
+    [think-start] var(--think)
+    [think-end];
+  column-gap: 0;
+  align-items: start;
+  padding: 3.2rem 0;
+  border-top: 1px solid var(--hair-2);
+}
+.sf-band:first-of-type { border-top: 0; }
+
+/* Register moves the spine. This is where rhythm actually lives. */
+.sf-band[data-register="ignition"] { --measure: 27rem; --think: minmax(0, 1.55fr); padding: 2.2rem 0 4rem; }
+.sf-band[data-register="working"]  { --measure: 31rem; --think: minmax(0, 1.15fr); }
+.sf-band[data-register="reading"]  { --measure: 36rem; --think: minmax(0, .62fr); }
+.sf-band[data-register="quiet"]    { --measure: 40rem; --think: minmax(0, .48fr); padding: 2.6rem 0; }
+
+.sf-band[data-full="true"] { display: block; padding: 1rem 0 3.4rem; border-top: 0; }
+
+.sf-rail { grid-column: rail-start / text-start; padding-right: 1.25rem; position: sticky; top: 4.2rem; }
+.sf-num {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .72rem; font-weight: 600; letter-spacing: .06em;
+  color: var(--ink); font-variant-numeric: tabular-nums;
+}
+.sf-reg {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .56rem; letter-spacing: .17em; text-transform: uppercase;
+  color: var(--ink-4); margin-top: .3rem;
+}
+.sf-reg::before {
+  content: ""; display: block; width: 1.6rem; height: 2px; margin-bottom: .5rem;
+  background: currentColor; opacity: .5;
+}
+.sf-band[data-register="ignition"] .sf-reg { color: var(--pg-vermilion); }
+.sf-band[data-register="working"]  .sf-reg { color: var(--pg-cobalt); }
+.sf-band[data-register="reading"]  .sf-reg { color: var(--pg-warmgrey); }
+.sf-band[data-register="quiet"]    .sf-reg { color: var(--ink-4); }
+
+.sf-text  { grid-column: text-start / text-end; min-width: 0; }
+.sf-think { grid-column: think-start / think-end; min-width: 0; position: relative; }
+.sf-wide  { grid-column: text-start / think-end; min-width: 0; }
+.sf-all   { grid-column: rail-start / think-end; min-width: 0; }
+
+/* ----------------------------------------------------------- typography -- */
+
+.sf-h {
+  font-size: 1.72rem; font-weight: 420; line-height: 1.14;
+  letter-spacing: -.018em; margin: 0 0 .85rem; color: var(--ink);
+  text-wrap: balance;
+}
+.sf-h em { font-style: italic; font-weight: 380; }
+
+.sf-kicker {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .62rem; letter-spacing: .17em; text-transform: uppercase;
+  color: var(--ink-4); margin: 0 0 .7rem;
+}
+
+.sf-lede {
+  font-size: 1.16rem; line-height: 1.52; color: var(--ink-2);
+  margin: 0 0 1.15rem; font-weight: 350;
+}
+.sf-lede em { font-style: italic; }
+
+.sf-p { margin: 0 0 1rem; color: var(--ink-2); }
+.sf-p:last-child { margin-bottom: 0; }
+.sf-p b, .sf-text b { font-weight: 620; color: var(--ink); }
+.sf-p i, .sf-text i, .sf-p em { font-style: italic; }
+
+.sf-text a, .sf-think a { color: var(--ink); text-decoration-thickness: 1px; text-underline-offset: 2px; text-decoration-color: var(--ink-4); }
+.sf-text a:hover, .sf-think a:hover { text-decoration-color: var(--pg-cobalt); }
+
+/* A word the page claims. The pigment goes under the type, never over it. */
+.sf-claim { position: relative; white-space: nowrap; }
+.sf-claim > svg { position: absolute; left: -6%; top: -22%; width: 112%; height: 150%; z-index: -1; pointer-events: none; overflow: visible; }
+.sf-claim > span { position: relative; }
+
+/* The note field on every content section: an editorial caveat that must not
+   be allowed to read as an original author's claim. Type only, always. */
+.sf-note {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .78rem; line-height: 1.55; color: var(--ink-3);
+  border-left: 2px solid var(--hair); padding: .1rem 0 .1rem .85rem;
+  margin: 1.25rem 0 0;
+}
+.sf-note b { font-weight: 600; color: var(--ink-2); }
+
+.sf-quote {
+  font-size: 1.32rem; line-height: 1.34; font-weight: 340; font-style: italic;
+  color: var(--ink); margin: 0; letter-spacing: -.01em; text-wrap: balance;
+}
+.sf-quote + .sf-attrib { margin-top: .8rem; }
+.sf-attrib {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .64rem; letter-spacing: .15em; text-transform: uppercase; color: var(--ink-4);
+}
+
+/* ------------------------------------------------------------- caption -- */
+
+.sf-cap {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .72rem; line-height: 1.5; color: var(--ink-3);
+  margin: .7rem 0 0; max-width: 46ch;
+}
+.sf-cap b { color: var(--ink-2); font-weight: 600; }
+.sf-figlabel {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .58rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink-4); margin: 0 0 .5rem;
+  display: flex; gap: .6rem; align-items: baseline;
+}
+.sf-figlabel b { color: var(--ink-2); font-weight: 600; letter-spacing: .14em; }
+
+/* --------------------------------------------------------- marginalia --- */
+
+.sf-margin { display: flex; flex-direction: column; gap: 1.5rem; }
+.sf-mnote {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .74rem; line-height: 1.5; color: var(--ink-3);
+  max-width: 30ch;
+}
+.sf-mnote h4 {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .58rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ink-4); margin: 0 0 .35rem; font-weight: 600;
+}
+.sf-mhand {
+  font-family: var(--sf-caveat), cursive; font-size: 1.12rem; line-height: 1.28;
+  color: var(--pg-graphite); max-width: 24ch;
+}
+
+/* ------------------------------------------------------------- listings -- */
+
+.sf-terms { margin: 1.4rem 0 0; display: grid; gap: 1.05rem; }
+.sf-term { display: grid; grid-template-columns: 1.1rem 1fr; gap: .8rem; align-items: start; }
+.sf-term-mk { width: 1.1rem; height: 1.1rem; margin-top: .28rem; }
+.sf-term h4 {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .62rem; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--ink); margin: 0 0 .2rem; font-weight: 600;
+}
+.sf-term p { margin: 0; font-size: .95rem; line-height: 1.5; color: var(--ink-2); }
+
+.sf-runs { list-style: none; margin: 1.1rem 0 0; padding: 0; display: grid; gap: .5rem; }
+.sf-runs li {
+  display: grid; grid-template-columns: 1.3rem 1fr; gap: .5rem;
+  font-size: .93rem; color: var(--ink-2); line-height: 1.5;
+}
+.sf-runs li::before {
+  content: counter(list-item); counter-increment: list-item;
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .62rem; color: var(--ink-4); padding-top: .3rem; font-variant-numeric: tabular-nums;
+}
+.sf-runs { counter-reset: list-item; }
+
+.sf-plain { list-style: none; margin: .8rem 0 0; padding: 0; display: grid; gap: .42rem; }
+.sf-plain li { font-size: .93rem; color: var(--ink-2); line-height: 1.5; padding-left: .95rem; position: relative; }
+.sf-plain li::before {
+  content: ""; position: absolute; left: 0; top: .62em;
+  width: .38rem; height: 1px; background: var(--ink-4);
+}
+
+/* --------------------------------------------------------------- quiet -- */
+
+/* Quiet does not mean generic. A quiet section keeps the same grid, the same
+   faces and the same apparatus rail. What it drops is colour, not precision. */
+
+.sf-xray { border-top: 1px solid var(--ink); padding-top: .9rem; margin-top: 1.5rem; }
+.sf-xray-head { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; margin-bottom: .75rem; flex-wrap: wrap; }
+.sf-xray-head h4 { font-size: 1.06rem; font-weight: 560; margin: 0; letter-spacing: -.01em; }
+.sf-xray-kind {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .56rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-4);
+}
+.sf-xray dl { margin: 0; display: grid; grid-template-columns: 8.5rem 1fr; gap: .5rem 1.1rem; }
+.sf-xray dt {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .6rem; letter-spacing: .13em; text-transform: uppercase;
+  color: var(--ink-4); padding-top: .28rem;
+}
+.sf-xray dd { margin: 0; font-size: .92rem; line-height: 1.55; color: var(--ink-2); }
+.sf-xray dd i, .sf-xray dd em { font-style: italic; }
+.sf-xray .sf-cite { font-size: .86rem; color: var(--ink-3); }
+.sf-xray dd[data-neg="true"] { color: var(--ink-3); }
+
+.sf-split { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.3rem; }
+.sf-split h4 {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .6rem; letter-spacing: .16em; text-transform: uppercase;
+  margin: 0 0 .6rem; font-weight: 600; padding-bottom: .4rem; border-bottom: 1px solid var(--hair);
+}
+.sf-split > div:first-child h4 { color: var(--ink); }
+.sf-split > div:last-child h4 { color: var(--ink-3); }
+
+.sf-sources { list-style: none; margin: 1.1rem 0 0; padding: 0; display: grid; gap: 1rem; }
+.sf-sources li { display: grid; grid-template-columns: 1.6rem 1fr; gap: .6rem; }
+.sf-sources li > span:first-child {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .6rem; color: var(--ink-4); padding-top: .35rem; font-variant-numeric: tabular-nums;
+}
+.sf-sources .sf-cite { font-size: .92rem; line-height: 1.5; color: var(--ink); margin: 0; }
+.sf-sources .sf-cite i, .sf-sources .sf-cite em { font-style: italic; }
+.sf-sources .sf-contrib { font-size: .84rem; line-height: 1.5; color: var(--ink-3); margin: .25rem 0 0; }
+.sf-sources a { font-family: var(--sf-instrument), system-ui, sans-serif; font-size: .68rem; }
+
+.sf-prov { list-style: none; margin: 1.1rem 0 0; padding: 0; display: grid; gap: .85rem; }
+.sf-prov li { display: grid; grid-template-columns: 1.4rem 1fr; gap: .7rem; align-items: start; }
+.sf-prov .sf-glyph { font-size: .82rem; line-height: 1.5; text-align: center; }
+.sf-prov h4 {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .6rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink); margin: 0 0 .15rem; font-weight: 600;
+}
+.sf-prov p { margin: 0; font-size: .87rem; line-height: 1.5; color: var(--ink-3); }
+
+.sf-rel { list-style: none; margin: 1.1rem 0 0; padding: 0; display: grid; gap: .9rem; }
+.sf-rel li { border-top: 1px solid var(--hair); padding-top: .7rem; }
+.sf-rel a { font-size: 1rem; font-weight: 520; text-decoration: none; border-bottom: 1px solid var(--ink-4); }
+.sf-rel a:hover { border-bottom-color: var(--pg-cobalt); }
+.sf-rel p { margin: .3rem 0 0; font-size: .87rem; line-height: 1.5; color: var(--ink-3); }
+
+/* ------------------------------------------------------------ contents -- */
+
+.sf-toc { columns: 2; column-gap: 2.4rem; margin: 0; padding: 0; list-style: none; }
+.sf-toc li { break-inside: avoid; display: grid; grid-template-columns: 1.7rem 1fr; gap: .45rem; margin-bottom: .3rem; }
+.sf-toc a {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .72rem; color: var(--ink-2); text-decoration: none; line-height: 1.5;
+}
+.sf-toc a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; }
+.sf-toc span {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .58rem; color: var(--ink-4); padding-top: .22rem; font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------- title -- */
+
+.sf-title {
+  font-size: clamp(2.3rem, 4.4vw, 3.5rem); font-weight: 340; line-height: 1.02;
+  letter-spacing: -.028em; margin: 0; color: var(--ink); text-wrap: balance;
+}
+.sf-title em { font-style: italic; font-weight: 300; }
+.sf-sub {
+  font-size: clamp(1rem, 1.5vw, 1.2rem); font-weight: 340; font-style: italic;
+  color: var(--ink-2); margin: 1rem 0 0; max-width: 34ch; line-height: 1.36;
+}
+.sf-hook {
+  font-size: 1.06rem; line-height: 1.5; color: var(--ink-2); margin: 1.4rem 0 0; max-width: 44ch;
+}
+
+.sf-meta { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 1.5rem; }
+.sf-meta span {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .6rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-3); border: 1px solid var(--hair); padding: .28rem .55rem;
+}
+.sf-meta span[data-strong="true"] { border-color: var(--ink-3); color: var(--ink); }
+
+/* ---------------------------------------------------------------- foot -- */
+
+.sf-foot {
+  max-width: var(--shell); margin: 0 auto; padding: 2rem var(--pad) 4rem;
+  border-top: 1px solid var(--hair);
+  display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .64rem; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-4);
+}
+
+/* ---------------------------------------------------------------- cover -- */
+
+.sf-cover { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 3rem; align-items: end; padding: 3rem 0 2rem; }
+.sf-index { display: grid; gap: 0; margin-top: 1rem; }
+.sf-index a {
+  display: grid; grid-template-columns: 3.2rem 1fr auto; gap: 1.2rem; align-items: baseline;
+  padding: 1.15rem 0; border-top: 1px solid var(--hair); text-decoration: none; color: inherit;
+}
+.sf-index a:last-child { border-bottom: 1px solid var(--hair); }
+.sf-index a:hover { background: #fafafa; }
+.sf-index .n {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .6rem; letter-spacing: .14em; color: var(--ink-4); text-transform: uppercase;
+}
+.sf-index h3 { margin: 0; font-size: 1.3rem; font-weight: 440; letter-spacing: -.015em; }
+.sf-index p { margin: .25rem 0 0; font-size: .9rem; color: var(--ink-3); line-height: 1.45; max-width: 52ch; }
+.sf-index .go {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .58rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-4);
+}
+.sf-index a:hover .go { color: var(--pg-vermilion); }
+
+/* --------------------------------------------------------------- narrow -- */
+
+@media (max-width: 1180px) {
+  .sf-root { --rail: 5.5rem; --pad: 1.8rem; }
+  .sf-band[data-register="ignition"],
+  .sf-band[data-register="working"],
+  .sf-band[data-register="reading"],
+  .sf-band[data-register="quiet"] { --measure: 1fr; --think: minmax(0, .85fr); }
+}
+
+@media (max-width: 900px) {
+  .sf-root { --rail: 0; --pad: 1.4rem; font-size: 16px; }
+  .sf-band { grid-template-columns: minmax(0, 1fr); row-gap: 1.6rem; padding: 2.4rem 0; }
+  .sf-rail, .sf-text, .sf-think, .sf-wide, .sf-all { grid-column: 1 / -1; position: static; padding-right: 0; }
+  .sf-rail { display: flex; gap: .9rem; align-items: baseline; }
+  .sf-reg::before { display: none; }
+  .sf-cover { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+  .sf-split { grid-template-columns: 1fr; gap: 1.4rem; }
+  .sf-toc { columns: 1; }
+  .sf-xray dl { grid-template-columns: 1fr; gap: .18rem .8rem; }
+  .sf-xray dt { padding-top: .5rem; }
+}
+
+/* Wide figures scroll inside their own container so the page never does. */
+.sf-scroll { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+.sf-scroll > * { min-width: 34rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sf-root *, .sf-root *::before, .sf-root *::after {
+    animation-duration: .001ms !important; transition-duration: .001ms !important;
+  }
+}
+
+@media print {
+  .sf-mast { position: static; }
+  .sf-root { --shell: 100%; }
+}
+
+/* ===========================================================================
+   The annotation layer.
+
+   Marks in the text flow: a highlighter swipe, a ring round a term, a wavering
+   underline. Every mark sits *behind* the type so the words stay at full
+   contrast, and every one is inert and hidden from assistive technology — the
+   page still reads with the whole layer switched off.
+   ========================================================================= */
+
+.nt { position: relative; display: inline-block; }
+.nt-mark {
+  position: absolute; inset: -14% -6% -12%;
+  pointer-events: none; z-index: 0; line-height: 0;
+}
+.nt-mark svg { width: 100%; height: 100%; display: block; overflow: visible; }
+
+/* A ring goes round a word rather than under it, so it needs real clearance
+   on all four sides — otherwise it cuts through the ascenders. */
+.nt-ring { padding: 0 .34em; }
+.nt-ring .nt-mark { inset: -42% -2% -34%; }
+.nt-word { position: relative; z-index: 1; }
+
+.nt-star {
+  display: inline-block; vertical-align: 0.06em; margin: 0 .18em;
+  line-height: 0; pointer-events: none;
+}
+.nt-star svg { display: block; overflow: visible; }
+
+/* -- key terms as ringed pills -------------------------------------------- */
+.sf-root .nt-terms {
+  list-style: none; margin: 1.5rem 0 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: 1.5rem 2.1rem;
+}
+.nt-pill { position: relative; display: inline-block; padding: .1rem .55rem; }
+.nt-pill-mark { position: absolute; inset: -34% -12%; pointer-events: none; z-index: 0; line-height: 0; }
+.nt-pill-mark svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.nt-pill-word {
+  position: relative; z-index: 1;
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .74rem; letter-spacing: .04em; color: var(--ink); font-weight: 500;
+  white-space: nowrap;
+}
+
+/* -- numbered steps ------------------------------------------------------- */
+.sf-root .nt-steps { list-style: none; margin: 1.4rem 0 0; padding: 0; display: grid; gap: 1.4rem; }
+.sf-root .nt-steps li { display: grid; grid-template-columns: 2.6rem 1fr; gap: .9rem; align-items: start; }
+.nt-num {
+  font-family: var(--sf-newsreader), Georgia, serif;
+  font-size: 2.5rem; font-weight: 300; line-height: .82;
+  font-variant-numeric: lining-nums; letter-spacing: -.04em;
+  mix-blend-mode: multiply;
+}
+.sf-root .nt-steps h4 {
+  font-size: 1.02rem; font-weight: 560; margin: 0 0 .3rem; letter-spacing: -.008em; color: var(--ink);
+}
+.sf-root .nt-steps p { margin: 0; font-size: .95rem; line-height: 1.52; color: var(--ink-2); }
+
+/* -- the legend ----------------------------------------------------------- */
+.sf-root .nt-key { list-style: none; margin: 1.4rem 0 0; padding: 0; display: grid; gap: .95rem; }
+.sf-root .nt-key li {
+  display: grid; grid-template-columns: 7rem 5rem 1fr; gap: 1rem;
+  align-items: baseline; padding-bottom: .8rem; border-bottom: 1px solid var(--hair-2);
+}
+.nt-key-mark {
+  font-family: var(--sf-newsreader), Georgia, serif; font-size: .96rem;
+  font-style: italic; color: var(--ink);
+}
+.nt-key-name {
+  font-family: var(--sf-instrument), system-ui, sans-serif; font-size: .6rem;
+  letter-spacing: .15em; text-transform: uppercase; color: var(--ink); font-weight: 600;
+}
+.nt-key-means { font-size: .9rem; line-height: 1.45; color: var(--ink-3); }
+
+/* -- headings carrying a swipe -------------------------------------------- */
+.sf-h .nt, .sf-title .nt, .nt-steps h4 .nt { display: inline-block; }
+
+@media (max-width: 900px) {
+  .sf-root .nt-key li { grid-template-columns: 6rem 1fr; row-gap: .3rem; }
+  .nt-key-means { grid-column: 1 / -1; }
+}
+
+/* A struck list needs the strike to span the whole line, so its items become
+   block-level marks rather than inline ones. */
+.sf-root .sf-struck li { padding-left: 0; }
+.sf-root .sf-struck li::before { display: none; }
+.sf-root .sf-struck .nt { display: block; }
+
+/* ===========================================================================
+   The web furniture.
+
+   The parts a reader uses rather than reads. Deliberately quiet: the drawing
+   belongs to the plates, and furniture that competes with them makes the page
+   noisy. Marks appear here only where a mark is the honest thing — a ring
+   round a chip, a swipe under a quote, a dot beside the active section.
+   ========================================================================= */
+
+/* -- navigation ----------------------------------------------------------- */
+.wb-nav { border-bottom: 1px solid var(--hair); background: var(--paper); }
+.wb-nav-in {
+  max-width: var(--shell); margin: 0 auto; padding: .85rem var(--pad);
+  display: flex; align-items: center; gap: 2.2rem; flex-wrap: wrap;
+}
+.wb-brand {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-size: 1.06rem; font-weight: 640; letter-spacing: -.016em;
+  color: var(--ink); text-decoration: none; white-space: nowrap;
+}
+.wb-star { line-height: 0; }
+.wb-nav nav { display: flex; gap: 1.6rem; flex-wrap: wrap; }
+.wb-nav nav a {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .84rem; color: var(--ink-2); text-decoration: none;
+  padding-bottom: 3px; border-bottom: 2px solid transparent;
+}
+.wb-nav nav a:hover { color: var(--ink); }
+.wb-nav nav a[aria-current="page"] { color: var(--ink); font-weight: 600; border-bottom-color: var(--pg-vermilion); }
+.wb-tagline { margin-left: auto; line-height: 0; }
+.wb-tagline svg { display: block; overflow: visible; }
+
+/* -- breadcrumb ----------------------------------------------------------- */
+.wb-crumb {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .72rem; color: var(--ink-4); padding: 1rem 0 0;
+  display: flex; gap: .5rem; flex-wrap: wrap; align-items: baseline;
+}
+.wb-crumb i { font-style: normal; color: var(--hair); padding: 0 .1rem; }
+.wb-crumb a { color: var(--ink-3); text-decoration: none; }
+.wb-crumb a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; }
+.wb-crumb b { color: var(--ink-2); font-weight: 600; }
+
+/* -- actions -------------------------------------------------------------- */
+.wb-actions { display: flex; gap: .7rem; flex-wrap: wrap; margin-top: 1.5rem; }
+.wb-btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .82rem; font-weight: 500; letter-spacing: .01em;
+  background: var(--ink); color: #fff; text-decoration: none;
+  padding: .62rem 1.15rem; border-radius: 999px; border: 1px solid var(--ink);
+}
+.wb-btn:hover { background: #000; border-color: #000; }
+.wb-btn-alt { background: transparent; color: var(--ink); border-color: var(--hair); }
+.wb-btn-alt:hover { background: transparent; border-color: var(--ink-3); }
+
+/* -- chips ---------------------------------------------------------------- */
+.sf-root .wb-chips {
+  list-style: none; margin: 1.4rem 0 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: 1.3rem 1.7rem;
+}
+.wb-chip { position: relative; display: inline-block; padding: .12rem .6rem; }
+.wb-chip-mark { position: absolute; inset: -36% -10%; pointer-events: none; line-height: 0; }
+.wb-chip-mark svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.wb-chip-word {
+  position: relative;
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .72rem; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--ink); font-weight: 500; white-space: nowrap;
+}
+
+/* -- contents rail -------------------------------------------------------- */
+.wb-rail { position: sticky; top: 1.6rem; }
+.wb-rail-head {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .58rem; letter-spacing: .17em; text-transform: uppercase;
+  color: var(--ink-4); margin: 0 0 .9rem;
+}
+.sf-root .wb-rail ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .06rem; }
+.wb-rail li { display: grid; grid-template-columns: 1rem 1fr; align-items: baseline; gap: .35rem; }
+.wb-rail-dot { visibility: hidden; line-height: 0; padding-top: .34rem; }
+.wb-rail li[data-active] .wb-rail-dot { visibility: visible; }
+.wb-rail a {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .8rem; color: var(--ink-3); text-decoration: none;
+  padding: .3rem 0; display: block; line-height: 1.35;
+}
+.wb-rail a:hover { color: var(--ink); }
+.wb-rail li[data-active] a { color: var(--ink); font-weight: 600; }
+
+/* -- cards ---------------------------------------------------------------- */
+.wb-card { border: 1px solid var(--hair); padding: 1.15rem 1.25rem 1.35rem; }
+.wb-card + .wb-card { margin-top: 1.4rem; }
+.wb-card > header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 1rem; margin-bottom: .9rem;
+}
+.sf-root .wb-card h3 { font-size: 1.16rem; font-weight: 560; margin: 0; letter-spacing: -.012em; }
+.wb-card > header p { margin: .15rem 0 0; font-size: .88rem; font-style: italic; color: var(--ink-3); }
+.wb-card > header a {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .68rem; color: var(--ink-3); text-decoration: none; white-space: nowrap;
+}
+.wb-card > header a:hover { color: var(--ink); }
+
+/* -- numbered list -------------------------------------------------------- */
+.sf-root .wb-numbered { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+.wb-numbered li { display: grid; grid-template-columns: 1.6rem 1fr; gap: .7rem; align-items: start; }
+.wb-num { line-height: 0; padding-top: .1rem; }
+.sf-root .wb-numbered h4 {
+  font-size: .93rem; font-weight: 600; margin: 0 0 .15rem; color: var(--ink); letter-spacing: -.005em;
+}
+.sf-root .wb-numbered p { margin: 0; font-size: .87rem; line-height: 1.5; color: var(--ink-3); }
+
+/* -- closing columns ------------------------------------------------------ */
+.wb-cols {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+  gap: 0; border-top: 1px solid var(--ink);
+}
+.wb-col { padding: 1.5rem 1.5rem 1.8rem; border-left: 1px solid var(--hair); }
+.wb-col:first-child { border-left: 0; padding-left: 0; }
+.wb-col-n {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .58rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ink-4); margin: 0 0 .55rem;
+}
+.wb-col-n span { font-weight: 600; }
+.sf-root .wb-col h3 {
+  font-size: 1.14rem; font-weight: 500; line-height: 1.2; letter-spacing: -.015em;
+  margin: 0 0 .55rem; color: var(--ink); text-wrap: balance;
+}
+.wb-col-body { font-size: .88rem; line-height: 1.55; color: var(--ink-3); }
+.wb-col-body p { margin: 0 0 .6rem; color: inherit; }
+.sf-root .wb-col-body ul { list-style: none; margin: .6rem 0 0; padding: 0; display: grid; gap: .32rem; }
+.wb-col-body li { position: relative; padding-left: .95rem; }
+.wb-col-body li::before {
+  content: ""; position: absolute; left: 0; top: .62em; width: .4rem; height: 2px; background: var(--pg-teal);
+}
+.wb-col-fig { margin: .9rem 0 0; }
+.wb-col-note {
+  font-family: var(--sf-caveat), cursive; font-size: 1.06rem; line-height: 1.25;
+  margin: .8rem 0 0; max-width: 22ch;
+}
+
+/* -- pull quote and key idea ---------------------------------------------- */
+.wb-pull { margin: 0; }
+.wb-pull blockquote {
+  margin: 0; font-size: 1.16rem; line-height: 1.42; font-style: italic;
+  font-weight: 360; color: var(--ink); letter-spacing: -.008em;
+}
+.wb-pull-rule { display: block; width: 100%; max-width: 240px; height: 10px; margin: .4rem 0 0; overflow: visible; }
+.wb-pull figcaption {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .62rem; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--ink-4); margin-top: .7rem;
+}
+.wb-key { margin-top: 1.6rem; border-top: 1px solid var(--hair); padding-top: 1rem; }
+.wb-key-head {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .58rem; letter-spacing: .17em; text-transform: uppercase;
+  color: var(--ink-4); margin: 0 0 .5rem;
+}
+.wb-key-body { margin: 0; font-size: 1rem; line-height: 1.5; color: var(--ink-2); }
+
+.wb-aside {
+  font-family: var(--sf-caveat), cursive; font-size: 1.14rem; line-height: 1.24;
+  margin: 1rem 0 0; max-width: 24ch; transform-origin: left center;
+}
+
+/* -- record page layout --------------------------------------------------- */
+.wb-record {
+  display: grid;
+  grid-template-columns: [rail] 11rem [main] minmax(0, 1fr) [side] 22rem [end];
+  gap: 0 2.6rem; align-items: start; padding: 1.4rem 0 3rem;
+}
+.wb-record > .wb-rail { grid-column: rail; }
+.wb-record > .wb-main { grid-column: main; min-width: 0; }
+.wb-record > .wb-side { grid-column: side; min-width: 0; }
+.wb-record > .wb-full { grid-column: main / end; min-width: 0; }
+
+.wb-hero-title {
+  font-size: clamp(2.6rem, 5.4vw, 4.2rem); font-weight: 340; line-height: .98;
+  letter-spacing: -.032em; margin: .6rem 0 0; color: var(--ink); text-wrap: balance;
+}
+.wb-hero-title em { font-style: italic; font-weight: 300; }
+.wb-hero-sub {
+  font-size: 1.2rem; font-weight: 380; color: var(--ink-2); font-style: italic;
+  margin: 1rem 0 0; max-width: 40ch; line-height: 1.34;
+}
+.wb-hero-body { margin: 1.1rem 0 0; font-size: 1.02rem; line-height: 1.58; color: var(--ink-2); max-width: 52ch; }
+
+/* -- home page ------------------------------------------------------------ */
+.wb-home-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr); gap: 3rem; align-items: center; padding: 2rem 0 1rem; }
+.wb-featured { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 0; border-top: 1px solid var(--ink); }
+.wb-feature { padding: 1.6rem 1.6rem 1.9rem; border-left: 1px solid var(--hair); }
+.wb-feature:first-child { border-left: 0; padding-left: 0; }
+.sf-root .wb-feature h3 { font-size: 1.42rem; font-weight: 460; letter-spacing: -.02em; margin: .45rem 0 .2rem; }
+.wb-feature .it { font-style: italic; color: var(--ink-3); font-size: .96rem; margin: 0 0 .7rem; }
+.wb-feature p { font-size: .9rem; line-height: 1.55; color: var(--ink-3); margin: 0; }
+.wb-feature a.go {
+  display: inline-block; margin-top: .9rem;
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .66rem; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--ink-2); text-decoration: none;
+}
+.wb-feature a.go:hover { color: var(--pg-vermilion); }
+
+.wb-secthead { display: flex; align-items: baseline; gap: 1.4rem; margin: 3rem 0 1.2rem; }
+.sf-root .wb-secthead h2 { font-size: 1.66rem; font-weight: 480; letter-spacing: -.02em; margin: 0; white-space: nowrap; }
+.wb-secthead .fill { flex: 1; height: 1px; background: var(--hair); }
+.wb-secthead .note {
+  font-family: var(--sf-instrument), system-ui, sans-serif;
+  font-size: .6rem; letter-spacing: .15em; text-transform: uppercase; color: var(--ink-4); white-space: nowrap;
+}
+
+@media (max-width: 1180px) {
+  .wb-record { grid-template-columns: [rail] 9rem [main] minmax(0, 1fr) [side] 18rem [end]; gap: 0 1.8rem; }
+}
+@media (max-width: 980px) {
+  .wb-record { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+  .wb-record > .wb-rail,
+  .wb-record > .wb-main,
+  .wb-record > .wb-side,
+  .wb-record > .wb-full { grid-column: 1; }
+  .wb-rail { position: static; }
+  .sf-root .wb-rail ul { display: flex; flex-wrap: wrap; gap: .2rem 1.1rem; }
+  .wb-rail li { grid-template-columns: auto auto; }
+  .wb-col, .wb-feature { border-left: 0; border-top: 1px solid var(--hair); padding-left: 0; }
+  .wb-col:first-child, .wb-feature:first-child { border-top: 0; }
+  .wb-nav-in { gap: 1rem; }
+  .wb-tagline { display: none; }
+  .wb-home-hero { grid-template-columns: minmax(0, 1fr); gap: 1.8rem; }
+  .wb-secthead h2 { white-space: normal; }
+}
