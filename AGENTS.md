@@ -10,6 +10,11 @@ Read docs/ACADEMIC-CONCEPT-LAB-PROTOCOL.md before adding or substantially
 changing a record. This file is the short, high-priority version of that
 protocol.
 
+For any Academic Concept Lab visual design, redesign, styling, page-composition,
+visual-system, illustration, or visual-exploration work, first read
+`skills/concept-lab-visual-language/SKILL.md` and the supporting documents under
+`docs/visual-language/`.
+
 ## Non-negotiable rules
 
 1. Preserve the accepted paper/sketchnote visual language. Do not introduce a
