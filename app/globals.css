@@ -23,11 +23,12 @@
 
 html {
   /* Type-scale base. Every rem in sketchnote.css derives from this, so the
-     whole site scales from one number. The handwriting faces render small for
-     their nominal size, hence 18 rather than the 16px browser default. */
-  font-size: 18px;
+     whole site scales from one number. The old handwriting faces rendered small
+     for their nominal size and needed 18px; the reading serif does not, so this
+     came back down when the skin went on. */
+  font-size: 17px;
   scroll-behavior: smooth;
-  background: #f5f3ec;
+  background: #ffffff;
 }
 
 body {

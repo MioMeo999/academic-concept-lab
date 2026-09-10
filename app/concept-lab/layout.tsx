@@ -1,10 +1,39 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import localFont from "next/font/local";
 import "@fontsource/patrick-hand/400.css";
 import "./sketchnote.css";
+/* Loaded after sketchnote.css so the skin wins the cascade. It changes only
+   what a reader sees — palette, type and the drawn vocabulary. Remove this one
+   import and the previous look returns intact. */
+import "./surface-skin.css";
 import { Sprite } from "./_components/Sprite";
 import { Reveal } from "./_components/Reveal";
 import { SiteNav } from "./_components/SiteNav";
+
+/* Three voices, kept audibly separate. Newsreader carries the scholarship,
+   Instrument Sans the labels and controls, Caveat the handful of places where
+   someone is talking rather than writing. */
+const reading = localFont({
+  src: [
+    { path: "./_fonts/Newsreader.ttf", style: "normal", weight: "200 800" },
+    { path: "./_fonts/Newsreader-Italic.ttf", style: "italic", weight: "200 800" },
+  ],
+  variable: "--acl-newsreader",
+  display: "swap",
+});
+const machinery = localFont({
+  src: "./_fonts/InstrumentSans.ttf",
+  weight: "400 700",
+  variable: "--acl-instrument",
+  display: "swap",
+});
+const script = localFont({
+  src: "./_fonts/Caveat.ttf",
+  weight: "400 700",
+  variable: "--acl-caveat",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   description: "Serious theory and evidence, explained without being flattened. Every claim carries a mark saying where it came from.",
@@ -16,7 +45,7 @@ export const metadata: Metadata = {
  */
 export default function ConceptLabLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="acl">
+    <div className={`acl ${reading.variable} ${machinery.variable} ${script.variable}`}>
       <Sprite />
       <Reveal />
       <header className="site">

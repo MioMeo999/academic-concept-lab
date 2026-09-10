@@ -1,0 +1,432 @@
+/* ---------------------------------------------------------------------------
+   Surface skin.
+
+   The visual layer only. It is loaded after sketchnote.css and overrides what
+   a reader sees — palette, type, and the drawn vocabulary — while leaving
+   every route, component and word of content exactly as it was. Nothing in
+   this file changes markup or meaning; deleting the one import in
+   layout.tsx restores the previous look completely.
+
+   Three moves do most of the work:
+
+   1. The ground turns white. The old system committed to simulated paper;
+      this one commits to a blank sheet, because every mark on it composites
+      with multiply and multiply needs a light ground to darken into.
+
+   2. Body text becomes a serif. Previously the whole site was set in a
+      handwriting face, so nothing could be emphasised by switching to one.
+      Now the scholarship is typeset and the hand is reserved — which is what
+      makes an annotation read as annotation.
+
+   3. The drawn box goes away. Wobbly double borders on every container made
+      the decoration constant and the drawing invisible. Containers become
+      hairlines; the drawing comes from actual marks instead.
+   ------------------------------------------------------------------------- */
+
+.acl {
+  /* -- ground ---------------------------------------------------------- */
+  --paper: #ffffff;
+  --paper-2: #fbfbfa;
+
+  /* -- ink. Neutrals carry a faint cool bias so they sit with graphite
+        rather than reading as unconsidered grey. --------------------------- */
+  --pen: #17171a;
+  --pen-1: #17171a;
+  --pen-2: #3d3d44;
+  --pen-3: #6b6b74;
+  --grey: #9a9aa3;
+  --hair: #e3e3e6;
+  --hair-2: #efeff1;
+
+  /* -- pigments. The record kinds keep the hues they already had, moved to
+        the pencil palette so they behave in the mass. ---------------------- */
+  --red: #d93518;
+  --red-deep: #b52a10;
+  --teal: #0f8b7c;
+  --teal-deep: #0b6a5e;
+  --gold: #cf8a1c;
+  --gold-deep: #a86c12;
+  --plum: #7139c4;
+  --plum-deep: #5a2ba1;
+  --hl: #e8bb1f;
+  --tape: #f0e4c4;
+
+  --cobalt: #1b4fd0;
+  --violet: #7139c4;
+  --ochre: #cf8a1c;
+  --vermilion: #d93518;
+
+  /* -- voices. `--hand` is remapped to the reading serif rather than removed,
+        because 194 rules already ask for it; `--script` is the actual hand and
+        is spent sparingly. ------------------------------------------------- */
+  --hand: var(--acl-newsreader), Georgia, "Times New Roman", serif;
+  --read: var(--acl-newsreader), Georgia, "Times New Roman", serif;
+  --cat: var(--acl-instrument), system-ui, -apple-system, sans-serif;
+  --script: var(--acl-caveat), "Segoe Script", cursive;
+
+  --shell: min(1240px, 100% - 2.5rem);
+
+  background: var(--paper);
+  color: var(--pen);
+  font-family: var(--read);
+  font-size: 1rem;
+  line-height: 1.62;
+  font-variant-numeric: oldstyle-num;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.acl a { color: var(--pen); text-decoration-color: var(--grey); text-underline-offset: 2px; }
+.acl a:hover { text-decoration-color: var(--red); }
+.acl :focus-visible { outline: 2px solid var(--cobalt); outline-offset: 3px; }
+
+/* --------------------------------------------------------------- marks -- */
+
+/* Anything drawn composites like pigment: crossing colours mix rather than
+   the later one covering the earlier. */
+.acl svg .sk-mark,
+.acl .sk-mark { mix-blend-mode: multiply; }
+
+/* ----------------------------------------------------------- typography -- */
+
+.acl h1, .acl h2, .acl h3, .acl h4 {
+  font-family: var(--read);
+  font-weight: 500;
+  letter-spacing: -.018em;
+  color: var(--pen);
+}
+
+.acl .title {
+  font-family: var(--read);
+  font-size: clamp(2.5rem, 5.4vw, 4rem);
+  font-weight: 340;
+  line-height: 1;
+  letter-spacing: -.032em;
+}
+.acl .hook {
+  font-family: var(--read);
+  font-size: clamp(1.05rem, 2vw, 1.28rem);
+  font-weight: 380;
+  font-style: italic;
+  line-height: 1.36;
+  color: var(--pen-2);
+  max-width: 42ch;
+  margin-top: 1rem;
+}
+.acl .lede {
+  font-family: var(--read);
+  font-size: 1.1rem;
+  line-height: 1.56;
+  font-weight: 350;
+  color: var(--pen-2);
+  max-width: 64ch;
+}
+.acl .read { font-family: var(--read); }
+
+/* The label voice. Every uppercase micro-label on the site runs through these
+   two classes, so setting them in the machinery face converts the lot. */
+.acl .k {
+  font-family: var(--cat);
+  font-size: .62rem;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  color: var(--pen-3);
+  font-weight: 500;
+}
+.acl .cat {
+  font-family: var(--cat);
+  font-size: .6rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--pen-3);
+  font-weight: 500;
+}
+
+/* ------------------------------------------------- the drawn vocabulary -- */
+
+/* The wobbly double border was on nearly two hundred containers, which made
+   the decoration constant and left nothing for a real mark to say. A container
+   becomes a hairline; emphasis is spent on the content instead. */
+.acl .sk-box { padding: 1.1rem 1.25rem; }
+.acl .sk-box::before {
+  border: 1px solid var(--hair);
+  border-radius: 0;
+}
+.acl .sk-box::after { display: none; }
+.acl .sk-box.red::before { border-color: color-mix(in srgb, var(--red) 34%, var(--hair)); }
+.acl .sk-box.teal::before { border-color: color-mix(in srgb, var(--teal) 34%, var(--hair)); }
+.acl .sk-box.dash::before { border-style: dashed; border-color: var(--hair); opacity: 1; }
+.acl .sk-box.fill { background: var(--paper-2); }
+.acl .sk-box.tight { padding: .75rem .9rem; }
+
+/* Nothing on a white sheet is tilted. The irregularity belongs to the marks. */
+.acl .tilt-l, .acl .tilt-r, .acl .tilt-l2, .acl .tilt-r2 { transform: none; }
+
+/* The highlighter keeps its job but changes hand: a marker swipe that
+   overshoots slightly, rather than an even band. */
+.acl .hl {
+  background: linear-gradient(101deg,
+    rgba(232,187,31,0) 0.5%, rgba(232,187,31,.46) 2.5%,
+    rgba(232,187,31,.40) 97%, rgba(232,187,31,0) 99.5%);
+  background-repeat: no-repeat;
+  padding: 0 .16em;
+}
+.acl .hl-t {
+  background: linear-gradient(101deg,
+    rgba(27,79,208,0) 0.5%, rgba(27,79,208,.19) 2.5%,
+    rgba(27,79,208,.15) 97%, rgba(27,79,208,0) 99.5%);
+  background-repeat: no-repeat;
+  padding: 0 .16em;
+}
+
+/* A chip is a word with a light bound, not a filled pill. */
+.acl .chip {
+  font-family: var(--cat);
+  font-size: .62rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: .32rem .62rem;
+  border: 1px solid var(--hair);
+  border-radius: 999px;
+  color: var(--pen-2);
+}
+.acl .chip.red { border-color: color-mix(in srgb, var(--red) 46%, var(--hair)); color: var(--red-deep); }
+.acl .chip.teal { border-color: color-mix(in srgb, var(--teal) 46%, var(--hair)); color: var(--teal-deep); }
+.acl .chip.gold { border-color: color-mix(in srgb, var(--gold) 46%, var(--hair)); color: var(--gold-deep); }
+.acl .chip.plum { border-color: color-mix(in srgb, var(--plum) 46%, var(--hair)); color: var(--plum-deep); }
+.acl .chip.grey { border-color: var(--hair); color: var(--pen-3); }
+
+/* The struck word keeps its meaning and loses its wobble. */
+.acl .strike { color: var(--pen-3); }
+
+.acl .divider { color: var(--hair); margin: 2rem 0; }
+
+/* Bullets: a short rule rather than a drawn glyph, so a list reads as a list. */
+.acl .bullet { grid-template-columns: 14px 1fr; gap: .7rem; margin-bottom: .5rem; }
+.acl .bullet > svg { width: 10px; height: 10px; margin-top: .58em; opacity: .75; }
+
+/* ---------------------------------------------------------- site frame -- */
+
+.acl header.site, .acl footer.site {
+  background: var(--paper);
+  border-bottom: 1px solid var(--hair);
+}
+.acl footer.site { border-bottom: 0; border-top: 1px solid var(--hair); margin-top: 4rem; }
+.acl .site-in { padding: .95rem 0; }
+.acl .brand {
+  font-family: var(--read);
+  font-size: 1.06rem;
+  font-weight: 640;
+  letter-spacing: -.016em;
+  color: var(--pen);
+}
+.acl .site-motto {
+  font-family: var(--script);
+  font-size: 1.02rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--pen-3);
+}
+.acl .site nav a, .acl .site-nav a {
+  font-family: var(--cat);
+  font-size: .8rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--pen-2);
+  text-decoration: none;
+}
+.acl .site nav a:hover, .acl .site-nav a:hover { color: var(--pen); }
+
+.acl .crumb { font-family: var(--cat); font-size: .72rem; color: var(--pen-3); padding-top: 1.1rem; }
+.acl .crumb a { color: var(--pen-3); }
+
+/* ------------------------------------------------------------- contents -- */
+
+.acl .contents::before { background: var(--hair); }
+.acl .contents a { font-family: var(--cat); font-size: .8rem; color: var(--pen-3); }
+.acl .contents a:hover { color: var(--pen); }
+.acl .contents a[aria-current="location"] { color: var(--pen); font-weight: 600; }
+.acl .contents .num { font-family: var(--cat); font-size: .6rem; color: var(--grey); font-weight: 500; }
+.acl .contents a[aria-current="location"] .num { color: var(--red); }
+.acl .contents-m::before { border: 1px solid var(--hair); border-radius: 0; }
+.acl .contents-m::after { display: none; }
+
+/* ---------------------------------------------------------------- cards -- */
+
+.acl .card .inner {
+  padding: 1.3rem 1.4rem 1.5rem;
+  background: var(--paper);
+}
+.acl .card .inner::before { border: 1px solid var(--hair); border-radius: 0; }
+.acl .card .inner::after { display: none; }
+.acl .card:hover .inner::before { border-color: var(--pen-3); }
+.acl .card h3 {
+  font-family: var(--read);
+  font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+  font-weight: 460;
+  line-height: 1.14;
+  letter-spacing: -.02em;
+  margin: .7rem 0 .45rem;
+}
+.acl .card .ck { font-family: var(--read); font-size: .95rem; line-height: 1.54; color: var(--pen-3); }
+.acl .card a.hitbox { border-radius: 0; }
+
+/* ------------------------------------------------- apparatus and sources -- */
+
+.acl .src-item { border-bottom: 1px solid var(--hair-2); padding: .8rem 0; }
+.acl .doi, .acl .record-source-doi { font-family: var(--cat); font-size: .68rem; color: var(--pen-3); }
+.acl .prov-item { padding: .6rem 0; }
+.acl .trail-item { border-bottom: 1px solid var(--hair-2); }
+.acl .trail-year { font-family: var(--cat); font-size: .66rem; color: var(--grey); letter-spacing: .1em; }
+
+.acl .rel-card .inner::before,
+.acl .rel-card::before { border: 1px solid var(--hair); border-radius: 0; }
+.acl .rel-card::after { display: none; }
+.acl .rel-title { font-family: var(--read); font-weight: 520; letter-spacing: -.012em; }
+.acl .rel-relation { font-family: var(--cat); font-size: .62rem; letter-spacing: .13em; text-transform: uppercase; color: var(--pen-3); }
+.acl .rel-body, .acl .rel-hook { font-family: var(--read); color: var(--pen-3); }
+.acl .rel-go { font-family: var(--cat); font-size: .64rem; letter-spacing: .14em; text-transform: uppercase; }
+
+/* ------------------------------------------------------------- controls -- */
+
+.acl .field input, .acl .field select, .acl .seg button,
+.acl .school-tab, .acl .set-tabs button, .acl .set-preset button {
+  font-family: var(--cat);
+  font-size: .84rem;
+  border-radius: 0;
+  border-color: var(--hair);
+  background: var(--paper);
+  color: var(--pen-2);
+}
+.acl .seg button[aria-pressed="true"], .acl .school-tab[aria-selected="true"] {
+  background: var(--pen); color: #fff; border-color: var(--pen);
+}
+.acl .atlas-disc-nav-link, .acl .discipline-explore {
+  font-family: var(--cat); font-size: .82rem; font-weight: 500;
+  border-radius: 0; border-color: var(--hair);
+}
+
+/* ------------------------------------------------------------- accents -- */
+
+/* The genuine hand, spent only where someone is talking rather than writing. */
+.acl .asa-inline-note, .acl .music-inline-note, .acl .sdt-note,
+.acl .set-mark, .acl .sdt-mark {
+  font-family: var(--script);
+  font-size: 1.1rem;
+  line-height: 1.3;
+  color: var(--pen-3);
+}
+
+.acl blockquote {
+  font-family: var(--read);
+  font-style: italic;
+  font-weight: 360;
+  color: var(--pen);
+}
+
+/* Big drawn numerals keep their scale but change face. */
+.acl .facet-key { font-family: var(--read); font-weight: 300; font-variant-numeric: lining-nums; }
+
+/* Ribbons and banners were shouting; on a white sheet they only need to be
+   read. The drawn frame stays where it carries meaning, at lower contrast. */
+.acl .ribbon > span { font-family: var(--cat); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 500; }
+.acl .banner > svg, .acl .cloud > svg.frame { opacity: .5; }
+
+/* Any remaining hand-drawn SVG frame sits back so the type leads. */
+.acl svg[aria-hidden="true"] { opacity: .92; }
+
+/* ------------------------------------------------- the hand, restored -- */
+
+/* Remapping `--hand` to the reading serif converted 194 rules in one move,
+   which is right for body copy and wrong for the places that were genuinely
+   *handwriting*: marginal notes, notes pinned onto a figure, taglines. Those
+   are wider in a serif than they were in a script, and several of them are
+   absolutely positioned, so they began colliding with their neighbours.
+   Routing them to the script face fixes the collisions and is the correct
+   design call independently — an annotation should look annotated. */
+.acl .hand-note,
+.acl .tagline,
+.acl .site-motto,
+.acl .door-line,
+.acl .knowledge-plate-topic,
+.acl .knowledge-plate::after,
+.acl .compass-label,
+.acl .atlas-field-centre .hand-note,
+.acl .atlas-constellation-centre .hand-note,
+.acl .about-hero-note .hand-note,
+.acl .saved-hero-mark .hand-note {
+  font-family: var(--script);
+  letter-spacing: 0;
+}
+
+/* Figure annotations drawn inside an SVG are handwriting too. A presentation
+   attribute loses to a stylesheet rule, so this reaches them without touching
+   the components. */
+.acl svg text[font-family="var(--hand)"] { font-family: var(--script); }
+.acl svg text[font-family="var(--cat)"] { font-family: var(--cat); }
+
+/* The knowledge plate stacks a centred caption, a rotated note and two lines
+   of SVG label in the same bottom strip. The drawing fills the whole plate, so
+   there is no room down there for all three: the rotated note moves to the
+   empty top-left corner rather than fighting the SVG labels for the floor. */
+.acl .knowledge-plate { min-height: 640px; }
+.acl .knowledge-plate figcaption {
+  bottom: .25rem;
+  font-family: var(--cat);
+  font-size: .68rem;
+  line-height: 1.45;
+  color: var(--pen-3);
+}
+.acl .knowledge-plate::after {
+  right: auto;
+  bottom: auto;
+  left: 3%;
+  top: .6rem;
+  max-width: 15ch;
+  font-size: 1rem;
+  line-height: 1.2;
+  transform: rotate(-2.5deg);
+}
+.acl .knowledge-plate-paper {
+  border: 1px solid var(--hair);
+  border-top: 3px solid var(--plate-colour);
+  box-shadow: none;
+}
+.acl .knowledge-plate-paper strong { font-family: var(--read); font-weight: 420; letter-spacing: -.028em; }
+.acl .knowledge-plate::before { border-color: var(--hair); transform: none; }
+.acl .knowledge-plate-topic { font-size: 1.04rem; transform: none; }
+.acl .knowledge-plate-topic:nth-of-type(odd) { transform: none; }
+
+/* ------------------------------------------------------------ headings -- */
+
+/* The old system set headings in the handwriting face at heavy weights. In a
+   serif that reads as shouting, so the scale is restated once here rather than
+   fought section by section. */
+.acl h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 420; line-height: 1.14; }
+.acl h3 { font-size: 1.2rem; font-weight: 520; line-height: 1.24; }
+.acl h4 { font-size: 1rem; font-weight: 560; }
+.acl .sec-title, .acl .body h2 { letter-spacing: -.022em; }
+
+/* Section numerals sat in a drawn circle; on a white sheet a plain figure in
+   the machinery voice is quieter and reads faster. */
+.acl .sec-n, .acl .num { font-family: var(--cat); font-variant-numeric: tabular-nums; }
+
+/* ---------------------------------------------------------- fine print -- */
+
+.acl .record-topic-strip a,
+.acl .record-topic-strip span { font-family: var(--cat); font-size: .72rem; letter-spacing: .02em; }
+.acl .record-reading-route a strong { font-family: var(--read); font-weight: 500; letter-spacing: -.012em; }
+.acl .record-reading-route-intro,
+.acl .record-reading-route-tail { font-family: var(--script); font-size: 1.04rem; color: var(--pen-3); }
+.acl .record-hero-index { font-family: var(--cat); }
+
+/* Anything the old system drew as a rotated or wobbly rule becomes a hairline;
+   the drawing on these pages should come from marks, not from furniture. */
+.acl .plate-paper-rule { height: 1px; opacity: .5; }
+
+/* -------------------------------------------------------------- tables -- */
+
+.acl table { font-family: var(--read); }
+.acl th { font-family: var(--cat); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--pen-3); font-weight: 600; }
+.acl td, .acl th { border-color: var(--hair-2); }
