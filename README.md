@@ -16,6 +16,16 @@ npm run dev
 npm run build
 ```
 
+## Academic Concept Lab visual language
+
+Visual design work follows the repository visual-language system. Start with
+[`skills/concept-lab-visual-language/SKILL.md`](skills/concept-lab-visual-language/SKILL.md)
+and the supporting documents in
+[`docs/visual-language/`](docs/visual-language/). The v2 art direction uses
+**ART FIRST, CODE SECOND**: generated or authored artwork carries complex
+material expression, HTML/CSS carries scholarship and layout, and SVG/Canvas/JS
+is reserved for genuine interaction.
+
 This starter does not use `wrangler.jsonc`.
 
 ## Included Shape

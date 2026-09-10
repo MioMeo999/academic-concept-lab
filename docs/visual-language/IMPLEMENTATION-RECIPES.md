@@ -83,3 +83,7 @@ All meaningful visuals need non-visual equivalents. Do not rely on colour, hover
 Before implementing, identify the intellectual problem, conceptual structure, evidence boundary, interaction intent and visual intensity of the section. Then choose the material treatment.
 
 Do not start by selecting a component template.
+
+# 16. Art asset decision
+
+For any major visual section, explicitly decide whether it should be code-drawn, generated/authored artwork, or hybrid. Use `ART-ASSET-STRATEGY.md` as the authority for this decision. Do not default to procedural SVG simply because the implementation is happening in a coding environment.

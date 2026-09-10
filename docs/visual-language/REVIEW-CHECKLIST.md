@@ -66,3 +66,10 @@ Use this after every visual iteration.
 > **If someone saw this page without the logo, would they recognise that it belongs to the same visual world as the best Academic Concept Lab references?**
 
 > **Does this feel like a page for thinking with theory, rather than a page that merely explains theory?**
+
+## Art / code balance
+
+- [ ] Is a complex expressive image being forced into procedural SVG unnecessarily?
+- [ ] Would a generated/authored art asset carry the intended material quality better?
+- [ ] Is code being used mainly where structure, behaviour, responsiveness, or interaction requires it?
+- [ ] Does the final page avoid looking like a technical diagram system merely because it was coded?

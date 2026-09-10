@@ -20,6 +20,7 @@ Read:
 - `docs/visual-language/MATERIAL-GRAMMAR.md`
 - `docs/visual-language/PAGE-BEHAVIOUR.md`
 - `docs/visual-language/IMPLEMENTATION-RECIPES.md`
+- `docs/visual-language/ART-ASSET-STRATEGY.md`
 - `docs/visual-language/REFERENCE-IMAGE-PROTOCOL.md`
 - `docs/visual-language/REVIEW-CHECKLIST.md`
 
@@ -45,3 +46,7 @@ Use references to understand pigment, pressure, mark-making, layering, overlap, 
 ## Final review
 
 Check every page against `docs/visual-language/REVIEW-CHECKLIST.md` before presenting it.
+
+## Hybrid art-direction rule
+
+Do not assume expressive visual material must be recreated procedurally. For complex or painterly/pencil artwork, prefer generated/authored assets combined with editorial HTML/CSS and lightweight interactive SVG/Canvas where needed.

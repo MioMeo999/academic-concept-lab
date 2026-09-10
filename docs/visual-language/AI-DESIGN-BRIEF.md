@@ -25,3 +25,11 @@ Avoid SaaS, dashboards, card grids, generic editorial portfolio design, glassmor
 Before implementing, read the full visual-language docs. Use current project content as source of truth and visual references through **creative assimilation, not imitation**.
 
 > **Do not merely style academic content. Invent a visual mode of scholarly thinking.**
+
+## Art-direction implementation principle
+
+Use:
+
+> **ART FIRST, CODE SECOND.**
+
+Do not force the frontend to procedurally simulate every expressive pencil or pigment image. For visually rich sections, prefer a hybrid system: generated/authored artwork for complex material drawing, HTML/CSS for scholarship and editorial structure, and lightweight SVG/Canvas/JS for interaction. Read `docs/visual-language/ART-ASSET-STRATEGY.md` before deciding how to implement major visual artwork.
