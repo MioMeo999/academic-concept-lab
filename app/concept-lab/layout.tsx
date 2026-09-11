@@ -7,6 +7,7 @@ import "./sketchnote.css";
    what a reader sees — palette, type and the drawn vocabulary. Remove this one
    import and the previous look returns intact. */
 import "./surface-skin.css";
+import "./gestalt-target.css";
 import { Sprite } from "./_components/Sprite";
 import { Reveal } from "./_components/Reveal";
 import { SiteNav } from "./_components/SiteNav";
