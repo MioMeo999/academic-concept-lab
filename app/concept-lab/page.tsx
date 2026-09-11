@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { RECORDS, KIND } from "@/content/records";
 import { DISCIPLINES } from "@/content/disciplines";
@@ -5,7 +6,7 @@ import type { RecordKind } from "@/content/types";
 import { getBranchesForDiscipline, getDisciplineOrientation, getDisciplineRecordCount } from "@/content/atlas";
 import { Divider, Icon } from "./_components/Sketch";
 import { RecordCard } from "./_components/RecordCard";
-import { AtlasConstellation } from "./_components/VisualAtlas";
+import styles from "./home-page.module.css";
 
 /* ---------------------------------------------------------------------------
    A landing page has one job: tell someone what this is, what is in it, why it
@@ -59,6 +60,34 @@ const MARKS: { glyph: string; colour: string; label: string }[] = [
   { glyph: "?", colour: "var(--pen-3)", label: "Contested" },
 ];
 
+const HOME_ART = {
+  atlas: "/visual-language/home/home-atlas-head-globe.webp",
+} as const;
+
+function ArtFigure({
+  src,
+  alt,
+  className,
+  caption,
+  note,
+  priority = false,
+}: {
+  src: string;
+  alt: string;
+  className: string;
+  caption: string;
+  note?: string;
+  priority?: boolean;
+}) {
+  return (
+    <figure className={`${styles.artFigure} ${className}`}>
+      <img src={src} alt={alt} loading={priority ? "eager" : "lazy"} decoding="async" />
+      {note && <span className={styles.artNote}>{note}</span>}
+      <figcaption>{caption}</figcaption>
+    </figure>
+  );
+}
+
 export default function ConceptLabHome() {
   const counts = KIND_ORDER.map((k) => ({ kind: k, n: RECORDS.filter((r) => r.kind === k).length }));
   const disciplineCounts = Object.values(DISCIPLINES)
@@ -71,30 +100,28 @@ export default function ConceptLabHome() {
   const starters = START_HERE.map((s) => ({ ...s, record: RECORDS.find((r) => r.id === s.id) })).filter((s) => s.record);
 
   return (
-    <div className="wrap">
-      <section className="home-canvas" data-reveal="hl">
-        <div className="hero-home-copy">
-          <span className="k hero-kicker">a living atlas of theories, evidence, methods and people</span>
-          <h1 className="title">Academic<br /><i>Concept Lab</i></h1>
-          <p className="tagline">
-            Theory, evidence and method — <span className="hl">drawn out</span> until you can actually see them.
-          </p>
-          <p className="lede" style={{ marginTop: "1rem" }}>
-            Academic work explained without being flattened. Every claim on every page carries a mark saying where it came from — and where it does not,
-            the page says so.
-          </p>
-
-          <div className="stat-strip home-canvas-stats" role="group" aria-label="What is in the library">
-            <span><b>{RECORDS.length}</b> records</span>
-            <span><b>{counts.length}</b> kinds</span>
-            <span><b>{disciplineCounts.length}</b> disciplines</span>
+    <div className={`${styles.homePage} wrap home-page-root`}>
+      <section className={styles.opening} data-reveal="hl">
+        <ArtFigure
+          src={HOME_ART.atlas}
+          alt="A coloured-pencil atlas field with a human head, brain, globe, music and connected disciplines."
+          className={styles.heroArt}
+          caption="A shared canvas for theories, people, methods and connections."
+          note="see the relations"
+          priority
+        />
+        <div className={styles.openingCopy}>
+          <span className={styles.eyebrow}>a living atlas of theories, evidence, methods and people</span>
+          <h1>Academic<br /><span>Concept <em>Lab</em></span></h1>
+          <p className={styles.thesis}>Theory, evidence and method — <span className={styles.underlineGold}>drawn out</span> until you can actually see them.</p>
+          <p className={styles.openingLede}>Academic work explained without being flattened. Every claim carries a mark saying where it came from — and where it does not, the page says so.</p>
+          <div className={styles.statLedger} aria-label="What is in the atlas">
+            <div><b>{RECORDS.length}</b><span>records</span></div>
+            <div><b>{counts.length}</b><span>kinds</span></div>
+            <div><b>{disciplineCounts.length}</b><span>disciplines</span></div>
           </div>
-          <Link className="hero-entry home-canvas-entry" href="/concept-lab/library">
-            <span className="hero-entry-arrow" aria-hidden="true">↗</span>
-            <span><b>Enter the atlas</b><small>follow an idea, then follow its evidence</small></span>
-          </Link>
+          <Link className={styles.enterAtlas} href="/concept-lab/library"><span className={styles.enterArrow} aria-hidden="true">↗</span><span><b>Enter the atlas</b><small>follow an idea, then follow its evidence</small></span></Link>
         </div>
-        <AtlasConstellation counts={counts} />
       </section>
 
       <Divider />

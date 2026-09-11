@@ -1,0 +1,404 @@
+:global(.acl main:has(.home-page-root))::before {
+  display: none;
+}
+
+.homePage {
+  --home-blue: var(--cobalt);
+  --home-red: var(--vermilion);
+  --home-gold: var(--ochre);
+  --home-teal: var(--teal);
+  --home-violet: var(--violet);
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  padding-bottom: clamp(4rem, 9vw, 8rem);
+  overflow: visible;
+}
+
+.homePage a {
+  color: var(--pen);
+  text-decoration: none;
+}
+
+.homePage a:focus-visible {
+  outline: 2px solid var(--home-blue);
+  outline-offset: 5px;
+}
+
+.eyebrow {
+  display: inline-block;
+  color: var(--pen-3);
+  font-family: var(--cat);
+  font-size: .59rem;
+  font-weight: 600;
+  letter-spacing: .19em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.opening {
+  position: relative;
+  min-height: min(870px, calc(100vh - 80px));
+  padding: clamp(3.8rem, 8vw, 7.5rem) 0 clamp(2rem, 5vw, 4.5rem);
+  overflow: visible;
+}
+
+.openingCopy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 610px;
+  min-height: 710px;
+  padding-left: clamp(1rem, 5vw, 5rem);
+}
+
+.openingCopy::before {
+  position: absolute;
+  top: 0;
+  bottom: 1rem;
+  left: 0;
+  width: 1px;
+  background: var(--hair);
+  content: "";
+}
+
+.openingCopy h1 {
+  margin: 1.45rem 0 0;
+  color: var(--pen);
+  font-family: var(--read);
+  font-size: clamp(4.1rem, 6.6vw, 6.7rem);
+  font-weight: 390;
+  letter-spacing: -.09em;
+  line-height: .8;
+}
+
+.openingCopy h1 em {
+  font-style: italic;
+  font-weight: 350;
+}
+
+.thesis {
+  max-width: 22ch;
+  margin: clamp(2rem, 4vw, 3rem) 0 0;
+  color: var(--pen-2);
+  font-family: var(--read);
+  font-size: clamp(1.35rem, 2.5vw, 2rem);
+  font-style: italic;
+  font-weight: 390;
+  letter-spacing: -.025em;
+  line-height: 1.14;
+}
+
+.underlineGold {
+  position: relative;
+  white-space: nowrap;
+}
+
+.underlineGold::after {
+  position: absolute;
+  right: -3px;
+  bottom: -.18em;
+  left: -3px;
+  height: 5px;
+  background: color-mix(in srgb, var(--home-gold) 70%, transparent);
+  content: "";
+  transform: rotate(-2deg);
+}
+
+.openingLede {
+  max-width: 41ch;
+  margin: 1.5rem 0 0;
+  color: var(--pen-2);
+  font-family: var(--read);
+  font-size: 1.03rem;
+  line-height: 1.55;
+}
+
+.statLedger {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  max-width: 420px;
+  margin-top: 2rem;
+  padding-top: .95rem;
+  border-top: 1px solid var(--hair);
+}
+
+.statLedger div {
+  display: grid;
+  gap: .18rem;
+}
+
+.statLedger b {
+  color: var(--pen);
+  font-family: var(--read);
+  font-size: clamp(2rem, 3vw, 3rem);
+  font-weight: 400;
+  letter-spacing: -.08em;
+  line-height: .8;
+}
+
+.statLedger span {
+  color: var(--pen-3);
+  font-family: var(--cat);
+  font-size: .53rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.enterAtlas {
+  display: inline-grid;
+  grid-template-columns: 2.4rem 1fr;
+  gap: .7rem;
+  align-items: center;
+  margin-top: 2.1rem;
+  padding: .8rem 1.2rem .8rem .7rem;
+  border: 1px solid var(--pen);
+  border-radius: 999px;
+  transition: background .2s ease, color .2s ease, transform .2s ease;
+}
+
+.enterAtlas:hover {
+  background: var(--pen);
+  color: #fff;
+  transform: translateY(-3px);
+}
+
+.enterArrow {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  background: var(--home-red);
+  color: #fff;
+  font-size: 1.25rem;
+}
+
+.enterAtlas b,
+.enterAtlas small {
+  display: block;
+}
+
+.enterAtlas b {
+  font-family: var(--read);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.enterAtlas small {
+  margin-top: .15rem;
+  font-family: var(--cat);
+  font-size: .49rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.artFigure {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.artFigure :global(img) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(1.05) contrast(.97);
+  mix-blend-mode: multiply;
+  transition: transform .8s cubic-bezier(.2, .7, .2, 1), filter .4s ease;
+}
+
+.artFigure::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(255,255,255,.08), transparent 30%, transparent 75%, rgba(255,255,255,.22));
+  content: "";
+  pointer-events: none;
+}
+
+.artFigure:hover :global(img) {
+  filter: saturate(1.12) contrast(1);
+  transform: scale(1.025) rotate(.15deg);
+}
+
+.artFigure figcaption {
+  position: absolute;
+  right: 1rem;
+  bottom: .8rem;
+  left: 1rem;
+  max-width: 34ch;
+  color: var(--pen-2);
+  font-family: var(--script);
+  font-size: 1.08rem;
+  line-height: 1;
+  transform: rotate(-2deg);
+}
+
+.artFigure figcaption::before {
+  display: block;
+  width: 4.8rem;
+  height: 2px;
+  margin-bottom: .35rem;
+  background: var(--home-red);
+  content: "";
+  transform: rotate(-3deg);
+}
+
+.artNote {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  color: var(--pen-2);
+  font-family: var(--script);
+  font-size: 1.15rem;
+  line-height: 1;
+  transform: rotate(5deg);
+}
+
+.artNote::after {
+  display: block;
+  width: 4rem;
+  height: 2px;
+  margin: .3rem 0 0 auto;
+  background: var(--home-blue);
+  content: "";
+}
+
+.heroArt {
+  position: absolute;
+  top: -4rem;
+  right: -8rem;
+  bottom: -4rem;
+  left: -8rem;
+  z-index: 0;
+  min-height: 0;
+  aspect-ratio: auto;
+  overflow: hidden;
+}
+
+.heroArt :global(img) {
+  object-position: 15% center;
+}
+
+.heroArt::before {
+  display: none;
+}
+
+.heroArt::after {
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.96) 0%, rgba(255,255,255,.84) 22%, rgba(255,255,255,.18) 52%, rgba(255,255,255,0) 82%),
+    linear-gradient(180deg, rgba(255,255,255,.18), transparent 18%, transparent 78%, rgba(255,255,255,.5));
+}
+
+.heroArt figcaption {
+  right: 14%;
+  bottom: 2rem;
+  left: auto;
+  max-width: 25ch;
+  color: var(--pen-2);
+  text-align: right;
+}
+
+.heroArt figcaption::before {
+  margin-left: auto;
+}
+
+.heroArt .artNote {
+  top: 11%;
+  right: 12%;
+}
+
+@media (max-width: 960px) {
+  .opening {
+    grid-template-columns: minmax(250px, .8fr) minmax(0, 1.2fr);
+    gap: 1rem;
+  }
+
+  .openingCopy h1 {
+    font-size: clamp(3.8rem, 8vw, 6rem);
+  }
+
+  .heroArt {
+    min-height: 0;
+    margin: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .homePage {
+    padding-bottom: 3rem;
+  }
+
+  .opening {
+    display: block;
+    min-height: 0;
+    padding-top: 3rem;
+  }
+
+  .openingCopy {
+    max-width: none;
+    min-height: 0;
+    padding-left: 1rem;
+  }
+
+  .openingCopy::before {
+    left: 0;
+    bottom: 0;
+  }
+
+  .openingCopy h1 {
+    max-width: 7ch;
+    font-size: clamp(4rem, 17vw, 6.2rem);
+  }
+
+  .thesis {
+    margin-top: 1.7rem;
+    font-size: 1.45rem;
+  }
+
+  .openingLede {
+    max-width: 46ch;
+    font-size: .98rem;
+  }
+
+  .heroArt {
+    top: -2rem;
+    right: -2rem;
+    bottom: -3rem;
+    left: -2rem;
+    min-height: 0;
+    margin: 0;
+    aspect-ratio: auto;
+  }
+
+  .heroArt figcaption {
+    max-width: 24ch;
+    font-size: .95rem;
+  }
+
+  .heroArt :global(img) {
+    object-position: 32% center;
+  }
+
+  .artNote {
+    top: .8rem;
+    right: .8rem;
+    font-size: .95rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enterAtlas,
+  .artFigure :global(img) {
+    transition: none;
+  }
+}
