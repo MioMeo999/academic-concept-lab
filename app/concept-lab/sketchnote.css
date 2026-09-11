@@ -12,6 +12,33 @@
    2. Padding must clear the inward dip of a cloud's bumps, or text collides
       with the outline.
    ------------------------------------------------------------------------- */
+/* Opt-in editorial foundations. Aliases resolve against the accepted palette
+   and fonts in the current skin; unmigrated pages and the benchmark Hero are
+   unaffected. See docs/visual-language/DESIGN-SYSTEM.md. */
+.acl .acl-system {
+  --space-1: .375rem;
+  --space-2: .75rem;
+  --space-3: 1.25rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 4.5rem;
+  --space-7: 6.5rem;
+  --section-space: clamp(3.5rem, 7vw, var(--space-7));
+  --column-gap: clamp(1.5rem, 4vw, var(--space-5));
+  --page-gutter: clamp(1.25rem, 4vw, var(--space-5));
+  --measure: 62ch;
+  --measure-short: 38ch;
+  --type-section: clamp(2.4rem, 4.5vw, 4rem);
+  --type-subject: clamp(1.9rem, 3vw, 2.8rem);
+  --type-record: clamp(1.5rem, 2.4vw, 2.1rem);
+  --type-body: 1.08rem;
+  --type-meta: .68rem;
+  --system-ink: var(--pen);
+  --system-muted: var(--pen-2);
+  --system-rule: var(--hair);
+  --system-focus: var(--cobalt);
+  --state-duration: 160ms;
+}
 :root, :root[data-theme="dark"], :root[data-theme="light"]{
     --paper:#F5F3EC; --paper-2:#EFEDE4; --pen:#1C1B19; --pen-2:#3A372F; --pen-3:#6E6A62;
     --red:#E24E1B; --red-deep:#B23C10; --teal:#2E7D8F; --teal-deep:#22606E;
@@ -33,7 +60,10 @@
   .k{ font-size:.75rem; letter-spacing:.11em; text-transform:uppercase; color:var(--pen-3); }
   .cat{ font-family:var(--cat); font-size:.63rem; letter-spacing:.12em; text-transform:uppercase; color:var(--pen-3); }
   .sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
-  @media (prefers-reduced-motion:reduce){ *{ animation-duration:.01ms !important; transition-duration:.01ms !important; } }
+  @media (prefers-reduced-motion:reduce){
+    html{ scroll-behavior:auto; }
+    *,*::before,*::after{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+  }
 
   /* ---------- drawn vocabulary ---------- */
   .sk-box{ position:relative; padding:.9rem 1rem; }
@@ -2391,6 +2421,14 @@
   .hero-entry b,.hero-entry small{ display:block; }
   .hero-entry b{ font-family:var(--hand); font-size:1.25rem; font-weight:400; }
   .hero-entry small{ margin-top:.12rem; color:var(--pen-3); font-family:var(--cat); font-size:.58rem; letter-spacing:.06em; text-transform:uppercase; }
+
+  @media (hover:hover) and (pointer:fine){
+    .hero-entry-arrow{ transition:transform var(--motion-quick) var(--ease-spring); }
+    .hero-entry:hover .hero-entry-arrow,.hero-entry:focus-visible .hero-entry-arrow{ transform:translateX(4px) rotate(-7deg); }
+    .discipline-explore{ transition:color var(--motion-quick) ease; }
+    .discipline-explore > span{ display:inline-block; transition:transform var(--motion-quick) var(--ease-spring); }
+    .discipline-explore:hover > span,.discipline-explore:focus-visible > span{ transform:translateX(4px); }
+  }
 
   .atlas-constellation{ position:relative; width:100%; max-width:700px; aspect-ratio:1.14; min-height:520px; margin-inline:auto; isolation:isolate; }
   .atlas-constellation-drawing,.record-orbit-drawing{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; }

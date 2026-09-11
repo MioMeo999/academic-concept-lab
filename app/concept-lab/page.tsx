@@ -1,50 +1,40 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import { RECORDS, KIND } from "@/content/records";
+import { RECORDS, KIND, recordHref } from "@/content/records";
 import { DISCIPLINES } from "@/content/disciplines";
-import type { RecordKind } from "@/content/types";
-import { getBranchesForDiscipline, getDisciplineOrientation, getDisciplineRecordCount } from "@/content/atlas";
-import { Divider, Icon } from "./_components/Sketch";
-import { RecordCard } from "./_components/RecordCard";
+import type { AnyRecord, RecordKind } from "@/content/types";
+import { getBranchesForDiscipline, getDisciplineOrientation, getBranch } from "@/content/atlas";
+import { SaveButton } from "./_components/SaveButton";
 import styles from "./home-page.module.css";
-
-/* ---------------------------------------------------------------------------
-   A landing page has one job: tell someone what this is, what is in it, why it
-   can be trusted, and how to get in. The previous version explained the
-   architecture in prose and then showed the first four records by registry
-   order, which is neither curation nor navigation.
-
-   So: the four kinds become doors with live counts, the provenance system
-   gets surfaced rather than mentioned, and the records shown are chosen rather
-   than sliced.
-   ------------------------------------------------------------------------- */
+import system from "./_design/system.module.css";
+import home from "./home-sections.module.css";
+import { ArtFragment, SectionHeading } from "./_design/ResearchSurface";
 
 const KIND_ORDER: RecordKind[] = ["theory", "mechanism", "method", "study"];
 
-const DIALECT: Record<RecordKind, { icon: string; line: string; blurb: string }> = {
+const KIND_COPY: Record<RecordKind, { line: string; question: string; blurb: string }> = {
   theory: {
-    icon: "i-door",
-    line: "A theory is a lens",
-    blurb: "Nothing in it happened — no sample, no date, no result. It has to demonstrate rather than report.",
-  },
-  study: {
-    icon: "i-eye",
-    line: "A study is an argument",
-    blurb: "It happened once, to particular people, in one place — and it could be wrong. Method stays welded to finding.",
-  },
-  method: {
-    icon: "i-person",
-    line: "A method is a practice",
-    blurb: "You do not learn one by reading about it. The page has to work at the desk, beside real material.",
+    line: "A lens for understanding",
+    question: "What frame helps us see this?",
+    blurb: "A theory organises a way of looking. It is a lens, not a report of what happened.",
   },
   mechanism: {
-    icon: "i-star",
-    line: "A mechanism is a pathway",
-    blurb: "Not why something happens, but through what. A biological route the psychology has to travel down.",
+    line: "A pathway between things",
+    question: "Through what route does it happen?",
+    blurb: "A mechanism names the process something travels through, keeping the route inspectable.",
+  },
+  method: {
+    line: "A practice for inquiry",
+    question: "How can we work with the material?",
+    blurb: "A method is something you do: a disciplined practice for producing or interpreting evidence.",
+  },
+  study: {
+    line: "An argument from evidence",
+    question: "What did this investigation show?",
+    blurb: "A study keeps its design, finding and limitation together so the claim cannot float free.",
   },
 };
 
-/** Chosen, not sliced: one way in per kind, with the reason it is the way in. */
 const START_HERE: { id: string; why: string }[] = [
   { id: "person-environment-fit", why: "The framework three other records hang off. Start here and the rest of the library has a spine." },
   { id: "ipa", why: "The most hands-on record on the site — a method you could start using on a transcript this week." },
@@ -52,17 +42,24 @@ const START_HERE: { id: string; why: string }[] = [
   { id: "hpa-axis", why: "Where the psychology meets the body — and the one record that is a physical system rather than an idea." },
 ];
 
-const MARKS: { glyph: string; colour: string; label: string }[] = [
-  { glyph: "●", colour: "var(--red)", label: "Source-grounded" },
-  { glyph: "■", colour: "var(--teal)", label: "Paraphrase" },
-  { glyph: "▲", colour: "var(--pen-3)", label: "Teaching analogy" },
-  { glyph: "✦", colour: "var(--pen-3)", label: "Editorial" },
-  { glyph: "?", colour: "var(--pen-3)", label: "Contested" },
+const MARKS: { glyph: string; colour: string; label: string; detail: string }[] = [
+  { glyph: "●", colour: "var(--cobalt)", label: "Source-grounded", detail: "directly supported by a source" },
+  { glyph: "■", colour: "var(--vermilion)", label: "Paraphrase", detail: "faithfully restated in our words" },
+  { glyph: "▲", colour: "var(--ochre)", label: "Teaching analogy", detail: "a constructed way to see the idea" },
+  { glyph: "✦", colour: "var(--violet)", label: "Editorial", detail: "Concept Lab synthesis or framing" },
+  { glyph: "?", colour: "var(--teal)", label: "Contested", detail: "unresolved or debated" },
 ];
 
 const HOME_ART = {
   atlas: "/visual-language/home/home-atlas-head-globe.webp",
 } as const;
+
+const DISCIPLINE_FRAGMENTS: Record<string, "organisation" | "music" | "method" | "mechanism"> = {
+  ob: "organisation",
+  "music-psych": "music",
+  "qual-methods": "method",
+  psychobiology: "mechanism",
+};
 
 function ArtFigure({
   src,
@@ -88,19 +85,45 @@ function ArtFigure({
   );
 }
 
+function HomeStarter({ record, why, index }: { record: AnyRecord; why: string; index: number }) {
+  const kind = KIND[record.kind];
+  const discipline = DISCIPLINES[record.discipline];
+  const branch = record.primaryBranch ? getBranch(record.primaryBranch, record.discipline) : undefined;
+  return (
+    <li className={home.starter}>
+      <span className={home.recordNumber}>{String(index + 1).padStart(2, "0")}</span>
+      <div className={home.recordCopy}>
+        <p className={[system.meta, home.recordKind].join(" ")} style={{ borderLeftColor: kind.colour }}>{kind.label}</p>
+        <h3><Link href={recordHref(record)} className={system.recordTitle}>{record.title}</Link></h3>
+        <p className={home.recordHook}>{record.hook}</p>
+        <details className={home.recordContext}>
+          <summary>Record context</summary>
+          {record.oneSentence && <p>{record.oneSentence}</p>}
+          <p>{discipline?.name ?? record.discipline}{branch ? " · " + branch.label : ""} · {record.facts.slice(0, 2).join(" · ")}</p>
+        </details>
+      </div>
+      <aside className={home.readingNote}>
+        <span className={system.meta}>Why begin here</span>
+        <p>{why}</p>
+      </aside>
+      <div className={[system.actions, home.recordActions].join(" ")}>
+        <SaveButton id={record.id} />
+        <Link href={recordHref(record)} className={system.link}>{kind.cta} <span aria-hidden="true">↗</span></Link>
+      </div>
+    </li>
+  );
+}
+
 export default function ConceptLabHome() {
-  const counts = KIND_ORDER.map((k) => ({ kind: k, n: RECORDS.filter((r) => r.kind === k).length }));
+  const counts = KIND_ORDER.map((kind) => ({ kind, n: RECORDS.filter((record) => record.kind === kind).length }));
   const disciplineCounts = Object.values(DISCIPLINES)
-    .map((d) => ({ d, n: RECORDS.filter((r) => r.discipline === d.id).length }))
-    .filter((x) => x.n > 0);
-  const majorDisciplines = ["ob", "music-psych"]
-    .map((id) => ({ d: DISCIPLINES[id], n: getDisciplineRecordCount(RECORDS, id), orientation: getDisciplineOrientation(id) }))
-    .filter((x) => x.d && x.n > 0);
-  const secondaryDisciplines = disciplineCounts.filter(({ d }) => !majorDisciplines.some((major) => major.d.id === d.id));
-  const starters = START_HERE.map((s) => ({ ...s, record: RECORDS.find((r) => r.id === s.id) })).filter((s) => s.record);
+    .map((d) => ({ d, n: RECORDS.filter((record) => record.discipline === d.id).length }))
+    .filter(({ n }) => n > 0);
+  const disciplineCards = disciplineCounts.map(({ d, n }) => ({ d, n, orientation: getDisciplineOrientation(d.id) }));
+  const starters = START_HERE.map((start) => ({ ...start, record: RECORDS.find((record) => record.id === start.id) })).filter((start): start is { id: string; why: string; record: AnyRecord } => Boolean(start.record));
 
   return (
-    <div className={`${styles.homePage} wrap home-page-root`}>
+    <div className={`${styles.homePage} home-page-root wrap`}>
       <section className={styles.opening} data-reveal="hl">
         <ArtFigure
           src={HOME_ART.atlas}
@@ -124,122 +147,73 @@ export default function ConceptLabHome() {
         </div>
       </section>
 
-      <Divider />
-
-      {/* The atlas begins with the two disciplines that currently carry the most questions. */}
-      <section className="home-discovery">
-        <span className="k">explore by discipline</span>
-        <p className="lede atlas-discovery-lede">
-          Start with the field that frames your question. Each surface opens the live library, where records remain traceable to their kind and evidence.
-        </p>
-        <div className="discipline-panels home-discipline-panels">
-          {majorDisciplines.map(({ d, n, orientation }) => (
-            <article className="discipline-panel" key={d.id} data-reveal="rise">
-              <div className="discipline-panel-head">
-                <span className="atlas-index">{d.id === "ob" ? "01" : "02"}</span>
-                <div>
-                  <h2>{d.name}</h2>
-                  <span className="discipline-count"><b>{n}</b> {n === 1 ? "record" : "records"}</span>
+      <div className={"acl-system " + home.sections}>
+        <section className={[system.section, home.disciplines].join(" ")} id="disciplines" aria-labelledby="discipline-heading" data-art-level="2" data-archetype="intellectual-territory">
+          <SectionHeading id="discipline-heading" number="01" eyebrow="Explore the atlas" title={<>Explore by <em>discipline.</em></>}>
+            <p>Start with the field that frames your question. Each surface opens the live library, where records remain traceable to their kind and evidence.</p>
+            <Link href="/concept-lab/library" className={system.link}>Browse the whole atlas <span aria-hidden="true">→</span></Link>
+          </SectionHeading>
+          <div className={home.territories}>
+            {disciplineCards.map(({ d, n, orientation }, index) => (
+              <article className={home.territory} data-discipline={d.id} key={d.id}>
+                <div className={home.territoryArt}>
+                  <ArtFragment name={DISCIPLINE_FRAGMENTS[d.id]} decorative className={home.groupFragment} />
                 </div>
-              </div>
-              <p className="read discipline-orientation">{orientation?.summary}</p>
-              <div className="discipline-themes">
-                {orientation?.themes.map((theme) => <span key={theme}>{theme}</span>)}
-              </div>
-              {d.id === "music-psych" && (
-                <p className="discipline-branch-note">
-                  <b>{getBranchesForDiscipline(d.id).length}</b> current branches in the atlas
-                </p>
-              )}
-              <Link className="discipline-explore" href={`/concept-lab/library?discipline=${d.id}`}>
-                Explore {d.short} <span aria-hidden="true">→</span>
-              </Link>
-            </article>
-          ))}
-        </div>
-        <div className="secondary-disciplines">
-          <span className="k">also in the lab</span>
-          <div className="secondary-disciplines-list">
-            {secondaryDisciplines.map(({ d, n }) => (
-              <Link className="disc-chip" href={`/concept-lab/library?discipline=${d.id}`} key={d.id}>
-                {d.name}<span className="disc-n">{n}</span>
-              </Link>
+                <p className={system.meta}>{String(index + 1).padStart(2, "0")} <span className={home.count}>{n} {n === 1 ? "record" : "records"}</span></p>
+                <h3 className={system.subject}>{d.name}</h3>
+                <div className={home.territoryCopy}>
+                  <p className={system.prose}>{orientation?.summary}</p>
+                  {orientation?.themes.length ? <ul className={home.themes}>{orientation.themes.slice(0, 3).map(theme => <li key={theme}>{theme}</li>)}</ul> : null}
+                  {d.id === "music-psych" && <p className={system.meta}>{getBranchesForDiscipline(d.id).length} current branches</p>}
+                  <Link href={"/concept-lab/library?discipline=" + d.id} className={system.link}>Explore <span aria-hidden="true">↗</span></Link>
+                </div>
+              </article>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <Divider />
+        <section className={system.section} id="record-kinds" aria-label="four kinds of record" data-art-level="2" data-archetype="comparison">
+          <SectionHeading id="kinds-heading" number="02" eyebrow="Different ways in" title={<>Four kinds of record.</>}>
+            <p>The same ideas can be seen as theories, mechanisms, methods or studies. Choose the form that makes the question clearest.</p>
+          </SectionHeading>
+          <ol className={home.knowledgeForms}>
+            {counts.map(({ kind, n }) => <li data-kind={kind} key={kind}>
+              <div className={home.formIdentity}>
+                <h3 className={system.subject}>{KIND[kind].nav === "Research method" ? "Method" : KIND[kind].nav}</h3>
+                <ArtFragment name={kind} decorative className={home.formFragment} />
+              </div>
+              <p className={home.formLine}>{KIND_COPY[kind].line}</p>
+              <p className={home.formDescription}>{KIND_COPY[kind].blurb}</p>
+              <p className={home.formQuestion}>{KIND_COPY[kind].question}</p>
+              <Link href={"/concept-lab/library?kind=" + kind} className={[system.link, home.formLink].join(" ")}><span><b>{n}</b> {n === 1 ? "record" : "records"}</span><span>Explore <span aria-hidden="true">↗</span></span></Link>
+            </li>)}
+          </ol>
+        </section>
 
-      {/* The architecture, made navigable rather than described. */}
-      <section className="home-kinds">
-        <span className="k">four kinds of record — pick a way in</span>
-        <div className="doors home-knowledge-doors">
-          {counts.map(({ kind, n }) => {
-            const k = KIND[kind];
-            const d = DIALECT[kind];
-            return (
-              <Link className={`door ${k.cls}`} href={`/concept-lab/library?kind=${kind}`} key={kind} data-reveal="rise">
-                <span className="door-top">
-                  <Icon id={d.icon} style={{ width: 30, height: 30, color: k.colour }} />
-                  <span className="door-count" style={{ color: k.colour }}>
-                    {n}<small>{n === 1 ? " record" : " records"}</small>
-                  </span>
-                </span>
-                <span className="door-line" style={{ color: k.colour }}>{d.line}</span>
-                <span className="door-blurb">{d.blurb}</span>
-                <span className="door-go" style={{ color: k.colour }}>{k.nav} →</span>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
+        <section className={system.section} id="start-here" aria-labelledby="start-heading" data-art-level="0" data-archetype="editorial-record-list">
+          <SectionHeading id="start-heading" number="03" eyebrow="A few places to begin" title={<>Start here.</>}>
+            <p>Four hand-picked records to get you exploring. Each one opens a different responsibility in the atlas.</p>
+            <Link href="/concept-lab/library" className={system.link}>See all {RECORDS.length} records <span aria-hidden="true">→</span></Link>
+          </SectionHeading>
+          <ol className={[system.ledger, home.starterLedger].join(" ")}>{starters.map((start, index) => <HomeStarter key={start.id} record={start.record} why={start.why} index={index} />)}</ol>
+        </section>
 
-      <Divider />
-
-      {/* Four ways in, chosen for a reason that is stated. */}
-      <section className="home-start">
-        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap" }}>
-          <h2 style={{ fontSize: "clamp(1.4rem,3.6vw,1.9rem)" }}>Start here</h2>
-          <Link className="quiet-link" href="/concept-lab/library" style={{ fontSize: ".92rem" }}>See all {RECORDS.length} records →</Link>
-        </div>
-        <p className="lede" style={{ marginTop: ".4rem" }}>
-          One of each kind, picked because of what it shows you — not because it came first.
-        </p>
-        <div className="lib" style={{ marginTop: "1.2rem" }}>
-          {starters.map((s) => (
-            <div className="starter-item" key={s.id} data-reveal="rise">
-              <RecordCard record={s.record!} />
-              <p className="starter-why">{s.why}</p>
+        <section className={system.section} id="provenance" aria-labelledby="provenance-heading" data-art-level="1" data-archetype="quiet-scholarship">
+          <SectionHeading id="provenance-heading" number="04" eyebrow="Trust & provenance" title={<>Why you can <em>check it.</em></>} />
+          <div className={home.sourceLedger}>
+            <div className={home.sourceIntro}>
+              <p className={system.prose}>Nothing here is written from memory. Every claim carries one of five marks, so you can always see whether you are reading the source, our paraphrase of it, a teaching device, our own reading, or an open question the literature has not settled.</p>
+              <div className={home.sourceDetail}>
+                <ArtFragment name="books" />
+                <div><p className={system.note}>Sources stay visible at the point where understanding is made.</p><Link href="/concept-lab/about" className={system.link}>How we cite <span aria-hidden="true">→</span></Link></div>
+              </div>
             </div>
-          ))}
-        </div>
-      </section>
-
-      <Divider />
-
-      {/* The differentiator, shown instead of mentioned. */}
-      <section className="home-trust">
-        <span className="k">why you can check it</span>
-        <div className="sk-box tilt-l2" style={{ marginTop: ".8rem" }}>
-          <p className="read" style={{ fontSize: "1rem", lineHeight: 1.6, color: "var(--pen-2)", maxWidth: "62ch" }}>
-            Nothing here is written from memory. Every claim carries one of five marks, so you can always see whether you are reading the source,
-            our paraphrase of it, a teaching device, our own reading, or an open question the literature has not settled.
-          </p>
-          <div className="marks-row">
-            {MARKS.map((m) => (
-              <span className="mark-chip" key={m.label}>
-                <span style={{ color: m.colour, fontSize: "1rem" }}>{m.glyph}</span>
-                {m.label}
-              </span>
-            ))}
+            <dl className={home.provenanceMarks} aria-label="The five provenance marks">
+              {MARKS.map(mark => <div key={mark.label}><dt><span className={home.mark} style={{ color: mark.colour }} aria-hidden="true">{mark.glyph}</span>{mark.label}</dt><dd>{mark.detail}</dd></div>)}
+            </dl>
           </div>
-          <Link href="/concept-lab/about" className="chip grey" style={{ textDecoration: "none", fontSize: ".88rem", marginTop: "1rem", display: "inline-flex" }}>
-            How we cite →
-          </Link>
-        </div>
-      </section>
-
+        </section>
+      </div>
     </div>
   );
 }
