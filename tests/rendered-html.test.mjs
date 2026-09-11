@@ -99,6 +99,12 @@ for (const pathname of recordPaths) {
     assert.equal(response.status, 200);
     const html = await response.text();
     assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
+    if (pathname.endsWith("/gestalt-principles-in-music")) {
+      assert.match(html, /class="gestalt-target"/, `${pathname} renders no Gestalt theory frame`);
+      assert.match(html, /Experience grouping/, `${pathname} renders no interactive teaching example`);
+      assert.match(html, /Where every claim came from/, `${pathname} renders no provenance block`);
+      return;
+    }
     // Provenance is the field that makes everything else trustworthy.
     assert.match(html, /Where every claim came from/, `${pathname} renders no provenance block`);
     // Section numbering and the contents rail are generated together; a

@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { RECORDS, findRecord } from "@/content/records";
 import type { TheoryRecord } from "@/content/types";
 import { TheoryBody } from "../../_components/TheoryBody";
+import { GestaltFrame } from "../../_components/GestaltFrame";
+import { GestaltTargetContent } from "../../_components/GestaltTargetPage";
 
 export function generateStaticParams() {
   return RECORDS.filter((r) => r.kind === "theory").map((r) => ({ slug: r.slug }));
@@ -18,5 +20,8 @@ export default async function TheoryPage({ params }: { params: Promise<{ slug: s
   const { slug } = await params;
   const record = findRecord("theory", slug) as TheoryRecord | undefined;
   if (!record) notFound();
+  if (slug === "gestalt-principles-in-music") {
+    return <GestaltFrame><GestaltTargetContent /></GestaltFrame>;
+  }
   return <TheoryBody record={record} />;
 }
