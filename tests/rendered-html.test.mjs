@@ -11,7 +11,7 @@ async function render(pathname) {
 for (const [pathname, expected] of [
   ["/concept-lab", "Academic Concept"],
   ["/concept-lab/library", "The library"],
-  ["/concept-lab/about", "How we cite"],
+  ["/concept-lab/about", "The Lab"],
 ]) {
   test(`server renders ${pathname}`, async () => {
     const response = await render(pathname);
