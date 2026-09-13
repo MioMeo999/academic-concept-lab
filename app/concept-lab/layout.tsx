@@ -10,6 +10,7 @@ import "./surface-skin.css";
 import { Sprite } from "./_components/Sprite";
 import { Reveal } from "./_components/Reveal";
 import { SiteNav } from "./_components/SiteNav";
+import { AboutSkipLink } from "./_components/AboutSkipLink";
 
 /* Three voices, kept audibly separate. Newsreader carries the scholarship,
    Instrument Sans the labels and controls, Caveat the handful of places where
@@ -48,6 +49,7 @@ export default function ConceptLabLayout({ children }: { children: React.ReactNo
     <div className={`acl ${reading.variable} ${machinery.variable} ${script.variable}`}>
       <Sprite />
       <Reveal />
+      <AboutSkipLink />
       <header className="site">
         <div className="wrap site-in">
           <Link className="brand" href="/concept-lab">

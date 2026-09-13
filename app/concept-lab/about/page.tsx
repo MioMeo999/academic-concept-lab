@@ -1,151 +1,167 @@
-import type { Metadata } from "next";
-import { Cloud, Divider, Icon, SecHead } from "../_components/Sketch";
-import { Crumbs } from "../_components/RecordShell";
-import { ReadingCompass } from "../_components/VisualAtlas";
+import Link from "next/link";
 
-export const metadata: Metadata = { title: "About & how we cite" };
-
-const SHAPE = `// content/theory.ts
-export const conservationOfResources: TheoryRecord = {
-  id: "conservation-of-resources",     // stable; used by saved state + links
-  kind: "theory",                      // "theory" | "study" -> picks the template
-  slug: "conservation-of-resources",   // URL segment
-  title: "Conservation of Resources",
-  hook: "...",                         // the one question the record answers
-  oneSentence: "...",
-  discipline: "ob",                    // key into DISCIPLINES
-  topics: ["stress", "..."],           // feeds library search
-  facts: ["...", "..."],               // chips on the library card
-
-  ideaLede: "...",                     // opens section 01
-  originsNote: "...",
-  origins: [ ... ],                    // the trail
-  oversimplifications: [ ... ],        // "don't conclude"
-  qualifications: [ ... ],             // "still open"
-  minimumReading: [ ... ],
-  fullSources: [ ... ],
-  provenance: [ ... ],                 // required on every record
-
-  // optional blocks - include only the ones this theory needs:
-  // demo, categories, pathways, demandTypes, interactions,
-  // expansions, coreProcesses, fitTargets, workAdjustment
+type Mark = {
+  glyph: string;
+  className: string;
+  label: string;
+  means: string;
+  boundary: string;
 };
 
-// then add it to content/records.ts
-export const RECORDS = [ ..., conservationOfResources ];`;
+const FORMS = [
+  {
+    glyph: "○",
+    className: "about-kind-theory",
+    label: "Theory",
+    line: "A lens for understanding.",
+    question: "What lens helps us interpret this?",
+    detail: "A theory gives us a way of looking. It organises a phenomenon without pretending to be the event itself.",
+  },
+  {
+    glyph: "□",
+    className: "about-kind-study",
+    label: "Study",
+    line: "An argument from evidence.",
+    question: "What did researchers actually examine and find?",
+    detail: "A study keeps its design, evidence, result and limitation together so a claim cannot float free.",
+  },
+  {
+    glyph: "△",
+    className: "about-kind-method",
+    label: "Method",
+    line: "A practice for inquiry.",
+    question: "How can this be investigated?",
+    detail: "A method is something researchers do: a disciplined way to produce, interpret or challenge evidence.",
+  },
+  {
+    glyph: "◌",
+    className: "about-kind-mechanism",
+    label: "Mechanism",
+    line: "A pathway between things.",
+    question: "Through what process might it happen?",
+    detail: "A mechanism names the route through which one condition can become another, keeping the connection inspectable.",
+  },
+] as const;
 
-const MARKS = [
-  ["●", "var(--red)", "Directly reported / source-grounded", "Citations, samples, designs, dates and study-level conclusions, grounded in the published source."],
-  ["■", "var(--teal)", "Plain-language paraphrase", "Restated without reproducing article text."],
-  ["▲", "var(--pen-3)", "Original diagram / teaching analogy", "Editorial reconstruction. No published figure or table is reproduced, and an analogy never calculates an outcome."],
-  ["✦", "var(--pen-3)", "Editorial interpretation", "Our reading, marked as ours — a learning aid, not a finding."],
-  ["?", "var(--pen-3)", "Contested / unresolved", "Where no settled answer exists, the gap is shown rather than filled."],
+const MARKS: Mark[] = [
+  {
+    glyph: "●",
+    className: "about-mark-source",
+    label: "Directly reported / source-grounded",
+    means: "Citations, samples, designs, dates and study-level conclusions grounded in published sources.",
+    boundary: "It does not mean the Lab has independently repeated the work.",
+  },
+  {
+    glyph: "■",
+    className: "about-mark-paraphrase",
+    label: "Plain-language paraphrase",
+    means: "Source material restated without reproducing article text.",
+    boundary: "It does not turn our wording into a quotation from the source.",
+  },
+  {
+    glyph: "▲",
+    className: "about-mark-analogy",
+    label: "Original diagram / teaching analogy",
+    means: "An editorial reconstruction used to make a relationship visible.",
+    boundary: "It is not automatically a published figure, validated measurement or empirical result.",
+  },
+  {
+    glyph: "✦",
+    className: "about-mark-editorial",
+    label: "Editorial interpretation",
+    means: "The Lab’s reading, synthesis or explanatory framing.",
+    boundary: "It is a learning aid, not a finding attributed to an original author.",
+  },
+  {
+    glyph: "?",
+    className: "about-mark-contested",
+    label: "Contested / unresolved",
+    means: "A question where the literature does not settle one answer.",
+    boundary: "The gap is not silently filled by confidence, colour or drawing.",
+  },
 ];
 
-export default function AboutPage() {
+const PROCESS = [
+  ["01", "Question", "What are we trying to understand?"],
+  ["02", "Source literature", "What has been published, measured or argued?"],
+  ["03", "Distinctions / disagreements", "Where do concepts separate, overlap or remain unsettled?"],
+  ["04", "Plain-language explanation", "How can the idea be made readable without losing its boundary?"],
+  ["05", "Visual / interactive teaching", "What can drawing, comparison or interaction make easier to see?"],
+  ["06", "Limits / qualifications", "What should the reader not conclude?"],
+  ["07", "Provenance / sources", "Can the reader follow the claim back?"],
+] as const;
+
+function SectionLabel({ number, children }: { number: string; children: React.ReactNode }) {
+  return <p className="about-section-label"><span>{number}</span><span>{children}</span></p>;
+}
+function KindMark({ glyph, className }: { glyph: string; className: string }) {
+  return <span className={`about-kind-glyph ${className}`} aria-hidden="true">{glyph}</span>;
+}
+
+function PaperFragment({ className, children }: { className: string; children: React.ReactNode }) {
+  return <span className={`about-paper ${className}`}>{children}</span>;
+}
+
+export default function AboutTargetPage() {
   return (
-    <div className="wrap">
-      <Crumbs items={[{ label: "Home", href: "/concept-lab" }, { label: "About" }]} />
-
-      <section className="hero page-hero page-hero-about">
-        <div>
-          <span className="k">the margin notes</span>
-          <h1 className="title" style={{ fontSize: "clamp(2.1rem,5.4vw,4rem)" }}>About &amp; how we cite</h1>
-          <p className="lede" style={{ marginTop: ".9rem" }}>
-            A platform for reading academic work properly — theory explained until you can see it, evidence presented with its method still attached.
-          </p>
+    <div id="about-main" tabIndex={-1} className="about-page about-shell">
+      <section className="about-opening" aria-labelledby="about-title">
+        <div className="about-opening-copy">
+          <SectionLabel number="01">What the Lab is</SectionLabel>
+          <h1 id="about-title">The <em>Lab.</em></h1>
+          <p className="about-opening-thesis">Ideas, drawn with their evidence attached.</p>
+          <p className="about-opening-lede">Academic Concept Lab is a visual learning atlas for theories, studies, mechanisms and research methods. It turns academic literature into explorable records without separating explanation from the evidence, limits and sources behind it.</p>
+          <p className="about-trail-line"><span>See the idea.</span> <span>Follow the claim.</span> <span>Return to the source.</span></p>
         </div>
-        <div className="about-hero-note">
-          <ReadingCompass />
-          <p className="hand-note">read towards the question<br />then back through the evidence</p>
-        </div>
-      </section>
-
-      <Divider />
-
-      <section>
-        <SecHead num="01" title="How we cite" colour="var(--red)" />
-        <p className="body">
-          Every claim on every record carries a mark saying where it came from. Nothing is written from memory, and nothing invented has ever been added to fill a gap.
-          Where the literature does not agree, the record says so instead of picking a side.
-        </p>
-        <div className="prov" style={{ marginTop: "1rem", maxWidth: 900 }}>
-          {MARKS.map(([glyph, colour, label, note]) => (
-            <div className="prov-item" key={label} data-reveal="rise">
-              <span className="g" style={{ color: colour }}>{glyph}</span>
-              <div>
-                <h3>{label}</h3>
-                <p>{note}</p>
-              </div>
-            </div>
-          ))}
+        <div className="about-opening-field" aria-label="A quiet source trail from paper to record">
+          <PaperFragment className="about-paper-back">published source<br /><small>question · design · finding</small></PaperFragment>
+          <PaperFragment className="about-paper-middle">working notes<br /><small>distinction / limit</small></PaperFragment>
+          <PaperFragment className="about-paper-front">a visible record<br /><small>claim · mark · source</small></PaperFragment>
+          <span className="about-opening-trace about-trace-one" aria-hidden="true" />
+          <span className="about-opening-trace about-trace-two" aria-hidden="true" />
+          <span className="about-hand-note">follow the claim<br />back through the evidence</span>
         </div>
       </section>
 
-      <Divider />
+      <section className="about-section about-forms" aria-labelledby="forms-title">
+        <div className="about-section-heading">
+          <div><SectionLabel number="02">Four ways of knowing</SectionLabel><h2 id="forms-title">Different objects need<br /><em>different questions.</em></h2></div>
+          <p>Academic Concept Lab distinguishes the kind of work a record is doing before asking the reader to explore it.</p>
+        </div>
+        <ol className="about-form-list">
+          {FORMS.map((form) => <li key={form.label} className="about-form-entry"><KindMark glyph={form.glyph} className={form.className} /><div><h3>{form.label}</h3><p className="about-form-line">{form.line}</p><p>{form.detail}</p><p className="about-form-question">{form.question}</p></div></li>)}
+        </ol>
+      </section>
 
-      <section>
-        <SecHead num="02" title="How the site is built" colour="var(--teal)" />
-        <p className="body">
-          Four record kinds, one shell. <b>Theory</b>, <b>mechanism</b>, <b>empirical study</b> and <b>research method</b> use different templates because they are different objects — a theory is a lens, a mechanism is a pathway, a study is an argument, and a method is a practice — but they share the header,
-          breadcrumbs, contents rail, saved state, library card and provenance block.
-        </p>
-        <p className="body" style={{ marginTop: ".8rem" }}>
-          The theory template is <b>section-driven</b>: each block renders only if the record carries data for it, and section numbers and the contents rail are generated
-          from whatever survives. That is why Person–Environment Fit runs to nine sections and Job Demands–Resources to eleven, off one template — a theory with dual
-          pathways and a challenge/hindrance split does not have to be forced into the shape of one about correspondence.
-        </p>
-        <div className="grid2" style={{ marginTop: "1rem" }}>
-          <div className="sk-box tight tilt-l2">
-            <h3 style={{ fontSize: "1rem" }}>Routes</h3>
-            <div className="read" style={{ fontSize: ".87rem", lineHeight: 1.7, color: "var(--pen-2)", marginTop: ".4rem" }}>
-              <code>/concept-lab</code> home<br />
-              <code>/concept-lab/library</code> browse + filter<br />
-              <code>/concept-lab/saved</code> starred records<br />
-              <code>/concept-lab/theory/[slug]</code> theory record<br />
-              <code>/concept-lab/study/[slug]</code> study record<br />
-              <code>/concept-lab/mechanism/[slug]</code> mechanism record<br />
-              <code>/concept-lab/about</code> this page
-            </div>
-          </div>
-          <div className="sk-box tight tilt-r2">
-            <h3 style={{ fontSize: "1rem" }}>What scales</h3>
-            <div style={{ marginTop: ".4rem" }}>
-              {[
-                "The library is the only surface that grows. No record ever enters the main nav.",
-                "Cards, filters and search read from the record objects — nothing is hand-listed.",
-                "Drawn elements are a fixed kit, so a new record costs no new illustration.",
-              ].map((t) => (
-                <div className="bullet" key={t}>
-                  <Icon id="i-check" style={{ color: "var(--teal)" }} />
-                  <span className="read" style={{ fontSize: ".86rem", lineHeight: 1.55, color: "var(--pen-2)" }}>{t}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+      <section className="about-section about-process" aria-labelledby="process-title">
+        <div className="about-process-intro"><SectionLabel number="03">From source to record</SectionLabel><h2 id="process-title">Nothing loses<br /><em>its trail.</em></h2><p>Turning literature into a record is not a shortcut around the source. It is a visible sequence of questions, distinctions, explanations and limits.</p><p className="about-hand-note about-process-note">a research desk<br />still has edges</p></div>
+        <div className="about-desk" aria-label="The stages from source literature to a traceable record">
+          <div className="about-desk-fragments" aria-hidden="true"><PaperFragment className="about-desk-source">SOURCE<br /><small>published work</small></PaperFragment><PaperFragment className="about-desk-note">note / compare<br /><small>where does it hold?</small></PaperFragment><PaperFragment className="about-desk-record">RECORD<br /><small>claim + limits</small></PaperFragment></div>
+          <ol className="about-process-list">{PROCESS.map(([number, title, detail]) => <li key={number}><span>{number}</span><div><strong>{title}</strong><p>{detail}</p></div></li>)}</ol>
         </div>
       </section>
 
-      <Divider />
-
-      <section>
-        <SecHead num="03" title="Adding a record" colour="var(--teal)" />
-        <p className="body">
-          Append one object to <code>content/theory.ts</code> (or <code>content/paper.ts</code>) and list it in <code>content/records.ts</code>. It then appears in the
-          library, in search, in the filters, in saved, and on the other records’ “elsewhere” block — with no template, route or navigation change.
-        </p>
-        <pre className="code" tabIndex={0} style={{ marginTop: "1rem" }}>{SHAPE}</pre>
-        <div className="tilt-r2" style={{ marginTop: "1.1rem", maxWidth: 640 }}>
-          <Cloud colour="#E24E1B">
-            <div style={{ display: "flex", gap: ".55rem", alignItems: "flex-start" }}>
-              <Icon id="i-warn" style={{ width: 24, height: 24, color: "var(--red)", flex: "none" }} />
-              <p className="read" style={{ fontSize: ".9rem", lineHeight: 1.55, color: "var(--pen-2)" }}>
-                A record without a filled <code>provenance</code> array should not ship. It is the one field that makes the rest trustworthy.
-              </p>
-            </div>
-          </Cloud>
-        </div>
+      <section className="about-section about-marks" aria-labelledby="marks-title">
+        <div className="about-section-heading"><div><SectionLabel number="04">What the marks mean</SectionLabel><h2 id="marks-title">Not every mark means<br /><em>the same kind of knowing.</em></h2></div><p>A mark is a claim legend in the margin. It tells you what kind of statement you are reading — and where that statement stops.</p></div>
+        <div className="about-mark-list">{MARKS.map((mark) => <article className="about-mark-entry" key={mark.label}><KindMark glyph={mark.glyph} className={mark.className} /><div className="about-mark-main"><h3>{mark.label}</h3><p><b>What it means</b>{mark.means}</p><p className="about-mark-boundary"><b>What it does not mean</b>{mark.boundary}</p></div></article>)}</div>
       </section>
+
+      <section className="about-section about-drawing" aria-labelledby="drawing-title">
+        <div className="about-drawing-heading"><SectionLabel number="05">The drawing explains · the source supports</SectionLabel><h2 id="drawing-title">A visual can make<br /><em>a relationship visible.</em></h2><p>It cannot make a claim true by looking convincing.</p></div>
+        <div className="about-drawing-columns"><article><span className="about-column-mark about-column-drawing" aria-hidden="true">✦</span><h3>The drawing explains.</h3><p>Authored drawings and diagrams can reconstruct a relationship for teaching. An interactive state can clarify a theory by changing what the reader notices, compares or follows.</p><ul><li>Visual distance, colour and balance are explanatory choices.</li><li>A diagram can show a possible route without measuring an outcome.</li><li>Important academic claims remain live, selectable text.</li></ul></article><article><span className="about-column-mark about-column-source" aria-hidden="true">●</span><h3>The source supports.</h3><p>Published work carries the evidence, design, finding, qualification and uncertainty. Provenance stays attached to the claim so the reader can follow the explanation back.</p><ul><li>Published figures are not silently recast as Lab artwork.</li><li>Interaction does not create empirical evidence.</li><li>A persuasive image does not replace a source.</li></ul></article></div>
+      </section>
+
+      <section className="about-section about-unresolved" aria-labelledby="unresolved-title">
+        <div className="about-unresolved-mark" aria-hidden="true">?</div>
+        <div><SectionLabel number="06">What we leave unresolved</SectionLabel><h2 id="unresolved-title">A gap is still<br /><em>information.</em></h2><p>Where the literature does not agree, the record says so rather than silently choosing a side. Qualifications stay attached to claims. Missing evidence is not filled by a drawing, and an editorial explanation does not erase uncertainty.</p><ul><li>Disagreement remains disagreement.</li><li>Oversimplifications are surfaced.</li><li>A theory’s history is not forced into one founder when the sources do not support that story.</li></ul></div>
+      </section>
+
+      <section className="about-section about-journey" aria-labelledby="journey-title">
+        <div className="about-section-heading"><div><SectionLabel number="07">How to move through the Lab</SectionLabel><h2 id="journey-title">Follow a question<br /><em>wherever it leads.</em></h2></div><p>The surfaces have different jobs. Together they let you orient, discover, return and understand how knowledge is represented.</p></div>
+        <ol className="about-journey-list"><li><Link href="/concept-lab"><span className="about-journey-number">01</span><strong>Home</strong><em>Orient</em><p>See the Lab as a whole.</p><span aria-hidden="true">→</span></Link></li><li><Link href="/concept-lab/library"><span className="about-journey-number">02</span><strong>Library</strong><em>Discover</em><p>Find a question. Follow a thread. Enter a field.</p><span aria-hidden="true">→</span></Link></li><li><Link href="/concept-lab/saved"><span className="about-journey-number">03</span><strong>Saved</strong><em>Return</em><p>Keep a thought close and continue later.</p><span aria-hidden="true">→</span></Link></li><li><Link href="/concept-lab/library"><span className="about-journey-number">04</span><strong>Record</strong><em>Explore</em><p>Follow claims, limits and sources.</p><span aria-hidden="true">→</span></Link></li><li><Link href="#about-title"><span className="about-journey-number">05</span><strong>About</strong><em>Understand</em><p>See how the Lab represents knowledge.</p><span aria-hidden="true">↑</span></Link></li></ol>
+      </section>
+
+      <section className="about-closing" aria-label="Closing thought"><p>Read forward through the explanation.<br /><em>Read backward through the evidence.</em></p><span className="about-hand-note">keep asking<br />where it came from</span></section>
     </div>
   );
 }
