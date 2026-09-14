@@ -39,6 +39,12 @@ Read:
 
 ## Reference use
 
+Before a major visual design or redesign, also read
+`docs/visual-language/references/README.md` and inspect the relevant reference
+group. Study the material vocabulary and page rhythm, then derive geometry from
+the content. The reference library is documentation only: it is not a runtime
+asset set, component catalogue or instruction to add artwork.
+
 Use references to understand pigment, pressure, mark-making, layering, overlap, erasure, white space, scholarly typography and visual rhythm. Do not copy layouts or diagrams.
 
 > **Creative assimilation, not imitation.**

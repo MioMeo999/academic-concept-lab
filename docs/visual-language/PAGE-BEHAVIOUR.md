@@ -2,6 +2,14 @@
 
 This describes how the visual language behaves across the site. It does not prescribe one template.
 
+## Reference library
+
+Use `docs/visual-language/references/README.md` as a study shelf before a
+major visual composition. Inspect only the groups relevant to the question at
+hand, then translate their material vocabulary into a geometry discovered from
+the content. The references are not production assets or layout presets, and
+they do not require a page to contain artwork.
+
 ## Home
 
 The Home page should establish the world of Academic Concept Lab before explaining its architecture. It should feel expansive, intelligent, inviting, connected, visually alive and more atlas than landing page.
