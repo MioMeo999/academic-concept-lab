@@ -189,6 +189,31 @@
   .rta-reading-divergence { inset: 5% -8% 10%; width: 116%; height: 85%; }
 }
 
+/* The shared Concept Lab shell still wraps the canonical route. Restore the
+   benchmark's own inherited typography and remove only that shell's canvas
+   texture inside this route. */
+.rta-canonical-host {
+  line-height: 1.5;
+  font-variant-numeric: normal;
+}
+.rta-canonical-host .rta-page h1,
+.rta-canonical-host .rta-page h2,
+.rta-canonical-host .rta-page h3,
+.rta-canonical-host .rta-page h4,
+.rta-canonical-host .rta-page blockquote {
+  font-family: var(--rta-reading), Georgia, serif;
+}
+.rta-canonical-host .rta-page blockquote { font-weight: 400; }
+.rta-canonical-host .rta-page h3 { font-weight: 600; letter-spacing: normal; }
+.acl:has(> main > .rta-canonical-host) > main::before { display: none; }
+
+/* The canonical RTA route lives inside the Concept Lab layout. Its dedicated
+   frame owns the method shell, so the parent site's shell is hidden only when
+   this route is present; other records keep the shared layout unchanged. */
+.acl:has(> main > .rta-canonical-host) > header.site,
+.acl:has(> main > .rta-canonical-host) > footer.site { display: none; }
+.acl:has(> main > .rta-canonical-host) > main { min-height: 0; margin: 0; }
+
 /* C+1 whole-page rhythm pass: keep the approved field and worktable fixed,
    then let the live editorial moments carry the middle of the argument. */
 @media (min-width: 901px) {
