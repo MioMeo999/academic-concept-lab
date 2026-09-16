@@ -105,6 +105,11 @@ for (const pathname of recordPaths) {
       assert.match(html, /Where every claim came from/, `${pathname} renders no provenance block`);
       return;
     }
+    if (pathname === "/concept-lab/method/reflexive-thematic-analysis") {
+      assert.match(html, /The analysis/);
+      assert.match(html, /CLAIMS \/ SOURCES \/ PROVENANCE/);
+      return;
+    }
     // Provenance is the field that makes everything else trustworthy.
     assert.match(html, /Where every claim came from/, `${pathname} renders no provenance block`);
     // Section numbering and the contents rail are generated together; a
