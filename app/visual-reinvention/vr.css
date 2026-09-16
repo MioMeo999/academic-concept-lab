@@ -1,0 +1,799 @@
+/* ===========================================================================
+   Phase B2 — isolated visual prototypes.
+
+   This stylesheet is scoped to .vr-root and is not imported by any production
+   route. It does not extend, override or reference sketchnote.css, and it was
+   not derived from it.
+
+   Two registers, and they never merge:
+     - typeset scholarship carries every claim;
+     - drawn marks attach, hold, group, bound, and retain.
+
+   Colour is drawing material. It is not a claim-class key. Provenance is the
+   canonical glyph plus its text; drawing may attach it, never replace it.
+   ======================================================================== */
+
+.vr-root {
+  /* Ground and ink */
+  --vr-ground: #fcfbf9;
+  --vr-ground-sunk: #f7f5f0;
+  --vr-ink: #16161a;
+  --vr-ink-soft: #4c4c55;
+  --vr-ink-faint: #74747f;
+  --vr-graphite: #2f2f35;
+  --vr-hair: #d9d5cb;
+  --vr-hair-strong: #b9b4a7;
+
+  /* Pigments. Named as materials, not as meanings. */
+  --vr-cobalt: #1c56b8;
+  --vr-vermilion: #cc3521;
+  --vr-ochre: #8f6708;
+  --vr-ochre-mark: #b3820e;
+  --vr-emerald: #0d7a55;
+  --vr-violet: #6141b0;
+  --vr-warm: #8b8578;
+
+  /* Type */
+  --vr-serif: "Sitka Text", "Sitka", Cambria, "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --vr-display: "Sitka Display", "Sitka Heading", "Sitka", Cambria, Georgia, serif;
+  --vr-sans: "Inter", "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --vr-mono: "Cascadia Mono", "Cascadia Code", Consolas, ui-monospace, monospace;
+
+  --vr-measure: 37rem;
+  --vr-apparatus: 15.5rem;
+
+  background: var(--vr-ground);
+  color: var(--vr-ink);
+  font-family: var(--vr-serif);
+  font-size: 1rem;
+  line-height: 1.62;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The page ground is plain. Grain lives in the mark. */
+:root:has(.vr-root) {
+  background: #fcfbf9;
+}
+
+.vr-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* --- Typography ---------------------------------------------------------- */
+
+.vr-root h1,
+.vr-root h2,
+.vr-root h3,
+.vr-root h4 {
+  font-family: var(--vr-display);
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -0.012em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.vr-display {
+  font-size: clamp(2.3rem, 5.6vw, 3.7rem);
+  letter-spacing: -0.022em;
+}
+
+.vr-root h2 {
+  font-size: clamp(1.45rem, 2.6vw, 1.95rem);
+}
+
+.vr-root h3 {
+  font-size: 1.16rem;
+  letter-spacing: -0.006em;
+}
+
+.vr-root p {
+  margin: 0 0 0.95em;
+  max-width: 37rem;
+  hyphens: auto;
+}
+
+.vr-root a {
+  color: inherit;
+  text-decoration-color: var(--vr-hair-strong);
+  text-underline-offset: 0.18em;
+}
+
+.vr-root a:hover {
+  text-decoration-color: var(--vr-cobalt);
+}
+
+.vr-label {
+  font-family: var(--vr-sans);
+  font-size: 0.63rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--vr-ink-faint);
+  line-height: 1.4;
+}
+
+.vr-lede {
+  font-size: 1.14rem;
+  line-height: 1.52;
+  color: var(--vr-ink-soft);
+  max-width: 34rem;
+}
+
+.vr-mono {
+  font-family: var(--vr-mono);
+  font-size: 0.78rem;
+  letter-spacing: -0.01em;
+}
+
+.vr-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- Page frame ---------------------------------------------------------- */
+
+.vr-shell {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 0 clamp(1.1rem, 4vw, 3rem) 7rem;
+}
+
+.vr-topbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.4rem;
+  align-items: baseline;
+  padding: 1.5rem 0 1.1rem;
+  border-bottom: 1px solid var(--vr-hair);
+  margin-bottom: 2.6rem;
+}
+
+.vr-topbar__crumb {
+  font-family: var(--vr-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--vr-ink-faint);
+}
+
+.vr-topbar__spacer {
+  flex: 1 1 auto;
+}
+
+.vr-masthead {
+  margin: 0 0 3.2rem;
+}
+
+.vr-masthead__kicker {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.vr-masthead .vr-lede {
+  margin-top: 1.1rem;
+}
+
+/* Two registers. The apparatus is a register, not a layout: below the
+   breakpoint it stays attached and attributed, it just stops being marginal. */
+.vr-spread {
+  display: grid;
+  grid-template-columns: minmax(0, var(--vr-measure)) minmax(0, var(--vr-apparatus));
+  gap: 0 2.6rem;
+  align-items: start;
+}
+
+.vr-spread--wide {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.vr-column {
+  grid-column: 1;
+  min-width: 0;
+}
+
+.vr-margin {
+  grid-column: 2;
+  min-width: 0;
+}
+
+@media (max-width: 62rem) {
+  .vr-spread {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .vr-margin,
+  .vr-column {
+    grid-column: 1;
+  }
+}
+
+.vr-section {
+  margin: 0 0 3.4rem;
+  scroll-margin-top: 2rem;
+}
+
+.vr-section__head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.vr-section__head::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--vr-hair);
+}
+
+.vr-rule {
+  border: 0;
+  border-top: 1px solid var(--vr-hair);
+  margin: 3rem 0;
+}
+
+/* --- Apparatus ----------------------------------------------------------- */
+
+.vr-apparatus {
+  font-family: var(--vr-sans);
+  font-size: 0.79rem;
+  line-height: 1.5;
+  color: var(--vr-ink-soft);
+  display: grid;
+  gap: 1.15rem;
+  position: sticky;
+  top: 1.5rem;
+}
+
+@media (max-width: 62rem) {
+  .vr-apparatus {
+    position: static;
+    margin: 1.4rem 0 2rem;
+    padding-left: 0.9rem;
+    border-left: 2px solid var(--vr-hair);
+  }
+}
+
+.vr-note {
+  display: grid;
+  grid-template-columns: 1.1rem minmax(0, 1fr);
+  gap: 0.45rem;
+  align-items: start;
+}
+
+.vr-note[hidden] {
+  display: none;
+}
+
+.vr-note__body {
+  min-width: 0;
+}
+
+/* The phrase an intervention attaches to. On wide screens the leader line
+   draws the attachment; on narrow screens the quoted phrase carries it. */
+.vr-note__anchor {
+  display: block;
+  font-family: var(--vr-serif);
+  font-style: italic;
+  color: var(--vr-ink);
+  margin-bottom: 0.2rem;
+}
+
+.vr-note__anchor::before {
+  content: "\201C";
+}
+
+.vr-note__anchor::after {
+  content: "\201D";
+}
+
+.vr-note__voice {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--vr-ink-faint);
+  margin-top: 0.28rem;
+}
+
+.vr-glyph {
+  font-size: 0.72rem;
+  line-height: 1.7;
+  color: var(--vr-graphite);
+}
+
+/* Deliberately not colour-coded.
+   Tinting each glyph by claim class would build a second, universal key out of
+   the palette — the thing calibration 2 rules out — and would put epistemic
+   status into colour, which the quiet scholarship contract forbids outright.
+   The glyph shape and the words beside it carry the class. Colour stays with
+   the drawing. */
+.vr-glyph--source,
+.vr-glyph--finding,
+.vr-glyph--constructed,
+.vr-glyph--synthesis,
+.vr-glyph--unresolved {
+  color: var(--vr-graphite);
+}
+
+/* A phrase in the text that an intervention attaches to. Underline is the
+   attachment, not a claim class: the class is the glyph and its words. */
+.vr-anchor {
+  /* Inline, not inline-block: an anchored phrase has to break across lines
+     like the prose it is part of, or the apparatus starts dictating the rag. */
+  display: inline;
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+  vertical-align: baseline;
+  background-color: transparent;
+  border: 0;
+  margin: 0;
+  padding: 0 0 0.04em;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+  background-image: linear-gradient(to right, var(--vr-hair-strong), var(--vr-hair-strong));
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+}
+
+.vr-anchor:hover {
+  background-image: linear-gradient(to right, var(--vr-ink-soft), var(--vr-ink-soft));
+}
+
+.vr-anchor--active {
+  background-image: linear-gradient(to right, var(--vr-cobalt), var(--vr-cobalt));
+  background-size: 100% 1.6px;
+  color: var(--vr-ink);
+}
+
+/* --- Controls ------------------------------------------------------------ */
+
+.vr-controls {
+  border: 0;
+  padding: 0;
+  margin: 0 0 1.3rem;
+}
+
+.vr-controls__legend {
+  padding: 0;
+  margin-bottom: 0.55rem;
+}
+
+.vr-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.vr-switch button {
+  font-family: var(--vr-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.01em;
+  color: var(--vr-ink-soft);
+  background: transparent;
+  border: 1px solid var(--vr-hair-strong);
+  border-radius: 0;
+  padding: 0.34rem 0.72rem;
+  cursor: pointer;
+  transition: border-color 120ms linear, color 120ms linear, background-color 120ms linear;
+}
+
+.vr-switch button:hover {
+  border-color: var(--vr-graphite);
+  color: var(--vr-ink);
+}
+
+/* A radio group picks one condition: the chosen one is stated firmly. */
+.vr-switch button[aria-checked="true"] {
+  border-color: var(--vr-graphite);
+  background: var(--vr-graphite);
+  color: var(--vr-ground);
+}
+
+/* A voice filter is not a condition. Its default is "everything shown", so
+   the pressed state must be the calm one and the excluded state the marked
+   one — otherwise the apparatus opens as a row of black blocks. */
+.vr-switch--filter button {
+  border-color: var(--vr-hair);
+  color: var(--vr-ink);
+}
+
+.vr-switch--filter button[aria-pressed="false"] {
+  border-style: dashed;
+  color: var(--vr-ink-faint);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  background: transparent;
+}
+
+.vr-root :is(button, a, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--vr-cobalt);
+  outline-offset: 2px;
+}
+
+.vr-declare {
+  font-family: var(--vr-sans);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--vr-ink-soft);
+  border-left: 2px solid var(--vr-hair-strong);
+  padding: 0.1rem 0 0.1rem 0.85rem;
+  margin: 1.1rem 0 1.4rem;
+  max-width: 34rem;
+}
+
+.vr-declare strong {
+  font-weight: 600;
+  color: var(--vr-ink);
+}
+
+.vr-declare--constructed {
+  border-left-color: var(--vr-vermilion);
+}
+
+/* --- Figures ------------------------------------------------------------- */
+
+.vr-figure {
+  margin: 1.9rem 0 2.2rem;
+}
+
+.vr-figure__plate svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.vr-figure__caption {
+  font-family: var(--vr-sans);
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: var(--vr-ink-soft);
+  margin-top: 0.75rem;
+  max-width: 36rem;
+}
+
+.vr-figure__caption b {
+  font-weight: 600;
+  color: var(--vr-ink);
+}
+
+.vr-figure--quiet .vr-figure__caption {
+  color: var(--vr-ink-faint);
+}
+
+/* Registered conditions: the invariant must occupy the identical position in
+   each field, or the comparison is not a comparison. */
+.vr-conditions {
+  display: grid;
+  gap: 1.2rem;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  margin: 1.6rem 0;
+}
+
+.vr-condition {
+  min-width: 0;
+}
+
+.vr-condition__label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.vr-condition__plate svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.vr-condition__read {
+  font-family: var(--vr-sans);
+  font-size: 0.73rem;
+  line-height: 1.45;
+  color: var(--vr-ink-soft);
+  margin-top: 0.45rem;
+}
+
+/* --- Quiet scholarship --------------------------------------------------- */
+
+.vr-quiet {
+  --vr-quiet-indent: 7.5rem;
+}
+
+.vr-entry {
+  padding: 1.15rem 0;
+  border-top: 1px solid var(--vr-hair);
+  max-width: 44rem;
+}
+
+.vr-entry:last-of-type {
+  border-bottom: 1px solid var(--vr-hair);
+}
+
+.vr-entry__cite {
+  font-family: var(--vr-serif);
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-bottom: 0.15rem;
+}
+
+.vr-entry__cite em {
+  font-style: italic;
+}
+
+.vr-entry__kind {
+  margin-bottom: 0.7rem;
+}
+
+/* Hanging field structure. `found` and `not tested` carry identical weight —
+   that equality is the argument, not a layout convenience. */
+.vr-field {
+  display: grid;
+  grid-template-columns: var(--vr-quiet-indent) minmax(0, 1fr);
+  gap: 0.35rem 1rem;
+  padding: 0.22rem 0;
+  align-items: baseline;
+}
+
+.vr-field__key {
+  font-family: var(--vr-sans);
+  font-size: 0.63rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--vr-ink-faint);
+  border-bottom: 1px solid var(--vr-hair);
+  padding-bottom: 0.15rem;
+}
+
+.vr-field__val {
+  font-size: 0.94rem;
+  line-height: 1.5;
+  color: var(--vr-ink);
+}
+
+.vr-field--limit .vr-field__key {
+  color: var(--vr-ink);
+  border-bottom-color: var(--vr-hair-strong);
+}
+
+@media (max-width: 44rem) {
+  .vr-field {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.1rem;
+  }
+  .vr-field__key {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+}
+
+.vr-source {
+  display: grid;
+  grid-template-columns: 1.4rem minmax(0, 1fr);
+  gap: 0.5rem;
+  padding: 0.62rem 0;
+  border-top: 1px solid var(--vr-hair);
+  max-width: 44rem;
+}
+
+.vr-source__mark {
+  font-family: var(--vr-mono);
+  font-size: 0.7rem;
+  color: var(--vr-ink-faint);
+  padding-top: 0.22rem;
+}
+
+.vr-source__contribution {
+  font-family: var(--vr-sans);
+  font-size: 0.78rem;
+  color: var(--vr-ink-soft);
+  margin-top: 0.18rem;
+}
+
+.vr-relation {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.3rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--vr-hair);
+  max-width: 44rem;
+}
+
+.vr-relation__line {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  font-family: var(--vr-sans);
+  font-size: 0.8rem;
+}
+
+.vr-relation__verb {
+  font-size: 0.63rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--vr-ink-faint);
+  white-space: nowrap;
+}
+
+.vr-relation__to {
+  font-family: var(--vr-serif);
+  font-size: 0.97rem;
+  color: var(--vr-ink);
+}
+
+.vr-relation__why {
+  font-size: 0.8rem;
+  color: var(--vr-ink-soft);
+  max-width: 40rem;
+}
+
+.vr-provenance {
+  display: grid;
+  gap: 0.55rem;
+  max-width: 44rem;
+}
+
+.vr-provenance__row {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: baseline;
+  font-size: 0.92rem;
+}
+
+/* --- Index --------------------------------------------------------------- */
+
+.vr-index {
+  display: grid;
+  gap: 0;
+  margin-top: 2.2rem;
+  max-width: 48rem;
+}
+
+.vr-index__item {
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1.3rem 0;
+  border-top: 1px solid var(--vr-hair);
+  text-decoration: none;
+}
+
+.vr-index__item:last-child {
+  border-bottom: 1px solid var(--vr-hair);
+}
+
+.vr-index__num {
+  font-family: var(--vr-mono);
+  font-size: 0.75rem;
+  color: var(--vr-ink-faint);
+  padding-top: 0.35rem;
+}
+
+.vr-index__title {
+  font-family: var(--vr-display);
+  font-size: 1.3rem;
+  line-height: 1.2;
+  margin-bottom: 0.3rem;
+}
+
+.vr-index__item:hover .vr-index__title {
+  color: var(--vr-cobalt);
+}
+
+.vr-index__what {
+  font-family: var(--vr-sans);
+  font-size: 0.8rem;
+  color: var(--vr-ink-soft);
+  max-width: 36rem;
+}
+
+/* --- Rhythm page --------------------------------------------------------- */
+
+.vr-movement {
+  padding: 3.6rem 0;
+}
+
+.vr-movement__meta {
+  display: flex;
+  gap: 1.1rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+  margin-bottom: 1.1rem;
+}
+
+.vr-tempo {
+  font-family: var(--vr-mono);
+  font-size: 0.68rem;
+  color: var(--vr-ink-faint);
+  letter-spacing: 0.02em;
+}
+
+/* Cognitive silence: real, measured, and deliberate. */
+.vr-silence {
+  height: clamp(6rem, 16vh, 11rem);
+}
+
+.vr-silence--deep {
+  height: clamp(9rem, 24vh, 16rem);
+}
+
+/* --- Motion -------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .vr-root * {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* --- Forced colours ------------------------------------------------------ */
+
+@media (forced-colors: active) {
+  .vr-switch button[aria-pressed="true"],
+  .vr-switch button[aria-checked="true"] {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+  }
+}
+
+/* --- Narrow widths ------------------------------------------------------- */
+
+/* The apparatus stops being marginal below 62rem; below 34rem the type scale
+   has to come down too, or a measured column becomes six words wide. */
+@media (max-width: 34rem) {
+  :root:has(.vr-root) {
+    font-size: 16px;
+  }
+
+  /* A drawn underline that spans two line fragments reads as a rule rather
+     than an attachment. At this width the quoted phrase in the note carries
+     the attachment on its own, so the mark gets quieter. */
+  .vr-anchor {
+    background-image: none;
+    text-decoration: underline;
+    text-decoration-color: var(--vr-hair-strong);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.16em;
+  }
+
+  .vr-anchor--active {
+    text-decoration-color: var(--vr-cobalt);
+    text-decoration-thickness: 2px;
+  }
+
+  /* A plate scaled to 390px is not a smaller drawing, it is an unreadable
+     one. Below this width the figure keeps its legible size and scrolls
+     inside its own container instead; the page itself never scrolls
+     sideways, and every plate carries a full text equivalent regardless. */
+  .vr-figure__plate,
+  .vr-condition__plate {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+
+  .vr-figure__plate > svg,
+  .vr-figure__plate .vr-condition__plate > svg {
+    min-width: 30rem;
+  }
+}

@@ -1,0 +1,1572 @@
+/* ===========================================================================
+   ACADEMIC CONCEPT LAB — ATLAS
+   An isolated visual exploration. Scoped entirely to .at-root.
+
+   This stylesheet is not imported by any production route. It does not extend,
+   override, or reference sketchnote.css, and none of its values were derived
+   from it.
+
+   ---------------------------------------------------------------------------
+   THE THESIS
+
+   Two registers share every page and never merge.
+
+   TYPESET KNOWLEDGE carries the scholarship. It is set precisely: one measure,
+   one baseline habit, a real hierarchy, an apparatus column, hairline rules.
+   Every claim, citation, boundary and qualification lives here, in type, and
+   survives with the drawing switched off.
+
+   DRAWN THINKING sits over and behind it, and only where thought is happening
+   — grouping, comparing, connecting, doubting, revising, bounding. It is
+   pigment and graphite: accumulated, overlapping, pressured, sometimes lifted.
+
+   Three rules keep the second register honest.
+
+   · Colour is material, not a key. A pigment is chosen for how it behaves in
+     the mass, and the same pigment does different work on different spreads.
+     No claim class is ever encoded by hue alone.
+   · Density is not evidence. A darker field is more worked, not more true.
+     Weight of evidence is stated in words, in the quiet register.
+   · Marks are removable. Every drawn thing is aria-hidden and inert. Where a
+     drawing carries an argument, its figure supplies a caption and a linear
+     text equivalent.
+
+   ---------------------------------------------------------------------------
+   THE GROUND
+
+   White, and only white. No paper simulation, no tint, no tape, no torn edge,
+   no aged surface. Grain lives in the mark, not in the page.
+   ======================================================================== */
+
+.at-root {
+  /* --- Ground and ink --- */
+  --at-ground: #fdfdfc;
+  --at-ink: #17161c;
+  --at-ink-soft: #4f4d59;
+  --at-ink-faint: #807e8b;
+  --at-hair: #e4e0d6;
+  --at-hair-soft: #efece4;
+  --at-hair-strong: #c6c1b3;
+
+  /* --- Pigments. Named as materials, never as meanings. --- */
+  --pg-graphite: #36332d;
+  --pg-ultramarine: #1f3fb0;
+  --pg-vermilion: #cf3a1c;
+  --pg-viridian: #0e7355;
+  --pg-violet: #6538ad;
+  --pg-ochre: #b07d0b;
+  --pg-rose: #b8336a;
+
+  /* Each spread declares its own pigment character, so no two records are
+     chromatically the same page in a different colour. */
+  --at-key: var(--pg-graphite);
+  --at-key-2: var(--pg-graphite);
+  --at-key-3: var(--pg-graphite);
+
+  /* --- Type --- */
+  --at-text: var(--at-newsreader), "Sitka Text", Cambria, Georgia, serif;
+  --at-sans: var(--at-instrument), "Inter", "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --at-hand: var(--at-caveat), "Segoe Script", cursive;
+  --at-mono: "Cascadia Mono", Consolas, ui-monospace, monospace;
+
+  /* --- Measure --- */
+  --at-measure: 37rem;
+  --at-note: 15rem;
+  --at-gutter: 2.75rem;
+
+  background: var(--at-ground);
+  color: var(--at-ink);
+  font-family: var(--at-text);
+  font-size: 1.0625rem;
+  line-height: 1.66;
+  font-variant-numeric: oldstyle-num proportional-nums;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100dvh;
+  overflow-x: clip;
+}
+
+:root:has(.at-root) {
+  background: #fdfdfc;
+}
+
+/* ===========================================================================
+   1 · TYPESET KNOWLEDGE
+   ======================================================================== */
+
+.at-root h1,
+.at-root h2,
+.at-root h3,
+.at-root h4 {
+  margin: 0;
+  font-family: var(--at-text);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+}
+
+.at-display {
+  font-size: clamp(2.85rem, 7.2vw, 5.4rem);
+  font-weight: 300;
+  line-height: 0.97;
+  letter-spacing: -0.034em;
+}
+
+.at-root h2 {
+  font-size: clamp(1.65rem, 3.1vw, 2.35rem);
+  font-weight: 400;
+  letter-spacing: -0.024em;
+}
+
+.at-root h3 {
+  font-size: 1.12rem;
+  font-weight: 600;
+  letter-spacing: -0.008em;
+  line-height: 1.3;
+}
+
+.at-root p {
+  margin: 0 0 0.9em;
+  hyphens: auto;
+}
+
+.at-root p:last-child {
+  margin-bottom: 0;
+}
+
+.at-root i,
+.at-root em {
+  font-style: italic;
+}
+
+.at-root b,
+.at-root strong {
+  font-weight: 600;
+}
+
+.at-root a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 0.5px;
+  text-decoration-color: var(--at-hair-strong);
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color 0.14s;
+}
+
+.at-root a:hover {
+  text-decoration-color: var(--at-key);
+}
+
+.at-root a:focus-visible,
+.at-root button:focus-visible,
+.at-root summary:focus-visible {
+  outline: 2px solid var(--at-key);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* The label is the atlas's connective tissue: it names a thing without
+   claiming anything about it. */
+.at-label {
+  display: block;
+  font-family: var(--at-sans);
+  font-size: 0.645rem;
+  font-weight: 600;
+  letter-spacing: 0.155em;
+  text-transform: uppercase;
+  line-height: 1.5;
+  color: var(--at-ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.at-label--key {
+  color: var(--at-key);
+}
+
+.at-lede {
+  font-size: clamp(1.16rem, 1.9vw, 1.34rem);
+  line-height: 1.5;
+  font-weight: 300;
+  letter-spacing: -0.011em;
+  color: var(--at-ink-soft);
+  max-width: 33rem;
+}
+
+.at-lede b,
+.at-lede strong {
+  font-weight: 500;
+  color: var(--at-ink);
+}
+
+.at-small {
+  font-size: 0.94rem;
+  line-height: 1.58;
+  color: var(--at-ink-soft);
+}
+
+.at-mono {
+  font-family: var(--at-mono);
+  font-size: 0.76rem;
+  letter-spacing: -0.012em;
+  font-variant-numeric: tabular-nums;
+}
+
+.at-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.at-skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 30;
+  background: var(--at-ink);
+  color: #fff;
+  font-family: var(--at-sans);
+  font-size: 0.8rem;
+  padding: 0.6rem 1rem;
+  text-decoration: none;
+}
+
+.at-skip:focus {
+  left: 0.75rem;
+  top: 0.75rem;
+}
+
+/* ===========================================================================
+   2 · THE GRID
+
+   One grid runs the whole atlas. Text sits in a fixed measure; the apparatus
+   sits beside it; drawing may occupy either, both, or the full bleed. Nothing
+   is centred by accident.
+   ======================================================================== */
+
+.at-spread {
+  display: grid;
+  grid-template-columns:
+    [bleed-start] minmax(1.15rem, 1fr)
+    [text-start] minmax(0, var(--at-measure))
+    [text-end] var(--at-gutter)
+    [note-start] minmax(0, var(--at-note))
+    [note-end] minmax(1.15rem, 1fr)
+    [bleed-end];
+  column-gap: 0;
+}
+
+/* `main` is a semantic wrapper only: it takes part in no layout, so the
+   sections inside it are the grid's real children. */
+.at-spread > main {
+  display: contents;
+}
+
+/* :where() keeps this at zero added specificity, so any placement class below
+   simply wins by source order instead of needing to out-specify the default. */
+.at-spread > :where(*, main > *) {
+  grid-column: text;
+  min-width: 0;
+}
+
+.at-col-note {
+  grid-column: note;
+}
+
+.at-col-wide {
+  grid-column: text-start / note-end;
+}
+
+.at-col-bleed,
+.at-overture {
+  grid-column: bleed;
+}
+
+/* Reading position on a wide screen: pull the whole grid off dead centre so the
+   apparatus column has room and the page has a spine. */
+.at-page {
+  max-width: 78rem;
+  margin: 0 auto;
+}
+
+@media (max-width: 62rem) {
+  .at-spread {
+    grid-template-columns:
+      [bleed-start] minmax(1.15rem, 1fr)
+      [text-start note-start] minmax(0, var(--at-measure))
+      [text-end note-end] minmax(1.15rem, 1fr)
+      [bleed-end];
+  }
+
+  .at-col-note {
+    grid-column: text;
+  }
+}
+
+/* ===========================================================================
+   3 · RUNNING APPARATUS — masthead, running head, foot
+   ======================================================================== */
+
+.at-masthead {
+  border-bottom: 1px solid var(--at-ink);
+  padding: 1.1rem 0 0.85rem;
+  margin-bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
+}
+
+.at-masthead__mark {
+  font-family: var(--at-text);
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.at-masthead__mark:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 0.5px;
+  text-underline-offset: 0.22em;
+}
+
+.at-masthead__rule {
+  flex: 1 1 3rem;
+}
+
+.at-masthead nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.15rem;
+}
+
+.at-masthead nav a {
+  font-family: var(--at-sans);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--at-ink-faint);
+  text-decoration: none;
+  padding-bottom: 1px;
+  border-bottom: 1.5px solid transparent;
+}
+
+.at-masthead nav a:hover {
+  color: var(--at-ink);
+  border-bottom-color: var(--at-key);
+}
+
+.at-masthead nav a[aria-current] {
+  color: var(--at-ink);
+  border-bottom-color: var(--at-ink);
+}
+
+/* The running head is what makes this read as a publication rather than a
+   page: an edition line that persists, unremarked, at the top of every spread. */
+.at-runhead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.4rem;
+  align-items: baseline;
+  padding: 0.7rem 0 0.6rem;
+  border-bottom: 1px solid var(--at-hair);
+  font-family: var(--at-sans);
+  font-size: 0.645rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--at-ink-faint);
+}
+
+.at-runhead__spacer {
+  flex: 1 1 auto;
+}
+
+.at-runhead strong {
+  font-weight: 700;
+  color: var(--at-ink);
+  letter-spacing: 0.12em;
+}
+
+.at-foot {
+  border-top: 1px solid var(--at-ink);
+  margin-top: 5rem;
+  padding: 1.5rem 0 4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2.5rem;
+  align-items: flex-start;
+}
+
+.at-foot p {
+  font-size: 0.88rem;
+  color: var(--at-ink-soft);
+  max-width: 30rem;
+}
+
+/* ===========================================================================
+   4 · SECTIONS AND RHYTHM
+
+   The page is not uniformly loud. Each section declares a register, and the
+   register governs how much pigment it is allowed and how much air it gets.
+   Evidence, scope, limits, provenance and sources are quiet — but quiet here
+   means typeset and exact, not generic.
+   ======================================================================== */
+
+/* A section owns a full grid row and re-uses the page's own columns, so its
+   apparatus notes sit level with the passage they qualify instead of being
+   pushed into a row of their own. */
+.at-section {
+  position: relative;
+  grid-column: text-start / note-end;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: start;
+  padding: 3.4rem 0 0;
+}
+
+.at-section__main {
+  grid-column: text;
+  min-width: 0;
+}
+
+.at-section__aside {
+  grid-column: note;
+  min-width: 0;
+  padding-top: 0.5rem;
+}
+
+@supports not (grid-template-columns: subgrid) {
+  .at-section {
+    display: block;
+  }
+}
+
+.at-section[data-register="ignition"] {
+  padding-top: 0;
+}
+
+.at-section[data-register="working"] {
+  padding-top: 4.6rem;
+}
+
+.at-section[data-register="quiet"] {
+  padding-top: 4rem;
+}
+
+/* A section head hangs its numeral outside the measure where there is room,
+   so the text column keeps one true left edge all the way down the page. */
+.at-sechead {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.at-sechead__num {
+  font-family: var(--at-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--at-key);
+  font-variant-numeric: tabular-nums;
+  display: block;
+  margin-bottom: 0.55rem;
+}
+
+@media (min-width: 74rem) {
+  .at-sechead__num {
+    position: absolute;
+    left: -3.6rem;
+    top: 0.5rem;
+    margin: 0;
+    text-align: right;
+    width: 2.4rem;
+  }
+}
+
+.at-sechead h2 {
+  max-width: 26ch;
+}
+
+.at-sechead__kicker {
+  margin-bottom: 0.5rem;
+}
+
+/* A quiet section states its own status: it is calm because the material is
+   settled, not because it was left unfinished. */
+.at-section[data-register="quiet"] .at-sechead h2 {
+  font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+  font-weight: 400;
+}
+
+.at-section[data-register="quiet"] {
+  --at-key: var(--pg-graphite);
+}
+
+.at-body > * + * {
+  margin-top: 1.15rem;
+}
+
+.at-body p {
+  max-width: var(--at-measure);
+}
+
+/* ===========================================================================
+   5 · THE APPARATUS COLUMN
+
+   Notes, controls, provenance marks and caveats live beside the text, not
+   inside boxes in it. Each is ruled to its own top edge so the eye can find
+   the attachment point.
+   ======================================================================== */
+
+.at-note {
+  font-family: var(--at-sans);
+  font-size: 0.775rem;
+  line-height: 1.5;
+  color: var(--at-ink-soft);
+  border-top: 1px solid var(--at-hair-strong);
+  padding-top: 0.5rem;
+  margin-top: 0.35rem;
+  max-width: 22rem;
+}
+
+.at-note + .at-note {
+  margin-top: 1.5rem;
+}
+
+.at-note__glyph {
+  font-family: var(--at-text);
+  font-size: 0.85rem;
+  line-height: 1;
+  margin-right: 0.4rem;
+  color: var(--at-key);
+}
+
+.at-note__label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--at-ink-faint);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.at-note b {
+  font-weight: 650;
+  color: var(--at-ink);
+}
+
+.at-note--flush {
+  margin-top: 0;
+}
+
+/* Inside the measure, a note becomes an indented aside with a pigment rule
+   rather than a panel. Panels were the old language; this one has none. */
+.at-aside {
+  border-left: 2px solid var(--at-key);
+  padding: 0.1rem 0 0.1rem 1rem;
+  margin: 1.4rem 0;
+  font-family: var(--at-sans);
+  font-size: 0.83rem;
+  line-height: 1.55;
+  color: var(--at-ink-soft);
+  max-width: 34rem;
+}
+
+.at-aside b {
+  color: var(--at-ink);
+  font-weight: 650;
+}
+
+/* ===========================================================================
+   6 · REGISTERS — the atlas's replacement for cards
+
+   The old site put every list item in a tilted box. Here a set of related
+   statements is a ruled register: a hairline table of terms and readings. It
+   is denser, more scholarly, and it does not pretend that three ideas are
+   three objects.
+   ======================================================================== */
+
+.at-register {
+  border-top: 1.5px solid var(--at-ink);
+  margin: 1.6rem 0 0;
+}
+
+.at-register__row {
+  display: grid;
+  grid-template-columns: minmax(7.5rem, 12rem) minmax(0, 1fr);
+  gap: 0.35rem 1.6rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--at-hair);
+  align-items: baseline;
+}
+
+.at-register__term {
+  font-family: var(--at-sans);
+  font-size: 0.665rem;
+  font-weight: 700;
+  letter-spacing: 0.125em;
+  text-transform: uppercase;
+  line-height: 1.45;
+  padding-top: 0.16rem;
+  color: var(--at-term, var(--at-ink));
+}
+
+.at-register__read {
+  font-size: 1rem;
+  line-height: 1.56;
+  color: var(--at-ink-soft);
+}
+
+.at-register__read b {
+  color: var(--at-ink);
+}
+
+@media (max-width: 34rem) {
+  .at-register__row {
+    grid-template-columns: 1fr;
+    gap: 0.3rem;
+  }
+}
+
+/* A register whose rows are steps in a sequence gets a counted rule instead of
+   a term column. */
+.at-steps {
+  counter-reset: at-step;
+  border-top: 1.5px solid var(--at-ink);
+  margin-top: 1.6rem;
+}
+
+.at-steps li {
+  counter-increment: at-step;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  gap: 1.2rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--at-hair);
+}
+
+.at-steps li::before {
+  content: counter(at-step, decimal-leading-zero);
+  font-family: var(--at-sans);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--at-key);
+  padding-top: 0.32rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.at-steps ul,
+.at-steps ol {
+  margin: 0;
+  padding: 0;
+}
+
+/* A plain scholarly list — used where the content really is a list. */
+.at-list {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  columns: 2;
+  column-gap: 2.2rem;
+}
+
+.at-list li {
+  break-inside: avoid;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--at-ink-soft);
+  padding: 0.34rem 0 0.34rem 0.95rem;
+  border-bottom: 1px solid var(--at-hair-soft);
+  position: relative;
+}
+
+.at-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.82em;
+  width: 4px;
+  height: 1.5px;
+  background: var(--at-key);
+}
+
+.at-list--single {
+  columns: 1;
+}
+
+@media (max-width: 40rem) {
+  .at-list {
+    columns: 1;
+  }
+}
+
+/* ===========================================================================
+   7 · THE QUIET REGISTER
+
+   Evidence, scope, limitations, provenance, sources. No colour, no drawing
+   beyond a single graphite mark, no panels. What makes these unmistakably part
+   of the atlas is the same ruled precision the loud pages are built on.
+   ======================================================================== */
+
+/* An evidence x-ray is a real editorial table: what was tested, what was
+   found, and — given equal typographic weight, because the contract requires
+   it — what was not tested. */
+.at-xray {
+  margin-top: 1.9rem;
+  border-top: 2px solid var(--at-ink);
+}
+
+.at-xray__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+  align-items: baseline;
+  padding: 0.7rem 0 0.55rem;
+}
+
+.at-xray__title {
+  font-size: 1.06rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.at-xray__kind {
+  font-family: var(--at-sans);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--at-ink-faint);
+  border: 1px solid var(--at-hair-strong);
+  padding: 0.15rem 0.45rem 0.1rem;
+}
+
+.at-xray__cite {
+  font-size: 0.885rem;
+  line-height: 1.5;
+  color: var(--at-ink-soft);
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--at-hair);
+  max-width: 44rem;
+}
+
+.at-xray__row {
+  display: grid;
+  grid-template-columns: minmax(7rem, 9.5rem) minmax(0, 1fr);
+  gap: 0.3rem 1.6rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--at-hair);
+}
+
+.at-xray__row dt {
+  font-family: var(--at-sans);
+  font-size: 0.635rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--at-ink-faint);
+  padding-top: 0.2rem;
+}
+
+.at-xray__row dd {
+  margin: 0;
+  font-size: 0.965rem;
+  line-height: 1.55;
+  color: var(--at-ink-soft);
+}
+
+/* The one place the quiet register raises its voice, because the contract
+   says a compatible result is the biggest hazard on the page. */
+.at-xray__row--not dt {
+  color: var(--at-ink);
+}
+
+.at-xray__row--not dd {
+  color: var(--at-ink);
+}
+
+.at-xray__row--not {
+  border-bottom-width: 1.5px;
+  border-bottom-color: var(--at-hair-strong);
+}
+
+@media (max-width: 34rem) {
+  .at-xray__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Sources are a bibliography, set as one. */
+.at-sources {
+  margin-top: 1.4rem;
+  border-top: 1.5px solid var(--at-ink);
+}
+
+.at-source {
+  display: grid;
+  grid-template-columns: 2.2rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--at-hair);
+}
+
+.at-source__n {
+  font-family: var(--at-sans);
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--at-ink-faint);
+  padding-top: 0.3rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.at-source__cite {
+  font-size: 0.975rem;
+  line-height: 1.52;
+  text-indent: -0.9rem;
+  padding-left: 0.9rem;
+}
+
+.at-source__why {
+  font-family: var(--at-sans);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--at-ink-soft);
+  margin-top: 0.32rem;
+}
+
+.at-source__doi {
+  font-family: var(--at-mono);
+  font-size: 0.7rem;
+  color: var(--at-ink-faint);
+  margin-top: 0.25rem;
+  word-break: break-all;
+}
+
+/* Provenance keeps its glyphs. They are semantic, they predate this
+   exploration, and colour never carries their meaning on its own. */
+.at-prov {
+  margin-top: 1.5rem;
+  border-top: 1.5px solid var(--at-ink);
+}
+
+.at-prov__item {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--at-hair);
+}
+
+.at-prov__glyph {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--at-ink);
+}
+
+.at-prov__item h3 {
+  font-size: 0.99rem;
+  font-weight: 600;
+}
+
+.at-prov__item p {
+  font-family: var(--at-sans);
+  font-size: 0.795rem;
+  line-height: 1.52;
+  color: var(--at-ink-soft);
+  margin: 0.25rem 0 0;
+}
+
+/* Scope: what a record explains, and where it stops. The stop is drawn as a
+   rule that frays, which is the only place on a quiet page a mark appears. */
+.at-scope {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 2rem 3rem;
+  margin-top: 1.7rem;
+}
+
+.at-scope__col > .at-label {
+  padding-bottom: 0.5rem;
+  border-bottom: 1.5px solid var(--at-ink);
+  margin-bottom: 0.2rem;
+}
+
+.at-scope__col ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.at-scope__col li {
+  font-size: 0.955rem;
+  line-height: 1.45;
+  padding: 0.42rem 0;
+  border-bottom: 1px solid var(--at-hair-soft);
+  color: var(--at-ink-soft);
+}
+
+.at-scope__col--stops li {
+  color: var(--at-ink);
+}
+
+.at-scope__frayed {
+  display: block;
+  width: 100%;
+  height: 12px;
+  margin-top: 0.2rem;
+}
+
+/* Relations keep their direction. A related record is never a recommendation. */
+.at-relation {
+  display: block;
+  text-decoration: none;
+  border-top: 1px solid var(--at-hair);
+  padding: 1rem 0;
+}
+
+.at-relation:first-of-type {
+  border-top: 1.5px solid var(--at-ink);
+}
+
+.at-relation__dir {
+  font-family: var(--at-sans);
+  font-size: 0.645rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--at-key);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.at-relation__title {
+  font-size: 1.16rem;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  display: block;
+}
+
+.at-relation:hover .at-relation__title {
+  text-decoration: underline;
+  text-decoration-thickness: 0.5px;
+  text-underline-offset: 0.2em;
+}
+
+.at-relation__body {
+  font-size: 0.94rem;
+  line-height: 1.55;
+  color: var(--at-ink-soft);
+  margin-top: 0.3rem;
+  max-width: 42rem;
+  display: block;
+}
+
+/* ===========================================================================
+   8 · DRAWN THINKING — placement of marks in the page
+   ======================================================================== */
+
+/* Pigment mixes rather than covers. This is the single declaration that makes
+   two overlapping hatch fields behave like layered colour. */
+.at-layer {
+  mix-blend-mode: multiply;
+}
+
+.at-figure {
+  margin: 2rem 0 0;
+  position: relative;
+}
+
+.at-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.at-figure figcaption {
+  font-family: var(--at-sans);
+  font-size: 0.79rem;
+  line-height: 1.5;
+  color: var(--at-ink-soft);
+  border-top: 1px solid var(--at-hair-strong);
+  padding-top: 0.55rem;
+  margin-top: 0.9rem;
+  max-width: 40rem;
+}
+
+.at-figure figcaption b {
+  color: var(--at-ink);
+  font-weight: 650;
+}
+
+/* A backing field is registered to the block it sits behind, so it cannot
+   drift out of alignment when the measure reflows. */
+.at-backed {
+  position: relative;
+  isolation: isolate;
+}
+
+.at-backing {
+  position: absolute;
+  inset: -1.5rem -2.5rem -1.5rem -2.5rem;
+  width: auto;
+  height: auto;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.at-underscore {
+  position: absolute;
+  left: -0.1em;
+  right: -0.1em;
+  bottom: -0.28em;
+  width: auto;
+  height: 0.5em;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.at-marked {
+  position: relative;
+  white-space: nowrap;
+}
+
+/* Scarce, and therefore able to mean something. A hand note names a hidden
+   assumption, an overclaim, a boundary, or a shift — never "important". */
+.at-hand {
+  font-family: var(--at-hand);
+  font-size: 1.16rem;
+  line-height: 1.24;
+  color: var(--at-key);
+  letter-spacing: 0.005em;
+}
+
+.at-hand--note {
+  display: block;
+  max-width: 15rem;
+  margin-top: 0.4rem;
+}
+
+.at-handmark {
+  font-family: var(--at-hand);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--at-key);
+}
+
+/* ===========================================================================
+   9 · CONTROLS
+
+   A control changes the explanatory condition, never the record's truth. It is
+   set as a scholarly switch — ruled, labelled, keyboard-operable, and legible
+   with no colour at all.
+   ======================================================================== */
+
+.at-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 1.5rem 0 0;
+  border: 1px solid var(--at-ink);
+  width: fit-content;
+  max-width: 100%;
+}
+
+.at-controls button {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-right: 1px solid var(--at-hair-strong);
+  font-family: var(--at-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--at-ink-soft);
+  padding: 0.5rem 0.95rem;
+  cursor: pointer;
+  line-height: 1.3;
+  transition: background 0.12s, color 0.12s;
+}
+
+.at-controls button:last-child {
+  border-right: 0;
+}
+
+.at-controls button:hover {
+  background: var(--at-hair-soft);
+  color: var(--at-ink);
+}
+
+.at-controls button[aria-pressed="true"] {
+  background: var(--at-ink);
+  color: var(--at-ground);
+}
+
+.at-controls__legend {
+  font-family: var(--at-sans);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--at-ink-faint);
+  margin: 1.7rem 0 0;
+  display: block;
+}
+
+/* A condition readout: what changed, what was held, what it cannot establish.
+   It is text, always, because the interaction is not allowed to be the only
+   place a distinction exists. */
+.at-conditions {
+  margin: 1.1rem 0 0;
+  display: grid;
+  gap: 0.55rem 1.5rem;
+  grid-template-columns: minmax(6rem, 8rem) minmax(0, 1fr);
+  font-family: var(--at-sans);
+  font-size: 0.775rem;
+  line-height: 1.5;
+  border-top: 1px solid var(--at-hair-strong);
+  padding-top: 0.75rem;
+  max-width: 46rem;
+}
+
+.at-conditions dt {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--at-ink-faint);
+  padding-top: 0.1rem;
+}
+
+.at-conditions dd {
+  margin: 0;
+  color: var(--at-ink-soft);
+}
+
+.at-conditions dd b {
+  color: var(--at-ink);
+  font-weight: 650;
+}
+
+@media (max-width: 34rem) {
+  .at-conditions {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+
+  .at-conditions dd {
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* ===========================================================================
+   10 · CONTENTS AND NAVIGATION
+   ======================================================================== */
+
+/* Front matter. A publication has a contents page, not a floating rail — and
+   a rail would also have to fight the apparatus column for the same space. */
+.at-contents {
+  grid-column: text-start / note-end;
+  margin-top: 3rem;
+  padding-top: 0.9rem;
+  border-top: 1.5px solid var(--at-ink);
+}
+
+.at-contents ol {
+  list-style: none;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  columns: 3;
+  column-gap: 2.4rem;
+}
+
+.at-contents li {
+  break-inside: avoid;
+  border-bottom: 1px solid var(--at-hair-soft);
+}
+
+.at-contents a {
+  display: grid;
+  grid-template-columns: 1.9rem 1fr;
+  gap: 0.5rem;
+  padding: 0.36rem 0;
+  font-family: var(--at-sans);
+  font-size: 0.755rem;
+  line-height: 1.4;
+  color: var(--at-ink-soft);
+  text-decoration: none;
+}
+
+.at-contents a:hover {
+  color: var(--at-ink);
+}
+
+.at-contents a:hover span:last-child {
+  text-decoration: underline;
+  text-decoration-thickness: 0.5px;
+  text-underline-offset: 0.18em;
+}
+
+.at-contents a span:first-child {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 0.66rem;
+  padding-top: 0.08rem;
+  color: var(--at-key);
+}
+
+@media (max-width: 52rem) {
+  .at-contents ol {
+    columns: 2;
+  }
+}
+
+@media (max-width: 32rem) {
+  .at-contents ol {
+    columns: 1;
+  }
+}
+
+/* ===========================================================================
+   11 · THE COVER
+
+   The index is not a card grid. It is a plate list: each record announced at
+   full editorial weight, with a drawn fragment of its own argument beside it.
+   ======================================================================== */
+
+.at-cover {
+  padding: 3.5rem 0 1rem;
+}
+
+.at-cover__title {
+  margin-bottom: 1.6rem;
+}
+
+.at-plate {
+  position: relative;
+  display: block;
+  padding: 2.4rem 0 2.6rem;
+  border-top: 1px solid var(--at-ink);
+  text-decoration: none;
+}
+
+/* The plate's own mark runs the full width of its entry, the way an engraved
+   plate heads an article rather than sitting beside it as a thumbnail. */
+.at-plate__strip {
+  position: relative;
+  margin-bottom: 1.6rem;
+}
+
+.at-plate__strip svg {
+  display: block;
+}
+
+.at-plate__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.2rem 3rem;
+}
+
+@media (min-width: 52rem) {
+  .at-plate__body {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.at-plate:last-of-type {
+  border-bottom: 1px solid var(--at-ink);
+}
+
+
+
+.at-plate__num {
+  font-family: var(--at-sans);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--at-key);
+  font-variant-numeric: tabular-nums;
+}
+
+.at-plate h2 {
+  font-size: clamp(1.75rem, 3.6vw, 2.6rem);
+  margin: 0.5rem 0 0.6rem;
+  letter-spacing: -0.028em;
+}
+
+.at-plate:hover h2 {
+  text-decoration: underline;
+  text-decoration-thickness: 0.5px;
+  text-underline-offset: 0.16em;
+  text-decoration-color: var(--at-key);
+}
+
+.at-plate__hook {
+  font-size: 1.08rem;
+  line-height: 1.5;
+  color: var(--at-ink-soft);
+  max-width: 32rem;
+  margin: 0;
+}
+
+.at-plate__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.2rem;
+  margin-top: 1rem;
+}
+
+.at-plate__figure {
+  position: relative;
+}
+
+.at-plate__figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.at-plate__caption {
+  font-family: var(--at-sans);
+  font-size: 0.735rem;
+  line-height: 1.5;
+  color: var(--at-ink-soft);
+  border-top: 1px solid var(--at-hair);
+  padding-top: 0.5rem;
+  margin-top: 0.7rem;
+}
+
+/* ===========================================================================
+   12 · MOTION AND REDUCED MOTION
+
+   Motion is used for one thing only: to show that a condition changed while
+   the held material did not. Nothing here animates on load or on scroll.
+   ======================================================================== */
+
+.at-swap {
+  transition: opacity 0.22s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .at-root *,
+  .at-root *::before,
+  .at-root *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ===========================================================================
+   13 · PRINT
+
+   An academic publication should print. Marks that carry an argument stay;
+   backing fields, which are atmosphere, go.
+   ======================================================================== */
+
+@media print {
+  .at-masthead nav,
+  .at-contents,
+  .at-controls,
+  .at-backing {
+    display: none !important;
+  }
+
+  .at-root {
+    font-size: 10.5pt;
+  }
+
+  .at-spread {
+    display: block;
+  }
+}
+
+/* ===========================================================================
+   14 · THE OVERTURE AND THE OPENING
+
+   A spread opens with its own argument stated in pigment, full bleed, before
+   a word of the record is read. Each of the four is a different composition,
+   because the four records are different shapes of problem — one universal
+   hero band would have been the thing this direction is trying to leave.
+   ======================================================================== */
+
+.at-overture {
+  position: relative;
+  margin: 0 0 -1.5rem;
+  pointer-events: none;
+}
+
+.at-overture svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.at-open {
+  padding: 2.6rem 0 0;
+}
+
+.at-open__kicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.at-open h1 {
+  max-width: 15ch;
+}
+
+.at-open__hook {
+  font-size: clamp(1.24rem, 2.3vw, 1.6rem);
+  line-height: 1.36;
+  font-weight: 300;
+  letter-spacing: -0.016em;
+  color: var(--at-ink);
+  margin: 1.5rem 0 0;
+  max-width: 30rem;
+}
+
+.at-open__one {
+  margin-top: 1.5rem;
+  max-width: 36rem;
+  color: var(--at-ink-soft);
+}
+
+.at-open__topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  margin-top: 1.9rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--at-hair);
+}
+
+.at-open__topics span {
+  font-family: var(--at-sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.03em;
+  color: var(--at-ink-soft);
+}
+
+.at-open__topics span + span::before {
+  content: "·";
+  margin-right: 0.75rem;
+  color: var(--at-hair-strong);
+}
+
+/* Wide figures escape the measure. A comparison that has to be seen side by
+   side is not going to fit in 37rem, and shrinking it to fit would be the
+   wrong compromise. */
+.at-scroller {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding-bottom: 0.4rem;
+  scrollbar-width: thin;
+}
+
+.at-scroller svg {
+  display: block;
+  height: auto;
+}
+
+/* A pair of readings held under identical conditions. The atlas's basic
+   comparison unit, and the reason it does not need cards. */
+.at-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1.6rem 2.6rem;
+  margin-top: 1.6rem;
+  border-top: 1.5px solid var(--at-ink);
+  padding-top: 1rem;
+}
+
+.at-pair__side > .at-label {
+  margin-bottom: 0.5rem;
+}
+
+.at-pair__side p {
+  font-size: 0.97rem;
+  line-height: 1.55;
+  color: var(--at-ink-soft);
+}
+
+.at-pair__side h3 {
+  margin-bottom: 0.35rem;
+}
+
+
+
+/* ===========================================================================
+   15 · CONVENTIONS
+
+   A specimen here is always attached to a claim about reading. There is no
+   family of variants shown for its own sake — that would be a swatch sheet,
+   which is decoration at high density and the opposite of what this direction
+   is for.
+   ======================================================================== */
+
+.at-conventions {
+  margin-top: 1.8rem;
+  border-top: 1.5px solid var(--at-ink);
+}
+
+.at-convention {
+  display: grid;
+  grid-template-columns: minmax(9rem, 13rem) minmax(0, 1fr);
+  gap: 1rem 2rem;
+  align-items: start;
+  padding: 1.3rem 0;
+  border-bottom: 1px solid var(--at-hair);
+}
+
+.at-convention h3 {
+  font-size: 1.04rem;
+}
+
+.at-convention__mark {
+  overflow: hidden;
+}
+
+.at-specimen {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+@media (max-width: 34rem) {
+  .at-convention {
+    grid-template-columns: 1fr;
+  }
+
+  .at-convention__mark {
+    max-width: 15rem;
+  }
+}
+
+/* A wide figure keeps its own scroll so the page never does. The reader gets a
+   figure at a legible size on a phone rather than a shrunken one. */
+.at-scroller {
+  scroll-snap-type: x proximity;
+}
+
+.at-scroller > svg {
+  scroll-snap-align: start;
+}

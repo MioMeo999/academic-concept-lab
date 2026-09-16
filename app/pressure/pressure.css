@@ -1,0 +1,655 @@
+/* ---------------------------------------------------------------------------
+   PRESSURE — an isolated visual system.
+
+   Hypothesis: Academic Concept Lab should behave visually like a thinking
+   surface under variable pressure. Pigment density tracks epistemic work:
+   heavy where the theory does conceptual work, graphite where the
+   scholarship turns reportorial — but the hand never leaves the page.
+
+   Nothing in this file is shared with production or any earlier exploration.
+   Sizing is in px/clamp, never rem: the root layout sets html font-size for
+   a different design and this sheet should not inherit another page's scale.
+   ------------------------------------------------------------------------- */
+
+/* The root layout paints html a warm paper colour. This exploration is white. */
+html:has(.ps-root) {
+  background: #ffffff;
+}
+
+.ps-root {
+  --white: #ffffff;
+  --ink: #121212;
+  --body: #262620;
+  --soft: #6a6a63;
+  --faint: #7c7c74;
+  --hair: #e4e4de;
+
+  --cobalt: #1f5fcc;
+  --sky: #287fb8;
+  --teal: #16786e;
+  --emerald: #187340;
+  --ochre: #9c6500;
+  --lemon: #f2c230;
+  --vermilion: #b7371f;
+  --coral: #aa4d42;
+  --magenta: #a91c68;
+  --violet: #5e369e;
+  --lilac: #7560b0;
+  --graphite: #4a4a4a;
+
+  --display: "Newsreader Variable", "Newsreader", Georgia, serif;
+  --read: "Source Serif 4 Variable", "Source Serif 4", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+  --hand: "Caveat Variable", "Caveat", "Segoe Print", cursive;
+
+  position: relative;
+  background: var(--white);
+  color: var(--body);
+  font-family: var(--read);
+  font-size: 17px;
+  line-height: 1.62;
+  min-height: 100vh;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.ps-root ::selection {
+  background: #ffe8a8;
+  color: var(--ink);
+}
+
+.ps-grain {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  z-index: 80;
+}
+
+.ps-canvas {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4.4vw, 76px);
+}
+
+/* ------------------------------------------------------------- typography */
+
+.ps-title {
+  font-family: var(--display);
+  color: var(--ink);
+  font-weight: 500;
+  font-size: clamp(52px, 9.5vw, 140px);
+  line-height: 0.86;
+  letter-spacing: -0.034em;
+  margin: 0;
+}
+
+.ps-title em {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.ps-h2 {
+  font-family: var(--display);
+  color: var(--ink);
+  font-weight: 500;
+  font-size: clamp(29px, 3.9vw, 52px);
+  line-height: 0.98;
+  letter-spacing: -0.023em;
+  margin: 0;
+  max-width: 21ch;
+}
+
+.ps-h3 {
+  font-family: var(--display);
+  color: var(--ink);
+  font-weight: 600;
+  font-size: clamp(19px, 1.55vw, 24px);
+  line-height: 1.16;
+  letter-spacing: -0.012em;
+  margin: 0;
+}
+
+.ps-lede {
+  font-family: var(--read);
+  font-size: clamp(18px, 1.42vw, 22px);
+  line-height: 1.5;
+  color: var(--body);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.ps-body {
+  font-size: 16.5px;
+  line-height: 1.66;
+  color: var(--body);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.ps-body + .ps-body { margin-top: 0.85em; }
+
+.ps-small {
+  font-size: 14.5px;
+  line-height: 1.58;
+  color: var(--soft);
+  margin: 0;
+}
+
+.ps-meta {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--soft);
+  margin: 0;
+  font-weight: 500;
+}
+
+.ps-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--faint);
+  font-weight: 500;
+}
+
+.ps-hand {
+  font-family: var(--hand);
+  font-size: 22px;
+  line-height: 1.24;
+  color: var(--cobalt);
+  margin: 0;
+  font-weight: 500;
+}
+
+.ps-hand-sm {
+  font-family: var(--hand);
+  font-size: 18px;
+  line-height: 1.22;
+  color: var(--cobalt);
+  margin: 0;
+}
+
+.ps-cite {
+  font-family: var(--read);
+  font-size: 14.5px;
+  line-height: 1.52;
+  color: var(--body);
+  margin: 0;
+}
+
+.ps-cite i, .ps-cite em { font-style: italic; }
+
+/* -------------------------------------------------- movements · the rhythm
+
+   Pressure is padding + pigment, never padding alone. High-pressure
+   movements get stage room for the drawing; quiet movements get MORE white
+   but almost no pigment — silence is composed, not defaulted. */
+
+.ps-movement {
+  position: relative;
+  scroll-margin-top: 80px;
+}
+
+.ps-p4 { padding: clamp(84px, 12vh, 170px) 0; }
+.ps-p3 { padding: clamp(72px, 10vh, 140px) 0; }
+.ps-p2 { padding: clamp(60px, 8vh, 110px) 0; }
+.ps-p1 { padding: clamp(72px, 11vh, 150px) 0; }
+.ps-p0 { padding: clamp(84px, 13vh, 170px) 0; }
+
+.ps-head {
+  margin-bottom: clamp(30px, 4.5vh, 52px);
+}
+
+.ps-head-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.ps-head-gauge {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: flex-end;
+}
+
+.ps-head .ps-h2 { margin-top: 12px; }
+
+/* -------------------------------------------------- provenance in the margin */
+
+.ps-margin-glyphs {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 14px;
+}
+
+.ps-margin-glyph {
+  font-family: var(--read);
+  font-size: 15px;
+  line-height: 1;
+  color: var(--graphite);
+}
+
+.ps-margin-glyphs-key {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* -------------------------------------------------------------------- notes */
+
+.ps-note {
+  position: relative;
+  font-size: 14px;
+  line-height: 1.56;
+  color: var(--soft);
+  margin: 0;
+  padding-left: 16px;
+  max-width: 660px;
+}
+
+.ps-note::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0.5em; bottom: 0.35em;
+  width: 2px;
+  background: var(--hair);
+}
+
+.ps-note--caution::before { background: var(--ochre); opacity: 0.65; }
+
+/* ------------------------------------------------------------------- ledger */
+
+.ps-ledger {
+  border-top: 1px solid var(--hair);
+}
+
+.ps-ledger-row {
+  padding: clamp(24px, 3.4vh, 40px) 0;
+  border-bottom: 1px solid var(--hair);
+}
+
+.ps-ledger-head {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.ps-ledger-index {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--vermilion);
+  padding-top: 5px;
+}
+
+.ps-ledger-titleline {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.ps-ledger-titleline .ps-meta { color: var(--soft); }
+
+.ps-ledger-id .ps-cite { margin-top: 8px; max-width: 78ch; }
+
+.ps-doi {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--faint);
+  margin: 6px 0 0;
+}
+
+.ps-ledger-cells {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 2.6vw, 44px);
+  margin: 18px 0 0 62px;
+}
+
+.ps-ledger-cell {
+  padding-top: 10px;
+  border-top: 2px solid var(--hair);
+}
+
+.ps-ledger-cell--found { border-top-color: var(--teal); }
+.ps-ledger-cell--open { border-top-color: var(--ghost, #b9b9b9); }
+
+.ps-ledger-cell dt {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 7px;
+}
+
+.ps-ledger-cell dd {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--body);
+}
+
+/* -------------------------------------------------------------------- scope */
+
+.ps-scope {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: start;
+}
+
+.ps-scope-divider {
+  width: 1px;
+  align-self: stretch;
+  background: linear-gradient(var(--hair), var(--hair) 70%, transparent);
+}
+
+.ps-scope-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ps-scope-list li {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--hair);
+  font-size: 15.5px;
+  line-height: 1.45;
+  color: var(--body);
+}
+
+.ps-scope-list--stops li { color: var(--soft); }
+
+/* --------------------------------------------------------------- references */
+
+.ps-refs-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: ref;
+}
+
+.ps-ref {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 12px;
+  padding: 13px 0 13px 34px;
+  border-top: 1px solid var(--hair);
+  text-indent: 0;
+}
+
+.ps-ref:last-child { border-bottom: 1px solid var(--hair); }
+
+.ps-ref-tick { padding-top: 4px; }
+
+.ps-ref-contribution {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--soft);
+  margin: 4px 0 0;
+  max-width: 72ch;
+}
+
+/* --------------------------------------------------------------- provenance */
+
+.ps-prov {
+  border-top: 1px solid var(--hair);
+}
+
+.ps-prov-row {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--hair);
+  align-items: start;
+}
+
+.ps-prov-glyph {
+  font-size: 19px;
+  line-height: 1.2;
+}
+
+.ps-prov-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0 0 5px;
+  font-weight: 500;
+}
+
+/* -------------------------------------------------------------------- folio */
+
+.ps-folio {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 54px 0 84px;
+}
+
+/* ------------------------------------------------------------------- pieces */
+
+/* Cards: a hatch swatch carries the pigment; the card itself stays type. */
+.ps-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: clamp(24px, 3vw, 52px);
+}
+
+.ps-card-label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin: 0 0 9px;
+  font-weight: 500;
+}
+
+/* Struck-through claims — oversimplifications the record rejects. The
+   stroke is an inline repeating background so it survives line wrapping. */
+.ps-struck {
+  display: inline;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='68' height='5'%3E%3Cpath d='M0 2.9 Q8 1.5 17 2.4 T34 2.6 T51 1.9 T68 2.8' stroke='%23b7371f' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 68px 5px;
+  background-position: 0 58%;
+}
+
+.ps-strike-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 760px;
+}
+
+.ps-strike-list li {
+  padding: 11px 0;
+  border-bottom: 1px solid var(--hair);
+  font-family: var(--display);
+  font-size: clamp(16px, 1.35vw, 20px);
+  line-height: 1.42;
+  color: #65655e;
+  letter-spacing: -0.006em;
+}
+
+/* Origins / lineage rows */
+.ps-origin {
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr);
+  gap: 18px;
+  padding: 15px 0;
+  border-top: 1px solid var(--hair);
+  align-items: start;
+}
+
+.ps-origin:last-child { border-bottom: 1px solid var(--hair); }
+
+.ps-origin-year {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  padding-top: 3px;
+}
+
+/* A drawing wider than a phone keeps its own scale and scrolls in its box;
+   the page body never scrolls sideways. */
+.ps-scroller {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+
+.ps-scroller > * { min-width: 100%; }
+
+@media (max-width: 720px) {
+  .ps-scroller > * { min-width: 600px; }
+}
+
+/* Links */
+.ps-link {
+  color: var(--cobalt);
+  text-decoration: none;
+  background-image: linear-gradient(var(--cobalt), var(--cobalt));
+  background-size: 100% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  padding-bottom: 1px;
+}
+
+@media (hover: hover) {
+  .ps-link:hover { background-size: 100% 2px; }
+}
+
+/* Drawn buttons — never chips */
+.ps-key {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+.ps-key:focus-visible {
+  outline: 2px solid var(--cobalt);
+  outline-offset: 3px;
+}
+
+/* ------------------------------------------------------------------ islands */
+
+.ps-island {
+  border-top: 1px solid var(--hair);
+  padding-top: clamp(22px, 3vh, 34px);
+}
+
+.ps-island-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 26px;
+  border-bottom: 1px solid var(--hair);
+}
+
+.ps-island-control {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 0 12px;
+  color: var(--soft);
+}
+
+.ps-island-control::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 2px;
+  background: currentColor;
+  opacity: 0;
+}
+
+.ps-island-control[aria-pressed="true"] { color: var(--ink); }
+.ps-island-control[aria-pressed="true"]::after { opacity: 1; }
+
+.ps-island-control strong {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.ps-island-control small {
+  font-family: var(--hand);
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* --------------------------------------------------------------- responsive */
+
+@media (max-width: 900px) {
+  .ps-ledger-cells {
+    grid-template-columns: minmax(0, 1fr);
+    margin-left: 0;
+    gap: 14px;
+  }
+
+  .ps-scope {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ps-scope-divider {
+    width: auto;
+    height: 1px;
+    background: linear-gradient(90deg, var(--hair), var(--hair) 70%, transparent);
+  }
+
+  .ps-ref { padding-left: 0; }
+}
+
+@media (max-width: 640px) {
+  .ps-ledger-head { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .ps-ledger-index { padding-top: 0; }
+  .ps-origin { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
+
+/* ------------------------------------------------------ motion preference */
+
+@media (prefers-reduced-motion: reduce) {
+  .ps-root * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* --------------------------------------------------------------- helpers */
+
+.ps-sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.ps-flow > * + * { margin-top: var(--flow, 16px); }
