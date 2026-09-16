@@ -36,6 +36,17 @@ const homeHtml = await (await render("/concept-lab")).text();
 const statisticalHtml = await (await render("/concept-lab/theory/statistical-learning-of-music")).text();
 const idyomHtml = await (await render("/concept-lab/theory/idyom-information-dynamics-of-music")).text();
 const predictiveProcessingHtml = await (await render("/concept-lab/theory/predictive-processing-in-music")).text();
+const aetHtml = await (await render("/concept-lab/theory/affective-events-theory")).text();
+
+test("Affective Events Theory uses the dedicated canonical experience", () => {
+  assert.match(aetHtml, /Two truths/);
+  assert.match(aetHtml, /same event/);
+  assert.match(aetHtml, /two clocks/);
+  assert.match(aetHtml, /read the map/);
+  assert.match(aetHtml, /aet-visual-rebuild-assets\/aet-opening-workplace\.png/);
+  assert.match(aetHtml, /CLAIMS \/ SOURCES \/ PROVENANCE/);
+  assert.match(aetHtml, /doi\.org\//);
+});
 
 test("Predictive Processing in Music preserves its model boundaries", () => {
   assert.match(predictiveProcessingHtml, /Predictive Processing in Music/);
@@ -108,6 +119,12 @@ for (const pathname of recordPaths) {
     if (pathname === "/concept-lab/method/reflexive-thematic-analysis") {
       assert.match(html, /The analysis/);
       assert.match(html, /CLAIMS \/ SOURCES \/ PROVENANCE/);
+      return;
+    }
+    if (pathname === "/concept-lab/theory/affective-events-theory") {
+      assert.match(html, /Two truths/);
+      assert.match(html, /same event/);
+      assert.match(html, /read the map/);
       return;
     }
     // Provenance is the field that makes everything else trustworthy.
