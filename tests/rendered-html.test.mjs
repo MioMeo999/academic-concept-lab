@@ -48,6 +48,11 @@ test("Affective Events Theory uses the dedicated canonical experience", () => {
   assert.match(aetHtml, /doi\.org\//);
 });
 
+test("temporary AET benchmark route is retired", async () => {
+  const response = await render("/aet-visual-rebuild");
+  assert.equal(response.status, 404);
+});
+
 test("Predictive Processing in Music preserves its model boundaries", () => {
   assert.match(predictiveProcessingHtml, /Predictive Processing in Music/);
   assert.match(predictiveProcessingHtml, /PREDICTIVE PROCESSING/);
