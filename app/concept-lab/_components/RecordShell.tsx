@@ -2,11 +2,12 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import type { AnyRecord } from "@/content/types";
 import { DISCIPLINES } from "@/content/disciplines";
-import { KIND, otherRecords, recordHref } from "@/content/records";
+import { KIND } from "@/content/records";
 import { Divider, Rich } from "./Sketch";
 import { SaveButton } from "./SaveButton";
 import { ContentsNav } from "./ContentsNav";
 import { RecordKnowledgeOrbit } from "./VisualAtlas";
+import { KnowledgeNeighbourhood } from "./KnowledgeNeighbourhood";
 
 export function Crumbs({ items }: { items: { label: string; href?: string }[] }) {
   return (
@@ -99,28 +100,7 @@ export function RecordShell({
       </div>
 
       <Divider />
-
-      <section>
-        <span className="k">elsewhere in the library</span>
-        <div className="nextprev">
-          {otherRecords(record).map((o) => {
-            const ok = KIND[o.kind];
-            return (
-              <article className="card" key={o.id} data-reveal="rise">
-                <Link className="hitbox" href={recordHref(o)}>
-                  <span>{o.title}</span>
-                </Link>
-                <div className="inner" style={{ padding: ".9rem 1rem 1rem" }}>
-                  <span className={`chip ${ok.cls}`} style={{ fontSize: ".7rem" }}>{ok.label}</span>
-                  <h3 style={{ fontSize: "1.1rem", margin: ".5rem 0 .3rem" }}>{o.title}</h3>
-                  <p className="read" style={{ fontSize: ".88rem", lineHeight: 1.5, color: "var(--pen-2)" }}>{o.hook}</p>
-                  <p className="k" style={{ marginTop: ".6rem" }}>a separate record — not a test of the other</p>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </section>
+      <KnowledgeNeighbourhood record={record} />
     </div>
   );
 }

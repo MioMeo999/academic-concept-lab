@@ -24,7 +24,7 @@ import { predictiveProcessingInMusic } from "./predictive-processing-in-music";
 /**
  * The registry. Adding a record means appending one entry here — it then
  * appears in the library, in search, in the filters, in saved, and in the
- * "elsewhere" block on every other record, with no route or template change.
+ * relation-aware ending when canonical links make a neighbourhood defensible.
  */
 export const RECORDS: AnyRecord[] = [personEnvironmentFit, personOrganisationFit, jobDemandsResources, workplaceDesign, musicPreference, affectiveEventsTheory, selfDeterminationTheory, socialExchangeTheory, meyersExpectancyTheory, auditorySceneAnalysis, tonalHierarchy, gestaltPrinciplesInMusic, generativeTheoryOfTonalMusic, narmoursImplicationRealizationTheory, huronsItpraTheory, statisticalLearningOfMusic, idyom, predictiveProcessingInMusic, hpaAxis, ipa, rta, tunedOutPaper];
 
