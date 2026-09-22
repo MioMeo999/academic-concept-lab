@@ -177,7 +177,7 @@ export default function ConceptLabHome() {
           <HomeDisciplineAtlas disciplines={disciplineExplorerEntries} />
         </section>
 
-        <section className={system.section} id="record-kinds" aria-label="four kinds of record" data-art-level="2" data-archetype="comparison">
+        <section className={system.section} id="record-kinds" aria-labelledby="kinds-heading" data-art-level="2" data-archetype="comparison">
           <SectionHeading id="kinds-heading" number="02" eyebrow="Different ways in" title={<>Four kinds of record.</>}>
             <p>The same ideas can be seen as theories, mechanisms, methods or studies. Choose the form that makes the question clearest.</p>
           </SectionHeading>
