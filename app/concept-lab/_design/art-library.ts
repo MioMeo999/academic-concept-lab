@@ -1,12 +1,21 @@
-/** Authored artwork as vocabulary. Coordinates are source pixels, never data.
+import { getArtAsset, type ArtAssetId } from "./art-manifest";
+
+/**
+ * Authored artwork as vocabulary. Coordinates are source pixels, never data.
  * The excerpts are editorial visual analogies; live HTML carries the content.
- * Originals: Desktop/Concept Lab Home Art Assets, installed in public/visual-language/home.
+ * The manifest owns source identity and dimensions; this compatibility layer
+ * preserves the Home fragment names and exact crop values used by the page.
  */
+function source(id: ArtAssetId) {
+  const asset = getArtAsset(id);
+  return { src: asset.src, width: asset.dimensions.width, height: asset.dimensions.height };
+}
+
 const sources = {
-  organisation: { src: "/visual-language/home/home-organisation-systems.webp", width: 1536, height: 1024 },
-  atlas: { src: "/visual-language/home/home-atlas-head-globe.webp", width: 1672, height: 941 },
-  forms: { src: "/visual-language/home/home-record-forms.webp", width: 1672, height: 941 },
-  sources: { src: "/visual-language/home/home-provenance-sources.webp", width: 1672, height: 941 },
+  organisation: source("home-organisation-systems"),
+  atlas: source("home-atlas-head-globe"),
+  forms: source("home-record-forms"),
+  sources: source("home-provenance-sources"),
 } as const;
 
 export const ART_FRAGMENTS = {
