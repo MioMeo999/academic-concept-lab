@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { RECORDS, KIND, recordHref } from "@/content/records";
 import { DISCIPLINES } from "@/content/disciplines";
 import type { AnyRecord, RecordKind } from "@/content/types";
@@ -90,7 +91,12 @@ function HomeStarter({ record, why, index }: { record: AnyRecord; why: string; i
   const discipline = DISCIPLINES[record.discipline];
   const branch = record.primaryBranch ? getBranch(record.primaryBranch, record.discipline) : undefined;
   return (
-    <li className={home.starter}>
+    <li
+      className={home.starter}
+      data-featured={index === 0 ? "true" : "false"}
+      data-reveal="rise"
+      style={{ "--starter-accent": kind.colour } as CSSProperties}
+    >
       <span className={home.recordNumber}>{String(index + 1).padStart(2, "0")}</span>
       <div className={home.recordCopy}>
         <p className={[system.meta, home.recordKind].join(" ")} style={{ borderLeftColor: kind.colour }}>{kind.label}</p>
