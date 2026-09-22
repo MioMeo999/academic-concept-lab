@@ -8,8 +8,7 @@ import { SaveButton } from "./_components/SaveButton";
 import styles from "./home-page.module.css";
 import system from "./_design/system.module.css";
 import home from "./home-sections.module.css";
-import { ArtFragment, SectionHeading } from "./_design/ResearchSurface";
-import { HomeDisciplineAtlas, HomeKindWorkbench, type HomeDisciplineEntry, type HomeKindEntry } from "./_components/HomeAtlasExplorer";
+import { SectionHeading } from "./_design/ResearchSurface";
 
 const KIND_ORDER: RecordKind[] = ["theory", "mechanism", "method", "study"];
 
@@ -121,26 +120,6 @@ export default function ConceptLabHome() {
     .map((d) => ({ d, n: RECORDS.filter((record) => record.discipline === d.id).length }))
     .filter(({ n }) => n > 0);
   const disciplineCards = disciplineCounts.map(({ d, n }) => ({ d, n, orientation: getDisciplineOrientation(d.id) }));
-  const disciplineExplorerEntries: HomeDisciplineEntry[] = disciplineCards.map(({ d, n, orientation }) => ({
-    id: d.id,
-    name: d.name,
-    count: n,
-    summary: orientation?.summary ?? "",
-    themes: orientation?.themes.slice(0, 4) ?? [],
-    fragment: DISCIPLINE_FRAGMENTS[d.id],
-    href: "/concept-lab/library?discipline=" + d.id,
-    branchNote: d.id === "music-psych" ? `${getBranchesForDiscipline(d.id).length} current branches` : undefined,
-  }));
-  const kindExplorerEntries: HomeKindEntry[] = counts.map(({ kind, n }) => ({
-    id: kind,
-    name: KIND[kind].nav === "Research method" ? "Method" : KIND[kind].nav,
-    count: n,
-    line: KIND_COPY[kind].line,
-    description: KIND_COPY[kind].blurb,
-    question: KIND_COPY[kind].question,
-    fragment: kind,
-    href: "/concept-lab/library?kind=" + kind,
-  }));
   const starters = START_HERE.map((start) => ({ ...start, record: RECORDS.find((record) => record.id === start.id) })).filter((start): start is { id: string; why: string; record: AnyRecord } => Boolean(start.record));
 
   return (
@@ -174,14 +153,58 @@ export default function ConceptLabHome() {
             <p>Start with the field that frames your question. Each surface opens the live library, where records remain traceable to their kind and evidence.</p>
             <Link href="/concept-lab/library" className={system.link}>Browse the whole atlas <span aria-hidden="true">→</span></Link>
           </SectionHeading>
-          <HomeDisciplineAtlas disciplines={disciplineExplorerEntries} />
+          <div className={home.disciplineEditorial}>
+            <aside className={home.disciplineMargin}>
+              <span className={system.meta}>Atlas index</span>
+              <p>Fields are not boxes. They are different positions from which the same problem can be read.</p>
+            </aside>
+            <ol className={home.disciplineList}>
+              {disciplineCards.map(({ d, n, orientation }, index) => (
+                <li key={d.id} data-discipline={d.id} className={home.disciplineRow}>
+                  <span className={home.disciplineNumber}>{String(index + 1).padStart(2, "0")}</span>
+                  <div className={home.disciplineMain}>
+                    <h3><Link href={"/concept-lab/library?discipline=" + d.id}>{d.name}</Link></h3>
+                    <p>{orientation?.summary}</p>
+                  </div>
+                  <div className={home.disciplineAside}>
+                    <span>{n} {n === 1 ? "record" : "records"}</span>
+                    {orientation?.themes.length ? <ul>{orientation.themes.slice(0, 4).map(theme => <li key={theme}>{theme}</li>)}</ul> : null}
+                    {d.id === "music-psych" && <small>{getBranchesForDiscipline(d.id).length} current branches</small>}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
         </section>
 
         <section className={system.section} id="record-kinds" aria-labelledby="kinds-heading" data-art-level="2" data-archetype="comparison">
           <SectionHeading id="kinds-heading" number="02" eyebrow="Different ways in" title={<>Four kinds of record.</>}>
             <p>The same ideas can be seen as theories, mechanisms, methods or studies. Choose the form that makes the question clearest.</p>
           </SectionHeading>
-          <HomeKindWorkbench kinds={kindExplorerEntries} />
+          <div className={home.kindEditorial}>
+            <figure className={home.kindArtwork}>
+              <img
+                src="/visual-language/home/home-record-forms.webp"
+                alt="A coloured-pencil sheet showing four ways of working with knowledge: a lens, a pathway, a magnifying glass and research documents."
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>One sheet. Four intellectual responsibilities.</figcaption>
+            </figure>
+            <ol className={home.kindIndex}>
+              {counts.map(({ kind, n }, index) => (
+                <li key={kind} data-kind={kind}>
+                  <span className={home.kindNumber}>{String(index + 1).padStart(2, "0")}</span>
+                  <h3>{KIND[kind].nav === "Research method" ? "Method" : KIND[kind].nav}</h3>
+                  <p className={home.kindLine}>{KIND_COPY[kind].line}</p>
+                  <p className={home.kindQuestion}>{KIND_COPY[kind].question}</p>
+                  <Link href={"/concept-lab/library?kind=" + kind} className={system.link}>
+                    {n} {n === 1 ? "record" : "records"} <span aria-hidden="true">↗</span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
+          </div>
         </section>
 
         <section className={system.section} id="start-here" aria-labelledby="start-heading" data-art-level="0" data-archetype="editorial-record-list">
@@ -194,18 +217,24 @@ export default function ConceptLabHome() {
 
         <section className={system.section} id="provenance" aria-labelledby="provenance-heading" data-art-level="1" data-archetype="quiet-scholarship">
           <SectionHeading id="provenance-heading" number="04" eyebrow="Trust & provenance" title={<>Why you can <em>check it.</em></>} />
-          <div className={home.sourceLedger}>
+          <div className={home.provenanceSpread}>
             <div className={home.sourceIntro}>
               <p className={system.prose}>Nothing here is written from memory. Every claim carries one of five marks, so you can always see whether you are reading the source, our paraphrase of it, a teaching device, our own reading, or an open question the literature has not settled.</p>
-              <div className={home.sourceDetail}>
-                <ArtFragment name="books" />
-                <div><p className={system.note}>Sources stay visible at the point where understanding is made.</p><Link href="/concept-lab/about" className={system.link}>How we cite <span aria-hidden="true">→</span></Link></div>
-              </div>
+              <p className={home.sourceStatement}>Sources stay visible at the point where understanding is made.</p>
+              <Link href="/concept-lab/about" className={system.link}>How we cite <span aria-hidden="true">→</span></Link>
             </div>
-            <dl className={home.provenanceMarks} aria-label="The five provenance marks">
-              {MARKS.map(mark => <div key={mark.label}><dt><span className={home.mark} style={{ color: mark.colour }} aria-hidden="true">{mark.glyph}</span>{mark.label}</dt><dd>{mark.detail}</dd></div>)}
-            </dl>
+            <figure className={home.provenanceArtwork}>
+              <img
+                src="/visual-language/home/home-provenance-sources.webp"
+                alt="A graphite and coloured-pencil source field built from publications, research, archives, data and ideas."
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
           </div>
+          <dl className={home.provenanceMarks} aria-label="The five provenance marks">
+            {MARKS.map(mark => <div key={mark.label}><dt><span className={home.mark} style={{ color: mark.colour }} aria-hidden="true">{mark.glyph}</span>{mark.label}</dt><dd>{mark.detail}</dd></div>)}
+          </dl>
         </section>
       </div>
     </div>
