@@ -9,6 +9,7 @@ import styles from "./home-page.module.css";
 import system from "./_design/system.module.css";
 import home from "./home-sections.module.css";
 import { ArtFragment, SectionHeading } from "./_design/ResearchSurface";
+import { HomeDisciplineAtlas, HomeKindWorkbench, type HomeDisciplineEntry, type HomeKindEntry } from "./_components/HomeAtlasExplorer";
 
 const KIND_ORDER: RecordKind[] = ["theory", "mechanism", "method", "study"];
 
@@ -120,6 +121,26 @@ export default function ConceptLabHome() {
     .map((d) => ({ d, n: RECORDS.filter((record) => record.discipline === d.id).length }))
     .filter(({ n }) => n > 0);
   const disciplineCards = disciplineCounts.map(({ d, n }) => ({ d, n, orientation: getDisciplineOrientation(d.id) }));
+  const disciplineExplorerEntries: HomeDisciplineEntry[] = disciplineCards.map(({ d, n, orientation }) => ({
+    id: d.id,
+    name: d.name,
+    count: n,
+    summary: orientation?.summary ?? "",
+    themes: orientation?.themes.slice(0, 4) ?? [],
+    fragment: DISCIPLINE_FRAGMENTS[d.id],
+    href: "/concept-lab/library?discipline=" + d.id,
+    branchNote: d.id === "music-psych" ? `${getBranchesForDiscipline(d.id).length} current branches` : undefined,
+  }));
+  const kindExplorerEntries: HomeKindEntry[] = counts.map(({ kind, n }) => ({
+    id: kind,
+    name: KIND[kind].nav === "Research method" ? "Method" : KIND[kind].nav,
+    count: n,
+    line: KIND_COPY[kind].line,
+    description: KIND_COPY[kind].blurb,
+    question: KIND_COPY[kind].question,
+    fragment: kind,
+    href: "/concept-lab/library?kind=" + kind,
+  }));
   const starters = START_HERE.map((start) => ({ ...start, record: RECORDS.find((record) => record.id === start.id) })).filter((start): start is { id: string; why: string; record: AnyRecord } => Boolean(start.record));
 
   return (
@@ -153,41 +174,14 @@ export default function ConceptLabHome() {
             <p>Start with the field that frames your question. Each surface opens the live library, where records remain traceable to their kind and evidence.</p>
             <Link href="/concept-lab/library" className={system.link}>Browse the whole atlas <span aria-hidden="true">→</span></Link>
           </SectionHeading>
-          <div className={home.territories}>
-            {disciplineCards.map(({ d, n, orientation }, index) => (
-              <article className={home.territory} data-discipline={d.id} key={d.id}>
-                <div className={home.territoryArt}>
-                  <ArtFragment name={DISCIPLINE_FRAGMENTS[d.id]} decorative className={home.groupFragment} />
-                </div>
-                <p className={system.meta}>{String(index + 1).padStart(2, "0")} <span className={home.count}>{n} {n === 1 ? "record" : "records"}</span></p>
-                <h3 className={system.subject}>{d.name}</h3>
-                <div className={home.territoryCopy}>
-                  <p className={system.prose}>{orientation?.summary}</p>
-                  {orientation?.themes.length ? <ul className={home.themes}>{orientation.themes.slice(0, 3).map(theme => <li key={theme}>{theme}</li>)}</ul> : null}
-                  {d.id === "music-psych" && <p className={system.meta}>{getBranchesForDiscipline(d.id).length} current branches</p>}
-                  <Link href={"/concept-lab/library?discipline=" + d.id} className={system.link}>Explore <span aria-hidden="true">↗</span></Link>
-                </div>
-              </article>
-            ))}
-          </div>
+          <HomeDisciplineAtlas disciplines={disciplineExplorerEntries} />
         </section>
 
         <section className={system.section} id="record-kinds" aria-label="four kinds of record" data-art-level="2" data-archetype="comparison">
           <SectionHeading id="kinds-heading" number="02" eyebrow="Different ways in" title={<>Four kinds of record.</>}>
             <p>The same ideas can be seen as theories, mechanisms, methods or studies. Choose the form that makes the question clearest.</p>
           </SectionHeading>
-          <ol className={home.knowledgeForms}>
-            {counts.map(({ kind, n }) => <li data-kind={kind} key={kind}>
-              <div className={home.formIdentity}>
-                <h3 className={system.subject}>{KIND[kind].nav === "Research method" ? "Method" : KIND[kind].nav}</h3>
-                <ArtFragment name={kind} decorative className={home.formFragment} />
-              </div>
-              <p className={home.formLine}>{KIND_COPY[kind].line}</p>
-              <p className={home.formDescription}>{KIND_COPY[kind].blurb}</p>
-              <p className={home.formQuestion}>{KIND_COPY[kind].question}</p>
-              <Link href={"/concept-lab/library?kind=" + kind} className={[system.link, home.formLink].join(" ")}><span><b>{n}</b> {n === 1 ? "record" : "records"}</span><span>Explore <span aria-hidden="true">↗</span></span></Link>
-            </li>)}
-          </ol>
+          <HomeKindWorkbench kinds={kindExplorerEntries} />
         </section>
 
         <section className={system.section} id="start-here" aria-labelledby="start-heading" data-art-level="0" data-archetype="editorial-record-list">
