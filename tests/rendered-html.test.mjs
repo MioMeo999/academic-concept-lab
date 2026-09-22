@@ -100,7 +100,7 @@ test("statistical learning record renders its audited teaching systems", () => {
 });
 
 test("home describes all four record kinds", () => {
-  assert.match(homeHtml, /four kinds of record/);
+  assert.match(homeHtml, /four kinds of record/i);
 });
 
 const recordPaths = [...new Set([...libraryHtml.matchAll(/\/concept-lab\/(?:theory|study|method|mechanism)\/[a-z0-9-]+/g)].map((m) => m[0]))];
