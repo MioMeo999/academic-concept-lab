@@ -1,575 +1,254 @@
-/* Home below the hero: not a card grid, but one research surface that keeps
-   changing how the atlas is read. */
+/* Lower home: an editorial atlas, not a card grid.
+   The hero remains the visual opening; the rest of the page becomes calmer,
+   more typographic and more deliberately art-directed. */
+
 .sections { padding-bottom: 2rem; }
 .disciplines { margin-top: 1.25rem; }
 
-/* 01 — DISCIPLINE FIELD --------------------------------------------------- */
-.atlasField {
+/* 01 — DISCIPLINE INDEX -------------------------------------------------- */
+.disciplineEditorial {
   display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(17rem, .68fr);
-  gap: clamp(2.4rem, 5vw, 5.6rem);
-  align-items: stretch;
-  margin-top: clamp(2rem, 4vw, 3.6rem);
+  grid-template-columns: minmax(12rem, .38fr) minmax(0, 1fr);
+  gap: clamp(2.5rem, 6vw, 7rem);
+  align-items: start;
 }
 
-.atlasFieldStage {
-  position: relative;
-  min-height: clamp(34rem, 49vw, 43rem);
-  border-block: 1px solid var(--system-rule);
-  overflow: hidden;
-  isolation: isolate;
+.disciplineMargin {
+  position: sticky;
+  top: 7rem;
+  max-width: 19rem;
+  padding-top: .3rem;
 }
 
-.atlasFieldStage::before {
-  position: absolute;
-  inset: 3% 2% 5% 0;
-  z-index: -3;
-  background:
-    radial-gradient(circle at 25% 28%, color-mix(in srgb, var(--ochre) 8%, transparent), transparent 22%),
-    radial-gradient(circle at 72% 62%, color-mix(in srgb, var(--teal) 7%, transparent), transparent 24%),
-    linear-gradient(93deg, transparent 0 46%, color-mix(in srgb, var(--hair) 45%, transparent) 46.1% 46.25%, transparent 46.4% 100%);
-  content: "";
-  opacity: .82;
-  pointer-events: none;
-}
-
-.atlasFieldStage::after {
-  position: absolute;
-  right: 9%;
-  bottom: 7%;
-  width: 12rem;
-  height: 5rem;
-  border: 1.5px solid color-mix(in srgb, var(--vermilion) 55%, transparent);
-  border-color: color-mix(in srgb, var(--vermilion) 55%, transparent) transparent transparent;
-  border-radius: 50%;
-  content: "";
-  transform: rotate(-8deg);
-  opacity: .55;
-  pointer-events: none;
-}
-
-.fieldPrompt {
-  position: absolute;
-  top: 1.25rem;
-  left: 1rem;
-  z-index: 3;
-  max-width: 25ch;
-  margin: 0;
+.disciplineMargin p {
+  margin: 1rem 0 0;
   color: var(--pen-2);
-  font: italic 1.18rem/1.2 var(--read);
+  font: italic clamp(1.2rem, 2vw, 1.55rem)/1.28 var(--read);
 }
 
-.fieldPrompt::after {
+.disciplineMargin p::before {
   display: block;
-  width: 7.5rem;
-  height: 2px;
-  margin-top: .45rem;
+  width: 3.8rem;
+  height: 3px;
+  margin-bottom: .85rem;
   background: color-mix(in srgb, var(--ochre) 70%, transparent);
   content: "";
-  transform: rotate(-1.4deg);
+  transform: rotate(-1deg);
 }
 
-.fieldTrace {
-  position: absolute;
-  inset: 5% 2% 3% 1%;
-  width: 97%;
-  height: 92%;
-  z-index: -1;
-  overflow: visible;
-  fill: none;
-  stroke: color-mix(in srgb, var(--pen-3) 30%, transparent);
-  stroke-width: 1.35;
-  stroke-linecap: round;
-  stroke-dasharray: 2 8;
-  vector-effect: non-scaling-stroke;
-}
-
-.fieldTrace path:nth-child(2) { stroke: color-mix(in srgb, var(--teal) 24%, transparent); }
-.fieldTrace path:nth-child(3) { stroke: color-mix(in srgb, var(--violet) 20%, transparent); }
-
-.fieldMarginNote {
-  position: absolute;
-  right: 2rem;
-  bottom: 1.2rem;
-  color: var(--pen-3);
-  font: 1.04rem/1 var(--script);
-  transform: rotate(-3deg);
-}
-
-.territoryNodes { position: absolute; inset: 0; }
-
-.territoryNode {
-  --node-accent: var(--cobalt);
-  position: absolute;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: end;
-  width: clamp(12.5rem, 22vw, 18rem);
-  min-height: 8.5rem;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--pen);
-  text-align: left;
-  cursor: pointer;
-  isolation: isolate;
-}
-
-.territoryNode[data-discipline="ob"] {
-  --node-accent: var(--vermilion);
-  top: 15%;
-  left: 6%;
-  width: clamp(15rem, 27vw, 22rem);
-}
-
-.territoryNode[data-discipline="music-psych"] {
-  --node-accent: var(--cobalt);
-  top: 11%;
-  right: 5%;
-  width: clamp(14rem, 24vw, 19rem);
-}
-
-.territoryNode[data-discipline="qual-methods"] {
-  --node-accent: var(--ochre);
-  bottom: 8%;
-  left: 20%;
-  width: clamp(12rem, 20vw, 16rem);
-}
-
-.territoryNode[data-discipline="psychobiology"] {
-  --node-accent: var(--violet);
-  right: 9%;
-  bottom: 12%;
-  width: clamp(11.5rem, 19vw, 15rem);
-}
-
-.territoryNode::before {
-  position: absolute;
-  inset: -7% -5% -9% -7%;
-  z-index: 4;
-  border: 2px solid color-mix(in srgb, var(--node-accent) 72%, transparent);
-  border-radius: 48% 52% 44% 56% / 55% 45% 58% 42%;
-  content: "";
-  opacity: 0;
-  transform: rotate(-3deg) scale(.94);
-  transition: opacity .2s ease, transform .25s ease;
-  pointer-events: none;
-}
-
-.territoryNode::after {
-  position: absolute;
-  right: 7%;
-  bottom: .1rem;
-  left: 29%;
-  z-index: 4;
-  height: 3px;
-  background: color-mix(in srgb, var(--node-accent) 75%, transparent);
-  content: "";
-  opacity: .25;
-  transform: rotate(-1.2deg) scaleX(.45);
-  transform-origin: left;
-  transition: opacity .2s ease, transform .25s ease;
-  pointer-events: none;
-}
-
-.territoryNode[data-active="true"]::before,
-.territoryNode:hover::before,
-.territoryNode:focus-visible::before {
-  opacity: .75;
-  transform: rotate(-3deg) scale(1);
-}
-
-.territoryNode[data-visited="true"]::after {
-  opacity: .34;
-  transform: rotate(-1.2deg) scaleX(1);
-}
-
-.territoryNode[data-active="true"]::after {
-  opacity: .82;
-  transform: rotate(-1.2deg) scaleX(1);
-}
-
-.territoryNode:focus-visible {
-  outline: 2px solid var(--system-focus);
-  outline-offset: 8px;
-}
-
-.territoryNodeIndex {
-  position: relative;
-  z-index: 5;
-  align-self: start;
-  margin: .35rem .55rem 0 0;
-  color: var(--pen-3);
-  font: 500 .62rem/1 var(--cat);
-  letter-spacing: .08em;
-}
-
-.territoryNodeArt {
-  grid-column: 1 / -1;
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  opacity: .36;
-  filter: grayscale(.18) saturate(.8);
-  transform: rotate(-1deg) scale(.98);
-  transition: opacity .25s ease, filter .25s ease, transform .3s ease;
-  pointer-events: none;
-}
-
-.territoryNodeArt > figure,
-.territoryNodeArt > figure > div { width: 100%; height: 100%; max-width: none; }
-
-.territoryNodeArt :global(img) {
-  opacity: .88;
-  mix-blend-mode: multiply;
-}
-
-.territoryNode[data-active="true"] .territoryNodeArt {
-  opacity: .88;
-  filter: saturate(1.03) contrast(.98);
-  transform: rotate(0deg) scale(1.02);
-}
-
-.territoryNodeCopy {
-  position: relative;
-  z-index: 5;
-  grid-column: 2;
-  align-self: end;
-  display: grid;
-  gap: .15rem;
-  max-width: 14rem;
-  padding: .55rem .3rem .6rem .45rem;
-  background: color-mix(in srgb, #fff 82%, transparent);
-}
-
-.territoryNodeCopy strong {
-  font: 470 clamp(1.2rem, 2.05vw, 1.75rem)/.98 var(--read);
-  letter-spacing: -.035em;
-}
-
-.territoryNodeCopy small {
-  color: var(--pen-3);
-  font: 500 .58rem/1.3 var(--cat);
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
-.fieldReading {
-  position: relative;
-  align-self: center;
-  min-height: 27rem;
-  padding: 2rem 0 2rem clamp(1.25rem, 3vw, 2.3rem);
-  border-left: 1px solid var(--system-rule);
-}
-
-.fieldReading::before {
-  position: absolute;
-  top: 4.7rem;
-  left: -.35rem;
-  width: .7rem;
-  height: 5.5rem;
-  background: color-mix(in srgb, var(--ochre) 65%, transparent);
-  content: "";
-  transform: rotate(1.5deg);
-  opacity: .45;
-}
-
-.fieldReading h3 {
-  max-width: 10ch;
-  margin: .7rem 0 1rem;
-  font: 430 clamp(2.2rem, 4.2vw, 4.2rem)/.88 var(--read);
-  letter-spacing: -.065em;
-}
-
-.fieldQuestion {
-  max-width: 20ch;
-  margin: 0 0 1.25rem;
-  color: var(--pen);
-  font: 1.35rem/1.12 var(--script);
-  transform: rotate(-1.2deg);
-}
-
-.fieldThemes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .4rem .75rem;
-  margin: 1.2rem 0 .5rem;
+.disciplineList {
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.fieldThemes li {
-  padding-bottom: .08rem;
-  border-bottom: 2px solid color-mix(in srgb, var(--teal) 30%, transparent);
-  color: var(--pen-2);
-  font: .67rem/1.4 var(--cat);
-  letter-spacing: .04em;
+.disciplineRow {
+  --discipline-accent: var(--cobalt);
+  position: relative;
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr) minmax(9rem, .34fr);
+  gap: clamp(1rem, 2vw, 2rem);
+  align-items: start;
+  padding: clamp(1.7rem, 3.2vw, 2.8rem) 0;
+  border-top: 1px solid var(--system-rule);
 }
 
-.fieldBranch {
-  margin: .65rem 0 0;
+.disciplineRow:last-child { border-bottom: 1px solid var(--system-rule); }
+
+.disciplineRow[data-discipline="ob"] { --discipline-accent: var(--vermilion); }
+.disciplineRow[data-discipline="music-psych"] { --discipline-accent: var(--cobalt); }
+.disciplineRow[data-discipline="qual-methods"] { --discipline-accent: var(--ochre); }
+.disciplineRow[data-discipline="psychobiology"] { --discipline-accent: var(--violet); }
+
+.disciplineRow::before {
+  position: absolute;
+  top: -1px;
+  left: 4rem;
+  width: clamp(3.4rem, 7vw, 7rem);
+  height: 3px;
+  background: color-mix(in srgb, var(--discipline-accent) 72%, transparent);
+  content: "";
+}
+
+.disciplineNumber {
   color: var(--pen-3);
+  font: 400 clamp(1.7rem, 3vw, 2.8rem)/.92 var(--read);
+  letter-spacing: -.06em;
+}
+
+.disciplineMain h3 {
+  margin: 0;
+  font: 430 clamp(2rem, 3.8vw, 3.7rem)/.93 var(--read);
+  letter-spacing: -.055em;
+}
+
+.disciplineMain h3 a {
+  color: var(--pen);
+  text-decoration: none;
+}
+
+.disciplineMain h3 a:hover,
+.disciplineMain h3 a:focus-visible {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--discipline-accent) 65%, transparent);
+  text-decoration-thickness: 3px;
+  text-underline-offset: .15em;
+}
+
+.disciplineMain p {
+  max-width: 42rem;
+  margin: 1rem 0 0;
+  color: var(--pen-2);
+  font: 400 1rem/1.58 var(--read);
+}
+
+.disciplineAside {
+  padding-top: .2rem;
+  color: var(--pen-3);
+}
+
+.disciplineAside > span,
+.disciplineAside small {
   font: 500 .62rem/1.4 var(--cat);
-  letter-spacing: .06em;
+  letter-spacing: .08em;
   text-transform: uppercase;
 }
 
-.fieldReading :global(.link) { margin-top: 1.35rem; }
-
-.fieldPencilNote {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  margin: 0;
-  color: var(--pen-3);
-  font: 1.02rem/1 var(--script);
-  transform: rotate(2deg);
-}
-
-/* 02 — KNOWLEDGE MOVES --------------------------------------------------- */
-.kindWorkbench {
+.disciplineAside ul {
   display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(17rem, .68fr);
-  gap: clamp(2.4rem, 5vw, 5.6rem);
-  align-items: center;
+  gap: .25rem;
+  margin: 1rem 0 .7rem;
+  padding: 0;
+  list-style: none;
 }
 
-.kindStage {
+.disciplineAside li {
   position: relative;
-  min-height: clamp(33rem, 46vw, 40rem);
+  padding-left: .75rem;
+  color: var(--pen-2);
+  font: .78rem/1.45 var(--read);
+}
+
+.disciplineAside li::before {
+  position: absolute;
+  top: .63em;
+  left: 0;
+  width: .35rem;
+  height: 2px;
+  background: var(--discipline-accent);
+  content: "";
+}
+
+/* 02 — FOUR RECORD FORMS ------------------------------------------------- */
+.kindEditorial {
+  position: relative;
+}
+
+.kindArtwork {
+  position: relative;
+  width: 100%;
+  margin: 0;
   overflow: hidden;
   border-block: 1px solid var(--system-rule);
-}
-
-.kindStage::before {
-  position: absolute;
-  inset: 8% 8% 7% 7%;
-  border: 1px solid color-mix(in srgb, var(--hair) 75%, transparent);
-  border-color: transparent transparent var(--hair) transparent;
-  border-radius: 50%;
-  content: "";
-  transform: rotate(-5deg);
-  pointer-events: none;
-}
-
-.kindStageHeader {
-  position: absolute;
-  top: 1.1rem;
-  right: 1rem;
-  left: 1rem;
-  z-index: 4;
-  display: flex;
-  justify-content: space-between;
-  gap: 1.5rem;
-  align-items: baseline;
-}
-
-.kindStageScribble {
-  color: var(--pen-3);
-  font: 1.03rem/1 var(--script);
-  transform: rotate(2.5deg);
-}
-
-.kindGestures { position: absolute; inset: 4.5rem 0 0; }
-
-.kindGesture {
-  --kind-accent: var(--teal);
-  position: absolute;
-  display: grid;
-  width: clamp(10.5rem, 19vw, 15rem);
-  min-height: 11rem;
-  padding: .45rem;
-  border: 0;
-  background: transparent;
-  color: var(--pen);
-  text-align: left;
-  cursor: pointer;
-}
-
-.kindGesture[data-kind="theory"] { --kind-accent: var(--teal); top: 4%; left: 4%; transform: rotate(-1.5deg); }
-.kindGesture[data-kind="mechanism"] { --kind-accent: var(--violet); top: 8%; right: 8%; transform: rotate(1.6deg); }
-.kindGesture[data-kind="method"] { --kind-accent: var(--ochre); bottom: 4%; left: 13%; transform: rotate(1deg); }
-.kindGesture[data-kind="study"] { --kind-accent: var(--vermilion); right: 4%; bottom: 1%; transform: rotate(-1.3deg); }
-
-.kindGesture::before {
-  position: absolute;
-  inset: -3% -2%;
-  z-index: 4;
-  border: 2px solid var(--kind-accent);
-  border-radius: 52% 48% 57% 43% / 44% 56% 46% 54%;
-  content: "";
-  opacity: 0;
-  transform: rotate(2deg) scale(.92);
-  transition: opacity .2s ease, transform .2s ease;
-  pointer-events: none;
-}
-
-.kindGesture[data-active="true"]::before,
-.kindGesture:hover::before,
-.kindGesture:focus-visible::before {
-  opacity: .72;
-  transform: rotate(2deg) scale(1);
-}
-
-.kindGesture:focus-visible {
-  outline: 2px solid var(--system-focus);
-  outline-offset: 7px;
-}
-
-.kindGestureNumber {
-  position: relative;
-  z-index: 5;
-  width: fit-content;
-  padding: .15rem .25rem;
   background: #fff;
+}
+
+.kindArtwork img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 38rem;
+  object-fit: cover;
+  object-position: center;
+  mix-blend-mode: multiply;
+}
+
+.kindArtwork::after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.05), transparent 55%, rgba(255,255,255,.76)),
+    linear-gradient(90deg, rgba(255,255,255,.2), transparent 18%, transparent 82%, rgba(255,255,255,.2));
+  content: "";
+  pointer-events: none;
+}
+
+.kindArtwork figcaption {
+  position: absolute;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: 1rem;
+  z-index: 2;
+  color: var(--pen-2);
+  font: 1rem/1.1 var(--script);
+  transform: rotate(-1deg);
+}
+
+.kindIndex {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 2rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kindIndex > li {
+  --kind-accent: var(--teal);
+  position: relative;
+  padding: 1.35rem 0 0;
+}
+
+.kindIndex > li[data-kind="theory"] { --kind-accent: var(--teal); }
+.kindIndex > li[data-kind="mechanism"] { --kind-accent: var(--violet); }
+.kindIndex > li[data-kind="method"] { --kind-accent: var(--ochre); }
+.kindIndex > li[data-kind="study"] { --kind-accent: var(--vermilion); }
+
+.kindIndex > li::before {
+  display: block;
+  width: 100%;
+  height: 3px;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, var(--kind-accent) 0 42%, transparent 42% 100%);
+  content: "";
+  opacity: .75;
+}
+
+.kindNumber {
   color: var(--pen-3);
   font: 500 .6rem/1 var(--cat);
   letter-spacing: .08em;
 }
 
-.kindGestureArt {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  opacity: .28;
-  filter: grayscale(.25) saturate(.72);
-  transition: opacity .2s ease, filter .2s ease, transform .25s ease;
+.kindIndex h3 {
+  margin: .45rem 0 .35rem;
+  font: 440 clamp(1.65rem, 2.5vw, 2.4rem)/1 var(--read);
+  letter-spacing: -.045em;
 }
 
-.kindGestureArt > figure,
-.kindGestureArt > figure > div { width: 100%; height: 100%; max-width: none; }
-
-.kindGestureArt :global(img) { mix-blend-mode: multiply; }
-
-.kindGesture[data-visited="true"] .kindGestureArt {
-  opacity: .46;
-  filter: grayscale(.08) saturate(.86);
-}
-
-.kindGesture[data-active="true"] .kindGestureArt {
-  opacity: .88;
-  filter: none;
-  transform: scale(1.025);
-}
-
-.kindGestureName {
-  position: relative;
-  z-index: 5;
-  align-self: end;
-  width: fit-content;
-  margin-top: auto;
-  padding: .15rem .35rem;
-  background: color-mix(in srgb, #fff 86%, transparent);
-  font: 450 clamp(1.45rem, 2.4vw, 2.1rem)/1 var(--read);
-  letter-spacing: -.04em;
-}
-
-.kindGestureVerb {
-  position: relative;
-  z-index: 5;
-  width: fit-content;
-  max-width: 17ch;
-  margin-top: .2rem;
-  padding: .1rem .3rem;
-  background: color-mix(in srgb, #fff 85%, transparent);
-  color: var(--pen-2);
-  font: italic .92rem/1.2 var(--read);
+.kindLine {
+  margin: 0;
+  color: var(--pen);
+  font: italic 1rem/1.3 var(--read);
 }
 
 .kindQuestion {
-  position: absolute;
-  top: 48%;
-  left: 48%;
-  z-index: 3;
-  display: flex;
-  align-items: flex-start;
-  gap: .6rem;
-  width: min(17rem, 31%);
-  transform: translate(-50%, -50%) rotate(-2deg);
+  min-height: 3.5rem;
+  margin: .7rem 0 .6rem;
+  color: var(--pen-2);
+  font: .92rem/1.45 var(--read);
 }
 
-.kindQuestionMark {
-  color: var(--vermilion);
-  font: 500 2.5rem/1 var(--script);
-}
+.kindIndex :global(.link) { margin-top: .2rem; }
 
-.kindQuestion p {
-  margin: .25rem 0 0;
-  color: var(--pen);
-  font: 1.25rem/1.05 var(--script);
-}
-
-.kindReading {
-  position: relative;
-  min-height: 22rem;
-  padding: 1.8rem 0 1.8rem clamp(1.25rem, 3vw, 2.3rem);
-  border-left: 1px solid var(--system-rule);
-}
-
-.kindReading h3 {
-  margin: .7rem 0 .3rem;
-  font: 430 clamp(2.5rem, 4.4vw, 4.4rem)/.88 var(--read);
-  letter-spacing: -.07em;
-}
-
-.kindLead {
-  max-width: 18ch;
-  margin: .4rem 0 1.15rem;
-  color: var(--pen);
-  font: italic 1.35rem/1.15 var(--read);
-}
-
-.kindReading :global(.link) { margin-top: 1.25rem; }
-
-.kindPencilNote {
-  max-width: 19ch;
-  margin: 2.2rem 0 0 auto;
-  color: var(--pen-3);
-  font: 1.02rem/1.08 var(--script);
-  text-align: right;
-  transform: rotate(-2deg);
-}
-
-/* 03 — READING TRAIL ----------------------------------------------------- */
+/* 03 — START HERE -------------------------------------------------------- */
 .starterLedger {
-  position: relative;
-  display: block;
-  max-width: 68rem;
-  margin: 1rem auto 0 !important;
-  padding: 1rem 0 2rem !important;
-}
-
-.starterLedger::before {
-  position: absolute;
-  top: 1.5rem;
-  bottom: 2rem;
-  left: 48%;
-  width: 2px;
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--pen-3) 42%, transparent) 0 10px,
-      transparent 10px 18px
-    );
-  content: "";
-  transform: rotate(1.2deg);
-  transform-origin: top;
-  pointer-events: none;
-}
-
-.starterLedger::after {
-  position: absolute;
-  top: 45%;
-  left: calc(48% - 2.2rem);
-  width: 4.8rem;
-  height: 2.2rem;
-  border: 2px solid color-mix(in srgb, var(--ochre) 60%, transparent);
-  border-color: color-mix(in srgb, var(--ochre) 60%, transparent) transparent transparent;
-  border-radius: 50%;
-  content: "";
-  transform: rotate(-8deg);
-  pointer-events: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .72fr);
+  grid-template-rows: repeat(3, auto);
+  column-gap: clamp(2.2rem, 5vw, 5.5rem);
+  row-gap: 0;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .starterLedger > li { border-bottom: 0 !important; }
@@ -577,346 +256,309 @@
 .starter {
   position: relative;
   display: grid;
-  grid-template-columns: 4.3rem minmax(0, 1fr);
-  gap: 0 1rem;
-  width: 57%;
-  margin: 0 0 2rem;
-  padding: 1.3rem 1.5rem 1.45rem 0 !important;
+  grid-template-columns: 3.4rem minmax(0, 1fr);
+  gap: 0 1.1rem;
+  padding: 1.5rem 0 1.65rem !important;
   border-top: 1px solid var(--system-rule) !important;
-  background: #fff;
 }
 
-.starter:nth-child(even) {
-  margin-left: 43%;
-  padding: 1.3rem 0 1.45rem 1.5rem !important;
+.starter:first-child {
+  grid-column: 1;
+  grid-row: 1 / span 3;
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  align-content: start;
+  padding: 2rem clamp(2rem, 4vw, 4.5rem) 2rem 0 !important;
+  border-bottom: 1px solid var(--system-rule) !important;
 }
 
-.starter::after {
+.starter:nth-child(n + 2) { grid-column: 2; }
+
+.starter:first-child::before {
   position: absolute;
-  top: 1.1rem;
-  right: -1.1rem;
-  width: 1rem;
-  height: 1rem;
-  border: 2px solid var(--teal);
-  border-radius: 50% 45% 55% 48%;
-  background: #fff;
+  top: 2rem;
+  right: 0;
+  bottom: 2rem;
+  width: 1px;
+  background: var(--system-rule);
   content: "";
-  transform: rotate(-8deg);
 }
-
-.starter:nth-child(even)::after {
-  right: auto;
-  left: -1.1rem;
-  border-color: var(--vermilion);
-}
-
-.starter:nth-child(3)::after { border-color: var(--ochre); }
-.starter:nth-child(4)::after { border-color: var(--violet); }
 
 .recordNumber {
   grid-row: 1 / span 4;
   color: var(--pen-3);
-  font: 400 clamp(2.2rem, 4.5vw, 4.7rem)/.82 var(--read);
-  letter-spacing: -.07em;
-  opacity: .45;
+  font: 400 2.25rem/.9 var(--read);
+  letter-spacing: -.06em;
+}
+
+.starter:first-child .recordNumber {
+  font-size: clamp(4.5rem, 8vw, 7.5rem);
+  opacity: .32;
 }
 
 .recordCopy { min-width: 0; }
 .recordCopy h3 { margin: .25rem 0 .45rem; }
-.recordKind { width: fit-content; padding-left: .55rem; border-left: 2px solid; }
-.recordHook { max-width: 36ch; color: var(--pen-2); font: 1rem/1.45 var(--read); }
-.recordContext { margin-top: .45rem; color: var(--pen-2); font: .84rem/1.5 var(--read); }
-.recordContext summary { width: fit-content; min-height: 44px; padding-block: .6rem; cursor: pointer; color: var(--pen-2); font: .65rem/1.5 var(--cat); }
+
+.starter:first-child .recordCopy h3 :global(a) {
+  font-size: clamp(2.5rem, 5vw, 4.8rem);
+  line-height: .95;
+  letter-spacing: -.06em;
+}
+
+.recordKind {
+  width: fit-content;
+  padding-left: .55rem;
+  border-left: 2px solid;
+}
+
+.recordHook {
+  max-width: 40ch;
+  margin: .8rem 0 0;
+  color: var(--pen-2);
+  font: 1rem/1.5 var(--read);
+}
+
+.starter:first-child .recordHook {
+  max-width: 31ch;
+  font-size: clamp(1.05rem, 1.7vw, 1.3rem);
+}
+
+.recordContext {
+  margin-top: .45rem;
+  color: var(--pen-2);
+  font: .84rem/1.5 var(--read);
+}
+
+.recordContext summary {
+  width: fit-content;
+  min-height: 44px;
+  padding-block: .65rem;
+  cursor: pointer;
+  color: var(--pen-2);
+  font: .65rem/1.5 var(--cat);
+}
+
 .recordContext p { margin: .35rem 0; }
 
 .readingNote {
   grid-column: 2;
-  position: relative;
-  max-width: 31ch;
+  max-width: 34ch;
   margin-top: .55rem;
   padding: .8rem 0 0;
   border-top: 1px solid var(--system-rule);
 }
 
-.readingNote::after {
-  position: absolute;
-  top: -.15rem;
-  right: 5%;
-  width: 4.5rem;
-  height: 2px;
-  background: color-mix(in srgb, var(--ochre) 55%, transparent);
-  content: "";
-  transform: rotate(-2deg);
-}
-
 .readingNote p {
-  margin-top: .3rem;
+  margin: .35rem 0 0;
   color: var(--pen-2);
-  font: italic .95rem/1.42 var(--read);
+  font: italic .92rem/1.45 var(--read);
 }
 
 .recordActions {
   grid-column: 2;
-  align-items: center;
   justify-content: space-between;
-  margin-top: .35rem;
-  padding-top: .3rem;
+  margin-top: .45rem;
+  padding-top: .25rem;
 }
 
 .recordActions a { margin-left: .5rem; }
 
-/* 04 — QUIET SCHOLARSHIP ------------------------------------------------- */
-.sourceLedger {
+/* 04 — PROVENANCE -------------------------------------------------------- */
+.provenanceSpread {
   display: grid;
-  grid-template-columns: minmax(0, .9fr) minmax(0, 1.3fr);
-  gap: clamp(2rem, 6vw, 6rem);
-  align-items: start;
-}
-
-.sourceIntro { max-width: 48ch; }
-
-.sourceDetail {
-  display: flex;
+  grid-template-columns: minmax(18rem, .72fr) minmax(0, 1.28fr);
+  gap: clamp(2rem, 5vw, 5rem);
   align-items: center;
-  gap: 1.2rem;
-  margin-top: 1.5rem;
 }
 
-.sourceDetail > figure { flex: 0 0 10rem; }
-.sourceDetail > div { max-width: 22ch; }
+.sourceIntro { max-width: 42rem; }
 
-.provenanceMarks {
+.sourceStatement {
+  max-width: 20ch;
+  margin: 2rem 0 .65rem;
+  color: var(--pen);
+  font: 1.3rem/1.2 var(--script);
+  transform: rotate(-1deg);
+}
+
+.provenanceArtwork {
   position: relative;
   margin: 0;
-  padding-left: 1.25rem;
-  border-left: 1px solid var(--system-rule);
+  min-height: 22rem;
+  overflow: hidden;
+  border-block: 1px solid var(--system-rule);
 }
 
-.provenanceMarks::before {
+.provenanceArtwork img {
   position: absolute;
-  top: .1rem;
-  left: -.25rem;
-  width: .5rem;
-  height: 5rem;
-  background: color-mix(in srgb, var(--cobalt) 15%, transparent);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  mix-blend-mode: multiply;
+  filter: saturate(.9) contrast(.98);
+}
+
+.provenanceArtwork::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,.55), transparent 28%, transparent 78%, rgba(255,255,255,.35));
   content: "";
-  transform: rotate(1deg);
 }
 
-.provenanceMarks > div {
+.provenanceMarks {
   display: grid;
-  grid-template-columns: minmax(9rem, 1fr) minmax(9rem, 1.2fr);
-  gap: 1rem;
-  align-items: baseline;
-  padding-block: .8rem;
-  border-bottom: 1px solid var(--system-rule);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(.8rem, 1.8vw, 1.6rem);
+  margin: 2.5rem 0 0;
+  padding: 1.4rem 0 0;
+  border-top: 1px solid var(--system-rule);
 }
 
-.provenanceMarks > div:first-child { padding-top: 0; }
+.provenanceMarks > div { min-width: 0; }
 
 .provenanceMarks dt {
   display: flex;
   align-items: baseline;
-  gap: .65rem;
-  font: 450 1.05rem/1.3 var(--read);
+  gap: .5rem;
+  font: 450 .95rem/1.3 var(--read);
 }
 
 .provenanceMarks dd {
-  margin: 0;
+  margin: .45rem 0 0 1.7rem;
   color: var(--pen-2);
-  font: .83rem/1.4 var(--read);
+  font: .78rem/1.4 var(--read);
 }
 
 .mark {
-  width: 1.25rem;
+  width: 1.2rem;
   flex-shrink: 0;
-  font: 400 1.35rem/1 var(--read);
+  font: 400 1.25rem/1 var(--read);
 }
 
-.staticFallback {
-  margin: 1rem 0 0;
-  padding: 1rem 0 0;
-  border-top: 1px solid var(--system-rule);
-  list-style: none;
-}
-
-.staticFallback li + li { margin-top: .35rem; }
-
-.staticFallback a {
-  display: flex;
-  min-height: 44px;
-  align-items: center;
-  color: var(--pen);
-  font: 450 .86rem/1.4 var(--read);
-  text-decoration: underline;
-  text-decoration-color: var(--system-rule);
-  text-underline-offset: .25em;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .territoryNode:hover .territoryNodeArt,
-  .kindGesture:hover .kindGestureArt {
-    opacity: .75;
-    filter: saturate(.95);
-  }
-}
-
+/* responsive ------------------------------------------------------------- */
 @media (max-width: 1000px) {
-  .atlasField,
-  .kindWorkbench {
-    grid-template-columns: minmax(0, 1fr) minmax(15rem, .55fr);
-    gap: 2rem;
+  .disciplineEditorial {
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 2.5rem;
   }
 
-  .atlasFieldStage { min-height: 36rem; }
-  .territoryNode[data-discipline="ob"] { left: 2%; }
-  .territoryNode[data-discipline="music-psych"] { right: 1%; }
-  .territoryNode[data-discipline="qual-methods"] { left: 11%; }
-  .territoryNode[data-discipline="psychobiology"] { right: 3%; }
+  .disciplineRow {
+    grid-template-columns: 3rem minmax(0, 1fr);
+  }
 
-  .kindStage { min-height: 34rem; }
-  .kindGesture[data-kind="theory"] { left: 1%; }
-  .kindGesture[data-kind="mechanism"] { right: 2%; }
-  .kindGesture[data-kind="method"] { left: 7%; }
-  .kindGesture[data-kind="study"] { right: 0; }
+  .disciplineAside {
+    grid-column: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem 1rem;
+    align-items: baseline;
+  }
 
-  .starter { width: 61%; }
-  .starter:nth-child(even) { margin-left: 39%; }
+  .disciplineAside ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .3rem .8rem;
+    margin: 0;
+  }
+
+  .disciplineAside li { padding-left: .6rem; }
+
+  .starterLedger {
+    grid-template-columns: minmax(0, 1.2fr) minmax(15rem, .8fr);
+    column-gap: 2.5rem;
+  }
+
+  .starter:first-child { padding-right: 2rem !important; }
+
+  .provenanceMarks { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 1.5rem; }
 }
 
 @media (max-width: 760px) {
   .sections { padding-inline: .75rem; }
 
-  .atlasField,
-  .kindWorkbench {
-    display: block;
+  .disciplineEditorial { display: block; }
+  .disciplineMargin { position: static; max-width: 28rem; margin-bottom: 1.5rem; }
+  .disciplineMargin p { font-size: 1.15rem; }
+
+  .disciplineRow {
+    grid-template-columns: 2.6rem minmax(0, 1fr);
+    gap: .8rem;
+    padding: 1.55rem 0;
   }
 
-  .atlasFieldStage {
-    min-height: 39rem;
-    margin-inline: -.25rem;
+  .disciplineRow::before { left: 2.6rem; width: 3rem; }
+
+  .disciplineNumber { font-size: 1.65rem; }
+  .disciplineMain h3 { font-size: clamp(2rem, 10vw, 3.2rem); }
+  .disciplineMain p { font-size: .95rem; }
+
+  .kindArtwork {
+    margin-inline: -.75rem;
+    width: calc(100% + 1.5rem);
   }
 
-  .fieldPrompt { top: .9rem; left: .5rem; font-size: 1.02rem; }
-  .fieldMarginNote { right: .5rem; bottom: .7rem; font-size: .9rem; }
-
-  .territoryNode { width: min(12.5rem, 52vw) !important; min-height: 7.6rem; }
-  .territoryNode[data-discipline="ob"] { top: 15%; left: 0; }
-  .territoryNode[data-discipline="music-psych"] { top: 18%; right: 0; }
-  .territoryNode[data-discipline="qual-methods"] { bottom: 13%; left: 2%; }
-  .territoryNode[data-discipline="psychobiology"] { right: 0; bottom: 10%; }
-
-  .territoryNodeCopy strong { font-size: 1.12rem; }
-  .territoryNodeCopy small { font-size: .5rem; }
-
-  .fieldReading,
-  .kindReading {
-    min-height: 0;
-    margin-top: 1.5rem;
-    padding: 1.4rem 0 1.7rem 1rem;
+  .kindArtwork img {
+    min-height: 20rem;
+    object-fit: cover;
   }
 
-  .fieldReading h3,
-  .kindReading h3 { font-size: clamp(2.5rem, 13vw, 4rem); }
-
-  .fieldPencilNote { position: static; margin-top: 1.8rem; text-align: right; }
-
-  .kindStage {
-    min-height: 39rem;
-    margin-inline: -.25rem;
+  .kindIndex {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem 1rem;
   }
 
-  .kindStageHeader { top: .8rem; right: .5rem; left: .5rem; }
-  .kindStageHeader :global(.meta) { max-width: 21ch; }
-  .kindStageScribble { max-width: 15ch; text-align: right; font-size: .88rem; }
+  .kindQuestion { min-height: 0; }
 
-  .kindGesture { width: min(11.5rem, 48vw); min-height: 10.5rem; }
-  .kindGesture[data-kind="theory"] { top: 4%; left: 0; }
-  .kindGesture[data-kind="mechanism"] { top: 9%; right: 0; }
-  .kindGesture[data-kind="method"] { bottom: 3%; left: 1%; }
-  .kindGesture[data-kind="study"] { right: 0; bottom: 0; }
-  .kindGestureName { font-size: 1.25rem; }
-  .kindGestureVerb { font-size: .8rem; }
-
-  .kindQuestion {
-    top: 48%;
-    left: 50%;
-    width: 9.5rem;
-  }
-
-  .starterLedger {
-    margin-top: 0 !important;
-    padding-left: 1.7rem !important;
-  }
-
-  .starterLedger::before {
-    left: .65rem;
-    transform: rotate(.3deg);
-  }
-
-  .starterLedger::after { display: none; }
+  .starterLedger { display: block; }
 
   .starter,
-  .starter:nth-child(even) {
-    grid-template-columns: 3.2rem minmax(0, 1fr);
-    width: 100%;
-    margin: 0 0 1.35rem;
-    padding: 1.2rem 0 1.25rem !important;
+  .starter:first-child,
+  .starter:nth-child(n + 2) {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    padding: 1.4rem 0 !important;
+    border-top: 1px solid var(--system-rule) !important;
+    border-bottom: 0 !important;
   }
 
-  .starter::after,
-  .starter:nth-child(even)::after {
-    top: 1rem;
-    right: auto;
-    left: -1.55rem;
-    width: .8rem;
-    height: .8rem;
+  .starter:first-child::before { display: none; }
+
+  .starter:first-child .recordNumber,
+  .recordNumber { font-size: 2.25rem; opacity: 1; }
+
+  .starter:first-child .recordCopy h3 :global(a) {
+    font-size: inherit;
+    line-height: 1.12;
+    letter-spacing: -.025em;
   }
 
-  .recordNumber { font-size: 2.65rem; }
-  .readingNote, .recordActions { grid-column: 2; }
+  .starter:first-child .recordHook { font-size: 1rem; }
 
-  .sourceLedger { display: block; }
-  .provenanceMarks { margin-top: 2rem; }
+  .readingNote,
+  .recordActions { grid-column: 2; }
+
+  .provenanceSpread { display: block; }
+
+  .provenanceArtwork {
+    min-height: 18rem;
+    margin-top: 2rem;
+  }
+
+  .provenanceMarks {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.3rem 1rem;
+  }
 }
 
 @media (max-width: 390px) {
-  .atlasFieldStage,
-  .kindStage { min-height: 36rem; }
-
-  .territoryNode {
-    width: 10.5rem !important;
-    min-height: 6.7rem;
-  }
-
-  .territoryNode[data-discipline="ob"] { top: 16%; }
-  .territoryNode[data-discipline="music-psych"] { top: 22%; }
-  .territoryNode[data-discipline="qual-methods"] { bottom: 15%; }
-  .territoryNode[data-discipline="psychobiology"] { bottom: 9%; }
-
-  .territoryNodeCopy { padding-inline: .2rem; }
-  .territoryNodeCopy strong { font-size: 1rem; }
-
-  .kindGesture { width: 9.8rem; min-height: 9.4rem; }
-  .kindGestureVerb { display: none; }
-  .kindQuestion { width: 8.3rem; }
-  .kindQuestion p { font-size: 1.02rem; }
-
-  .starter,
-  .starter:nth-child(even) {
-    grid-template-columns: 2.5rem minmax(0, 1fr);
-  }
-
-  .recordNumber { font-size: 2rem; }
-  .provenanceMarks > div { grid-template-columns: 1fr; gap: .25rem; }
+  .kindIndex { grid-template-columns: 1fr; }
+  .provenanceMarks { grid-template-columns: 1fr; }
+  .provenanceMarks dd { margin-left: 1.7rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .territoryNode::before,
-  .territoryNode::after,
-  .territoryNodeArt,
-  .kindGesture::before,
-  .kindGestureArt {
-    transition: none;
-  }
+  .disciplineMain h3 a,
+  .kindIndex :global(.link) { transition: none; }
 }
