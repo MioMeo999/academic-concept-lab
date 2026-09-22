@@ -2,7 +2,8 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArtFragment, type ArtFragmentName } from "../_design/ResearchSurface";
+import { ArtFragment } from "../_design/ResearchSurface";
+import type { ArtFragmentName } from "../_design/art-library";
 import system from "../_design/system.module.css";
 import home from "../home-sections.module.css";
 
