@@ -13,24 +13,88 @@ export const VIEWPORTS = [
   { id: "mobile-360", label: "360", width: 360, height: 800, tier: "mobile" },
 ];
 
-const surface = (id, route, reason, interaction = "none") => ({ id, route, reason, interaction });
-const record = (id, kind, slug, reason, interaction = "none") => ({
+const probe = (id, kind, selector, accessibleTarget, expectedChange, options = {}) => ({
+  id,
+  kind,
+  selector,
+  accessibleTarget,
+  expectedChange,
+  keyboardMethod: options.keyboardMethod ?? "Enter",
+  stableSelector: options.stableSelector,
+  expectedHrefPrefix: options.expectedHrefPrefix,
+  reducedMotion: options.reducedMotion ?? false,
+  optional: options.optional ?? false,
+});
+
+export const CONCEPTUAL_PROBES = {
+  aetMap: probe(
+    "aet-map-toggle",
+    "toggle",
+    '.aev-map-toggle button[aria-pressed]:nth-child(2)',
+    "Read under it",
+    "aria-pressed changes to true and the same macrostructure remains visible",
+    { stableSelector: ".aev-interactive-macro-map", reducedMotion: true },
+  ),
+  gestaltListening: probe(
+    "gestalt-grouping-mode",
+    "toggle",
+    '.studio-switcher[role="group"] button:nth-child(2)',
+    "Cue conflict comparison",
+    "aria-pressed changes to true and the grouping comparison mode changes",
+    { stableSelector: ".studio-visual", reducedMotion: true },
+  ),
+  rtaPhase: probe(
+    "rta-phase-tab",
+    "toggle",
+    '#rta-phases [role="tab"]:nth-child(2)',
+    "second recursive analysis phase",
+    "aria-selected changes to true and the analysis panel changes",
+    { stableSelector: "#rta-analysis-panel" },
+  ),
+  neighbourhoodRelation: probe(
+    "knowledge-neighbourhood-relation",
+    "link",
+    ".knowledge-neighbourhood-list .knowledge-neighbour-record a",
+    "first related record link",
+    "link is keyboard reachable and resolves to an intended record",
+    { expectedHrefPrefix: "/concept-lab/", optional: true },
+  ),
+  neighbourhoodFallback: probe(
+    "knowledge-neighbourhood-fallback",
+    "link",
+    ".knowledge-neighbourhood-fallback a",
+    "broader field fallback link",
+    "fallback link is keyboard reachable and resolves to Library",
+    { expectedHrefPrefix: "/concept-lab/library", optional: true },
+  ),
+  save: probe(
+    "save-restore",
+    "save",
+    "button.savebtn",
+    "Save for later",
+    "aria-pressed changes and remains true after reload",
+  ),
+};
+
+const surface = (id, route, reason, interaction = "none", probes = []) => ({ id, route, reason, interaction, probes });
+const record = (id, kind, slug, reason, interaction = "none", probes = []) => ({
   id,
   route: `/concept-lab/${kind}/${slug}`,
   reason,
   interaction,
+  probes,
 });
 
 export const REPRESENTATIVE_ROUTES = [
   surface("home", "/concept-lab", "Site-level atlas orientation and entry points."),
-  surface("library", "/concept-lab/library", "Knowledge-neighbourhood discovery and relation fallback.", "neighbourhood"),
+  surface("library", "/concept-lab/library", "Library discovery surface; neighbourhood probes run on a representative record page.", "none"),
   surface("saved", "/concept-lab/saved", "Personal working pile with empty and saved states."),
   surface("about", "/concept-lab/about", "Epistemic transparency, provenance and skip-link behaviour."),
-  record("pe-fit", "theory", "person-environment-fit", "Generic theory route, correspondence interaction and save/restore.", "save"),
-  record("aet", "theory", "affective-events-theory", "Frozen temporal/event-driven benchmark.", "aet"),
-  record("gestalt", "theory", "gestalt-principles-in-music", "Music benchmark with perceptual/listening interaction.", "gestalt"),
+  record("pe-fit", "theory", "person-environment-fit", "Generic theory route, correspondence interaction and save/restore.", "save", [CONCEPTUAL_PROBES.save, CONCEPTUAL_PROBES.neighbourhoodRelation, CONCEPTUAL_PROBES.neighbourhoodFallback]),
+  record("aet", "theory", "affective-events-theory", "Frozen temporal/event-driven benchmark.", "aet", [CONCEPTUAL_PROBES.aetMap]),
+  record("gestalt", "theory", "gestalt-principles-in-music", "Music benchmark with perceptual/listening interaction.", "gestalt", [CONCEPTUAL_PROBES.gestaltListening]),
   record("specialized-music", "theory", "tonal-hierarchy", "Specialized music theory with interactive probe examples.", "record"),
-  record("rta", "method", "reflexive-thematic-analysis", "Frozen reflexive method benchmark.", "rta"),
+  record("rta", "method", "reflexive-thematic-analysis", "Frozen reflexive method benchmark.", "rta", [CONCEPTUAL_PROBES.rtaPhase]),
   record("ipa", "method", "interpretative-phenomenological-analysis", "Generic method route and quiet scholarship.", "record"),
   record("hpa-axis", "mechanism", "hpa-axis", "Mechanism route with structured explanatory sections.", "record"),
   record("tuned-out", "study", "tuned-out-or-dialed-in", "Study route with evidence and provenance.", "record"),

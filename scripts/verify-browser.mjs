@@ -5,6 +5,7 @@ import { dirname, join, resolve } from "node:path";
 import process from "node:process";
 import { chromium } from "playwright-core";
 import { routesForMode, VIEWPORTS } from "./verification-routes.mjs";
+import { deriveStatuses, exitCodeForSummary, summarizeResults } from "./verification-model.mjs";
 
 const require = createRequire(import.meta.url);
 const axePath = require.resolve("axe-core/axe.min.js");
@@ -79,6 +80,22 @@ async function startLocalServer() {
   return { baseUrl, child };
 }
 
+async function navigate(page, url) {
+  let attempts = 0;
+  while (attempts < 2) {
+    attempts += 1;
+    try {
+      const response = await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45_000 });
+      return { response, attempts, retry: attempts > 1 ? "dev-navigation-retry" : null };
+    } catch (error) {
+      const isDevTimeout = serverMode === "dev" && /timeout/i.test(error.message || "");
+      if (!isDevTimeout || attempts >= 2) throw Object.assign(error, { navigationAttempts: attempts });
+      await page.waitForTimeout(800);
+    }
+  }
+  throw new Error(`Navigation failed for ${url}`);
+}
+
 async function dimensions(page) {
   return page.evaluate(() => ({
     innerWidth: window.innerWidth,
@@ -144,51 +161,93 @@ async function focusCheck(page) {
   });
 }
 
-async function keyboardCheck(page, interaction) {
-  const result = { interaction, attempted: false, stateChanged: false, accessibleState: null, note: "" };
-  const selector = "button[aria-pressed],button[aria-selected],[role='tab'],button";
-  const control = page.locator(selector).first();
+async function controlState(control) {
+  return control.evaluate((node) => {
+    const element = node;
+    return {
+      pressed: element.getAttribute("aria-pressed"),
+      selected: element.getAttribute("aria-selected"),
+      expanded: element.getAttribute("aria-expanded"),
+      text: (element.textContent || "").trim().replace(/\s+/g, " ").slice(0, 180),
+      href: element.getAttribute("href"),
+      tag: element.tagName.toLowerCase(),
+    };
+  });
+}
+
+async function runProbe(page, probe, { baseUrl } = {}) {
+  const result = {
+    probeId: probe.id,
+    selector: probe.selector,
+    accessibleTarget: probe.accessibleTarget,
+    attempted: false,
+    keyboardMethod: probe.keyboardMethod,
+    stateBefore: null,
+    stateAfter: null,
+    expectedChange: probe.expectedChange,
+    observedChange: "",
+    status: "NOT_APPLICABLE",
+    note: "",
+  };
+  const control = page.locator(probe.selector).first();
   if (await control.count() === 0) {
-    result.note = "No semantic button or tab found.";
+    result.note = probe.optional ? "Configured control is not present at this route/state." : "Required conceptual control is not present.";
+    result.status = probe.optional ? "NOT_APPLICABLE" : "FAIL";
     return result;
   }
   result.attempted = true;
   await control.focus();
-  const before = await control.evaluate((node) => ({ pressed: node.getAttribute("aria-pressed"), selected: node.getAttribute("aria-selected"), text: node.textContent }));
-  await page.keyboard.press("Enter");
-  await page.waitForTimeout(80);
-  const after = await control.evaluate((node) => ({ pressed: node.getAttribute("aria-pressed"), selected: node.getAttribute("aria-selected"), text: node.textContent }));
-  result.stateChanged = JSON.stringify(before) !== JSON.stringify(after);
-  result.accessibleState = after;
-  result.note = result.stateChanged ? "Enter produced an observable control-state or text change." : "Control remained stable; this may be a navigation or non-toggle action.";
+  result.stateBefore = await controlState(control);
+  if (probe.kind === "link") {
+    const href = result.stateBefore.href;
+    const resolved = href ? new URL(href, page.url()) : null;
+    const prefixOkay = Boolean(resolved && resolved.pathname.startsWith(probe.expectedHrefPrefix || "/concept-lab/"));
+    let httpStatus = null;
+    if (resolved && baseUrl) {
+      try { httpStatus = (await fetch(resolved.href, { redirect: "manual" })).status; } catch { /* route status is recorded as unavailable */ }
+    }
+    result.stateAfter = result.stateBefore;
+    result.observedChange = `focusable link; href ${href || "missing"}; resolved status ${httpStatus ?? "unavailable"}`;
+    result.status = prefixOkay && (!httpStatus || (httpStatus >= 200 && httpStatus < 400)) ? "PASS" : "FAIL";
+    result.note = "The link was inspected without activating navigation.";
+    return result;
+  }
+  if (probe.keyboardMethod !== "focus") await page.keyboard.press(probe.keyboardMethod);
+  await page.waitForTimeout(100);
+  result.stateAfter = await controlState(control);
+  const stateChanged = JSON.stringify(result.stateBefore) !== JSON.stringify(result.stateAfter);
+  const stableReference = probe.stableSelector ? await page.locator(probe.stableSelector).count() > 0 : true;
+  result.observedChange = stateChanged ? "accessible state or live text changed" : "accessible state and live text remained stable";
+  result.status = stateChanged && stableReference ? "PASS" : "FAIL";
+  result.note = stableReference ? "The configured conceptual control remained available after keyboard activation." : `Stable reference ${probe.stableSelector} was not found after activation.`;
   return result;
 }
 
-async function interactionCheck(page, route) {
-  const summary = { id: route.interaction, status: "not-applicable", details: [] };
-  if (route.interaction === "none" || route.interaction === "record") return summary;
-  summary.status = "observed";
-  const keyboard = await keyboardCheck(page, route.interaction);
-  summary.details.push({ keyboard });
-  if (route.interaction === "save") {
-    const save = page.getByRole("button", { name: /save/i }).first();
-    if (await save.count()) {
-      if ((await save.getAttribute("aria-pressed")) !== "true") await save.click();
-      const pressed = await save.getAttribute("aria-pressed");
-      summary.details.push({ saveAriaPressed: pressed });
-      await page.waitForTimeout(250);
-      await page.reload({ waitUntil: "domcontentloaded" });
-      await page.waitForTimeout(350);
-      const restored = await page.getByRole("button", { name: /save/i }).first().getAttribute("aria-pressed");
-      const storageValue = await page.evaluate(() => localStorage.getItem("acl:saved"));
-      summary.details.push({ restoredAriaPressed: restored, storageValue });
-      await page.evaluate(() => localStorage.clear());
-    } else {
-      summary.status = "warning";
-      summary.details.push({ note: "Save control was not found." });
-    }
-  }
-  return summary;
+async function runSaveProbe(page, probe) {
+  const result = await runProbe(page, { ...probe, kind: "toggle" });
+  if (result.status === "FAIL" || result.status === "NOT_APPLICABLE") return result;
+  const save = page.locator(probe.selector).first();
+  if ((await save.getAttribute("aria-pressed")) !== "true") await save.click();
+  const pressed = await save.getAttribute("aria-pressed");
+  await page.waitForTimeout(250);
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await page.waitForTimeout(350);
+  const restored = await page.locator(probe.selector).first().getAttribute("aria-pressed");
+  const storageValue = await page.evaluate(() => localStorage.getItem("acl:saved"));
+  result.stateAfter = { ...result.stateAfter, restoredAriaPressed: restored, storageValue };
+  result.observedChange = `aria-pressed=${pressed}; restored aria-pressed=${restored}; storage=${storageValue ?? "null"}`;
+  result.status = pressed === "true" && restored === "true" ? "PASS" : "FAIL";
+  result.note = "Save state was toggled with keyboard activation and checked after reload.";
+  await page.evaluate(() => localStorage.clear());
+  return result;
+}
+
+async function interactionCheck(page, route, baseUrl) {
+  const probes = route.probes ?? [];
+  if (probes.length === 0) return { id: route.interaction, status: "NOT_APPLICABLE", probes: [] };
+  const results = [];
+  for (const probe of probes) results.push(probe.kind === "save" ? await runSaveProbe(page, probe) : await runProbe(page, probe, { baseUrl }));
+  return { id: route.interaction, status: results.some((probe) => probe.status === "FAIL") ? "FAIL" : "PASS", probes: results };
 }
 
 async function launchBrowser(browserPath) {
@@ -234,22 +293,33 @@ async function launchBrowser(browserPath) {
   }
 }
 
-async function reducedMotionCheck(browser, url, viewport) {
+async function reducedMotionCheck(browser, url, viewport, route, baseUrl) {
   const context = browser.cdp ? browser.context : await browser.browser.newContext({ viewport: { width: viewport.width, height: viewport.height }, reducedMotion: "reduce" });
   const page = await context.newPage();
   await page.setViewportSize({ width: viewport.width, height: viewport.height });
   if (browser.cdp) await page.emulateMedia({ reducedMotion: "reduce" });
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await page.goto(url, { waitUntil: "domcontentloaded" });
-  const result = await page.evaluate(() => ({
+  let navigationError = null;
+  try {
+    await navigate(page, url);
+    await page.waitForLoadState("networkidle", { timeout: 8_000 }).catch(() => {});
+    await page.waitForTimeout(150);
+  } catch (error) {
+    navigationError = error.message;
+  }
+  const result = navigationError ? { mediaMatches: false, buttons: 0, mainText: false } : await page.evaluate(() => ({
     mediaMatches: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
     buttons: document.querySelectorAll("button,[role='button']").length,
     mainText: Boolean(document.querySelector("main")?.textContent?.trim()),
   }));
+  const reducedProbes = [];
+  if (!navigationError) {
+    for (const probe of (route.probes ?? []).filter((item) => item.reducedMotion)) reducedProbes.push(await runProbe(page, probe, { baseUrl }));
+  }
   if (browser.cdp) await page.close();
   else await context.close();
-  return { ...result, errors };
+  return { ...result, errors, navigationError, probes: reducedProbes };
 }
 
 async function checkRoute(browser, baseUrl, route, viewport, experienceContext) {
@@ -272,8 +342,13 @@ async function checkRoute(browser, baseUrl, route, viewport, experienceContext) 
   let response;
   let finalUrl = url;
   let navigationError = null;
+  let navigationAttempts = 0;
+  let navigationRetry = null;
   try {
-    response = await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45_000 });
+    const navigation = await navigate(page, url);
+    response = navigation.response;
+    navigationAttempts = navigation.attempts;
+    navigationRetry = navigation.retry;
     finalUrl = page.url();
     await page.waitForLoadState("networkidle", { timeout: 12_000 }).catch(() => {});
     await page.evaluate(async () => { if (document.fonts?.ready) await document.fonts.ready; });
@@ -292,8 +367,8 @@ async function checkRoute(browser, baseUrl, route, viewport, experienceContext) 
     structureResult = await structure(page);
     dimensionResult = await dimensions(page);
     focusResult = await focusCheck(page);
-    interactionResult = await interactionCheck(page, route);
-    reducedMotionResult = await reducedMotionCheck(browser, url, viewport);
+    interactionResult = await interactionCheck(page, route, baseUrl);
+    reducedMotionResult = await reducedMotionCheck(browser, url, viewport, route, baseUrl);
     try {
       await page.addScriptTag({ path: axePath });
       const axe = await page.evaluate(async () => window.axe.run(document, { resultTypes: ["violations", "incomplete"] }));
@@ -317,8 +392,23 @@ async function checkRoute(browser, baseUrl, route, viewport, experienceContext) 
   await page.close();
 
   const overflow = dimensionResult.scrollWidth > dimensionResult.innerWidth + 1;
-  const semanticFailure = structureResult.headingSummary.h1 !== 1 || structureResult.imageAltSummary.missingAlt > 0 || structureResult.landmarks.main !== 1 || !focusResult.found || !focusResult.visible || (route.interaction !== "none" && route.interaction !== "record" && interactionResult.status === "warning");
-  const status = navigationError || !response || response.status() < 200 || response.status() >= 400 || pageErrors.length || consoleErrors.length || failedRequests.length || structureResult.imageAltSummary.failed || overflow || reducedMotionResult.errors.length || semanticFailure ? "FAIL" : axeSummary.violationCount || axeSummary.incompleteCount || consoleWarnings.length ? "WARN" : "PASS";
+  const semanticFailure = structureResult.headingSummary.h1 !== 1 || structureResult.imageAltSummary.missingAlt > 0 || structureResult.landmarks.main !== 1 || !focusResult.found || !focusResult.visible || interactionResult.status === "FAIL" || reducedMotionResult.probes.some((probe) => probe.status === "FAIL");
+  const gateFailures = [];
+  if (navigationError) gateFailures.push("navigation-failure");
+  if (!response || response.status() < 200 || response.status() >= 400) gateFailures.push("non-2xx-route");
+  if (pageErrors.length) gateFailures.push("page-error");
+  if (consoleErrors.length) gateFailures.push("console-error");
+  if (failedRequests.length) gateFailures.push("essential-resource-failure");
+  if (structureResult.imageAltSummary.failed) gateFailures.push("image-load-failure");
+  if (overflow) gateFailures.push("horizontal-overflow");
+  if (reducedMotionResult.errors.length || reducedMotionResult.navigationError) gateFailures.push("reduced-motion-failure");
+  if (semanticFailure) gateFailures.push("semantic-or-interaction-failure");
+  const reviewWarnings = ["human-visual-review-required"];
+  if (axeSummary.violationCount || axeSummary.incompleteCount) reviewWarnings.push("axe-findings");
+  if (consoleWarnings.length) reviewWarnings.push("console-warnings");
+  if (navigationRetry) reviewWarnings.push(navigationRetry);
+  if (experienceContext.get(route.route)?.status === "frozen") reviewWarnings.push("frozen-experience-review");
+  const statuses = deriveStatuses({ gateFailures, reviewWarnings });
   return {
     timestamp: now(),
     route: route.route,
@@ -337,12 +427,18 @@ async function checkRoute(browser, baseUrl, route, viewport, experienceContext) 
     imageAltSummary: structureResult.imageAltSummary,
     landmarks: structureResult.landmarks,
     focusCheck: focusResult,
+    interactionCheck: interactionResult,
     keyboardCheck: interactionResult,
     reducedMotionCheck: reducedMotionResult,
     axeSummary,
     screenshotPath,
     viewportScreenshotPath,
-    status,
+    gateStatus: statuses.gateStatus,
+    reviewStatus: statuses.reviewStatus,
+    gateFailures: statuses.gateFailures,
+    reviewWarnings: statuses.reviewWarnings,
+    status: statuses.gateStatus,
+    navigationAttempts,
     navigationError,
   };
 }
@@ -356,17 +452,18 @@ function markdownReport(report) {
     `Git SHA: \`${report.gitSha}\``,
     `Base URL: ${report.baseUrl}`,
     "",
-    `**Summary:** ${counts.pass} PASS · ${counts.warn} WARN · ${counts.fail} FAIL`,
+    `**Structural gate:** ${counts.gatePass} PASS · ${counts.gateFail} FAIL`,
+    `**Accessibility / human review:** ${counts.reviewWarn} WARN · ${counts.reviewClear} CLEAR`,
     "",
     "Automated checks cover HTTP/navigation, browser errors, essential resources, overflow, basic semantics, focus, keyboard state, reduced motion and axe findings. Screenshots are evidence for human visual review; this report never claims visual design passed automatically.",
     "",
-    "| Route | Viewport | Status | Experience context | HTTP | Overflow | H1 | Images missing alt | Axe violations | Screenshot |",
-    "| --- | ---: | --- | --- | ---: | --- | ---: | ---: | ---: | --- |",
+    "| Route | Viewport | Gate | Review | Experience context | HTTP | Overflow | H1 | Images missing alt | Axe violations | Screenshot |",
+    "| --- | ---: | --- | --- | --- | ---: | --- | ---: | ---: | ---: | --- |",
   ];
   for (const result of report.results) {
-    lines.push(`| ${result.routeId} | ${result.viewport.label} | ${result.status} | ${result.experience?.notice ?? "—"} | ${result.http.status ?? "—"} | ${result.dimensions.overflow ? "yes" : "no"} | ${result.headingSummary.h1} | ${result.imageAltSummary.missingAlt} | ${result.axeSummary.violationCount} | ${result.screenshotPath} |`);
+    lines.push(`| ${result.routeId} | ${result.viewport.label} | ${result.gateStatus} | ${result.reviewStatus} | ${result.experience?.notice ?? "—"} | ${result.http.status ?? "—"} | ${result.dimensions.overflow ? "yes" : "no"} | ${result.headingSummary.h1} | ${result.imageAltSummary.missingAlt} | ${result.axeSummary.violationCount} | ${result.screenshotPath} |`);
   }
-  lines.push("", "## Review boundaries", "", "- Human review is required for visual ecology, hierarchy, materiality, density and conceptual continuity.", "- Axe findings are reported as warnings so frozen benchmarks can be reviewed without rewriting them in the harness.", "- A route can be structurally healthy while still needing visual review.", "");
+  lines.push("", "## Review boundaries", "", "- Human review is required for visual ecology, hierarchy, materiality, density and conceptual continuity.", "- Axe findings are review warnings and do not become structural failures in this harness.", "- A route can be structurally healthy while still needing accessibility or visual review.", "- Fold sheets ask what the page first presents; ecology sheets ask what shape the whole page has. Neither is a pixel regression test.", "");
   return lines.join("\n");
 }
 
@@ -388,14 +485,14 @@ async function main() {
     await browser.browser.close();
     started?.child.kill();
   }
-  const summary = results.reduce((counts, result) => { counts[result.status.toLowerCase()] += 1; return counts; }, { pass: 0, warn: 0, fail: 0 });
+  const summary = summarizeResults(results);
   const report = { timestamp: now(), gitSha: execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(), mode, baseUrl, viewports: VIEWPORTS, routes: expectedRoutes, summary, results };
   const reportPath = join(outputRoot, `${mode}-report.json`);
   const markdownPath = join(outputRoot, `${mode}-summary.md`);
   await writeFile(reportPath, JSON.stringify(report, null, 2));
   await writeFile(markdownPath, markdownReport(report));
   console.log(JSON.stringify({ ...summary, reportPath, markdownPath, baseUrl }, null, 2));
-  if (summary.fail > 0) process.exitCode = 1;
+  if (exitCodeForSummary(summary) !== 0) process.exitCode = exitCodeForSummary(summary);
 }
 
 main().catch((error) => { console.error(error.stack || error.message); process.exitCode = 1; });

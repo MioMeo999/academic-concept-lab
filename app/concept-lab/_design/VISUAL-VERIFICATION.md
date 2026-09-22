@@ -25,10 +25,15 @@ when available. It records, per route and viewport:
 - axe violations/incomplete checks as review warnings;
 - a full-page screenshot for human review.
 
-The script reports `FAIL` for a non-200 route, page crash, console error,
-essential resource failure, horizontal overflow, or reduced-motion failure. It
-reports `WARN` for axe findings, warnings and conditions that need human review.
-An axe finding does not authorize changing a frozen benchmark in the harness.
+The report has two independent statuses. `gateStatus` is `PASS` or `FAIL` and
+covers deterministic failures: navigation or non-2xx routes, page or console
+errors, essential-resource failures, overflow, required semantic failures,
+broken required interactions, and reduced-motion functional failures.
+`reviewStatus` is `CLEAR` or `WARN` and covers axe violations/incomplete checks,
+console warnings, frozen-benchmark review, and the required human visual pass.
+The summary therefore reports structural truth separately, for example
+`60 structural PASS · 0 structural FAIL · 60 with review warnings`.
+Accessibility findings remain visible; they are never relabelled as passing.
 
 ## Running it
 
@@ -62,11 +67,21 @@ shaped server. Reports and screenshots go outside the repository by default to
 `D:\OpenAI\CodexHome\visualizations\<date>\concept-lab-verification`; use
 `--output` to choose another evidence directory. No screenshot is committed.
 
-Create desktop and mobile contact sheets from a JSON report:
+Create fold and full-page ecology sheets from a JSON report:
 
 ```text
 npm run verify:contact-sheet -- D:\path\to\representative-report.json
 ```
+
+The command writes four outputs: `desktop-fold-contact-sheet.png` and
+`mobile-fold-contact-sheet.png` use viewport screenshots to answer “what does
+the page first present?”; `desktop-ecology-contact-sheet.png` and
+`mobile-ecology-contact-sheet.png` use full-page screenshots to answer “what
+shape does the whole page have?”. Ecology sheets use one canonical desktop
+(1440px) or mobile (390px) capture per route and preserve proportional document
+height within a bounded display height so route silhouettes and quiet zones
+remain visible. Neither sheet is a pixel regression test or an automatic grade
+of design quality.
 
 `verify:browser` is intentionally separate from the normal test command; it is
 slower, starts a browser, writes screenshots, and remains an explicit review
@@ -82,19 +97,31 @@ records. The named set is a stable smoke surface, not a prediction about
 future page design; add a route when a new user-facing record becomes
 canonical.
 
-Interaction probes are deliberately small: AET map/read-under-it controls,
-Gestalt perceptual/listening controls, RTA analytic controls, save/restore,
-and neighbourhood/fallback navigation are observed where semantic controls
-exist. Each result records the control used, the focused change and the
-accessible state. The harness does not infer academic meaning or grade visual
-quality.
+Interaction probes are deliberately small and route-specific. AET verifies the
+existing “Read under it” map toggle; Gestalt verifies a controlled listening
+preset; RTA verifies a recursive phase tab when present; P–E Fit verifies
+save/restore plus a relation link and the separate Library fallback. The
+Library landing page is not mislabeled as a neighbourhood interaction. Each
+probe records its id, selector, accessible target, keyboard method, before and
+after state, expected and observed change, and `PASS`, `FAIL`, or
+`NOT_APPLICABLE`. A missing optional frozen control is reported as
+`NOT_APPLICABLE`, never faked as a pass.
+
+The reduced-motion pass repeats the route checks with
+`prefers-reduced-motion: reduce`. AET and Gestalt run one bounded conceptual
+probe in that mode and confirm that content remains available, keyboard
+activation works, and accessible state still changes. RTA is included when a
+suitable stateful control exists.
 
 Experience manifests provide benchmark/frozen context. A frozen route remains
 informationally marked as `FROZEN EXPERIENCE — VISUAL CHANGE REQUIRES EXPLICIT
 REVIEW`; this harness never pixel-locks or silently rewrites a frozen page.
 Human review must still assess composition, hierarchy, materiality, density,
 conceptual continuity, visual noise and whether the page feels like the right
-knowledge object.
+knowledge object. On Windows, `vinext dev` is the stable default for local
+browser capture because `vinext start` can serve Vite assets with an incorrect
+path separator. The harness uses a bounded retry for a clear dev-compilation
+navigation timeout; a repeated failure remains a structural gate failure.
 
 Wave 0C deliberately adds no page CSS, canonical copy, artwork, route, or
 interaction implementation. It does not replace targeted accessibility review
