@@ -289,10 +289,10 @@ export function TheoryLibrary({
       </div>
 
       {visible.length ? (
-        <main className={styles.theoryIndex}>
+        <div className={styles.theoryIndex}>
           {(discipline === "all" || discipline === "ob") && <FieldSection id="ob" records={ob} indexById={indexById} />}
           {(discipline === "all" || discipline === "music-psych") && <FieldSection id="music-psych" records={music} indexById={indexById} />}
-        </main>
+        </div>
       ) : (
         <div className={styles.empty}>
           <strong>No theory matches that search.</strong>
