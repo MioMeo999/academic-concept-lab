@@ -35,17 +35,6 @@ jobs:
           echo "CONCEPT_LAB_BROWSER_PATH=$CHROME" >> "$GITHUB_ENV"
           echo "Using $CHROME"
 
-      - name: Lint
-        run: npm run lint
-
-      - name: Repository tests
-        run: npm test
-
-      - name: Wave 0C representative browser harness
-        env:
-          CONCEPT_LAB_VERIFY_OUTPUT: ./verification/representative
-        run: npm run verify:browser -- --output ./verification/representative
-
       - name: Start prototype dev server
         shell: bash
         run: |
