@@ -42,7 +42,7 @@ jobs:
           npm run dev -- --port 4175 > /tmp/pe-fit-dev.log 2>&1 &
           echo $! > /tmp/pe-fit-dev.pid
           for attempt in {1..120}; do
-            if curl -fsS http://127.0.0.1:4175/pe-fit-visual-translation >/dev/null; then
+            if curl -fsS http://localhost:4175/pe-fit-visual-translation >/dev/null; then
               exit 0
             fi
             sleep 1
@@ -106,7 +106,7 @@ jobs:
               }
             });
 
-            const response = await page.goto("http://127.0.0.1:4175/pe-fit-visual-translation", {
+            const response = await page.goto("http://localhost:4175/pe-fit-visual-translation", {
               waitUntil: "networkidle",
               timeout: 60000,
             });
@@ -267,7 +267,7 @@ jobs:
           const reducedPage = await reduced.newPage();
           const reducedErrors = [];
           reducedPage.on("pageerror", (error) => reducedErrors.push(String(error)));
-          await reducedPage.goto("http://127.0.0.1:4175/pe-fit-visual-translation", {
+          await reducedPage.goto("http://localhost:4175/pe-fit-visual-translation", {
             waitUntil: "networkidle",
             timeout: 60000,
           });
