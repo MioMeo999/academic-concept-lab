@@ -179,8 +179,13 @@
   transform: rotate(-3deg) scale(1);
 }
 
+.territoryNode[data-visited="true"]::after {
+  opacity: .34;
+  transform: rotate(-1.2deg) scaleX(1);
+}
+
 .territoryNode[data-active="true"]::after {
-  opacity: .8;
+  opacity: .82;
   transform: rotate(-1.2deg) scaleX(1);
 }
 
@@ -436,6 +441,11 @@
 .kindGestureArt > figure > div { width: 100%; height: 100%; max-width: none; }
 
 .kindGestureArt :global(img) { mix-blend-mode: multiply; }
+
+.kindGesture[data-visited="true"] .kindGestureArt {
+  opacity: .46;
+  filter: grayscale(.08) saturate(.86);
+}
 
 .kindGesture[data-active="true"] .kindGestureArt {
   opacity: .88;
@@ -721,6 +731,26 @@
   width: 1.25rem;
   flex-shrink: 0;
   font: 400 1.35rem/1 var(--read);
+}
+
+.staticFallback {
+  margin: 1rem 0 0;
+  padding: 1rem 0 0;
+  border-top: 1px solid var(--system-rule);
+  list-style: none;
+}
+
+.staticFallback li + li { margin-top: .35rem; }
+
+.staticFallback a {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  color: var(--pen);
+  font: 450 .86rem/1.4 var(--read);
+  text-decoration: underline;
+  text-decoration-color: var(--system-rule);
+  text-underline-offset: .25em;
 }
 
 @media (hover: hover) and (pointer: fine) {
