@@ -53,7 +53,7 @@ jobs:
       - name: Verify prototype at five viewports
         shell: bash
         run: |
-          cat > /tmp/verify-pe-fit.mjs <<'NODE'
+          cat > ./.pe-fit-verify.mjs <<'NODE'
           import { chromium } from "playwright-core";
           import { createRequire } from "node:module";
           import { mkdir, readFile, writeFile } from "node:fs/promises";
@@ -303,7 +303,7 @@ jobs:
           if (structuralFailure) process.exit(1);
           NODE
 
-          node /tmp/verify-pe-fit.mjs
+          node ./.pe-fit-verify.mjs
 
       - name: Stop prototype dev server
         if: always()
