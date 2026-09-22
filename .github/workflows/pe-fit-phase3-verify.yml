@@ -1,0 +1,335 @@
+name: P-E Fit Phase 3 verification
+
+on:
+  push:
+    branches:
+      - feature/pe-fit-visual-translation-prototype
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.16.0
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Locate Chromium
+        shell: bash
+        run: |
+          set -euo pipefail
+          CHROME="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)"
+          if [ -z "$CHROME" ]; then
+            echo "No Chromium-family browser found on runner." >&2
+            exit 1
+          fi
+          echo "CONCEPT_LAB_BROWSER_PATH=$CHROME" >> "$GITHUB_ENV"
+          echo "Using $CHROME"
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Repository tests
+        run: npm test
+
+      - name: Wave 0C representative browser harness
+        env:
+          CONCEPT_LAB_VERIFY_OUTPUT: ./verification/representative
+        run: npm run verify:browser -- --output ./verification/representative
+
+      - name: Start prototype dev server
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run dev -- --port 4175 > /tmp/pe-fit-dev.log 2>&1 &
+          echo $! > /tmp/pe-fit-dev.pid
+          for attempt in {1..120}; do
+            if curl -fsS http://127.0.0.1:4175/pe-fit-visual-translation >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/pe-fit-dev.log
+          exit 1
+
+      - name: Verify prototype at five viewports
+        shell: bash
+        run: |
+          cat > /tmp/verify-pe-fit.mjs <<'NODE'
+          import { chromium } from "playwright-core";
+          import { createRequire } from "node:module";
+          import { mkdir, readFile, writeFile } from "node:fs/promises";
+
+          const require = createRequire(import.meta.url);
+          const axePath = require.resolve("axe-core/axe.min.js");
+          const axeSource = await readFile(axePath, "utf8");
+          const out = "verification/pe-fit";
+          await mkdir(out, { recursive: true });
+
+          const widths = [
+            { width: 1440, height: 950, label: "1440" },
+            { width: 1024, height: 850, label: "1024" },
+            { width: 768, height: 900, label: "768" },
+            { width: 390, height: 844, label: "390" },
+            { width: 360, height: 800, label: "360" },
+          ];
+
+          const browser = await chromium.launch({
+            headless: true,
+            executablePath: process.env.CONCEPT_LAB_BROWSER_PATH,
+            args: ["--no-sandbox"],
+          });
+
+          const results = [];
+          let structuralFailure = false;
+
+          for (const viewport of widths) {
+            const context = await browser.newContext({
+              viewport: { width: viewport.width, height: viewport.height },
+              reducedMotion: "no-preference",
+            });
+            const page = await context.newPage();
+            const consoleErrors = [];
+            const pageErrors = [];
+            const requestFailures = [];
+
+            page.on("console", (message) => {
+              if (message.type() === "error") consoleErrors.push(message.text());
+            });
+            page.on("pageerror", (error) => pageErrors.push(String(error)));
+            page.on("requestfailed", (request) => {
+              const type = request.resourceType();
+              if (["document", "script", "stylesheet", "font", "image"].includes(type)) {
+                requestFailures.push({
+                  url: request.url(),
+                  type,
+                  error: request.failure()?.errorText || "request failed",
+                });
+              }
+            });
+
+            const response = await page.goto("http://127.0.0.1:4175/pe-fit-visual-translation", {
+              waitUntil: "networkidle",
+              timeout: 60000,
+            });
+            await page.waitForFunction(
+              () => [...document.images].every((image) => image.complete),
+              null,
+              { timeout: 20000 },
+            );
+
+            const structure = await page.evaluate(() => {
+              const headings = [...document.querySelectorAll("h1,h2,h3,h4,h5,h6")].map((node) => ({
+                level: Number(node.tagName.slice(1)),
+                text: (node.textContent || "").trim().replace(/\s+/g, " ").slice(0, 120),
+              }));
+              const images = [...document.images].map((image) => ({
+                alt: image.getAttribute("alt"),
+                hasAlt: image.hasAttribute("alt"),
+                naturalWidth: image.naturalWidth,
+                complete: image.complete,
+              }));
+              const controls = [...document.querySelectorAll("button")].map((button) => ({
+                name: (button.getAttribute("aria-label") || button.textContent || "").trim().replace(/\s+/g, " ").slice(0, 140),
+                pressed: button.getAttribute("aria-pressed"),
+              }));
+              return {
+                title: document.title,
+                width: window.innerWidth,
+                scrollWidth: document.documentElement.scrollWidth,
+                bodyScrollWidth: document.body.scrollWidth,
+                height: document.documentElement.scrollHeight,
+                h1Count: headings.filter((heading) => heading.level === 1).length,
+                levelSkips: headings.some((heading, index) => index > 0 && heading.level > headings[index - 1].level + 1),
+                headings,
+                images,
+                controls,
+                mainCount: document.querySelectorAll("main").length,
+                noindex: document.querySelector('meta[name="robots"]')?.getAttribute("content") || "",
+                primaryWorldCount: [...document.images].filter((image) => image.src.includes("pe-fit-C-editorial-research-drawing")).length,
+              };
+            });
+
+            const focus = await (async () => {
+              await page.keyboard.press("Tab");
+              return page.evaluate(() => {
+                const active = document.activeElement;
+                if (!active) return { found: false };
+                const style = getComputedStyle(active);
+                const rect = active.getBoundingClientRect();
+                return {
+                  found: true,
+                  tag: active.tagName.toLowerCase(),
+                  text: (active.textContent || "").trim().replace(/\s+/g, " ").slice(0, 90),
+                  visible: rect.width > 0 && rect.height > 0 && style.visibility !== "hidden" && style.display !== "none",
+                  focusStyle: style.outlineStyle !== "none" || style.boxShadow !== "none",
+                };
+              });
+            })();
+
+            await page.addScriptTag({ content: axeSource });
+            const axe = await page.evaluate(async () => {
+              const result = await window.axe.run(document, {
+                resultTypes: ["violations", "incomplete"],
+              });
+              return {
+                violations: result.violations.map((item) => ({
+                  id: item.id,
+                  impact: item.impact,
+                  nodes: item.nodes.length,
+                })),
+                incomplete: result.incomplete.map((item) => ({
+                  id: item.id,
+                  impact: item.impact,
+                  nodes: item.nodes.length,
+                })),
+              };
+            });
+
+            const overflow = Math.max(structure.scrollWidth, structure.bodyScrollWidth) > viewport.width + 1;
+            const brokenImages = structure.images.filter((image) => image.complete && image.naturalWidth === 0).length;
+            const missingAlt = structure.images.filter((image) => !image.hasAlt).length;
+            const gate =
+              response?.status() !== 200 ||
+              overflow ||
+              structure.h1Count !== 1 ||
+              structure.mainCount !== 1 ||
+              structure.levelSkips ||
+              brokenImages > 0 ||
+              missingAlt > 0 ||
+              consoleErrors.length > 0 ||
+              pageErrors.length > 0 ||
+              requestFailures.length > 0 ||
+              !focus.found ||
+              !focus.visible;
+
+            if (gate) structuralFailure = true;
+
+            if (viewport.label === "1440" || viewport.label === "390") {
+              await page.screenshot({
+                path: `${out}/${viewport.label}-opening.png`,
+                fullPage: false,
+              });
+
+              const ns = page.getByRole("button", { name: /Needs ↔ Supplies/ }).first();
+              await ns.focus();
+              await page.keyboard.press("Space");
+              if ((await ns.getAttribute("aria-pressed")) !== "true") structuralFailure = true;
+              await page.locator("#correspondence").screenshot({
+                path: `${out}/${viewport.label}-needs-supplies.png`,
+              });
+
+              const group = page.getByRole("button", { name: /Group/ }).first();
+              await group.focus();
+              await page.keyboard.press("Space");
+              if ((await group.getAttribute("aria-pressed")) !== "true") structuralFailure = true;
+              await page.locator("#targets").screenshot({
+                path: `${out}/${viewport.label}-group-target.png`,
+              });
+
+              const under = page.getByRole("button", { name: "Under-supplied", exact: true });
+              await under.focus();
+              await page.keyboard.press("Space");
+              if ((await under.getAttribute("aria-pressed")) !== "true") structuralFailure = true;
+
+              const satisfactoriness = page.getByRole("button", { name: /Satisfactoriness/ }).first();
+              await satisfactoriness.focus();
+              await page.keyboard.press("Space");
+              if ((await satisfactoriness.getAttribute("aria-pressed")) !== "true") structuralFailure = true;
+
+              await page.screenshot({
+                path: `${out}/${viewport.label}-full-page.png`,
+                fullPage: true,
+              });
+            }
+
+            results.push({
+              viewport,
+              status: response?.status(),
+              overflow,
+              brokenImages,
+              missingAlt,
+              consoleErrors,
+              pageErrors,
+              requestFailures,
+              focus,
+              structure,
+              axe,
+              gateStatus: gate ? "FAIL" : "PASS",
+              reviewStatus: axe.violations.length || axe.incomplete.length ? "WARN" : "CLEAR",
+            });
+
+            await context.close();
+          }
+
+          const reduced = await browser.newContext({
+            viewport: { width: 390, height: 844 },
+            reducedMotion: "reduce",
+          });
+          const reducedPage = await reduced.newPage();
+          const reducedErrors = [];
+          reducedPage.on("pageerror", (error) => reducedErrors.push(String(error)));
+          await reducedPage.goto("http://127.0.0.1:4175/pe-fit-visual-translation", {
+            waitUntil: "networkidle",
+            timeout: 60000,
+          });
+          const reducedButton = reducedPage.getByRole("button", { name: /Needs ↔ Supplies/ }).first();
+          await reducedButton.focus();
+          await reducedPage.keyboard.press("Space");
+          const reducedState = await reducedButton.getAttribute("aria-pressed");
+          const reducedOkay = reducedState === "true" && reducedErrors.length === 0;
+          if (!reducedOkay) structuralFailure = true;
+          await reduced.close();
+
+          const report = {
+            generatedAt: new Date().toISOString(),
+            route: "/pe-fit-visual-translation",
+            viewports: widths,
+            results,
+            reducedMotion: {
+              status: reducedOkay ? "PASS" : "FAIL",
+              ariaPressed: reducedState,
+              errors: reducedErrors,
+            },
+            summary: {
+              structuralPass: results.filter((item) => item.gateStatus === "PASS").length,
+              structuralFail: results.filter((item) => item.gateStatus === "FAIL").length,
+              reviewWarn: results.filter((item) => item.reviewStatus === "WARN").length,
+            },
+          };
+
+          await writeFile(`${out}/prototype-report.json`, JSON.stringify(report, null, 2));
+          await browser.close();
+
+          console.log(JSON.stringify(report.summary));
+          if (structuralFailure) process.exit(1);
+          NODE
+
+          node /tmp/verify-pe-fit.mjs
+
+      - name: Stop prototype dev server
+        if: always()
+        shell: bash
+        run: |
+          if [ -f /tmp/pe-fit-dev.pid ]; then
+            kill "$(cat /tmp/pe-fit-dev.pid)" || true
+          fi
+          tail -n 100 /tmp/pe-fit-dev.log || true
+
+      - name: Upload verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pe-fit-phase3-verification
+          path: verification
+          if-no-files-found: warn
+          retention-days: 14
