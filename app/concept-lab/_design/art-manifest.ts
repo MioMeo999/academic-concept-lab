@@ -251,3 +251,11 @@ export function getArtAsset(id: ArtAssetId): ArtAsset {
   if (!asset) throw new Error(`Unknown art asset: ${id}`);
   return asset;
 }
+
+/** Resolve a documented crop without creating a second editable geometry source. */
+export function getArtCrop(assetId: ArtAssetId, cropId: string): ArtCrop["bounds"] {
+  const asset = getArtAsset(assetId);
+  const crop = asset.cropCandidates.find((candidate) => candidate.id === cropId);
+  if (!crop) throw new Error(`Unknown art crop: ${assetId}/${cropId}`);
+  return crop.bounds;
+}

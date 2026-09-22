@@ -2,7 +2,8 @@ import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import test from "node:test";
-import { ART_ASSETS, ART_ASSET_IDS } from "../app/concept-lab/_design/art-manifest";
+import { ART_ASSETS, ART_ASSET_IDS, getArtCrop } from "../app/concept-lab/_design/art-manifest";
+import { ART_FRAGMENTS } from "../app/concept-lab/_design/art-library";
 import { EXPERIENCE_MANIFEST } from "../app/concept-lab/_design/experience-manifest";
 
 test("art asset ids are unique and every registered source exists", () => {
@@ -38,6 +39,33 @@ test("experience art references resolve to registered assets", () => {
     for (const assetId of experience.artAssetIds) {
       assert.ok(assets.has(assetId), `${experience.experienceId} references unknown art ${assetId}`);
     }
+  }
+});
+
+test("canonical routes stay distinct from historical benchmark routes", () => {
+  for (const experience of EXPERIENCE_MANIFEST) {
+    assert.ok(experience.route.startsWith("/"));
+    if (experience.historicalBenchmarkRoute) {
+      assert.notEqual(experience.route, experience.historicalBenchmarkRoute);
+      assert.ok(experience.historicalBenchmarkRoute.startsWith("/"));
+    }
+  }
+  assert.equal("benchmarkRoute" in EXPERIENCE_MANIFEST[0], false);
+});
+
+test("Home fragments resolve every crop through the art manifest", () => {
+  const cropRefs = {
+    organisation: ["home-organisation-systems", "home-organisation-discipline"],
+    music: ["home-atlas-head-globe", "home-music-territory"],
+    theory: ["home-record-forms", "home-theory-form"],
+    mechanism: ["home-record-forms", "home-mechanism-form"],
+    method: ["home-record-forms", "home-method-form"],
+    study: ["home-record-forms", "home-study-form"],
+    books: ["home-provenance-sources", "home-source-books"],
+  } as const;
+
+  for (const [name, [assetId, cropId]] of Object.entries(cropRefs)) {
+    assert.deepEqual(ART_FRAGMENTS[name as keyof typeof ART_FRAGMENTS].crop, getArtCrop(assetId, cropId));
   }
 });
 

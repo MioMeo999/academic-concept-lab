@@ -21,6 +21,10 @@ academic content, provenance, sources or record types.
    translation. They are not a global decoration kit.
 8. Begin a new page by asking: **What shape is this knowledge?**
 
+Historical benchmark routes in the experience manifest record provenance only;
+they are not expected to resolve and their retirement does not invalidate a
+frozen benchmark. The canonical `route` is the only runtime destination.
+
 The reader must be able to understand the academic argument without relying on
 raster handwriting. When an authored source field is reused, the consuming
 context decides whether it is decorative, contextual or explanatory; one

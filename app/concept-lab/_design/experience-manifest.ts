@@ -19,7 +19,8 @@ export type ExperienceManifestEntry = {
   experienceId: "home" | "about" | "gestalt" | "rta" | "aet";
   owner: ExperienceOwner;
   route: string;
-  benchmarkRoute?: string;
+  /** Historical provenance only; retired routes are not runtime destinations. */
+  historicalBenchmarkRoute?: string;
   status: ExperienceStatus;
   knowledgeIdentity: string;
   pageThesis: string;
@@ -104,7 +105,7 @@ export const EXPERIENCE_MANIFEST: readonly ExperienceManifestEntry[] = [
     experienceId: "rta",
     owner: { kind: "record", id: "reflexive-thematic-analysis" },
     route: "/concept-lab/method/reflexive-thematic-analysis",
-    benchmarkRoute: "/reflexive-ta-target",
+    historicalBenchmarkRoute: "/reflexive-ta-target",
     status: "frozen",
     knowledgeIdentity: "Reflexive / revisable knowledge.",
     pageThesis: "ANALYSIS LEAVES TRACES. The page remembers the analysis.",
@@ -126,7 +127,7 @@ export const EXPERIENCE_MANIFEST: readonly ExperienceManifestEntry[] = [
     experienceId: "aet",
     owner: { kind: "record", id: "affective-events-theory" },
     route: "/concept-lab/theory/affective-events-theory",
-    benchmarkRoute: "/aet-visual-rebuild",
+    historicalBenchmarkRoute: "/aet-visual-rebuild",
     status: "frozen",
     knowledgeIdentity: "Temporal / event-driven knowledge.",
     pageThesis: "THE PAGE REMEMBERS WHAT HAPPENED.",
