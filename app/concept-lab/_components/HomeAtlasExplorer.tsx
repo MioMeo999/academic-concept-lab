@@ -35,6 +35,7 @@ function recordLabel(count: number) {
 
 export function HomeDisciplineAtlas({ disciplines }: { disciplines: HomeDisciplineEntry[] }) {
   const [activeId, setActiveId] = useState(disciplines[0]?.id ?? "");
+  const [visitedIds, setVisitedIds] = useState<string[]>(disciplines[0]?.id ? [disciplines[0].id] : []);
   const active = useMemo(
     () => disciplines.find((entry) => entry.id === activeId) ?? disciplines[0],
     [disciplines, activeId],
@@ -96,12 +97,18 @@ export function HomeDisciplineAtlas({ disciplines }: { disciplines: HomeDiscipli
           <p className={home.fieldPencilNote}>same atlas · different question</p>
         </aside>
       )}
+      <noscript>
+        <ul className={home.staticFallback}>
+          {disciplines.map((entry) => <li key={entry.id}><a href={entry.href}>{entry.name} · {recordLabel(entry.count)}</a></li>)}
+        </ul>
+      </noscript>
     </div>
   );
 }
 
 export function HomeKindWorkbench({ kinds }: { kinds: HomeKindEntry[] }) {
   const [activeId, setActiveId] = useState<HomeKindEntry["id"]>(kinds[0]?.id ?? "theory");
+  const [visitedIds, setVisitedIds] = useState<HomeKindEntry["id"][]>(kinds[0]?.id ? [kinds[0].id] : []);
   const active = useMemo(
     () => kinds.find((entry) => entry.id === activeId) ?? kinds[0],
     [kinds, activeId],
@@ -159,6 +166,11 @@ export function HomeKindWorkbench({ kinds }: { kinds: HomeKindEntry[] }) {
           <p className={home.kindPencilNote}>the category is a responsibility, not a colour</p>
         </aside>
       )}
+      <noscript>
+        <ul className={home.staticFallback}>
+          {kinds.map((entry) => <li key={entry.id}><a href={entry.href}>{entry.name} · {recordLabel(entry.count)}</a></li>)}
+        </ul>
+      </noscript>
     </div>
   );
 }
