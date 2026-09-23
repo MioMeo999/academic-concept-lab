@@ -30,9 +30,10 @@
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1.12fr) minmax(19rem, .88fr);
-  gap: clamp(2.5rem, 7vw, 7rem);
-  align-items: end;
-  padding: clamp(4rem, 8vw, 7.5rem) 0 clamp(2.4rem, 5vw, 4rem);
+  column-gap: clamp(2rem, 5vw, 5rem);
+  row-gap: clamp(1.5rem, 2.5vw, 2rem);
+  align-items: start;
+  padding: clamp(3.2rem, 6vw, 5.5rem) 0 clamp(2rem, 3vw, 3rem);
   border-bottom: 1px solid var(--system-rule, rgba(28, 27, 25, .2));
 }
 
@@ -51,7 +52,7 @@
   max-width: 8.5ch;
   margin: .75rem 0 0;
   color: var(--pen);
-  font: 420 clamp(4.3rem, 9.5vw, 9rem)/.78 var(--read);
+  font: 420 clamp(5rem, 8.6vw, 8rem)/.86 var(--read);
   letter-spacing: -.075em;
 }
 
@@ -123,7 +124,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
-  margin-top: clamp(.5rem, 2vw, 1.5rem);
+  margin-top: clamp(.5rem, 1.5vw, 1.1rem);
   padding-top: 1rem;
   border-top: 1px solid var(--system-rule, rgba(28, 27, 25, .2));
 }
@@ -283,6 +284,31 @@
   align-items: start;
 }
 
+.fieldSection[data-field="ob"] {
+  grid-template-columns: minmax(22rem, .38fr) minmax(0, 1fr);
+}
+
+.fieldSection[data-field="music-psych"] {
+  grid-template-columns: minmax(0, 1fr) minmax(13rem, .31fr);
+}
+
+.fieldSection[data-field="music-psych"] .fieldHeading {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.fieldSection[data-field="music-psych"] .fieldHeading > div {
+  padding: 0 0 .9rem;
+  border-top: 0;
+  border-bottom: 4px solid var(--field-accent);
+}
+
+.fieldSection[data-field="music-psych"] .fieldGroups {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+}
+
 .fieldHeading {
   position: sticky;
   top: 6.5rem;
@@ -304,7 +330,7 @@
 }
 
 .fieldHeading h2 {
-  max-width: 8.5ch;
+  max-width: 10.5ch;
   margin: .65rem 0 0;
   color: var(--pen);
   font: 430 clamp(2.4rem, 4.3vw, 4rem)/.92 var(--read);
@@ -343,12 +369,21 @@
   border-top: 1px solid var(--system-rule, rgba(28, 27, 25, .2));
 }
 
+.fieldSection[data-field="music-psych"] .groupHeading {
+  grid-template-columns: minmax(0, 1fr);
+  gap: .4rem;
+}
+
 .groupHeading > span {
   grid-row: 1 / span 2;
   color: var(--field-accent);
   font: 500 .6rem/1.4 var(--cat);
   letter-spacing: .08em;
   text-transform: uppercase;
+}
+
+.fieldSection[data-field="music-psych"] .groupHeading > span {
+  grid-row: auto;
 }
 
 .groupHeading h3 {
@@ -422,6 +457,10 @@
 }
 
 .recordIdentity h4 a {
+  display: inline-flex;
+  min-height: 44px;
+  max-width: 100%;
+  align-items: center;
   color: var(--pen);
   text-decoration: none;
   background:
@@ -463,7 +502,7 @@
 .factLine span {
   position: relative;
   color: var(--pen-3);
-  font: 500 .57rem/1.35 var(--cat);
+  font: 500 .61rem/1.4 var(--cat);
   letter-spacing: .045em;
   text-transform: uppercase;
 }
@@ -482,7 +521,7 @@
   padding-left: .55rem;
   border-left: 2px solid var(--row-accent);
   color: var(--pen-3);
-  font: 500 .57rem/1.35 var(--cat);
+  font: 500 .61rem/1.4 var(--cat);
   letter-spacing: .045em;
   text-transform: uppercase;
 }
@@ -502,6 +541,9 @@
 }
 
 .readLink {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
   color: var(--pen);
   font: 500 .65rem/1.4 var(--cat);
   letter-spacing: .04em;
@@ -576,8 +618,12 @@
   }
 
   .fieldSection {
-    grid-template-columns: 12rem minmax(0, 1fr);
+    grid-template-columns: 14rem minmax(0, 1fr);
     gap: 2.5rem;
+  }
+
+  .fieldSection[data-field="ob"] {
+    grid-template-columns: 14rem minmax(0, 1fr);
   }
 
   .recordRow {
@@ -629,6 +675,12 @@
     display: block;
   }
 
+  .fieldSection[data-field="music-psych"] .fieldHeading > div {
+    padding: .9rem 0 0;
+    border-top: 4px solid var(--field-accent);
+    border-bottom: 0;
+  }
+
   .fieldHeading {
     position: static;
     display: grid;
@@ -642,7 +694,7 @@
   }
 
   .fieldHeading h2 {
-    max-width: 10ch;
+    max-width: 10.5ch;
   }
 
   .fieldHeading p {
