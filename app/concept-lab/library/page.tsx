@@ -6,6 +6,7 @@ import { LibraryBrowser } from "../_components/LibraryBrowser";
 import { DisciplineNav } from "../_components/DisciplineNav";
 import { Crumbs } from "../_components/RecordShell";
 import { ReadingCompass } from "../_components/VisualAtlas";
+import { TheoryLibrary } from "./TheoryLibrary";
 
 export const metadata: Metadata = { title: "Library" };
 
@@ -17,6 +18,15 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
   // here silently sent ?kind=mechanism to an unfiltered library.
   const kind = sp.kind && sp.kind in KIND ? (sp.kind as RecordKind) : undefined;
   const discipline = sp.discipline && DISCIPLINES[sp.discipline] ? sp.discipline : undefined;
+
+  if (kind === "theory") {
+    return (
+      <TheoryLibrary
+        records={RECORDS.filter((record) => record.kind === "theory")}
+        initialDiscipline={discipline}
+      />
+    );
+  }
 
   return (
     <div className="wrap">

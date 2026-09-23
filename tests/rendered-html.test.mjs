@@ -33,6 +33,8 @@ for (const [pathname, expected] of [
    untested. The count assertion underneath is the backstop. */
 const libraryHtml = await (await render("/concept-lab/library")).text();
 const homeHtml = await (await render("/concept-lab")).text();
+const theoryLibraryHtml = await (await render("/concept-lab/library?kind=theory")).text();
+const musicTheoryLibraryHtml = await (await render("/concept-lab/library?kind=theory&discipline=music-psych")).text();
 const statisticalHtml = await (await render("/concept-lab/theory/statistical-learning-of-music")).text();
 const idyomHtml = await (await render("/concept-lab/theory/idyom-information-dynamics-of-music")).text();
 const predictiveProcessingHtml = await (await render("/concept-lab/theory/predictive-processing-in-music")).text();
@@ -101,6 +103,27 @@ test("statistical learning record renders its audited teaching systems", () => {
 
 test("home describes all four record kinds", () => {
   assert.match(homeHtml, /four kinds of record/i);
+});
+
+function theoryEditorialRows(html) {
+  const articles = [...html.matchAll(/<article\b[^>]*recordRow[^>]*>([\s\S]*?)<\/article>/g)];
+  return articles.map(([, row]) => ({
+    number: row.match(/recordNumber[^\"]*">(\d+)<\/span>/)?.[1],
+    href: row.match(/<h4>\s*<a[^>]*href="([^"]+)"/)?.[1],
+  }));
+}
+
+test("theory editorial numbers follow the rendered field and branch order", () => {
+  const rows = theoryEditorialRows(theoryLibraryHtml);
+  assert.equal(rows.length, 18);
+  assert.deepEqual(rows.map((row) => row.number), Array.from({ length: rows.length }, (_, index) => String(index + 1).padStart(2, "0")));
+  assert.ok(rows.every((row) => row.href?.startsWith("/concept-lab/theory/")));
+});
+
+test("theory editorial numbers remain stable when the field is filtered", () => {
+  const allRows = theoryEditorialRows(theoryLibraryHtml);
+  const filteredMusicRows = theoryEditorialRows(musicTheoryLibraryHtml);
+  assert.deepEqual(filteredMusicRows, allRows.slice(allRows.length - filteredMusicRows.length));
 });
 
 const recordPaths = [...new Set([...libraryHtml.matchAll(/\/concept-lab\/(?:theory|study|method|mechanism)\/[a-z0-9-]+/g)].map((m) => m[0]))];
@@ -172,6 +195,16 @@ test("every landing-page filter link actually filters", async () => {
   const total = recordPaths.length;
   for (const href of links) {
     const html = await (await render(href.replace(/&amp;/g, "&"))).text();
+    if (new URL(href, "http://localhost").searchParams.get("kind") === "theory") {
+      const filteredPaths = [...new Set([...html.matchAll(/\/concept-lab\/(?:theory|study|method|mechanism)\/[a-z0-9-]+/g)].map((match) => match[0]))];
+      const expectedTheoryPaths = recordPaths.filter((pathname) => pathname.startsWith("/concept-lab/theory/"));
+      assert.match(html, /Theory/);
+      assert.match(html, /as a lens/i);
+      assert.deepEqual(filteredPaths.sort(), expectedTheoryPaths.sort(), `${href} did not render exactly the theory records`);
+      assert.ok(filteredPaths.length < total, `${href} returned all ${total} record kinds`);
+      continue;
+    }
+
     const m = html.match(/(\d+) of (\d+) records/);
     assert.ok(m, `${href} rendered no result count`);
     assert.ok(
