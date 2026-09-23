@@ -9,7 +9,7 @@ import styles from "./mechanism-library.module.css";
 
 export type MechanismRecord = TheoryRecord & { kind: "mechanism" };
 
-type Props = { records: MechanismRecord[]; totalRecords: number };
+type Props = { records: MechanismRecord[] };
 
 function CascadePath({ data, title }: { data: Cascade; title: string }) {
   return (
@@ -68,6 +68,9 @@ function MechanismEntry({ record, index }: { record: MechanismRecord; index: num
           <ul className={styles.facts} aria-label={`${record.title} facts`}>
             {record.facts.map((fact) => <li key={fact}>{fact}</li>)}
           </ul>
+          <p className={styles.routeTimingNote}>
+            The messenger sequence traces the route; rhythm describes how activity unfolds over time, not another step.
+          </p>
         </div>
       </header>
 
@@ -90,7 +93,7 @@ function MechanismEntry({ record, index }: { record: MechanismRecord; index: num
         <section className={styles.relation} aria-label="Editorial connection" key={item.recordId}>
           <div className={styles.relationHeading}>
             <span className={styles.microLabel}>✦ Editorial connection</span>
-            <h3>{item.relation}</h3>
+            <h3>Could the HPA axis be one physiological route through the JD–R health-impairment process?</h3>
             {item.record && <Link href={recordHref(item.record)}>{item.record.title}<span aria-hidden="true"> ↗</span></Link>}
           </div>
           <Rich as="p" html={item.body} />
@@ -100,7 +103,7 @@ function MechanismEntry({ record, index }: { record: MechanismRecord; index: num
       <footer className={styles.entryFooter}>
         <p>
           <span>{DISCIPLINES[discipline]?.name ?? discipline}</span>
-          <span>{record.minimumReadingLabel ?? `${record.minimumReading.length} starting sources`}</span>
+          <span><span className={styles.readingLabel}>Reading guide:</span> {record.minimumReadingLabel ?? `${record.minimumReading.length} starting sources`}</span>
           <span>{record.fullSources.length} sources in the full record</span>
         </p>
         <div className={styles.actions}>
@@ -112,7 +115,7 @@ function MechanismEntry({ record, index }: { record: MechanismRecord; index: num
   );
 }
 
-export function MechanismLibrary({ records, totalRecords }: Props) {
+export function MechanismLibrary({ records }: Props) {
   const total = records.length;
 
   return (
@@ -139,7 +142,7 @@ export function MechanismLibrary({ records, totalRecords }: Props) {
 
       <section className={styles.collection} aria-labelledby="collection-title">
         <div className={styles.collectionHeading}>
-          <span className={styles.microLabel}>{`Mechanisms · ${total} of ${totalRecords} records`}</span>
+          <span className={styles.microLabel}>Mechanism profile</span>
           <h2 id="collection-title">Follow a route, then read its limits.</h2>
         </div>
         {records.map((record, index) => <MechanismEntry record={record} index={index} key={record.id} />)}

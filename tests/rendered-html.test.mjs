@@ -151,19 +151,29 @@ test("Method Library presents both canonical practices and returns to their full
 });
 
 test("Mechanism Library traces the HPA pathway and preserves its scholarly boundary", () => {
-  assert.match(mechanismLibraryHtml, /What happens/);
-  assert.match(mechanismLibraryHtml, /in between\?/);
-  assert.match(mechanismLibraryHtml, /Follow the messengers/);
+  const mechanismText = mechanismLibraryHtml
+    .replace(/<!--[\s\S]*?-->/g, " ")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ");
+  assert.match(mechanismText, /What happens/);
+  assert.match(mechanismText, /in between\?/);
+  assert.match(mechanismText, /Follow the messengers/);
   for (const stage of ["Hypothalamus", "Anterior pituitary", "Adrenal cortex", "Body and brain", "CRH", "ACTH", "cortisol"]) {
-    assert.match(mechanismLibraryHtml, new RegExp(stage));
+    assert.match(mechanismText, new RegExp(stage));
   }
-  assert.match(mechanismLibraryHtml, /negative feedback/);
-  assert.match(mechanismLibraryHtml, /Cortisol acts back on the pituitary, hypothalamus and wider brain circuitry/);
-  assert.match(mechanismLibraryHtml, /Schematic, not anatomy/);
-  assert.match(mechanismLibraryHtml, /Editorial connection/);
-  assert.match(mechanismLibraryHtml, /The two to start with today/);
-  assert.doesNotMatch(mechanismLibraryHtml, /4 starting sources/);
-  assert.match(mechanismLibraryHtml, /neither record.s cited sources make the link/);
+  assert.match(mechanismText, /negative feedback/);
+  assert.match(mechanismText, /Cortisol acts back on the pituitary, hypothalamus and wider brain circuitry/);
+  assert.match(mechanismText, /Schematic, not anatomy/);
+  assert.match(mechanismText, /Editorial connection/);
+  assert.match(mechanismText, /Mechanism profile/);
+  assert.match(mechanismText, /01 pathway/);
+  assert.doesNotMatch(mechanismText, /1 of 22 records/);
+  assert.match(mechanismText, /Reading guide: The two to start with today/);
+  assert.match(mechanismText, /The messenger sequence traces the route; rhythm describes how activity unfolds over time, not another step/);
+  assert.match(mechanismText, /Could the HPA axis be one physiological route through the JD–R health-impairment process/);
+  assert.doesNotMatch(mechanismText, /is a candidate pathway for/);
+  assert.doesNotMatch(mechanismText, /4 starting sources/);
+  assert.match(mechanismText, /neither record.s cited sources make the link/);
   assert.match(mechanismLibraryHtml, /aria-label="The HPA Axis sequence of structures"/);
   assert.match(mechanismLibraryHtml, /href="\/concept-lab\/mechanism\/hpa-axis"/);
 });
@@ -274,6 +284,14 @@ test("every landing-page library link opens the intended kind experience", async
       assert.match(html, /Reflexive Thematic Analysis/);
       assert.match(html, /fits this practice/i);
       assert.doesNotMatch(html, /<label[^>]*for="q"[^>]*>Search<\/label>/);
+      continue;
+    }
+
+    if (new URL(href, "http://localhost").searchParams.get("kind") === "mechanism") {
+      assert.match(html, /Mechanism profile/);
+      assert.doesNotMatch(html, /\d+ of \d+ records/);
+      const mechanismPaths = [...new Set([...html.matchAll(/href="(\/concept-lab\/mechanism\/[a-z0-9-]+)"/g)].map((match) => match[1]))];
+      assert.deepEqual(mechanismPaths, ["/concept-lab/mechanism/hpa-axis"], `${href} did not render exactly the mechanism record`);
       continue;
     }
 

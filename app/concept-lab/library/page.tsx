@@ -42,7 +42,7 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
 
   if (kind === "mechanism") {
     const mechanisms = RECORDS.filter((record): record is MechanismRecord => record.kind === "mechanism");
-    return <MechanismLibrary records={mechanisms} totalRecords={RECORDS.length} />;
+    return <MechanismLibrary records={mechanisms} />;
   }
 
   return (

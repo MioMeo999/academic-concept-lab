@@ -152,6 +152,13 @@
 .facts li { color: var(--pen-2); font: 500 .7rem/1.5 var(--cat); letter-spacing: .015em; }
 .facts li + li::before { padding-right: .8rem; color: var(--plum-deep); content: "·"; }
 
+.routeTimingNote {
+  max-width: 48ch;
+  margin: .55rem 0 0;
+  color: var(--pen-3);
+  font: italic 400 .73rem/1.5 var(--read);
+}
+
 .pathSection { padding: clamp(2.4rem, 4.5vw, 3.8rem) 0 0; }
 
 .pathHeading {
@@ -278,6 +285,7 @@
 
 .entryFooter > p { display: flex; flex-wrap: wrap; gap: .25rem .8rem; margin: 0; color: var(--pen-2); font: 500 .68rem/1.45 var(--cat); letter-spacing: .015em; }
 .entryFooter > p span + span::before { padding-right: .8rem; color: var(--plum-deep); content: "·"; }
+.readingLabel { color: var(--pen); font-weight: 650; }
 
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .75rem; }
 .actions :global(.savebtn) { display: inline-grid; width: 44px; height: 44px; min-width: 44px; min-height: 44px; place-items: center; color: var(--pen-2); }
