@@ -101,12 +101,12 @@ function StudyDossier({ record }: { record: PaperRecord }) {
                 <p><span>{study.location}</span><span>{study.n} participants</span></p>
               </header>
               <dl className={styles.studyDetails}>
-                <div><dt>Question</dt><dd>{study.question}</dd></div>
-                <div><dt>People / setting</dt><dd>{study.sample}</dd></div>
-                <div><dt>Method</dt><dd>{study.method}</dd></div>
-                <div><dt>Role in the package</dt><dd>{study.role}</dd></div>
+                <div className={styles.studyQuestion}><dt>Question</dt><dd>{study.question}</dd></div>
+                <div className={styles.studyMethod}><dt>Method</dt><dd>{study.method}</dd></div>
                 <div className={styles.studyResult}><dt>Reported result</dt><dd>{study.result}</dd></div>
-                <div><dt>Strength</dt><dd>{study.strength}</dd></div>
+                <div className={styles.studyContext}><dt>People / setting</dt><dd>{study.sample}</dd></div>
+                <div className={styles.studyRole}><dt>Role in the package</dt><dd>{study.role}</dd></div>
+                <div className={styles.studyStrength}><dt>Strength</dt><dd>{study.strength}</dd></div>
                 <div className={styles.studyLimit}><dt>Study boundary</dt><dd>{study.limitation}</dd></div>
               </dl>
             </section>
