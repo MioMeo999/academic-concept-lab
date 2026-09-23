@@ -32,6 +32,7 @@ for (const [pathname, expected] of [
    out of the suite, which is how the first mechanism record nearly shipped
    untested. The count assertion underneath is the backstop. */
 const libraryHtml = await (await render("/concept-lab/library")).text();
+const studyLibraryHtml = await (await render("/concept-lab/library?kind=study")).text();
 const homeHtml = await (await render("/concept-lab")).text();
 const theoryLibraryHtml = await (await render("/concept-lab/library?kind=theory")).text();
 const musicTheoryLibraryHtml = await (await render("/concept-lab/library?kind=theory&discipline=music-psych")).text();
@@ -103,6 +104,30 @@ test("statistical learning record renders its audited teaching systems", () => {
 
 test("home describes all four record kinds", () => {
   assert.match(homeHtml, /four kinds of record/i);
+});
+
+test("Study Library renders its three-study evidence dossier", () => {
+  assert.match(studyLibraryHtml, /Tuned Out or Dialed In/);
+  assert.equal((studyLibraryHtml.match(/<header class="[^"]*studyEntryHead/g) ?? []).length, 3);
+  for (const heading of [
+    "Dyadic field study",
+    "Preregistered online experiment",
+    "Preregistered two-day dyadic field experiment",
+  ]) {
+    assert.match(studyLibraryHtml, new RegExp(heading));
+  }
+  for (const section of [
+    "What is being explained?",
+    "Three studies, different kinds of leverage.",
+    "What recurs across the package?",
+    "What can the evidence carry?",
+    "Where does the argument stop?",
+  ]) {
+    assert.match(studyLibraryHtml, new RegExp(section.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  }
+  assert.match(studyLibraryHtml, /href="\/concept-lab\/study\/tuned-out-or-dialed-in"[^>]*>Read full record/);
+  assert.match(studyLibraryHtml, /href="\/concept-lab\/library"[^>]*>All record kinds/);
+  assert.match(studyLibraryHtml, /href="\/concept-lab\/saved"[^>]*>Saved records/);
 });
 
 function theoryEditorialRows(html) {
