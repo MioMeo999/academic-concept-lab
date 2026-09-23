@@ -87,7 +87,7 @@
 }
 
 .readingPrompts > span {
-  color: var(--teal);
+  color: color-mix(in srgb, var(--teal) 90%, var(--pen));
   font: 500 .62rem/1.45 var(--cat);
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -251,7 +251,7 @@
 }
 
 .controlLinks a:hover {
-  color: var(--teal);
+  color: color-mix(in srgb, var(--teal) 90%, var(--pen));
   text-decoration-color: currentColor;
 }
 
