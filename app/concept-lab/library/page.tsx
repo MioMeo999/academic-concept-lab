@@ -9,6 +9,7 @@ import { ReadingCompass } from "../_components/VisualAtlas";
 import { TheoryLibrary } from "./TheoryLibrary";
 import { StudyLibrary } from "./StudyLibrary";
 import { MethodLibrary } from "./MethodLibrary";
+import { MechanismLibrary, type MechanismRecord } from "./MechanismLibrary";
 
 export const metadata: Metadata = { title: "Library" };
 
@@ -37,6 +38,11 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
   if (kind === "method") {
     const methods = RECORDS.filter((record): record is MethodRecord => record.kind === "method");
     return <MethodLibrary records={methods} />;
+  }
+
+  if (kind === "mechanism") {
+    const mechanisms = RECORDS.filter((record): record is MechanismRecord => record.kind === "mechanism");
+    return <MechanismLibrary records={mechanisms} />;
   }
 
   return (
