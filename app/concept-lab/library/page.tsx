@@ -7,6 +7,7 @@ import { DisciplineNav } from "../_components/DisciplineNav";
 import { Crumbs } from "../_components/RecordShell";
 import { ReadingCompass } from "../_components/VisualAtlas";
 import { TheoryLibrary } from "./TheoryLibrary";
+import { StudyLibrary } from "./StudyLibrary";
 
 export const metadata: Metadata = { title: "Library" };
 
@@ -26,6 +27,10 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
         initialDiscipline={discipline}
       />
     );
+  }
+
+  if (kind === "study") {
+    return <StudyLibrary records={RECORDS.filter((record) => record.kind === "study")} totalRecords={RECORDS.length} />;
   }
 
   return (
