@@ -175,6 +175,7 @@
 
 .sourceActions { display: flex; align-items: center; gap: .7rem 1rem; margin-top: .75rem; }
 .sourceActions :global(.savebtn) { min-width: 44px; min-height: 44px; }
+.sourceActions :global(.savebtn[aria-pressed="true"]) { color: var(--gold-deep); }
 .sourceActions :global(.savebtn):hover,
 .sourceActions :global(.savebtn):focus-visible { color: var(--red-deep); }
 .recordLink { display: inline-flex; min-height: 44px; align-items: center; }
