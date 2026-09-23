@@ -161,6 +161,8 @@ test("Mechanism Library traces the HPA pathway and preserves its scholarly bound
   assert.match(mechanismLibraryHtml, /Cortisol acts back on the pituitary, hypothalamus and wider brain circuitry/);
   assert.match(mechanismLibraryHtml, /Schematic, not anatomy/);
   assert.match(mechanismLibraryHtml, /Editorial connection/);
+  assert.match(mechanismLibraryHtml, /The two to start with today/);
+  assert.doesNotMatch(mechanismLibraryHtml, /4 starting sources/);
   assert.match(mechanismLibraryHtml, /neither record.s cited sources make the link/);
   assert.match(mechanismLibraryHtml, /aria-label="The HPA Axis sequence of structures"/);
   assert.match(mechanismLibraryHtml, /href="\/concept-lab\/mechanism\/hpa-axis"/);

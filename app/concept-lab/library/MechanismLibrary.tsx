@@ -100,7 +100,7 @@ function MechanismEntry({ record, index }: { record: MechanismRecord; index: num
       <footer className={styles.entryFooter}>
         <p>
           <span>{DISCIPLINES[discipline]?.name ?? discipline}</span>
-          <span>{record.minimumReading.length} starting sources</span>
+          <span>{record.minimumReadingLabel ?? `${record.minimumReading.length} starting sources`}</span>
           <span>{record.fullSources.length} sources in the full record</span>
         </p>
         <div className={styles.actions}>
