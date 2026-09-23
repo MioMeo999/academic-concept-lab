@@ -49,11 +49,13 @@ function PracticeOrientation({ records }: Props) {
         {records.map((record) => (
           <a className={styles.orientationRow} href={`#practice-${record.id}`} key={record.id}>
             <span>{record.abbr ?? record.title}</span>
-            <p>{record.id === "ipa"
-              ? "One person’s sense-making, worked through the case before looking across cases."
-              : record.id === "reflexive-thematic-analysis"
-                ? "Patterns of shared meaning developed through recursive work across a dataset."
-                : record.oneSentence}</p>
+            {record.id === "ipa" ? (
+              <p><strong className={styles.orientationLead}>One person’s sense-making</strong>, worked through the case before looking across cases.</p>
+            ) : record.id === "reflexive-thematic-analysis" ? (
+              <p><strong className={styles.orientationLead}>Patterns of shared meaning</strong> developed through recursive movement across a dataset.</p>
+            ) : (
+              <p>{record.oneSentence}</p>
+            )}
             <span className={styles.rowArrow} aria-hidden="true">↓</span>
           </a>
         ))}
@@ -123,7 +125,7 @@ function IpaProfile({ record, index }: { record: MethodRecord; index: number }) 
             </ol>
             {record.cardinalRule && <p className={styles.boundaryNote}>{record.cardinalRule}</p>}
           </div>
-          <aside className={styles.closePass} aria-labelledby={`close-pass-${record.id}`}>
+          <div className={styles.closePass}>
             <span className={styles.microLabel}>The close pass</span>
             <h4 id={`close-pass-${record.id}`}>Four ways of reading the same material</h4>
             {record.craftLede && <Rich as="p" className={styles.closePassIntro} html={record.craftLede} />}
@@ -134,7 +136,7 @@ function IpaProfile({ record, index }: { record: MethodRecord; index: number }) 
                 </div>
               ))}
             </dl>
-          </aside>
+          </div>
         </div>
       </section>
 
@@ -286,7 +288,7 @@ export function MethodLibrary({ records }: Props) {
       <Crumbs items={[{ label: "Home", href: "/concept-lab" }, { label: "Library", href: "/concept-lab/library" }, { label: "Method" }]} />
       <header className={styles.hero}>
         <div className={styles.heroIdentity}>
-          <span className={styles.microLabel}>Knowledge form · method · {records.length} practices</span>
+          <span className={`${styles.microLabel} ${styles.heroKind}`}>Knowledge form · <strong>Method</strong> · {records.length} practices</span>
           <h1>How inquiry<br /><em>gets done.</em></h1>
         </div>
         <div className={styles.heroReading}>

@@ -7,10 +7,18 @@
 
 .microLabel {
   color: var(--pen-3);
-  font: 550 .62rem/1.45 var(--cat);
+  font: 580 .64rem/1.45 var(--cat);
   letter-spacing: .105em;
   text-transform: uppercase;
 }
+
+.heroKind {
+  color: var(--method-ink);
+  font-size: .68rem;
+  font-weight: 650;
+  letter-spacing: .12em;
+}
+.heroKind strong { font-weight: 800; }
 
 .hero {
   display: grid;
@@ -110,23 +118,30 @@
   font: 430 clamp(1.8rem, 3vw, 2.7rem)/1.06 var(--read);
   letter-spacing: -.045em;
 }
+.orientationHeading > .microLabel {
+  color: var(--method-ink);
+  font-size: .68rem;
+  font-weight: 650;
+  letter-spacing: .12em;
+}
 .orientationRows { border-top: 1px solid var(--hair); }
 .orientationRow {
   display: grid;
   grid-template-columns: minmax(6rem, .23fr) minmax(0, 1fr) 1rem;
   gap: .7rem 1rem;
   align-items: baseline;
-  padding: .85rem 0;
+  padding: .95rem 0;
   border-bottom: 1px solid var(--hair);
   text-decoration: none;
 }
 .orientationRow > span:first-child {
   color: var(--method-ink);
-  font: 650 .61rem/1.4 var(--cat);
+  font: 700 .67rem/1.4 var(--cat);
   letter-spacing: .07em;
   text-transform: uppercase;
 }
-.orientationRow p { margin: 0; color: var(--pen-2); font: 400 1rem/1.48 var(--read); }
+.orientationRow p { margin: 0; color: var(--pen-2); font: 400 1rem/1.52 var(--read); }
+.orientationLead { color: var(--pen); font-weight: 650; }
 .orientationRow:hover p { color: var(--pen); }
 .rowArrow { color: var(--gold-deep); }
 
@@ -170,7 +185,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: .25rem .72rem;
-  margin: .8rem 0 0;
+  margin: .55rem 0 0;
   padding: 0;
   list-style: none;
 }
@@ -279,7 +294,7 @@
 .returnNote { margin: .7rem 0 0; padding-left: .8rem; border-left: 2px solid var(--gold-deep); color: var(--pen-2); font: italic 400 .86rem/1.5 var(--read); }
 
 .rtaJudgement { display: grid; grid-template-columns: minmax(13rem, .55fr) minmax(0, 1.45fr); gap: clamp(1.8rem, 4vw, 4rem); align-items: start; padding: clamp(2.4rem, 4.5vw, 3.8rem) 0; border-bottom: 1px solid var(--hair-2); }
-.rtaJudgementIntro > p { margin: .65rem 0 0; color: var(--pen-3); font: 400 .8rem/1.5 var(--read); }
+.rtaJudgementIntro > p { margin: .65rem 0 0; color: var(--pen-3); font: 400 .83rem/1.52 var(--read); }
 .rtaJudgementIntro h3 { font-size: clamp(1.65rem, 2.8vw, 2.25rem); }
 .codingExample { border-top: 1px solid var(--hair); }
 .codingExample > div { display: grid; grid-template-columns: minmax(7rem, .35fr) minmax(0, 1fr); gap: .7rem 1.2rem; padding: .85rem 0; border-bottom: 1px solid var(--hair-2); }
@@ -331,24 +346,37 @@
   .practiceLinks ul { display: grid; grid-template-columns: 1fr 1fr; gap: .2rem .65rem; }
   .practiceLinks a { gap: .35rem; font-size: .85rem; }
   .practiceLinks a > span:last-child { margin-left: auto; }
-  .orientationRow { grid-template-columns: minmax(4.8rem, .25fr) minmax(0, 1fr) .75rem; gap: .45rem .65rem; }
-  .orientationRow > span:first-child { font-size: .55rem; }
-  .orientationRow p { font-size: .91rem; }
+  .orientationHeading > .microLabel { display: inline-block; margin-bottom: .2rem; }
+  .orientationRow { grid-template-columns: minmax(3.35rem, 3.35rem) minmax(0, 1fr) .75rem; gap: .45rem .55rem; align-items: start; padding: 1rem 0; }
+  .orientationRow > span:first-child { padding-top: .08rem; font-size: .63rem; line-height: 1.35; }
+  .orientationRow p { font-size: .94rem; line-height: 1.5; }
   .profile { padding-block: 3rem; }
   .profileIdentity h2 { font-size: clamp(2.45rem, 11vw, 3.45rem); }
   .profileHook { font-size: 1.15rem; }
+  .questionSection { padding-block: 2.65rem; }
+  .sectionHeading { margin-bottom: 1.45rem; }
   .questionPair { grid-template-columns: minmax(0, 1fr); gap: 1.2rem; }
   .questionFit blockquote,
   .questionNoFit blockquote { font-size: 1.15rem; }
+  .ipaWork { padding-block: 2.8rem; }
   .procedureStep { grid-template-columns: 1.7rem minmax(0, 1fr); gap: .4rem; }
   .closePass dl > div { grid-template-columns: minmax(5.3rem, .7fr) minmax(0, 1fr); }
+  .judgementSection { gap: 1.4rem; padding-block: 2.8rem; }
+  .ipaAccount { gap: 1.5rem; padding-top: 2.8rem; }
+  .accountResult { padding-bottom: 1.2rem; border-bottom: 1px solid var(--hair); }
   .qualityField ol { grid-template-columns: minmax(0, 1fr); gap: .7rem; }
+  .qualityField li { padding-top: .7rem; }
   .schoolNote { grid-template-columns: minmax(0, 1fr); gap: .35rem; }
+  .schoolNote { padding-block: 1.35rem; }
   .schoolNote .microLabel { grid-row: auto; }
+  .rtaWork { gap: 1.9rem; padding-block: 2.8rem; }
+  .rtaPhases { padding-top: .35rem; border-top: 1px solid var(--hair); }
   .rtaPhases ol { grid-template-columns: minmax(0, 1fr); }
   .rtaPhases li { min-height: 0; }
-  .codingExample > div { grid-template-columns: minmax(0, 1fr); gap: .25rem; }
-  .rtaAccount { grid-template-columns: minmax(0, 1fr); gap: 1.4rem; }
+  .rtaJudgement { gap: 1.35rem; padding-block: 2.8rem; }
+  .codingExample > div { grid-template-columns: minmax(0, 1fr); gap: .25rem; padding-block: .95rem; }
+  .codingExample > div:last-child { padding-top: 1.1rem; border-top: 1px solid var(--gold-deep); }
+  .rtaAccount { grid-template-columns: minmax(0, 1fr); gap: 1.55rem; padding-top: 2.8rem; }
   .rtaAccount > div + div { padding: 1rem 0 0; border-top: 1px solid var(--hair); border-left: 0; }
   .actions { gap: .3rem .65rem; }
 }
