@@ -35,6 +35,7 @@ const libraryHtml = await (await render("/concept-lab/library")).text();
 const studyLibraryHtml = await (await render("/concept-lab/library?kind=study")).text();
 const methodLibraryHtml = await (await render("/concept-lab/library?kind=method")).text();
 const mechanismLibraryHtml = await (await render("/concept-lab/library?kind=mechanism")).text();
+const hpaMechanismHtml = await (await render("/concept-lab/mechanism/hpa-axis")).text();
 const homeHtml = await (await render("/concept-lab")).text();
 const theoryLibraryHtml = await (await render("/concept-lab/library?kind=theory")).text();
 const musicTheoryLibraryHtml = await (await render("/concept-lab/library?kind=theory&discipline=music-psych")).text();
@@ -169,6 +170,8 @@ test("Mechanism Library traces the HPA pathway and preserves its scholarly bound
   assert.match(mechanismText, /01 pathway/);
   assert.doesNotMatch(mechanismText, /1 of 22 records/);
   assert.match(mechanismText, /Reading guide: The two to start with today/);
+  assert.match(mechanismText, /The sequence and direction of travel are meaningful; organ shape, position and scale are not depicted and should not be inferred/);
+  assert.doesNotMatch(mechanismText, /The vertical order and the direction of travel are real/);
   assert.match(mechanismText, /The messenger sequence traces the route; rhythm describes how activity unfolds over time, not another step/);
   assert.match(mechanismText, /Could the HPA axis be one physiological route through the JD–R health-impairment process/);
   assert.doesNotMatch(mechanismText, /is a candidate pathway for/);
@@ -176,6 +179,12 @@ test("Mechanism Library traces the HPA pathway and preserves its scholarly bound
   assert.match(mechanismText, /neither record.s cited sources make the link/);
   assert.match(mechanismLibraryHtml, /aria-label="The HPA Axis sequence of structures"/);
   assert.match(mechanismLibraryHtml, /href="\/concept-lab\/mechanism\/hpa-axis"/);
+});
+
+test("HPA detail page preserves the canonical cascade caption", () => {
+  assert.match(hpaMechanismHtml, /The vertical order and the direction of travel are real/);
+  assert.match(hpaMechanismHtml, /The dashed line is negative feedback/);
+  assert.doesNotMatch(hpaMechanismHtml, /The sequence and direction of travel are meaningful/);
 });
 
 function theoryEditorialRows(html) {

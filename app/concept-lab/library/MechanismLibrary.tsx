@@ -11,6 +11,11 @@ export type MechanismRecord = TheoryRecord & { kind: "mechanism" };
 
 type Props = { records: MechanismRecord[] };
 
+// The Library pathway changes orientation across breakpoints. Keep this
+// presentation-safe caption local; the individual HPA record retains its
+// canonical caption in content/hpa-axis.ts.
+const LIBRARY_CASCADE_CAPTION = "Schematic, not anatomy. The sequence and direction of travel are meaningful; organ shape, position and scale are not depicted and should not be inferred. The dashed line is negative feedback — cortisol acting back on the pituitary, hypothalamus and wider brain circuitry to regulate further activity, which is what makes this a regulated system rather than a one-way chain.";
+
 function CascadePath({ data, title }: { data: Cascade; title: string }) {
   return (
     <figure className={styles.pathFigure} aria-label={`${title} pathway schematic`}>
@@ -39,7 +44,7 @@ function CascadePath({ data, title }: { data: Cascade; title: string }) {
       </div>
       <figcaption className={styles.pathCaption}>
         <span>▲ Schematic · order and direction, not anatomy</span>
-        <p>{data.caption}</p>
+        <p>{LIBRARY_CASCADE_CAPTION}</p>
       </figcaption>
     </figure>
   );
