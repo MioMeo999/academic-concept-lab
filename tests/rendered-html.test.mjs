@@ -34,6 +34,7 @@ for (const [pathname, expected] of [
 const libraryHtml = await (await render("/concept-lab/library")).text();
 const studyLibraryHtml = await (await render("/concept-lab/library?kind=study")).text();
 const methodLibraryHtml = await (await render("/concept-lab/library?kind=method")).text();
+const mechanismLibraryHtml = await (await render("/concept-lab/library?kind=mechanism")).text();
 const homeHtml = await (await render("/concept-lab")).text();
 const theoryLibraryHtml = await (await render("/concept-lab/library?kind=theory")).text();
 const musicTheoryLibraryHtml = await (await render("/concept-lab/library?kind=theory&discipline=music-psych")).text();
@@ -147,6 +148,22 @@ test("Method Library presents both canonical practices and returns to their full
   assert.match(methodLibraryHtml, /href="\/concept-lab\/library"[^>]*>All record kinds/);
   assert.match(methodLibraryHtml, /href="\/concept-lab\/saved"[^>]*>Saved records/);
   assert.match(methodLibraryHtml, /aria-pressed="false"/);
+});
+
+test("Mechanism Library traces the HPA pathway and preserves its scholarly boundary", () => {
+  assert.match(mechanismLibraryHtml, /What happens/);
+  assert.match(mechanismLibraryHtml, /in between\?/);
+  assert.match(mechanismLibraryHtml, /Follow the messengers/);
+  for (const stage of ["Hypothalamus", "Anterior pituitary", "Adrenal cortex", "Body and brain", "CRH", "ACTH", "cortisol"]) {
+    assert.match(mechanismLibraryHtml, new RegExp(stage));
+  }
+  assert.match(mechanismLibraryHtml, /negative feedback/);
+  assert.match(mechanismLibraryHtml, /Cortisol acts back on the pituitary, hypothalamus and wider brain circuitry/);
+  assert.match(mechanismLibraryHtml, /Schematic, not anatomy/);
+  assert.match(mechanismLibraryHtml, /Editorial connection/);
+  assert.match(mechanismLibraryHtml, /neither record.s cited sources make the link/);
+  assert.match(mechanismLibraryHtml, /aria-label="The HPA Axis sequence of structures"/);
+  assert.match(mechanismLibraryHtml, /href="\/concept-lab\/mechanism\/hpa-axis"/);
 });
 
 function theoryEditorialRows(html) {

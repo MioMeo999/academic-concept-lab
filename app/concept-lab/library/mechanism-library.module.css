@@ -1,0 +1,375 @@
+.page {
+  padding-bottom: clamp(3rem, 7vw, 6rem);
+}
+
+.microLabel {
+  color: var(--plum-deep);
+  font: 600 .66rem/1.45 var(--cat);
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.opening {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(13rem, .5fr);
+  gap: clamp(2rem, 7vw, 7rem);
+  align-items: end;
+  padding: clamp(2.5rem, 6vw, 5.25rem) 0 clamp(2.2rem, 4vw, 3.6rem);
+  border-bottom: 1px solid var(--hair);
+}
+
+.openingCopy h1 {
+  max-width: 15ch;
+  margin: .65rem 0 0;
+  color: var(--pen);
+  font: 430 clamp(3.2rem, 7vw, 6.4rem)/.98 var(--read);
+  letter-spacing: -.06em;
+}
+
+.openingCopy h1 em { font-weight: 400; }
+
+.openingCopy > p {
+  max-width: 54ch;
+  margin: 1rem 0 0;
+  color: var(--pen-2);
+  font: 400 clamp(1.03rem, 1.5vw, 1.18rem)/1.58 var(--read);
+}
+
+.collectionNote {
+  display: grid;
+  gap: .35rem;
+  justify-items: start;
+  padding: 0 0 .35rem 1rem;
+  border-left: 2px solid var(--plum-deep);
+}
+
+.collectionNote strong {
+  color: var(--pen);
+  font: 430 1.75rem/1.15 var(--read);
+}
+
+.collectionNote > span:last-child {
+  color: var(--pen-3);
+  font: 400 .8rem/1.45 var(--cat);
+}
+
+.libraryNav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .3rem 1.2rem;
+  padding: .35rem 0;
+  border-bottom: 1px solid var(--hair);
+}
+
+.libraryNav a,
+.pageEnd a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: var(--pen-2);
+  font: 550 .66rem/1.4 var(--cat);
+  letter-spacing: .06em;
+  text-decoration: underline;
+  text-decoration-color: var(--hair-2);
+  text-underline-offset: .28em;
+  text-transform: uppercase;
+}
+
+.libraryNav a:hover,
+.pageEnd a:hover { color: var(--plum-deep); text-decoration-color: currentColor; }
+
+.collection { padding-top: clamp(2rem, 4vw, 3.2rem); }
+
+.collectionHeading {
+  display: grid;
+  grid-template-columns: minmax(12rem, .72fr) minmax(0, 1fr);
+  gap: 1.4rem 3rem;
+  align-items: baseline;
+  padding-bottom: clamp(1.35rem, 3vw, 2.25rem);
+  border-bottom: 1px solid var(--hair-2);
+}
+
+.collectionHeading h2 {
+  max-width: 24ch;
+  margin: 0;
+  color: var(--pen);
+  font: 430 clamp(1.9rem, 3.3vw, 3rem)/1.08 var(--read);
+  letter-spacing: -.045em;
+}
+
+.entry { padding: clamp(2.5rem, 5vw, 4.5rem) 0; border-bottom: 1px solid var(--hair); }
+
+.entryHeader {
+  display: grid;
+  grid-template-columns: minmax(0, .95fr) minmax(18rem, .8fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: end;
+  padding-bottom: clamp(1.7rem, 3.8vw, 3rem);
+  border-bottom: 1px solid var(--hair-2);
+}
+
+.entryIndex {
+  color: var(--plum-deep);
+  font: 600 .6rem/1.45 var(--cat);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.entryIdentity h2 {
+  max-width: 18ch;
+  margin: .55rem 0 0;
+  color: var(--pen);
+  font: 430 clamp(2.6rem, 5.5vw, 4.8rem)/.98 var(--read);
+  letter-spacing: -.055em;
+}
+
+.hook {
+  max-width: 43ch;
+  margin: .8rem 0 0;
+  color: var(--pen);
+  font: italic 400 clamp(1.1rem, 1.8vw, 1.4rem)/1.42 var(--read);
+}
+
+.entryOrientation { max-width: 38rem; }
+.entryOrientation > .microLabel { color: var(--plum-deep); }
+
+.entryOrientation > p {
+  margin: .55rem 0 0;
+  color: var(--pen-2);
+  font: 400 .97rem/1.58 var(--read);
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .28rem .8rem;
+  margin: .85rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.facts li { color: var(--pen-2); font: 500 .7rem/1.5 var(--cat); letter-spacing: .015em; }
+.facts li + li::before { padding-right: .8rem; color: var(--plum-deep); content: "·"; }
+
+.pathSection { padding: clamp(2.4rem, 4.5vw, 3.8rem) 0 0; }
+
+.pathHeading {
+  display: grid;
+  grid-template-columns: minmax(13rem, .75fr) minmax(0, 1.25fr);
+  gap: 1.5rem 4rem;
+  align-items: end;
+  margin-bottom: clamp(1.8rem, 4vw, 3rem);
+}
+
+.pathHeading h3 {
+  max-width: 20ch;
+  margin: .4rem 0 0;
+  color: var(--pen);
+  font: 430 clamp(1.8rem, 3.2vw, 2.6rem)/1.08 var(--read);
+  letter-spacing: -.045em;
+}
+
+.pathHeading > p {
+  max-width: 65ch;
+  margin: 0;
+  color: var(--pen-3);
+  font: italic 400 .84rem/1.55 var(--read);
+}
+
+.pathFigure { margin: 0; }
+
+.stations {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, .94fr) minmax(0, 1.12fr) minmax(0, 1.12fr) minmax(0, .94fr);
+  gap: clamp(1rem, 2.2vw, 2rem);
+  margin: 0;
+  padding: .3rem 0 0;
+  list-style: none;
+}
+
+.station {
+  position: relative;
+  min-width: 0;
+  padding-right: .45rem;
+}
+
+.station::before { display: none; }
+
+.station h3 {
+  margin: .7rem 0 0;
+  color: var(--pen);
+  font: 430 clamp(1.1rem, 1.7vw, 1.4rem)/1.15 var(--read);
+  letter-spacing: -.02em;
+}
+
+.station > p:not(.messenger) { min-height: 3.1em; margin: .45rem 0 0; color: var(--pen-2); font: 400 .84rem/1.5 var(--read); }
+
+.messenger {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: .55rem;
+  margin: 1rem 0 0;
+  padding-top: .4rem;
+  border-top: 1px solid var(--plum-deep);
+  color: var(--plum-deep);
+}
+
+.messengerArrow { color: var(--plum-deep); font: 500 1rem/1 var(--read); }
+.messenger strong { display: block; font: 650 .85rem/1.3 var(--cat); letter-spacing: .04em; }
+.messenger small { display: block; margin-top: .08rem; color: var(--pen-2); font: 400 .65rem/1.35 var(--cat); }
+
+.feedback {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .35rem .75rem;
+  margin-top: clamp(1.4rem, 3vw, 2.2rem);
+  padding: .65rem 0 .35rem;
+  border-top: 1px dashed var(--plum-deep);
+  color: var(--pen-2);
+  font: 400 .75rem/1.45 var(--cat);
+}
+
+.feedbackLoop { color: var(--plum-deep); font: 500 1.25rem/1 var(--read); }
+.feedback strong { color: var(--plum-deep); font-weight: 650; }
+.feedback > span:last-child { color: var(--pen-2); }
+
+.pathCaption {
+  max-width: 92ch;
+  margin-top: 1rem;
+  padding-left: .8rem;
+  border-left: 2px solid var(--plum-deep);
+}
+
+.pathCaption > span { color: var(--plum-deep); font: 600 .55rem/1.45 var(--cat); letter-spacing: .08em; text-transform: uppercase; }
+.pathCaption p { margin: .3rem 0 0; color: var(--pen-2); font: 400 .78rem/1.55 var(--read); }
+
+.noPathway { max-width: 70ch; margin: 2rem 0 0; color: var(--pen-2); font: 400 .9rem/1.55 var(--read); }
+
+.relation {
+  display: grid;
+  grid-template-columns: minmax(13rem, .52fr) minmax(0, 1.48fr);
+  gap: 1.2rem clamp(2rem, 6vw, 6rem);
+  align-items: start;
+  margin-top: clamp(2.2rem, 4vw, 3.2rem);
+  padding: .4rem 0 .2rem 1rem;
+  border-left: 2px solid var(--plum-deep);
+}
+
+.relationHeading h3 { max-width: 21ch; margin: .42rem 0 0; color: var(--pen); font: 430 1.3rem/1.2 var(--read); }
+.relationHeading a { display: inline-flex; min-height: 44px; align-items: center; margin-top: .45rem; color: var(--pen-2); font: 550 .63rem/1.4 var(--cat); text-decoration: underline; text-decoration-color: var(--hair-2); text-underline-offset: .25em; }
+.relationHeading a:hover { color: var(--plum-deep); text-decoration-color: currentColor; }
+.relation > p { margin: 0; color: var(--pen-2); font: 400 .84rem/1.58 var(--read); }
+.relation > p strong { color: var(--pen); font-weight: 650; }
+
+.entryFooter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem 2rem;
+  margin-top: clamp(2rem, 4vw, 3.2rem);
+  padding-top: .6rem;
+  border-top: 1px solid var(--hair-2);
+}
+
+.entryFooter > p { display: flex; flex-wrap: wrap; gap: .25rem .8rem; margin: 0; color: var(--pen-2); font: 500 .68rem/1.45 var(--cat); letter-spacing: .015em; }
+.entryFooter > p span + span::before { padding-right: .8rem; color: var(--plum-deep); content: "·"; }
+
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .75rem; }
+.actions :global(.savebtn) { display: inline-grid; width: 44px; height: 44px; min-width: 44px; min-height: 44px; place-items: center; color: var(--pen-2); }
+.actions :global(.savebtn[aria-pressed="true"]),
+.actions :global(.savebtn:hover),
+.actions :global(.savebtn:focus-visible) { color: var(--plum-deep); }
+
+.fullRecord {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: .35rem;
+  color: var(--pen-2);
+  font: 600 .66rem/1.4 var(--cat);
+  letter-spacing: .055em;
+  text-decoration: underline;
+  text-decoration-color: var(--hair-2);
+  text-underline-offset: .28em;
+  text-transform: uppercase;
+}
+
+.fullRecord:hover { color: var(--plum-deep); text-decoration-color: currentColor; }
+
+.pageEnd {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem 2rem;
+  padding-top: 1.5rem;
+}
+
+.pageEnd > p { max-width: 60ch; margin: 0; color: var(--pen-3); font: italic 400 .9rem/1.55 var(--read); }
+.pageEnd nav { display: flex; flex-wrap: wrap; gap: .3rem 1rem; }
+
+@media (max-width: 820px) {
+  .opening { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; align-items: start; }
+  .openingCopy h1 { max-width: 14ch; }
+  .collectionNote { max-width: 18rem; }
+  .collectionHeading { grid-template-columns: minmax(0, 1fr); gap: .6rem; }
+  .entryHeader { grid-template-columns: minmax(0, 1fr); gap: 1.3rem; }
+  .entryIdentity h2 { max-width: 20ch; }
+  .pathHeading { grid-template-columns: minmax(0, 1fr); gap: .8rem; }
+  .stations { grid-template-columns: minmax(0, 1fr); gap: 1rem; padding: 0 0 0 1.1rem; }
+  .stations::before { position: absolute; top: .2rem; bottom: .2rem; left: .24rem; width: 1px; background: var(--plum-deep); content: ""; }
+  .station { padding: 0 0 0 .35rem; }
+  .station::before { position: absolute; top: .32rem; left: -.86rem; display: block; width: .52rem; height: 1px; background: var(--plum-deep); content: ""; }
+  .station > p:not(.messenger) { min-height: 0; }
+  .messenger { width: fit-content; max-width: 100%; margin: .65rem 0 .25rem .2rem; padding: .25rem 0 .25rem .65rem; border-top: 0; border-left: 1px solid var(--plum-deep); }
+  .relation { grid-template-columns: minmax(0, .65fr) minmax(0, 1.35fr); }
+}
+
+@media (max-width: 540px) {
+  .opening { padding-top: 2.2rem; }
+  .openingCopy h1 { font-size: clamp(2.75rem, 12.5vw, 4.2rem); }
+  .openingCopy > p { font-size: 1rem; }
+  .libraryNav { gap: 0 .5rem; }
+  .libraryNav a { font-size: .58rem; }
+  .collection { padding-top: 2rem; }
+  .collectionHeading h2 { font-size: 1.8rem; }
+  .entry { padding-block: 2.5rem; }
+  .entryHeader { gap: 1.1rem; }
+  .entryIdentity h2 { font-size: clamp(2.45rem, 11vw, 3.5rem); }
+  .hook { font-size: 1.08rem; }
+  .facts { gap: .25rem .5rem; margin-top: .65rem; }
+  .facts li { font-size: .66rem; }
+  .facts li + li::before { padding-right: .5rem; }
+  .pathSection { padding-top: 2.4rem; }
+  .stations { gap: 1.2rem; }
+  .station { padding-left: .35rem; }
+  .station h3 { margin-top: .42rem; font-size: 1.28rem; }
+  .station > p:not(.messenger) { min-height: 0; margin-top: .25rem; }
+  .messenger { min-height: 40px; width: min(100%, 18rem); margin: .65rem 0 .1rem; }
+  .station:last-child .messenger { display: none; }
+  .feedback { gap: .3rem .55rem; margin-top: 1.4rem; }
+  .pathCaption { margin-top: .8rem; }
+  .pathCaption p { font-size: .73rem; }
+  .relation { grid-template-columns: minmax(0, 1fr); gap: .55rem; margin-top: 2rem; padding-left: .75rem; }
+  .entryFooter { align-items: flex-start; gap: .75rem; margin-top: 2rem; }
+  .entryFooter > p { gap: .25rem .5rem; }
+  .entryFooter > p span + span::before { padding-right: .5rem; }
+  .actions { width: 100%; }
+  .fullRecord { font-size: .58rem; }
+  .pageEnd { align-items: flex-start; }
+  .pageEnd nav { display: grid; grid-template-columns: 1fr; gap: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page *, .page *::before, .page *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
