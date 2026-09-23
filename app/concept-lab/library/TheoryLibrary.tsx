@@ -45,7 +45,6 @@ function TheoryRecordRow({ record, index }: { record: AnyRecord; index: number }
     >
       <span className={styles.recordNumber}>{String(index + 1).padStart(2, "0")}</span>
       <div className={styles.recordIdentity}>
-        <p className={styles.recordMeta}>{discipline?.name ?? record.discipline}</p>
         <h4>
           <Link href={recordHref(record)}>{record.title}</Link>
         </h4>
@@ -53,6 +52,7 @@ function TheoryRecordRow({ record, index }: { record: AnyRecord; index: number }
       </div>
       <div className={styles.recordReading}>
         {record.oneSentence && <p>{record.oneSentence}</p>}
+        <p className={styles.recordMeta}>{discipline?.name ?? record.discipline}</p>
         <div className={styles.factLine} aria-label="Record facts">
           {record.facts.slice(0, 3).map((fact) => <span key={fact}>{fact}</span>)}
         </div>
@@ -200,7 +200,32 @@ export function TheoryLibrary({
   const [query, setQuery] = useState("");
   const { ids, ready } = useSaved();
 
-  const indexById = useMemo(() => new Map(records.map((record, index) => [record.id, index])), [records]);
+  const indexById = useMemo(() => {
+    const organisationalGroups = getPresentationGroupsForDiscipline(records, "ob");
+    const groupedOrganisationalRecords = organisationalGroups.flatMap((group) => group.records);
+    const groupedOrganisationalIds = new Set(groupedOrganisationalRecords.map((record) => record.id));
+    const ungroupedOrganisationalRecords = records.filter(
+      (record) => record.discipline === "ob" && !groupedOrganisationalIds.has(record.id),
+    );
+
+    const musicBranches = groupRecordsByBranch(records, "music-psych");
+    const branchedMusicRecords = musicBranches.flatMap((group) => group.records);
+    const branchedMusicIds = new Set(branchedMusicRecords.map((record) => record.id));
+    const unbranchedMusicRecords = getUnbranchedRecords(records, "music-psych").filter(
+      (record) => !branchedMusicIds.has(record.id),
+    );
+
+    const orderedRecords = [
+      ...groupedOrganisationalRecords,
+      ...ungroupedOrganisationalRecords,
+      ...branchedMusicRecords,
+      ...unbranchedMusicRecords,
+    ];
+    const orderedIds = new Set(orderedRecords.map((record) => record.id));
+    const remainingRecords = records.filter((record) => !orderedIds.has(record.id));
+
+    return new Map([...orderedRecords, ...remainingRecords].map((record, index) => [record.id, index]));
+  }, [records]);
 
   const visible = useMemo(() => {
     const needle = query.trim().toLowerCase();
