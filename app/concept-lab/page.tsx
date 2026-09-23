@@ -55,13 +55,6 @@ const HOME_ART = {
   atlas: "/visual-language/home/home-atlas-head-globe.webp",
 } as const;
 
-const DISCIPLINE_FRAGMENTS: Record<string, "organisation" | "music" | "method" | "mechanism"> = {
-  ob: "organisation",
-  "music-psych": "music",
-  "qual-methods": "method",
-  psychobiology: "mechanism",
-};
-
 function ArtFigure({
   src,
   alt,
@@ -108,10 +101,10 @@ function HomeStarter({ record, why, index }: { record: AnyRecord; why: string; i
           <p>{discipline?.name ?? record.discipline}{branch ? " · " + branch.label : ""} · {record.facts.slice(0, 2).join(" · ")}</p>
         </details>
       </div>
-      <aside className={home.readingNote}>
+      <div className={home.readingNote}>
         <span className={system.meta}>Why begin here</span>
         <p>{why}</p>
-      </aside>
+      </div>
       <div className={[system.actions, home.recordActions].join(" ")}>
         <SaveButton id={record.id} />
         <Link href={recordHref(record)} className={system.link}>{kind.cta} <span aria-hidden="true">↗</span></Link>
@@ -160,10 +153,10 @@ export default function ConceptLabHome() {
             <Link href="/concept-lab/library" className={system.link}>Browse the whole atlas <span aria-hidden="true">→</span></Link>
           </SectionHeading>
           <div className={home.disciplineEditorial}>
-            <aside className={home.disciplineMargin}>
+            <div className={home.disciplineMargin}>
               <span className={system.meta}>Atlas index</span>
               <p>Fields are not boxes. They are different positions from which the same problem can be read.</p>
-            </aside>
+            </div>
             <ol className={home.disciplineList}>
               {disciplineCards.map(({ d, n, orientation }, index) => (
                 <li key={d.id} data-discipline={d.id} className={home.disciplineRow}>
