@@ -33,6 +33,7 @@ for (const [pathname, expected] of [
    untested. The count assertion underneath is the backstop. */
 const libraryHtml = await (await render("/concept-lab/library")).text();
 const studyLibraryHtml = await (await render("/concept-lab/library?kind=study")).text();
+const methodLibraryHtml = await (await render("/concept-lab/library?kind=method")).text();
 const homeHtml = await (await render("/concept-lab")).text();
 const theoryLibraryHtml = await (await render("/concept-lab/library?kind=theory")).text();
 const musicTheoryLibraryHtml = await (await render("/concept-lab/library?kind=theory&discipline=music-psych")).text();
@@ -130,6 +131,24 @@ test("Study Library renders its three-study evidence dossier", () => {
   assert.match(studyLibraryHtml, /href="\/concept-lab\/saved"[^>]*>Saved records/);
 });
 
+test("Method Library presents both canonical practices and returns to their full records", () => {
+  const ipaPosition = methodLibraryHtml.indexOf("Interpretative Phenomenological Analysis");
+  const rtaPosition = methodLibraryHtml.indexOf("Reflexive Thematic Analysis");
+  assert.ok(ipaPosition >= 0, "IPA appears in the Method Library");
+  assert.ok(rtaPosition > ipaPosition, "the registry order is preserved: IPA, then reflexive thematic analysis");
+  assert.match(methodLibraryHtml, /How inquiry/);
+  assert.match(methodLibraryHtml, /gets done\./);
+  assert.match(methodLibraryHtml, /Fits this practice/);
+  assert.match(methodLibraryHtml, /Personal Experiential Themes/);
+  assert.match(methodLibraryHtml, /The analyst works across material/);
+  assert.match(methodLibraryHtml, /This worked example comes from the Method record/);
+  assert.match(methodLibraryHtml, /href="\/concept-lab\/method\/interpretative-phenomenological-analysis"[^>]*>Full method record/);
+  assert.match(methodLibraryHtml, /href="\/concept-lab\/method\/reflexive-thematic-analysis"[^>]*>Full method record/);
+  assert.match(methodLibraryHtml, /href="\/concept-lab\/library"[^>]*>All record kinds/);
+  assert.match(methodLibraryHtml, /href="\/concept-lab\/saved"[^>]*>Saved records/);
+  assert.match(methodLibraryHtml, /aria-pressed="false"/);
+});
+
 function theoryEditorialRows(html) {
   const articles = [...html.matchAll(/<article\b[^>]*recordRow[^>]*>([\s\S]*?)<\/article>/g)];
   return articles.map(([, row]) => ({
@@ -209,10 +228,10 @@ test("every internal record link resolves", async () => {
   assert.ok(seen.size > 0, "no cross-record links found at all");
 });
 
-// Every door on the landing page must land on a genuinely filtered library.
-// A hardcoded list of kinds in the library route once accepted three of four,
-// so ?kind=mechanism quietly returned everything.
-test("every landing-page filter link actually filters", async () => {
+// Every door on the landing page must land on the intended kind experience.
+// Generic kinds return a filtered index; Method has its own practice-oriented
+// view because the corpus is small and all current records share one discipline.
+test("every landing-page library link opens the intended kind experience", async () => {
   const home = await (await render("/concept-lab")).text();
   const links = [...new Set([...home.matchAll(/\/concept-lab\/library\?(kind|discipline)=([a-z-]+)/g)].map((m) => m[0]))];
   assert.ok(links.length >= 4, `expected several filter links, found ${links.length}`);
@@ -227,6 +246,15 @@ test("every landing-page filter link actually filters", async () => {
       assert.match(html, /as a lens/i);
       assert.deepEqual(filteredPaths.sort(), expectedTheoryPaths.sort(), `${href} did not render exactly the theory records`);
       assert.ok(filteredPaths.length < total, `${href} returned all ${total} record kinds`);
+      continue;
+    }
+
+    if (new URL(href, "http://localhost").searchParams.get("kind") === "method") {
+      assert.match(html, /How inquiry/);
+      assert.match(html, /Interpretative Phenomenological Analysis/);
+      assert.match(html, /Reflexive Thematic Analysis/);
+      assert.match(html, /fits this practice/i);
+      assert.doesNotMatch(html, /<label[^>]*for="q"[^>]*>Search<\/label>/);
       continue;
     }
 

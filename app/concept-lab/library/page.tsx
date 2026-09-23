@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { RECORDS, KIND } from "@/content/records";
 import { DISCIPLINES } from "@/content/disciplines";
-import type { RecordKind } from "@/content/types";
+import type { MethodRecord, RecordKind } from "@/content/types";
 import { LibraryBrowser } from "../_components/LibraryBrowser";
 import { DisciplineNav } from "../_components/DisciplineNav";
 import { Crumbs } from "../_components/RecordShell";
 import { ReadingCompass } from "../_components/VisualAtlas";
 import { TheoryLibrary } from "./TheoryLibrary";
 import { StudyLibrary } from "./StudyLibrary";
+import { MethodLibrary } from "./MethodLibrary";
 
 export const metadata: Metadata = { title: "Library" };
 
@@ -31,6 +32,11 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
 
   if (kind === "study") {
     return <StudyLibrary records={RECORDS.filter((record) => record.kind === "study")} totalRecords={RECORDS.length} />;
+  }
+
+  if (kind === "method") {
+    const methods = RECORDS.filter((record): record is MethodRecord => record.kind === "method");
+    return <MethodLibrary records={methods} />;
   }
 
   return (
