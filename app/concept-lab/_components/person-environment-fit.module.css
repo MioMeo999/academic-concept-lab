@@ -702,6 +702,19 @@
     font-size: .76rem;
   }
 
+  /* Keep the two long right-side marginal labels inside the complete mobile plate. */
+  .page :global(.record-hero .knowledge-plate-topic:nth-of-type(2)) {
+    left: 69% !important;
+    max-width: 17ch;
+    font-size: .72rem;
+  }
+
+  .page :global(.record-hero .knowledge-plate-topic:nth-of-type(4)) {
+    left: 68% !important;
+    max-width: 17ch;
+    font-size: .72rem;
+  }
+
   .libraryReturn {
     justify-content: flex-start;
     margin-bottom: .4rem;
