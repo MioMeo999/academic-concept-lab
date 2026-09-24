@@ -57,19 +57,6 @@ export function PersonEnvironmentFitBody({ record: r }: { record: PersonEnvironm
       <Rich className="lede" as="p" html={r.ideaLede ?? r.oneSentence} />
       <p className={styles.fieldPrompt}>What is being compared?</p>
       <PersonEnvironmentFitInteraction processes={r.coreProcesses} />
-      {r.demo?.type === "scale-pair" && (
-        <aside className={styles.analogyNote} aria-label="Teaching analogy">
-          <div className={styles.analogyHeader}>
-            <span className="k">Teaching analogy</span>
-            <span className={styles.analogyLabel}>{r.demo.label}</span>
-          </div>
-          <p className={styles.analogyStates}>{r.demo.options.join(" · ")}</p>
-          <p className={styles.analogyCaption}>{r.demo.caption}</p>
-          {r.oversimplifications[3] && (
-            <Rich className={styles.analogyBoundary} as="p" html={r.oversimplifications[3]} />
-          )}
-        </aside>
-      )}
     </>
   ));
 
@@ -169,7 +156,7 @@ export function PersonEnvironmentFitBody({ record: r }: { record: PersonEnvironm
     </>
   ));
 
-  add("provenance", "Provenance", "Where every claim came from", "var(--teal)", (
+  add("provenance", "Provenance", "How this record is constructed", "var(--teal)", (
     <div className={styles.provenance}>
       {r.provenance.map((item) => (
         <article className={styles.provenanceItem} key={item.label}>
@@ -194,8 +181,8 @@ export function PersonEnvironmentFitBody({ record: r }: { record: PersonEnvironm
           </div>
           {blocks.map((block, index) => (
             <span key={block.key} style={{ display: "contents" }}>
-              {index > 0 && <Divider />}
-              <section className="rec" id={`s${index + 1}`}>
+              {block.key === "trail" && <Divider />}
+              <section className="rec" id={`s${index + 1}`} data-section={block.key}>
                 <SecHead num={pad2(index + 1)} title={block.title} colour={block.colour} />
                 {block.body}
               </section>

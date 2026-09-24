@@ -113,15 +113,15 @@ test("home describes all four record kinds", () => {
 test("Person–Environment Fit presents its canonical correspondence pairs and boundaries", () => {
   assert.match(personEnvironmentFitHtml, /Why can the same workplace energise one person and drain another/);
   assert.match(personEnvironmentFitHtml, /Choose a correspondence pair to inspect/);
+  assert.match(personEnvironmentFitHtml, /Pair identity/);
+  assert.match(personEnvironmentFitHtml, /Selected explanation/);
   assert.match(personEnvironmentFitHtml, /Demands ↔ abilities/);
   assert.match(personEnvironmentFitHtml, /Needs ↔ supplies/);
   assert.match(personEnvironmentFitHtml, /What the person can do/);
   assert.match(personEnvironmentFitHtml, /What the setting asks/);
   assert.match(personEnvironmentFitHtml, /What the person needs/);
   assert.match(personEnvironmentFitHtml, /What the setting supplies/);
-  assert.match(personEnvironmentFitHtml, /under-supplied/);
-  assert.match(personEnvironmentFitHtml, /over-supplied/);
-  assert.match(personEnvironmentFitHtml, /the doorway doesn’t change\. the fit does\./);
+  assert.doesNotMatch(personEnvironmentFitHtml, /under-supplied|over-supplied|the doorway doesn’t change/i);
   assert.doesNotMatch(personEnvironmentFitHtml, /strain is the usual consequence/);
   for (const target of ["Job", "Organisation", "Group", "Supervisor"]) {
     assert.match(personEnvironmentFitHtml, new RegExp(`>${target}<`));
@@ -133,7 +133,7 @@ test("Person–Environment Fit presents its canonical correspondence pairs and b
   assert.match(personEnvironmentFitHtml, /2008/);
   assert.match(personEnvironmentFitHtml, /If you read three things/);
   assert.match(personEnvironmentFitHtml, /The full trail/);
-  assert.match(personEnvironmentFitHtml, /Where every claim came from/);
+  assert.match(personEnvironmentFitHtml, /How this record is constructed/);
   assert.match(personEnvironmentFitHtml, /href="\/concept-lab\/library\?kind=theory"[^>]*>← Return to the Theory Library/);
 });
 
@@ -266,7 +266,10 @@ for (const pathname of recordPaths) {
       return;
     }
     // Provenance is the field that makes everything else trustworthy.
-    assert.match(html, /Where every claim came from/, `${pathname} renders no provenance block`);
+    const provenanceHeading = pathname === "/concept-lab/theory/person-environment-fit"
+      ? /How this record is constructed/
+      : /Where every claim came from/;
+    assert.match(html, provenanceHeading, `${pathname} renders no provenance block`);
     // Section numbering and the contents rail are generated together; a
     // mismatch means a block was added without a heading. Each entry renders
     // twice: once in the desktop rail, once in the mobile fold-out box.

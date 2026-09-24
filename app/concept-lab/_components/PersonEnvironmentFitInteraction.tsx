@@ -22,7 +22,9 @@ export function PersonEnvironmentFitInteraction({
   return (
     <div className={styles.correspondenceField}>
       <div className={styles.fieldHeads} aria-hidden="true">
+        <span>Pair identity</span>
         <span>Person</span>
+        <span className={styles.relationHead}>↔</span>
         <span>Environment</span>
       </div>
       <fieldset className={styles.processChoices}>
@@ -43,21 +45,31 @@ export function PersonEnvironmentFitInteraction({
                     checked={isSelected}
                     onChange={() => setSelectedId(process.id)}
                   />
-                  <strong>{process.title}</strong>
+                  <span className={styles.processChoiceText}>
+                    <strong>{process.title}</strong>
+                    {isSelected && <span className={styles.selectedState} aria-hidden="true">Selected</span>}
+                  </span>
                 </span>
                 <span className={styles.processSides}>
-                  <span className={styles.processPerson}>{process.person}</span>
+                  <span className={styles.processPerson}>
+                    <span className={styles.sideLabel}>Person</span>
+                    <span>{process.person}</span>
+                  </span>
                   <span className={styles.correspondenceMark} aria-hidden="true">↔</span>
-                  <span className={styles.processEnvironment}>{process.environment}</span>
+                  <span className={styles.processEnvironment}>
+                    <span className={styles.sideLabel}>Environment</span>
+                    <span>{process.environment}</span>
+                  </span>
                 </span>
               </label>
             );
           })}
         </div>
       </fieldset>
-      <p className={styles.processExplanation} aria-live="polite" aria-atomic="true">
-        {selected.explanation}
-      </p>
+      <div className={styles.processExplanation} role="status" aria-atomic="true">
+        <span className={styles.explanationLabel}>Selected explanation · {selected.title}</span>
+        <p>{selected.explanation}</p>
+      </div>
     </div>
   );
 }
