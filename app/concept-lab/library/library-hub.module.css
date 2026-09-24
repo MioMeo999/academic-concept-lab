@@ -62,34 +62,44 @@
 }
 
 .heroStats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: .8rem;
-  max-width: 26rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .25rem 1rem;
   margin: 1.65rem 0 0;
-  padding: .75rem 0 .65rem;
+  padding: .85rem 0 .8rem;
   border-block: 1px solid var(--hair);
+  list-style: none;
 }
 
-.heroStats div { min-width: 0; }
-.heroStats dt {
-  color: var(--pen-3);
-  font: 500 .56rem/1.5 var(--cat);
-  letter-spacing: .08em;
-  text-transform: uppercase;
+.heroStats li {
+  display: inline-flex;
+  min-width: max-content;
+  align-items: baseline;
+  gap: .28rem;
 }
-.heroStats dd {
-  margin: .12rem 0 0;
+.heroStats strong {
   color: var(--pen);
-  font: 440 clamp(1.5rem, 2.4vw, 2rem)/1.1 var(--read);
+  font: 440 clamp(1.45rem, 2.2vw, 1.8rem)/1 var(--read);
   font-variant-numeric: lining-nums tabular-nums;
+}
+.heroStats span {
+  color: var(--pen-2);
+  font: 420 .86rem/1.2 var(--read);
 }
 
 .heroNav {
   display: flex;
   flex-wrap: wrap;
-  gap: .25rem .95rem;
-  margin-top: 1rem;
+  align-items: baseline;
+  gap: .15rem .85rem;
+  margin-top: 1.2rem;
+}
+
+.heroNavLabel {
+  flex-basis: 100%;
+  color: var(--pen-3);
+  font: 500 .86rem/1.3 var(--script);
 }
 
 .heroNav a,
@@ -101,11 +111,11 @@
   align-items: center;
   gap: .4rem;
   color: var(--pen-2);
-  font: 550 .64rem/1.4 var(--cat);
-  letter-spacing: .065em;
+  font: 430 .82rem/1.4 var(--read);
+  letter-spacing: 0;
   text-decoration-color: var(--hair);
-  text-underline-offset: .3em;
-  text-transform: uppercase;
+  text-underline-offset: .24em;
+  text-transform: none;
 }
 
 .heroNav a:hover,
@@ -120,7 +130,6 @@
 .recordLinks a:focus-visible,
 .path a:focus-visible,
 .savedLink:focus-visible,
-.heroNav a:focus-visible,
 .searchBrowser :global(a:focus-visible),
 .searchBrowser :global(button:focus-visible),
 .searchBrowser :global(input:focus-visible) {
@@ -134,94 +143,13 @@
   margin: 0;
 }
 
-.landscapeDesktop,
-.landscapeMobile {
+.landscapeArtwork,
+.landscapeArtwork img {
   display: block;
   width: 100%;
-  height: auto;
-  overflow: visible;
 }
 
-.landscapeMobile { display: none; }
-
-.mapBoundary {
-  fill: none;
-  stroke: var(--hair);
-  stroke-width: 1.3;
-  stroke-dasharray: 3 8;
-  stroke-linecap: round;
-}
-
-.mapWater {
-  fill: none;
-  stroke: #e6f1f4;
-  stroke-width: 16;
-  stroke-linecap: round;
-  opacity: .8;
-}
-
-.theoryLand { fill: color-mix(in srgb, var(--teal) 10%, white); stroke: var(--teal); }
-.studyLand { fill: color-mix(in srgb, var(--red) 8%, white); stroke: var(--red); }
-.methodLand { fill: color-mix(in srgb, var(--gold) 12%, white); stroke: var(--gold-deep); }
-.mechanismLand { fill: color-mix(in srgb, var(--plum) 9%, white); stroke: var(--plum); }
-.mobileTheory { fill: color-mix(in srgb, var(--teal) 12%, white); stroke: var(--teal-deep); }
-.mobileStudy { fill: color-mix(in srgb, var(--red) 10%, white); stroke: var(--red-deep); }
-.mobileMethod { fill: color-mix(in srgb, var(--gold) 14%, white); stroke: var(--gold-deep); }
-.mobileMechanism { fill: color-mix(in srgb, var(--plum) 11%, white); stroke: var(--plum-deep); }
-.theoryLand, .studyLand, .methodLand, .mechanismLand {
-  stroke-width: 1.8;
-  stroke-linejoin: round;
-}
-.mobileTheory, .mobileStudy, .mobileMethod, .mobileMechanism { stroke-width: 1.8; stroke-linejoin: round; }
-.theoryContour, .studyContour, .methodContour, .mechanismContour {
-  fill: none;
-  stroke-width: 1.25;
-  stroke-dasharray: 2 4;
-  opacity: .56;
-}
-.theoryContour { stroke: var(--teal-deep); }
-.studyContour { stroke: var(--red-deep); }
-.methodContour { stroke: var(--gold-deep); }
-.mechanismContour { stroke: var(--plum-deep); }
-
-.routeUnderlay,
-.mobileRouteUnderlay {
-  fill: none;
-  stroke: #fff;
-  stroke-width: 12;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.routeLine,
-.mobileRoute {
-  fill: none;
-  stroke: var(--pen-3);
-  stroke-width: 1.8;
-  stroke-dasharray: 5 7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.routeBranch { fill: none; stroke: var(--pen-3); stroke-width: 1.2; stroke-dasharray: 2 7; }
-.bridge { fill: none; stroke: var(--pen-2); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.theoryMark, .studyMark, .methodMark, .mechanismMark,
-.mobileTheoryMark, .mobileStudyMark, .mobileMethodMark, .mobileMechanismMark {
-  fill: none;
-  stroke: var(--pen-2);
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.theoryMark { stroke: var(--teal-deep); }
-.studyMark { stroke: var(--red-deep); }
-.methodMark { stroke: var(--gold-deep); }
-.mechanismMark { stroke: var(--plum-deep); }
-.theoryNode, .studyNode, .methodNode, .mechanismNode { fill: #fff; stroke-width: 3; }
-.theoryNode { stroke: var(--teal-deep); }
-.studyNode { stroke: var(--red-deep); }
-.methodNode { stroke: var(--gold-deep); }
-.mechanismNode { stroke: var(--plum-deep); }
-.centreNode { fill: #fff; stroke: var(--pen-2); stroke-width: 2; }
-.centreCore { fill: var(--pen-2); }
+.landscapeArtwork img { height: auto; }
 
 .landscapeLinks {
   position: absolute;
@@ -233,11 +161,12 @@
   position: absolute;
   display: flex;
   min-width: 9.5rem;
+  max-width: 13rem;
   min-height: 50px;
   align-items: center;
   gap: .55rem;
   padding: .38rem .55rem;
-  background: rgb(255 255 255 / 88%);
+  background: rgb(255 255 255 / 91%);
   color: var(--kind-ink);
   text-decoration: none;
   pointer-events: auto;
@@ -248,14 +177,14 @@
 .landmark em { color: var(--pen-3); font: 500 1rem/1.08 var(--script); }
 .landmarkDot { width: 15px; height: 15px; flex: 0 0 15px; border: 2px solid currentColor; border-radius: 50%; background: #fff; }
 .landmark:hover { text-decoration: underline; text-decoration-color: currentColor; text-underline-offset: .2em; }
-.landmark.theory { --kind-ink: var(--teal-deep); top: 13%; left: 6%; }
-.landmark.study { --kind-ink: var(--red-deep); top: 13%; right: 4%; }
-.landmark.method { --kind-ink: var(--gold-deep); bottom: 15%; left: 8%; }
-.landmark.mechanism { --kind-ink: var(--plum-deep); right: 3%; bottom: 15%; }
+.landmark.theory { --kind-ink: var(--teal-deep); top: 19%; left: 3%; }
+.landmark.study { --kind-ink: var(--red-deep); top: 35%; right: 1%; }
+.landmark.method { --kind-ink: #87550e; bottom: 24%; left: 1%; }
+.landmark.mechanism { --kind-ink: var(--plum-deep); right: 1%; bottom: 13%; }
 
 .mapCaption {
   max-width: 54ch;
-  margin: -.15rem 1rem 0 auto;
+  margin: .35rem .5rem 0 auto;
   color: var(--pen-3);
   font: 400 .73rem/1.45 var(--read);
   text-align: right;
@@ -298,16 +227,16 @@
 
 .formGrid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 3.7fr) minmax(0, 2.2fr) minmax(0, 3.1fr) minmax(0, 3fr);
+  gap: 0 clamp(.8rem, 1.8vw, 1.5rem);
   align-items: stretch;
 }
 .form {
   position: relative;
   min-width: 0;
-  padding: .35rem clamp(.8rem, 2vw, 1.5rem) .15rem;
-  border-left: 1px solid var(--hair);
+  padding: .35rem .2rem .15rem;
+  border-top: 1px solid var(--hair);
 }
-.form:first-child { padding-left: 0; border-left: 0; }
 .form::before {
   display: block;
   width: 3rem;
@@ -318,8 +247,13 @@
 }
 .theory { --kind-ink: var(--teal-deep); }
 .study { --kind-ink: var(--red-deep); }
-.method { --kind-ink: var(--gold-deep); }
+.method { --kind-ink: #87550e; }
 .mechanism { --kind-ink: var(--plum-deep); }
+.theory .formExplanation { max-width: 38ch; }
+.study { padding-top: 2.2rem; }
+.study::before { width: 1.5rem; }
+.method { padding-top: .75rem; }
+.mechanism { padding-top: 1.55rem; }
 .formIndex { display: block; letter-spacing: .065em; }
 .form h3 { margin: .65rem 0 .1rem; font: 440 clamp(1.45rem, 2.45vw, 2.15rem)/1.02 var(--read); letter-spacing: -.045em; }
 .form h3 a { display: inline-flex; min-height: 44px; align-items: center; color: var(--pen); text-decoration: none; text-decoration-color: var(--kind-ink); text-underline-offset: .18em; }
@@ -331,6 +265,11 @@
 .formExamples a { display: inline-flex; min-height: 44px; align-items: center; color: var(--pen-2); font: 400 .85rem/1.35 var(--read); text-decoration-color: transparent; text-underline-offset: .18em; }
 .formExamples a:hover { text-decoration-color: currentColor; }
 .formAction { margin-top: .75rem; color: var(--kind-ink); }
+.study .formExamples { padding-top: .55rem; }
+.method .formExamples { border-top-style: dashed; }
+.mechanism .formExamples { position: relative; margin-left: .2rem; padding-left: 1rem; border-top: 0; }
+.mechanism .formExamples::before { position: absolute; top: .2rem; bottom: .2rem; left: 0; width: 1px; background: color-mix(in srgb, var(--kind-ink) 54%, white); content: ""; }
+.mechanism .formExamples::after { position: absolute; top: .22rem; left: -.16rem; width: .38rem; height: .38rem; border: 1px solid var(--kind-ink); border-radius: 50%; background: white; content: ""; }
 
 .browseSection { padding-bottom: 2.5rem; }
 .primaryFields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.5rem, 3.5vw, 3.3rem); }
@@ -401,67 +340,86 @@
 
 .routesSection { border-bottom: 0; }
 .pathList { margin: 0; padding: 0; list-style: none; }
-.path { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 1rem; padding: 1.3rem 0 1.5rem; border-top: 1px solid var(--hair); }
+.path { --route-ink: var(--cobalt, #205ea8); position: relative; display: grid; grid-template-columns: minmax(15rem, .8fr) minmax(0, 1.5fr); gap: 1.5rem; align-items: center; padding: 1.6rem 0 1.8rem; border-top: 1px solid var(--hair); }
 .path:last-child { border-bottom: 1px solid var(--hair); }
-.pathIndex { padding-top: .22rem; color: var(--teal-deep); font: 500 .68rem/1.4 var(--cat); font-variant-numeric: tabular-nums; }
+.routeBlue { --route-ink: var(--cobalt, #205ea8); }
+.routeCoral { --route-ink: var(--red-deep); }
+.routeTeal { --route-ink: var(--teal-deep); }
+.pathIntro { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: .5rem; align-items: start; }
+.pathIndex { padding-top: .22rem; color: var(--route-ink); font: 500 .68rem/1.4 var(--cat); font-variant-numeric: tabular-nums; }
 .pathField { display: block; }
 .path h3 { margin: .32rem 0 0; color: var(--pen); font: 440 clamp(1.45rem, 2.5vw, 2.1rem)/1.12 var(--read); letter-spacing: -.035em; }
-.pathBody > p { max-width: 72ch; margin: .4rem 0 0; color: var(--pen-3); font: 400 .9rem/1.52 var(--read); }
-.pathStops { display: flex; flex-wrap: wrap; gap: .35rem .65rem; align-items: center; margin: .75rem 0 0; padding: 0; list-style: none; }
-.pathStops li { display: inline-flex; gap: .6rem; align-items: center; }
-.pathStops a { display: inline-flex; min-height: 44px; align-items: center; color: var(--pen-2); font: 440 .85rem/1.35 var(--read); text-decoration-color: var(--hair); text-underline-offset: .2em; }
-.pathConnector { color: var(--teal-deep); font-size: .85rem; }
+.pathIntro p { max-width: 72ch; margin: .4rem 0 0; color: var(--pen-3); font: 400 .9rem/1.52 var(--read); }
+.pathTrack { position: relative; min-width: 0; padding-top: .15rem; }
+.routeTrace { position: absolute; top: .2rem; left: 0; z-index: 0; width: 100%; height: 2.8rem; overflow: visible; }
+.routeTrace path { fill: none; stroke: var(--route-ink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; opacity: .68; }
+.routeCoral .routeTrace path { stroke-dasharray: 9 3 2 3; }
+.routeTeal .routeTrace path { stroke-width: 4; opacity: .45; }
+.pathStops { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(var(--stop-count), minmax(0, 1fr)); gap: .3rem; margin: 0; padding: 0; list-style: none; }
+.pathStops li { min-width: 0; display: grid; justify-items: center; align-content: start; gap: .35rem; padding-top: .85rem; }
+.pathStopNode { display: grid; width: 1.65rem; height: 1.65rem; place-items: center; border: 1px solid var(--route-ink); border-radius: 50%; background: #fff; color: var(--route-ink); font: 500 .54rem/1 var(--cat); font-variant-numeric: tabular-nums; }
+.pathStops a { display: inline-flex; min-height: 44px; align-items: flex-start; justify-content: center; color: var(--pen-2); font: 440 .84rem/1.35 var(--read); text-align: center; text-decoration-color: var(--hair); text-underline-offset: .2em; }
+.pathStops a:hover { color: var(--route-ink); text-decoration-color: currentColor; }
+.routeNote { margin: .8rem 0 0 4rem; color: var(--pen-3); font: 400 .82rem/1.45 var(--read); }
 
 @media (max-width: 1039px) {
-  .hero { grid-template-columns: minmax(0, 1fr); gap: 1.8rem; padding-top: 3rem; }
-  .heroCopy { display: grid; grid-template-columns: minmax(0, 1fr) minmax(13rem, .7fr); column-gap: 2rem; align-items: end; }
-  .heroEyebrow { grid-column: 1 / -1; }
-  .hero h1 { grid-column: 1; grid-row: 2 / span 2; }
-  .heroLede { grid-column: 2; grid-row: 2; margin-top: 0; }
-  .heroContext { grid-column: 2; grid-row: 3; }
-  .heroStats { grid-column: 1; grid-row: 4; margin-top: 1.25rem; }
-  .heroNav { grid-column: 2; grid-row: 4; }
-  .landscape { width: min(100%, 900px); justify-self: center; }
+  .hero { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(1.2rem, 2.7vw, 2rem); padding-top: 3rem; }
+  .heroCopy { display: block; }
+  .hero h1 { max-width: 6ch; font-size: clamp(3.8rem, 7vw, 5.4rem); }
+  .heroLede { max-width: 33ch; margin-top: 1.15rem; font-size: clamp(1.12rem, 1.75vw, 1.34rem); }
+  .heroContext { font-size: .9rem; }
+  .heroStats { gap: .2rem .75rem; margin-top: 1.25rem; }
+  .heroStats li { gap: .2rem; }
+  .heroStats strong { font-size: 1.45rem; }
+  .heroStats span { font-size: .78rem; }
+  .heroNav { gap: .1rem .6rem; }
+  .landmark { min-width: 8.7rem; gap: .4rem; padding: .34rem .4rem; }
+  .landmark strong { font-size: 1.1rem; }
+  .landmark em { font-size: .88rem; }
+  .formGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem 1.5rem; }
+  .theory, .mechanism { grid-column: span 2; }
+  .study, .method { grid-column: span 1; padding-top: .35rem; }
+  .path { grid-template-columns: minmax(13rem, .78fr) minmax(0, 1.4fr); gap: 1rem; }
 }
 
 @media (max-width: 760px) {
   .page { width: calc(100% - 2rem); }
-  .hero { gap: 1rem; padding: 2.6rem 0 2rem; }
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 1rem; padding: 2.6rem 0 2rem; }
   .heroCopy { display: block; }
   .heroEyebrow { margin-bottom: .9rem; }
   .hero h1 { max-width: 8ch; font-size: clamp(3.8rem, 16vw, 5.6rem); }
   .heroLede { max-width: 35ch; margin-top: 1rem; font-size: clamp(1.18rem, 5.1vw, 1.45rem); }
   .heroContext { max-width: 42ch; }
-  .heroStats { margin-top: 1.2rem; }
-  .heroNav { margin-top: .7rem; }
-  .heroNav { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .1rem .25rem; }
-  .heroNav a { align-items: flex-start; padding-top: .45rem; font-size: .54rem; }
-  .landscape { width: min(100%, 420px); margin: .15rem auto 0; }
-  .landscapeDesktop { display: none; }
-  .landscapeMobile { display: block; }
+  .heroStats { gap: .25rem .8rem; margin-top: 1.2rem; }
+  .heroNav { gap: .1rem .8rem; margin-top: .7rem; }
+  .heroNav a { font-size: .78rem; }
+  .landscape { width: min(100%, 420px); margin: .3rem auto 0; }
   .landmark { min-width: 0; width: 46%; min-height: 48px; gap: .42rem; padding: .3rem .35rem; }
   .landmark strong { font-size: 1.15rem; }
   .landmark em { font-size: .9rem; }
   .landmarkDot { width: 13px; height: 13px; flex-basis: 13px; }
-  .landmark.theory { top: 7%; left: 1%; }
-  .landmark.study { top: 25%; right: 1%; }
-  .landmark.method { top: 47%; bottom: auto; left: 1%; }
-  .landmark.mechanism { top: 68%; right: 1%; bottom: auto; }
-  .mapCaption { margin: -.2rem .2rem 0; font-size: .68rem; text-align: left; }
+  .landmark.theory { top: 8%; left: 0; }
+  .landmark.study { top: 36%; right: 0; }
+  .landmark.method { top: 60%; bottom: auto; left: 0; }
+  .landmark.mechanism { top: 82%; right: 0; bottom: auto; }
+  .mapCaption { margin: .25rem .2rem 0; font-size: .68rem; text-align: left; }
   .section { padding: 3.4rem 0; }
   .sectionLead { display: block; margin-bottom: 1.6rem; }
   .sectionEyebrow { margin-bottom: .6rem; }
   .sectionLead h2 { font-size: clamp(2.55rem, 11vw, 3.7rem); }
   .sectionNote { max-width: 40ch; margin-top: .75rem; }
-  .formGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem 0; }
-  .form { padding: .25rem .75rem .2rem; border-left: 1px solid var(--hair); }
-  .form:nth-child(odd) { padding-left: 0; border-left: 0; }
-  .form:nth-child(n+3) { padding-top: 1rem; border-top: 1px solid var(--hair); }
+  .formGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem 1rem; }
+  .form { padding: .35rem 0 .2rem; }
+  .theory, .mechanism { grid-column: 1 / -1; }
+  .study, .method { grid-column: span 1; }
+  .study { padding-right: .45rem; }
+  .method { padding-left: .45rem; }
   .form::before { margin-bottom: .9rem; }
   .form h3 { font-size: clamp(1.45rem, 6.2vw, 1.9rem); }
   .formRole { font-size: .98rem; }
   .formExplanation { font-size: .85rem; }
   .formExamples a { font-size: .8rem; }
+  .formAction { display: block; width: fit-content; max-width: 100%; padding-block: .65rem; }
   .primaryFields { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
   .disciplineHeader { align-items: center; }
   .disciplineHeader h3 { font-size: clamp(1.7rem, 7vw, 2.35rem); }
@@ -478,22 +436,32 @@
   .searchBrowser :global(.filters) { grid-template-columns: minmax(0, 1fr); }
   .searchBrowser :global(.pills) { gap: .1rem; }
   .searchBrowser :global(.pill) { padding-inline: .52rem; }
-  .path { grid-template-columns: 2rem minmax(0, 1fr); gap: .65rem; }
+  .path { grid-template-columns: minmax(0, 1fr); gap: .85rem; align-items: start; }
+  .pathIntro { grid-template-columns: 2rem minmax(0, 1fr); }
   .path h3 { font-size: 1.5rem; }
-  .pathStops { gap: .45rem .55rem; }
-  .pathStops li { gap: .45rem; }
-  .pathStops a { font-size: .8rem; }
+  .pathTrack { margin-left: 2.5rem; padding-left: .7rem; }
+  .pathStops { grid-template-columns: minmax(0, 1fr); gap: .35rem; padding: .15rem 0 .15rem 1.6rem; }
+  .routeTrace { top: .35rem; left: .7rem; width: 1px; height: calc(100% - .7rem); }
+  .routeTrace path { display: none; }
+  .pathStops::before { position: absolute; top: .55rem; bottom: .55rem; left: 2.35rem; width: 1px; background: var(--route-ink); opacity: .48; content: ""; }
+  .pathStops li { grid-template-columns: 1.7rem minmax(0, 1fr); justify-items: start; gap: .55rem; padding-top: 0; }
+  .pathStopNode { width: 1.5rem; height: 1.5rem; }
+  .pathStops a { justify-content: flex-start; text-align: left; font-size: .8rem; }
+  .routeNote { margin-left: 0; }
 }
 
 @media (max-width: 380px) {
-  .heroStats { gap: .45rem; }
-  .heroStats dt { font-size: .51rem; letter-spacing: .055em; }
-  .heroStats dd { font-size: 1.45rem; }
+  .heroStats { gap: .2rem .55rem; }
+  .heroStats strong { font-size: 1.38rem; }
+  .heroStats span { font-size: .75rem; }
   .landmark { width: 48%; }
   .landmark strong { font-size: 1.04rem; }
   .landmark em { font-size: .82rem; }
   .fieldAction { font-size: .53rem; }
   .fieldGroups { grid-template-columns: minmax(0, 1fr); }
+  .pathTrack { margin-left: 2rem; }
+  .pathStops { padding-left: 1.35rem; }
+  .pathStops::before { left: 2.1rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
