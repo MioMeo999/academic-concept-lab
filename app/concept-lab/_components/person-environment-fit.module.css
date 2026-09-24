@@ -1,0 +1,667 @@
+/* Shared RecordShell selectors remain contrast-safe only within this pilot. */
+.page :global(.contents .num),
+.page :global(.contents-m .num) {
+  color: var(--pen-3) !important;
+}
+
+.page :global(.knowledge-plate-topic:nth-of-type(2)) {
+  color: var(--red-deep) !important;
+}
+
+.page :global(.knowledge-plate-topic:nth-of-type(3)) {
+  color: #216a53 !important;
+}
+
+.page :global(.knowledge-neighbour-relation strong),
+.page :global(.knowledge-neighbour-kind.teal),
+.page :global(.knowledge-neighbour-go),
+.page :global(.knowledge-neighbourhood-fallback a) {
+  color: var(--teal-deep) !important;
+}
+
+.record {
+  --pe-ink: var(--pen);
+  --pe-muted: var(--pen-2);
+  --pe-soft: var(--pen-3);
+  --pe-rule: rgba(28, 27, 25, .2);
+  min-width: 0;
+}
+
+.libraryReturn {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 .8rem;
+  font-family: var(--cat);
+  font-size: .62rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.libraryReturn a {
+  color: var(--pe-ink);
+  text-decoration-color: var(--teal);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: .28rem;
+  padding: .45rem .1rem;
+}
+
+.record :global(section.rec) {
+  max-width: 980px;
+}
+
+.fieldPrompt {
+  margin: 1.7rem 0 .35rem;
+  color: var(--pe-soft);
+  font-family: var(--cat);
+  font-size: .64rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.correspondenceField {
+  margin-top: .5rem;
+  border-block: 1px solid var(--pe-rule);
+}
+
+.fieldHeads {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: .75rem .4rem .55rem;
+  color: var(--pe-soft);
+  font-family: var(--cat);
+  font-size: .62rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.fieldHeads span:last-child {
+  text-align: right;
+}
+
+.processChoices {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.processChoices legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.processRows {
+  display: grid;
+}
+
+.processRow {
+  display: grid;
+  grid-template-columns: minmax(190px, .72fr) minmax(0, 1.5fr);
+  gap: clamp(1rem, 3vw, 2.6rem);
+  align-items: center;
+  padding: 1rem .45rem;
+  border-top: 1px solid var(--pe-rule);
+  color: var(--pe-muted);
+  cursor: pointer;
+}
+
+.processRow:first-child {
+  border-top: 0;
+}
+
+.processRow:focus-within {
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
+}
+
+.processChoice {
+  display: flex;
+  gap: .75rem;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--read);
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.processChoice input {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: none;
+  accent-color: var(--blue);
+}
+
+.processChoice strong {
+  font-weight: 600;
+}
+
+.processSelected .processChoice strong {
+  color: var(--pe-ink);
+}
+
+.processSides {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 52px minmax(0, 1fr);
+  gap: .65rem;
+  align-items: center;
+  color: var(--pe-ink);
+  font-family: var(--read);
+  font-size: .94rem;
+  line-height: 1.4;
+}
+
+.processPerson,
+.processEnvironment {
+  min-width: 0;
+}
+
+.processPerson {
+  text-align: right;
+}
+
+.processEnvironment {
+  text-align: left;
+}
+
+.correspondenceMark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  color: var(--pe-ink);
+  font-family: var(--read);
+  font-size: 1.15rem;
+}
+
+.correspondenceMark::before {
+  position: absolute;
+  z-index: -1;
+  width: 2rem;
+  height: 2rem;
+  border: 1.5px solid var(--teal);
+  border-radius: 50%;
+  content: "";
+  opacity: .62;
+}
+
+.processSelected .correspondenceMark::before {
+  border-color: var(--red);
+  opacity: .9;
+}
+
+.processExplanation {
+  max-width: 68ch;
+  margin: .1rem auto 1.2rem;
+  padding: .9rem 1rem 0;
+  border-top: 1px dashed var(--pe-rule);
+  color: var(--pe-muted);
+  font-family: var(--read);
+  font-size: .96rem;
+  line-height: 1.6;
+}
+
+.analogyNote {
+  display: grid;
+  grid-template-columns: minmax(150px, .65fr) minmax(0, 1.35fr);
+  gap: .45rem 1.25rem;
+  align-items: baseline;
+  max-width: 760px;
+  margin: 1.55rem auto 0;
+  padding: .9rem 1rem .2rem;
+  border-top: 1px solid var(--pe-rule);
+}
+
+.analogyHeader {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem .7rem;
+  align-items: baseline;
+}
+
+.analogyLabel {
+  color: var(--pe-muted);
+  font-family: var(--read);
+  font-size: .88rem;
+}
+
+.analogyStates {
+  color: var(--pe-ink);
+  font-family: var(--read);
+  font-size: .92rem;
+}
+
+.analogyCaption,
+.analogyBoundary {
+  grid-column: 2;
+  color: var(--pe-muted);
+  font-family: var(--read);
+  font-size: .84rem;
+  line-height: 1.5;
+}
+
+.analogyBoundary {
+  margin-top: .2rem;
+}
+
+.targetRegister {
+  margin-top: 1.4rem;
+  border-top: 1px solid var(--pe-rule);
+}
+
+.targetEntry {
+  display: grid;
+  grid-template-columns: minmax(145px, .72fr) minmax(200px, 1fr) minmax(220px, 1.15fr);
+  gap: 1rem 1.5rem;
+  align-items: baseline;
+  padding: 1.25rem .35rem 1.35rem;
+  border-bottom: 1px solid var(--pe-rule);
+}
+
+.targetIdentity {
+  display: grid;
+  grid-template-columns: 1.5rem 1.65rem minmax(0, 1fr);
+  gap: .55rem;
+  align-items: center;
+}
+
+.targetNumber {
+  color: var(--pe-soft);
+  font-family: var(--cat);
+  font-size: .62rem;
+}
+
+.targetIcon {
+  width: 1.45rem;
+  height: 1.45rem;
+  color: var(--teal);
+}
+
+.targetEntry:nth-child(even) .targetIcon {
+  color: var(--red);
+}
+
+.targetIdentity h3 {
+  color: var(--pe-ink);
+  font-family: var(--read);
+  font-size: 1.12rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.targetQuestion {
+  color: var(--pe-ink);
+  font-family: var(--read);
+  font-size: .99rem;
+  line-height: 1.48;
+}
+
+.targetExample {
+  display: grid;
+  gap: .18rem;
+  color: var(--pe-muted);
+  font-family: var(--read);
+  font-size: .88rem;
+  line-height: 1.5;
+}
+
+.targetExample span {
+  color: var(--pe-soft);
+  font-family: var(--cat);
+  font-size: .58rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.adjustmentViews {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(120px, .55fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: center;
+  margin-top: 1.6rem;
+  padding: 1.3rem 0;
+  border-block: 1px solid var(--pe-rule);
+}
+
+.adjustmentView h3 {
+  margin-top: .25rem;
+  color: var(--pe-ink);
+  font-family: var(--read);
+  font-size: 1.35rem;
+  font-weight: 500;
+}
+
+.adjustmentView p {
+  max-width: 34ch;
+  margin-top: .45rem;
+  color: var(--pe-muted);
+  font-family: var(--read);
+  font-size: .92rem;
+  line-height: 1.5;
+}
+
+.viewRelation {
+  display: grid;
+  justify-items: center;
+  gap: .5rem;
+  color: var(--pe-soft);
+  font-family: var(--cat);
+  font-size: .56rem;
+  line-height: 1.4;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.viewRelation i {
+  width: 100%;
+  border-top: 1px solid var(--teal);
+}
+
+.originsNote {
+  display: block;
+  max-width: 72ch;
+  margin-top: .8rem;
+  color: var(--pe-muted);
+  font-family: var(--read);
+  font-size: .94rem;
+  line-height: 1.55;
+}
+
+.history {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 2.6rem;
+  margin: 1.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.historyEntry {
+  position: relative;
+  display: grid;
+  grid-template-columns: 4.4rem minmax(0, 1fr);
+  gap: 1rem;
+  min-width: 0;
+  padding: .9rem .25rem 1rem;
+  border-top: 1px solid var(--pe-rule);
+}
+
+.historyYear {
+  color: var(--teal-deep);
+  font-family: var(--cat);
+  font-size: .75rem;
+  letter-spacing: .05em;
+}
+
+.historyText {
+  min-width: 0;
+}
+
+.historyAuthor {
+  color: var(--pe-ink);
+  font-family: var(--read);
+  font-size: .98rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.historyWork {
+  margin-top: .12rem;
+  color: var(--pe-muted);
+  font-family: var(--read);
+  font-size: .88rem;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.historyContribution {
+  margin-top: .38rem;
+  color: var(--pe-muted);
+  font-family: var(--read);
+  font-size: .85rem;
+  line-height: 1.5;
+}
+
+.guardrails,
+.openQuestions {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.guardrails li {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: .7rem;
+  padding: .75rem .3rem;
+  border-top: 1px solid var(--pe-rule);
+}
+
+.guardrailNumber {
+  padding-top: .16rem;
+  color: var(--red-deep);
+  font-family: var(--cat);
+  font-size: .65rem;
+}
+
+.guardrailText {
+  color: var(--pe-muted);
+  font-family: var(--read);
+  font-size: .96rem;
+  line-height: 1.55;
+}
+
+.openQuestions li {
+  position: relative;
+  margin: 0;
+  padding: .7rem .25rem .7rem 1.45rem;
+  border-top: 1px solid var(--pe-rule);
+  color: var(--pe-muted);
+  font-family: var(--read);
+  font-size: .95rem;
+  line-height: 1.55;
+}
+
+.openQuestions li::before {
+  position: absolute;
+  left: .15rem;
+  color: var(--teal-deep);
+  content: "?";
+  font-family: var(--cat);
+}
+
+.minimumReading {
+  max-width: 760px;
+  padding: 0 0 1.2rem;
+  border-bottom: 1px solid var(--pe-rule);
+}
+
+.fullReading {
+  margin-top: 1.4rem;
+}
+
+.sourceList {
+  display: grid;
+  gap: .15rem;
+  margin: .65rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sourceItem {
+  display: grid;
+  grid-template-columns: 1.7rem minmax(0, 1fr);
+  gap: .7rem;
+  padding: .55rem .15rem;
+  border-bottom: 1px solid var(--pe-rule);
+}
+
+.sourceNumber {
+  color: var(--teal-deep);
+  font-family: var(--cat);
+  font-size: .66rem;
+  padding-top: .13rem;
+}
+
+.citation {
+  color: var(--pe-ink);
+  font-family: var(--read);
+  font-size: .92rem;
+  line-height: 1.5;
+}
+
+.sourceContribution,
+.doi {
+  margin-top: .16rem;
+  color: var(--pe-muted);
+  font-family: var(--read);
+  font-size: .82rem;
+  line-height: 1.45;
+}
+
+.doi {
+  color: var(--pe-soft);
+  overflow-wrap: anywhere;
+}
+
+.provenance {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .9rem 2rem;
+  margin-top: .8rem;
+}
+
+.provenanceItem {
+  display: grid;
+  grid-template-columns: 1.6rem minmax(0, 1fr);
+  gap: .6rem;
+  padding: .65rem 0;
+  border-top: 1px solid var(--pe-rule);
+}
+
+.provenanceGlyph {
+  font-size: 1.1rem;
+  line-height: 1.3;
+}
+
+.provenanceItem h3 {
+  color: var(--pe-ink);
+  font-family: var(--read);
+  font-size: .9rem;
+  font-weight: 600;
+}
+
+.provenanceItem p {
+  margin-top: .2rem;
+  color: var(--pe-muted);
+  font-family: var(--read);
+  font-size: .82rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 900px) {
+  .targetEntry {
+    grid-template-columns: minmax(130px, .72fr) minmax(0, 1fr);
+  }
+
+  .targetExample {
+    grid-column: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .libraryReturn {
+    justify-content: flex-start;
+    margin-bottom: .4rem;
+  }
+
+  .fieldHeads {
+    gap: 1rem;
+    font-size: .57rem;
+  }
+
+  .processRow {
+    grid-template-columns: minmax(0, 1fr);
+    gap: .55rem;
+    padding: .9rem .2rem;
+  }
+
+  .processChoice {
+    font-size: .98rem;
+  }
+
+  .processSides {
+    grid-template-columns: minmax(0, 1fr) 38px minmax(0, 1fr);
+    gap: .35rem;
+    font-size: .86rem;
+    line-height: 1.42;
+  }
+
+  .analogyNote {
+    grid-template-columns: minmax(0, 1fr);
+    gap: .35rem;
+    margin-top: 1.1rem;
+    padding-inline: .35rem;
+  }
+
+  .analogyCaption,
+  .analogyBoundary {
+    grid-column: 1;
+  }
+
+  .targetEntry {
+    grid-template-columns: minmax(0, 1fr);
+    gap: .42rem;
+    padding: 1rem .15rem 1.1rem;
+  }
+
+  .targetExample {
+    grid-column: 1;
+    margin-left: 2.1rem;
+  }
+
+  .targetQuestion {
+    margin-left: 2.1rem;
+  }
+
+  .adjustmentViews {
+    grid-template-columns: minmax(0, 1fr);
+    gap: .75rem;
+    padding-block: .8rem;
+  }
+
+  .viewRelation {
+    grid-template-columns: auto minmax(2rem, 1fr);
+    justify-items: start;
+    align-items: center;
+    gap: .7rem;
+    max-width: 18rem;
+    text-align: left;
+  }
+
+  .history {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .historyEntry {
+    grid-template-columns: 3.6rem minmax(0, 1fr);
+    gap: .75rem;
+  }
+
+  .provenance {
+    grid-template-columns: minmax(0, 1fr);
+    gap: .2rem;
+  }
+
+  .sourceItem {
+    grid-template-columns: 1.35rem minmax(0, 1fr);
+    gap: .45rem;
+  }
+}
