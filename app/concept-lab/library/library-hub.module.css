@@ -65,10 +65,9 @@
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: .25rem 1rem;
-  margin: 1.65rem 0 0;
-  padding: .85rem 0 .8rem;
-  border-block: 1px solid var(--hair);
+  gap: .2rem .72rem;
+  margin: 1.55rem 0 0;
+  padding: 0;
   list-style: none;
 }
 
@@ -76,17 +75,19 @@
   display: inline-flex;
   min-width: max-content;
   align-items: baseline;
-  gap: .28rem;
+  gap: .25rem;
+  color: var(--pen-3);
 }
 .heroStats strong {
-  color: var(--pen);
-  font: 440 clamp(1.45rem, 2.2vw, 1.8rem)/1 var(--read);
+  color: var(--pen-2);
+  font: 500 1rem/1.2 var(--read);
   font-variant-numeric: lining-nums tabular-nums;
 }
 .heroStats span {
-  color: var(--pen-2);
-  font: 420 .86rem/1.2 var(--read);
+  color: var(--pen-3);
+  font: 400 .78rem/1.3 var(--read);
 }
+.heroStats li + li::before { margin-right: .72rem; color: var(--hair-strong, #bfc1c5); content: "·"; }
 
 .heroNav {
   display: flex;
@@ -149,7 +150,7 @@
   width: 100%;
 }
 
-.landscapeArtwork img { height: auto; }
+.landscapeArtwork img { height: auto; mix-blend-mode: multiply; }
 
 .landscapeLinks {
   position: absolute;
@@ -159,34 +160,35 @@
 
 .landmark {
   position: absolute;
-  display: flex;
-  min-width: 9.5rem;
-  max-width: 13rem;
-  min-height: 50px;
-  align-items: center;
-  gap: .55rem;
-  padding: .38rem .55rem;
-  background: rgb(255 255 255 / 91%);
+  display: grid;
+  min-width: 0;
+  max-width: 12rem;
+  min-height: 48px;
+  align-content: end;
+  justify-items: start;
+  gap: .18rem;
+  padding: .08rem .08rem .3rem;
   color: var(--kind-ink);
   text-decoration: none;
   pointer-events: auto;
 }
 
-.landmark span:last-child { display: grid; gap: .02rem; }
-.landmark strong { font: 470 1.22rem/1.1 var(--read); letter-spacing: -.025em; }
-.landmark em { color: var(--pen-3); font: 500 1rem/1.08 var(--script); }
-.landmarkDot { width: 15px; height: 15px; flex: 0 0 15px; border: 2px solid currentColor; border-radius: 50%; background: #fff; }
-.landmark:hover { text-decoration: underline; text-decoration-color: currentColor; text-underline-offset: .2em; }
-.landmark.theory { --kind-ink: var(--teal-deep); top: 19%; left: 3%; }
-.landmark.study { --kind-ink: var(--red-deep); top: 35%; right: 1%; }
-.landmark.method { --kind-ink: #87550e; bottom: 24%; left: 1%; }
-.landmark.mechanism { --kind-ink: var(--plum-deep); right: 1%; bottom: 13%; }
+.landmarkText { display: grid; gap: .08rem; }
+.landmark strong { color: var(--pen); font: 480 1.13rem/1.08 var(--read); letter-spacing: -.025em; }
+.landmark em { color: var(--kind-ink); font: 500 .96rem/1.12 var(--script); }
+.landmarkStroke { display: block; width: 38%; height: .28rem; border-bottom: 1px solid currentColor; transform: rotate(-1.8deg); transition: width 180ms ease, border-width 180ms ease; }
+.landmark:hover .landmarkStroke,
+.landmark:focus-visible .landmarkStroke { width: 83%; border-bottom-width: 2px; }
+.landmark.theory { --kind-ink: var(--teal-deep); top: 4%; left: 4%; }
+.landmark.study { --kind-ink: var(--red-deep); top: 5%; right: 1%; }
+.landmark.method { --kind-ink: #87550e; bottom: 20%; left: 2%; }
+.landmark.mechanism { --kind-ink: var(--plum-deep); right: 1%; bottom: 14%; }
 
 .mapCaption {
-  max-width: 54ch;
-  margin: .35rem .5rem 0 auto;
+  max-width: 46ch;
+  margin: -.15rem .5rem 0 auto;
   color: var(--pen-3);
-  font: 400 .73rem/1.45 var(--read);
+  font: 400 .7rem/1.45 var(--read);
   text-align: right;
 }
 
@@ -227,21 +229,25 @@
 
 .formGrid {
   display: grid;
-  grid-template-columns: minmax(0, 3.7fr) minmax(0, 2.2fr) minmax(0, 3.1fr) minmax(0, 3fr);
-  gap: 0 clamp(.8rem, 1.8vw, 1.5rem);
-  align-items: stretch;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(2rem, 4vw, 3.5rem) clamp(1rem, 2vw, 1.65rem);
+  align-items: start;
 }
 .form {
   position: relative;
   min-width: 0;
-  padding: .35rem .2rem .15rem;
-  border-top: 1px solid var(--hair);
+  display: grid;
+  align-content: start;
+  gap: .3rem .75rem;
+  padding: .7rem 0 .15rem;
+  border-top: 1px solid color-mix(in srgb, var(--kind-ink) 45%, var(--hair));
 }
 .form::before {
-  display: block;
-  width: 3rem;
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 2.6rem;
   height: 2px;
-  margin-bottom: 1.3rem;
   background: var(--kind-ink);
   content: "";
 }
@@ -249,68 +255,126 @@
 .study { --kind-ink: var(--red-deep); }
 .method { --kind-ink: #87550e; }
 .mechanism { --kind-ink: var(--plum-deep); }
-.theory .formExplanation { max-width: 38ch; }
-.study { padding-top: 2.2rem; }
-.study::before { width: 1.5rem; }
-.method { padding-top: .75rem; }
-.mechanism { padding-top: 1.55rem; }
-.formIndex { display: block; letter-spacing: .065em; }
-.form h3 { margin: .65rem 0 .1rem; font: 440 clamp(1.45rem, 2.45vw, 2.15rem)/1.02 var(--read); letter-spacing: -.045em; }
+.form[data-kind="theory"] {
+  grid-column: span 7;
+  grid-template-columns: minmax(0, 1fr) minmax(8rem, .62fr);
+  grid-template-areas: "index gesture" "copy gesture" "examples action";
+  padding-top: .9rem;
+}
+.form[data-kind="study"] {
+  grid-column: span 5;
+  grid-template-areas: "index" "gesture" "copy" "examples" "action";
+  align-self: center;
+  margin-top: 1.15rem;
+  padding: 1.3rem 0 0 1.3rem;
+  border-top: 0;
+  border-left: 1px solid var(--hair);
+}
+.form[data-kind="study"]::before { top: 1.3rem; left: -1px; width: 2px; height: 2.3rem; }
+.form[data-kind="method"] {
+  grid-column: span 5;
+  grid-template-columns: minmax(0, 1fr) minmax(7rem, .62fr);
+  grid-template-areas: "index gesture" "copy gesture" "examples action";
+  padding-top: 1.2rem;
+  border-top-style: dashed;
+}
+.form[data-kind="method"]::before { width: 4rem; }
+.form[data-kind="mechanism"] {
+  grid-column: span 7;
+  grid-template-columns: minmax(0, 1fr) minmax(9rem, .8fr);
+  grid-template-areas: "index gesture" "copy gesture" "examples action";
+  align-self: center;
+  margin-top: .65rem;
+  padding-top: .9rem;
+  border-top: 0;
+}
+.form[data-kind="mechanism"]::before { top: -.2rem; width: 76%; height: 1px; background: var(--hair); }
+.formIndex { grid-area: index; display: block; letter-spacing: .065em; }
+.form h3 { margin: .3rem 0 .1rem; font: 440 clamp(1.5rem, 2.55vw, 2.25rem)/1.02 var(--read); letter-spacing: -.045em; }
 .form h3 a { display: inline-flex; min-height: 44px; align-items: center; color: var(--pen); text-decoration: none; text-decoration-color: var(--kind-ink); text-underline-offset: .18em; }
 .form h3 a:hover { text-decoration: underline; }
+.formCopy { grid-area: copy; min-width: 0; }
 .formRole { margin: .35rem 0 0; color: var(--kind-ink); font: italic 450 1.08rem/1.2 var(--read); }
 .formExplanation { max-width: 32ch; margin: .65rem 0 0; color: var(--pen-2); font: 400 .91rem/1.52 var(--read); }
-.formExamples { display: grid; gap: .35rem; margin: .9rem 0 0; padding: .7rem 0 0; border-top: 1px solid var(--hair); list-style: none; }
+.formGesture { grid-area: gesture; display: block; width: 100%; max-height: 7rem; align-self: center; overflow: visible; transition: transform 180ms ease, opacity 180ms ease; }
+.formGesture path { fill: none; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-linejoin: round; }
+.gestureGraphite { stroke: var(--pen-2); stroke-width: 1.45; }
+.gestureGhost { stroke: var(--pen-3); stroke-width: .8; stroke-dasharray: 1 2; opacity: .68; }
+.gestureAccent { stroke: var(--kind-ink); stroke-width: 2.2; }
+.gesturePoint { fill: var(--kind-ink); opacity: .82; }
+.formExamples { grid-area: examples; display: grid; gap: .08rem; min-width: 0; margin: .7rem 0 0; padding: .55rem 0 0; border-top: 1px solid var(--hair); list-style: none; }
 .formExamples li { min-width: 0; }
 .formExamples a { display: inline-flex; min-height: 44px; align-items: center; color: var(--pen-2); font: 400 .85rem/1.35 var(--read); text-decoration-color: transparent; text-underline-offset: .18em; }
 .formExamples a:hover { text-decoration-color: currentColor; }
-.formAction { margin-top: .75rem; color: var(--kind-ink); }
-.study .formExamples { padding-top: .55rem; }
-.method .formExamples { border-top-style: dashed; }
-.mechanism .formExamples { position: relative; margin-left: .2rem; padding-left: 1rem; border-top: 0; }
-.mechanism .formExamples::before { position: absolute; top: .2rem; bottom: .2rem; left: 0; width: 1px; background: color-mix(in srgb, var(--kind-ink) 54%, white); content: ""; }
-.mechanism .formExamples::after { position: absolute; top: .22rem; left: -.16rem; width: .38rem; height: .38rem; border: 1px solid var(--kind-ink); border-radius: 50%; background: white; content: ""; }
+.formAction { grid-area: action; justify-self: end; align-self: end; margin-top: .5rem; color: var(--kind-ink); white-space: nowrap; }
+.form[data-kind="study"] .formGesture { width: 74%; justify-self: end; transform: rotate(-2deg); }
+.form[data-kind="method"] .formGesture { transform: translateY(.3rem); }
+.form[data-kind="mechanism"] .formGesture { width: 95%; justify-self: end; }
+.form:hover .formGesture,
+.form:focus-within .formGesture { opacity: 1; transform: translateY(-.12rem); }
+.form[data-kind="study"]:hover .formGesture,
+.form[data-kind="study"]:focus-within .formGesture { transform: rotate(-2deg) translateY(-.12rem); }
+.form[data-kind="method"]:hover .formGesture,
+.form[data-kind="method"]:focus-within .formGesture { transform: translateY(.16rem); }
 
 .browseSection { padding-bottom: 2.5rem; }
-.primaryFields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.5rem, 3.5vw, 3.3rem); }
+.primaryFields { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: clamp(1.6rem, 3.7vw, 3.4rem); }
 .disciplineField { min-width: 0; border-top: 1px solid var(--hair); }
 .primaryField { padding-top: 1rem; }
-.disciplineHeader { display: flex; align-items: end; justify-content: space-between; gap: .75rem; }
+.disciplineHeader { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: end; gap: .45rem .8rem; }
 .disciplineHeader h3 { max-width: 17ch; margin: .25rem 0 0; font: 430 clamp(1.65rem, 3vw, 2.6rem)/1.02 var(--read); letter-spacing: -.045em; }
 .fieldCount { color: var(--field-ink, var(--pen-3)); font-variant-numeric: tabular-nums; }
-.primaryField:first-child { --field-ink: var(--teal-deep); }
-.primaryField:nth-child(2) { --field-ink: var(--plum-deep); }
+.primaryField[data-discipline="ob"] { --field-ink: var(--teal-deep); }
+.primaryField[data-discipline="music-psych"] { --field-ink: var(--plum-deep); }
+.disciplineGesture { display: block; width: clamp(4.3rem, 12vw, 8.8rem); max-height: 3.5rem; align-self: center; overflow: visible; color: var(--field-ink, var(--pen-3)); }
+.disciplineGesture path { fill: none; stroke: var(--pen-3); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-linecap: round; opacity: .78; }
+.disciplineGesture .disciplineGhost { stroke-width: .65; stroke-dasharray: 1 2; opacity: .5; }
+.disciplineGesture .disciplineAccent { stroke: var(--field-ink, var(--pen-3)); stroke-width: 1.7; }
+.disciplineGesture circle { fill: var(--field-ink, var(--pen-3)); opacity: .78; }
 .fieldAction { flex: none; font-size: .59rem; }
 .disciplineSummary { max-width: 52ch; margin: .7rem 0 1.35rem; color: var(--pen-3); font: 400 .98rem/1.55 var(--read); }
 .fieldGroups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.3rem; }
-.fieldGroup { min-width: 0; padding: .75rem 0 .85rem; border-top: 1px solid color-mix(in srgb, var(--hair) 75%, white); }
-.fieldGroup h4 { margin: 0; color: var(--pen); font: 470 1.06rem/1.25 var(--read); }
+.fieldGroup { position: relative; min-width: 0; padding: .75rem 0 .85rem; border-top: 1px solid color-mix(in srgb, var(--hair) 75%, white); }
+.fieldGroup h4 { margin: 0; color: var(--pen); font: 480 1.08rem/1.25 var(--read); }
 .fieldGroup > p { max-width: 42ch; margin: .25rem 0 0; color: var(--pen-3); font: 400 .82rem/1.45 var(--read); }
 .recordLinks { display: flex; flex-wrap: wrap; gap: .25rem .9rem; margin: .45rem 0 0; padding: 0; list-style: none; }
 .recordLinks a { display: inline-flex; min-height: 44px; align-items: center; color: var(--pen-2); font: 400 .78rem/1.35 var(--read); text-decoration-color: var(--hair); text-underline-offset: .18em; }
 .recordLinks a:hover { color: var(--teal-deep); text-decoration-color: currentColor; }
+.workGroups .fieldGroup { border-top: 0; border-bottom: 1px solid color-mix(in srgb, var(--field-ink) 16%, var(--hair)); }
+.workGroups .fieldGroup::before { position: absolute; top: .9rem; left: -.55rem; width: .24rem; height: .32rem; border-left: 1px solid var(--field-ink); border-radius: 50%; content: ""; }
+.workGroups .fieldGroup h4 { max-width: 29ch; }
+.musicGroups .fieldGroup { padding-left: .9rem; border-top: 0; border-left: 1px solid color-mix(in srgb, var(--field-ink) 32%, var(--hair)); }
+.musicGroups .fieldGroup::before { position: absolute; top: 1rem; left: -.23rem; width: .38rem; height: .38rem; border: 1px solid var(--field-ink); border-radius: 50%; background: #fff; content: ""; }
+.musicGroups .fieldGroup:nth-child(2n) { margin-left: .45rem; }
+.musicGroups .fieldGroup:nth-child(2n) h4 { color: color-mix(in srgb, var(--pen) 88%, var(--field-ink)); }
 
 .otherFields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.2rem, 3vw, 2.7rem); margin-top: 2rem; padding-top: 1.2rem; border-top: 1px solid var(--hair); }
-.secondaryField { padding-top: .15rem; border-top: 0; }
+.secondaryField { position: relative; padding: .15rem 0 0 1rem; border-top: 0; border-left: 1px solid var(--hair); }
+.secondaryField::before { position: absolute; top: 0; left: -1px; width: 2.5rem; border-top: 1px solid var(--pen-3); content: ""; }
 .secondaryField .disciplineHeader h3 { font-size: clamp(1.35rem, 2.4vw, 1.85rem); }
 .secondaryField .disciplineSummary { margin: .45rem 0 .5rem; font-size: .87rem; }
 .secondaryField .fieldAction { margin-left: auto; }
 
 .collectionTools {
-  margin-top: clamp(2.4rem, 5vw, 4.4rem);
-  padding-top: clamp(1.5rem, 3vw, 2.4rem);
+  display: grid;
+  grid-template-columns: minmax(14rem, .72fr) minmax(0, 1.28fr);
+  align-items: start;
+  gap: 1rem clamp(2rem, 5vw, 5rem);
+  margin-top: clamp(2.6rem, 5vw, 4.8rem);
+  padding-top: clamp(1.5rem, 3vw, 2.6rem);
   border-top: 1px solid var(--hair);
   scroll-margin-top: 2rem;
 }
-.searchTools { display: flex; justify-content: space-between; align-items: end; gap: 1.5rem; }
-.collectionEyebrow { margin: 0; }
+.searchTools { display: flex; flex-direction: column; align-items: flex-start; gap: .35rem; }
+.collectionEyebrow { margin: 0; color: var(--teal-deep); }
 .searchTools h3 { margin: .25rem 0 0; font: 430 clamp(1.75rem, 3.2vw, 2.75rem)/1.05 var(--read); letter-spacing: -.045em; }
-.searchTools p:not(.collectionEyebrow) { max-width: 54ch; margin: .4rem 0 0; color: var(--pen-3); font: 400 .92rem/1.5 var(--read); }
+.searchTools p:not(.collectionEyebrow) { max-width: 34ch; margin: .4rem 0 .5rem; color: var(--pen-2); font: 400 .94rem/1.52 var(--read); }
 .savedLink { flex: none; color: var(--teal-deep); }
-.searchBrowser { margin-top: 1.25rem; }
+.searchBrowser { min-width: 0; margin-top: .15rem; padding-left: clamp(1rem, 2.5vw, 2rem); border-left: 1px solid var(--hair); }
 .searchBrowser :global(.filters) { display: grid; grid-template-columns: minmax(15rem, 1fr) minmax(0, auto); align-items: end; gap: 1rem 1.5rem; margin-top: 0; padding: .8rem 0 1rem; border-block: 1px solid var(--hair); }
 .searchBrowser :global(.field) { min-width: 0; }
 .searchBrowser :global(.field-search) { min-width: 0; }
+.searchBrowser :global(.field-search) { grid-column: 1 / -1; }
 .searchBrowser :global(.field .k) { color: var(--pen-3); font: 550 .62rem/1.4 var(--cat); letter-spacing: .09em; text-transform: uppercase; }
 .searchBrowser :global(.field input),
 .searchBrowser :global(.field select) {
@@ -325,11 +389,17 @@
   color: var(--pen);
   font: 420 1.08rem/1.3 var(--read);
 }
+.searchBrowser :global(.field input) { border-bottom-color: color-mix(in srgb, var(--pen-3) 50%, var(--hair)); }
 .searchBrowser :global(.field input::placeholder) { color: var(--pen-3); opacity: .88; }
 .searchBrowser :global(.pills) { gap: .25rem; }
-.searchBrowser :global(.pill) { min-height: 44px; padding: .4rem .65rem; border: 0; border-bottom: 2px solid transparent; border-radius: 0; color: var(--pen-2); font: 500 .68rem/1.35 var(--cat); }
+.searchBrowser :global(.pill) { --filter-ink: var(--pen-3); position: relative; min-height: 44px; padding: .4rem .55rem; border: 0; border-bottom: 1px solid transparent; border-radius: 0; background: transparent; color: var(--pen-2); font: 500 .69rem/1.35 var(--cat); transition: color 160ms ease, border-color 160ms ease; }
+.searchBrowser :global(.pill.teal) { --filter-ink: var(--teal-deep); }
+.searchBrowser :global(.pill.red) { --filter-ink: var(--red-deep); }
+.searchBrowser :global(.pill.gold) { --filter-ink: #87550e; }
+.searchBrowser :global(.pill.plum) { --filter-ink: var(--plum-deep); }
 .searchBrowser :global(.pill:hover) { border-bottom-color: var(--hair); color: var(--pen); }
-.searchBrowser :global(.pill[aria-pressed="true"]) { border-bottom-color: var(--teal-deep); background: transparent; color: var(--pen); }
+.searchBrowser :global(.pill[aria-pressed="true"]) { border-bottom: 2px solid var(--filter-ink); background: transparent; color: var(--filter-ink); }
+.searchBrowser :global(.pill[aria-pressed="true"])::after { position: absolute; right: .45rem; bottom: -3px; left: .45rem; height: 1px; background: color-mix(in srgb, var(--filter-ink) 45%, white); content: ""; transform: rotate(-1deg); }
 .searchBrowser :global(.card:hover .inner),
 .searchBrowser :global(.card:focus-within .inner) { transform: none; }
 .searchBrowser :global(.card .go) { position: relative; z-index: 3; }
@@ -340,27 +410,39 @@
 
 .routesSection { border-bottom: 0; }
 .pathList { margin: 0; padding: 0; list-style: none; }
-.path { --route-ink: var(--cobalt, #205ea8); position: relative; display: grid; grid-template-columns: minmax(15rem, .8fr) minmax(0, 1.5fr); gap: 1.5rem; align-items: center; padding: 1.6rem 0 1.8rem; border-top: 1px solid var(--hair); }
+.path { --route-ink: var(--cobalt, #205ea8); position: relative; display: grid; grid-template-columns: minmax(15rem, .78fr) minmax(0, 1.5fr); gap: clamp(1.2rem, 3vw, 2.5rem); align-items: center; padding: 1.8rem 0 2rem; border-top: 1px solid var(--hair); transition: padding 180ms ease; }
 .path:last-child { border-bottom: 1px solid var(--hair); }
+.path:hover,
+.path:focus-within { padding-inline: .4rem; }
 .routeBlue { --route-ink: var(--cobalt, #205ea8); }
 .routeCoral { --route-ink: var(--red-deep); }
 .routeTeal { --route-ink: var(--teal-deep); }
 .pathIntro { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: .5rem; align-items: start; }
-.pathIndex { padding-top: .22rem; color: var(--route-ink); font: 500 .68rem/1.4 var(--cat); font-variant-numeric: tabular-nums; }
+.pathIndex { padding-top: .22rem; color: var(--route-ink); font: 500 .72rem/1.4 var(--cat); font-variant-numeric: tabular-nums; }
 .pathField { display: block; }
 .path h3 { margin: .32rem 0 0; color: var(--pen); font: 440 clamp(1.45rem, 2.5vw, 2.1rem)/1.12 var(--read); letter-spacing: -.035em; }
 .pathIntro p { max-width: 72ch; margin: .4rem 0 0; color: var(--pen-3); font: 400 .9rem/1.52 var(--read); }
 .pathTrack { position: relative; min-width: 0; padding-top: .15rem; }
-.routeTrace { position: absolute; top: .2rem; left: 0; z-index: 0; width: 100%; height: 2.8rem; overflow: visible; }
-.routeTrace path { fill: none; stroke: var(--route-ink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; opacity: .68; }
-.routeCoral .routeTrace path { stroke-dasharray: 9 3 2 3; }
-.routeTeal .routeTrace path { stroke-width: 4; opacity: .45; }
+.routeTrace { position: absolute; top: .15rem; left: 0; z-index: 0; width: 100%; height: 2.9rem; overflow: visible; }
+.routeTraceMobile { display: none; }
+.routeTrace path { fill: none; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; transition: opacity 180ms ease, stroke-width 180ms ease; }
+.routeEcho { stroke: color-mix(in srgb, var(--route-ink) 48%, white); stroke-width: 1; stroke-dasharray: 1 3; opacity: .65; }
+.routeLine { stroke: var(--route-ink); stroke-width: 1.8; opacity: .62; }
+.routeCoral .routeLine { stroke-dasharray: 7 2 1 2; }
+.routeTeal .routeLine { stroke-width: 2.2; }
 .pathStops { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(var(--stop-count), minmax(0, 1fr)); gap: .3rem; margin: 0; padding: 0; list-style: none; }
-.pathStops li { min-width: 0; display: grid; justify-items: center; align-content: start; gap: .35rem; padding-top: .85rem; }
-.pathStopNode { display: grid; width: 1.65rem; height: 1.65rem; place-items: center; border: 1px solid var(--route-ink); border-radius: 50%; background: #fff; color: var(--route-ink); font: 500 .54rem/1 var(--cat); font-variant-numeric: tabular-nums; }
-.pathStops a { display: inline-flex; min-height: 44px; align-items: flex-start; justify-content: center; color: var(--pen-2); font: 440 .84rem/1.35 var(--read); text-align: center; text-decoration-color: var(--hair); text-underline-offset: .2em; }
-.pathStops a:hover { color: var(--route-ink); text-decoration-color: currentColor; }
-.routeNote { margin: .8rem 0 0 4rem; color: var(--pen-3); font: 400 .82rem/1.45 var(--read); }
+.pathStops li { min-width: 0; display: grid; justify-items: center; align-content: start; gap: .25rem; padding-top: .85rem; transition: transform 180ms ease; }
+.pathStops li:nth-child(even) { transform: translateY(.35rem); }
+.pathStopNode { position: relative; display: grid; min-width: 1.65rem; height: 1.35rem; place-items: center; color: var(--route-ink); font: 500 .57rem/1 var(--cat); font-variant-numeric: tabular-nums; }
+.pathStopNode::after { position: absolute; right: .3rem; bottom: .05rem; left: .3rem; border-bottom: 1px solid var(--route-ink); content: ""; transform: rotate(-2deg); opacity: .65; }
+.pathStops a { display: inline-flex; min-height: 44px; align-items: flex-start; justify-content: center; color: var(--pen-2); font: 450 .86rem/1.38 var(--read); text-align: center; text-decoration-color: transparent; text-underline-offset: .2em; }
+.pathStops a:hover,
+.pathStops a:focus-visible { color: var(--route-ink); text-decoration: underline; text-decoration-color: currentColor; }
+.path:hover .routeLine,
+.path:focus-within .routeLine { stroke-width: 2.6; opacity: .95; }
+.path:hover .routeEcho,
+.path:focus-within .routeEcho { opacity: .9; }
+.routeNote { margin: 1rem 0 0 4rem; color: var(--pen-3); font: 400 .82rem/1.45 var(--read); }
 
 @media (max-width: 1039px) {
   .hero { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(1.2rem, 2.7vw, 2rem); padding-top: 3rem; }
@@ -368,18 +450,26 @@
   .hero h1 { max-width: 6ch; font-size: clamp(3.8rem, 7vw, 5.4rem); }
   .heroLede { max-width: 33ch; margin-top: 1.15rem; font-size: clamp(1.12rem, 1.75vw, 1.34rem); }
   .heroContext { font-size: .9rem; }
-  .heroStats { gap: .2rem .75rem; margin-top: 1.25rem; }
-  .heroStats li { gap: .2rem; }
-  .heroStats strong { font-size: 1.45rem; }
-  .heroStats span { font-size: .78rem; }
+  .heroStats { gap: .2rem .45rem; margin-top: 1.15rem; }
+  .heroStats li + li::before { margin-right: .45rem; }
+  .heroStats strong { font-size: .92rem; }
+  .heroStats span { font-size: .72rem; }
   .heroNav { gap: .1rem .6rem; }
-  .landmark { min-width: 8.7rem; gap: .4rem; padding: .34rem .4rem; }
-  .landmark strong { font-size: 1.1rem; }
-  .landmark em { font-size: .88rem; }
-  .formGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem 1.5rem; }
-  .theory, .mechanism { grid-column: span 2; }
-  .study, .method { grid-column: span 1; padding-top: .35rem; }
-  .path { grid-template-columns: minmax(13rem, .78fr) minmax(0, 1.4fr); gap: 1rem; }
+  .landmark { max-width: 9.5rem; }
+  .landmark strong { font-size: 1rem; }
+  .landmark em { font-size: .83rem; }
+  .formGrid { column-gap: 1rem; row-gap: 2.4rem; }
+  .form[data-kind="theory"] { grid-template-columns: minmax(0, 1fr) minmax(6rem, .52fr); }
+  .form[data-kind="study"] { padding-left: 1rem; }
+  .form[data-kind="method"] { grid-template-columns: minmax(0, 1fr) minmax(5rem, .5fr); }
+  .form[data-kind="mechanism"] { grid-template-columns: minmax(0, 1fr) minmax(7rem, .62fr); }
+  .form h3 { font-size: clamp(1.4rem, 2.35vw, 1.95rem); }
+  .formRole { font-size: 1rem; }
+  .formExplanation { font-size: .86rem; }
+  .collectionTools { grid-template-columns: minmax(11rem, .66fr) minmax(0, 1.34fr); gap: 1rem 1.6rem; }
+  .searchBrowser { padding-left: 1rem; }
+  .searchBrowser :global(.filters) { grid-template-columns: minmax(0, 1fr); }
+  .path { grid-template-columns: minmax(12rem, .72fr) minmax(0, 1.3fr); gap: .8rem; }
 }
 
 @media (max-width: 760px) {
@@ -394,74 +484,88 @@
   .heroNav { gap: .1rem .8rem; margin-top: .7rem; }
   .heroNav a { font-size: .78rem; }
   .landscape { width: min(100%, 420px); margin: .3rem auto 0; }
-  .landmark { min-width: 0; width: 46%; min-height: 48px; gap: .42rem; padding: .3rem .35rem; }
-  .landmark strong { font-size: 1.15rem; }
-  .landmark em { font-size: .9rem; }
-  .landmarkDot { width: 13px; height: 13px; flex-basis: 13px; }
-  .landmark.theory { top: 8%; left: 0; }
-  .landmark.study { top: 36%; right: 0; }
-  .landmark.method { top: 60%; bottom: auto; left: 0; }
-  .landmark.mechanism { top: 82%; right: 0; bottom: auto; }
+  .landscapeArtwork img { height: min(118vw, 28rem); object-fit: contain; }
+  .landmark { width: 38%; min-height: 48px; padding: .15rem 0 .25rem; }
+  .landmark strong { font-size: 1.05rem; }
+  .landmark em { font-size: .84rem; }
+  .landmark.theory { top: 4%; left: 2%; }
+  .landmark.study { top: 34%; right: 1%; }
+  .landmark.method { top: 67%; bottom: auto; left: 1%; }
+  .landmark.mechanism { top: 82%; right: 1%; bottom: auto; }
   .mapCaption { margin: .25rem .2rem 0; font-size: .68rem; text-align: left; }
   .section { padding: 3.4rem 0; }
   .sectionLead { display: block; margin-bottom: 1.6rem; }
   .sectionEyebrow { margin-bottom: .6rem; }
   .sectionLead h2 { font-size: clamp(2.55rem, 11vw, 3.7rem); }
   .sectionNote { max-width: 40ch; margin-top: .75rem; }
-  .formGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem 1rem; }
-  .form { padding: .35rem 0 .2rem; }
-  .theory, .mechanism { grid-column: 1 / -1; }
-  .study, .method { grid-column: span 1; }
-  .study { padding-right: .45rem; }
-  .method { padding-left: .45rem; }
-  .form::before { margin-bottom: .9rem; }
+  .formGrid { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 2rem .85rem; }
+  .form[data-kind="theory"], .form[data-kind="mechanism"] { grid-column: 1 / -1; }
+  .form[data-kind="study"], .form[data-kind="method"] { grid-column: span 6; align-self: start; margin-top: 0; padding: .8rem .5rem 0 0; border-left: 0; border-top: 1px solid color-mix(in srgb, var(--kind-ink) 45%, var(--hair)); }
+  .form[data-kind="study"]::before, .form[data-kind="method"]::before { top: -2px; left: 0; width: 1.7rem; height: 2px; }
+  .form[data-kind="theory"], .form[data-kind="mechanism"] { grid-template-columns: minmax(0, 1fr) minmax(6rem, .42fr); }
+  .form[data-kind="study"], .form[data-kind="method"] { grid-template-columns: minmax(0, 1fr); grid-template-areas: "index" "gesture" "copy" "examples" "action"; }
+  .form[data-kind="study"] .formGesture, .form[data-kind="method"] .formGesture { width: 74%; max-height: 3.6rem; justify-self: start; margin: .2rem 0; }
+  .form[data-kind="mechanism"] .formGesture { width: 88%; }
+  .form[data-kind="theory"] .formGesture { width: 100%; }
+  .formCopy { min-width: 0; }
   .form h3 { font-size: clamp(1.45rem, 6.2vw, 1.9rem); }
   .formRole { font-size: .98rem; }
   .formExplanation { font-size: .85rem; }
-  .formExamples a { font-size: .8rem; }
-  .formAction { display: block; width: fit-content; max-width: 100%; padding-block: .65rem; }
+  .formExamples { gap: 0; margin-top: .45rem; }
+  .formExamples a { min-height: 40px; font-size: .77rem; }
+  .formAction { display: inline-flex; width: fit-content; max-width: 100%; min-height: 44px; margin-top: .3rem; padding-block: .5rem; font-size: .76rem; white-space: normal; }
   .primaryFields { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
-  .disciplineHeader { align-items: center; }
+  .disciplineHeader { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+  .disciplineGesture { width: clamp(4rem, 19vw, 7rem); grid-column: 2; grid-row: 1; }
+  .disciplineHeader .fieldAction { grid-column: 1 / -1; grid-row: 2; justify-self: start; margin-top: -.4rem; }
   .disciplineHeader h3 { font-size: clamp(1.7rem, 7vw, 2.35rem); }
-  .disciplineSummary { margin-bottom: .8rem; }
+  .disciplineSummary { margin: .7rem 0 .8rem; }
   .fieldGroups { column-gap: .9rem; }
   .fieldGroup h4 { font-size: 1rem; }
   .fieldGroup > p { font-size: .78rem; }
   .recordLinks { gap: .3rem .75rem; }
   .recordLinks a { font-size: .76rem; }
   .otherFields { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
-  .secondaryField + .secondaryField { padding-top: 1rem; border-top: 1px solid var(--hair); }
-  .searchTools { display: block; }
+  .secondaryField + .secondaryField { padding-top: 1rem; border-top: 0; }
+  .collectionTools { grid-template-columns: minmax(0, 1fr); gap: 1.2rem; }
+  .searchTools { display: flex; }
   .savedLink { margin-top: .4rem; }
-  .searchBrowser :global(.filters) { grid-template-columns: minmax(0, 1fr); }
-  .searchBrowser :global(.pills) { gap: .1rem; }
-  .searchBrowser :global(.pill) { padding-inline: .52rem; }
+  .searchBrowser { margin-top: 0; padding: 1rem 0 0; border-top: 1px solid var(--hair); border-left: 0; }
+  .searchBrowser :global(.filters) { grid-template-columns: minmax(0, 1fr); gap: .75rem; padding-top: .2rem; border-top: 0; }
+  .searchBrowser :global(.pills) { display: flex; flex-wrap: wrap; gap: .1rem .3rem; }
+  .searchBrowser :global(.pill) { padding-inline: .5rem; }
   .path { grid-template-columns: minmax(0, 1fr); gap: .85rem; align-items: start; }
   .pathIntro { grid-template-columns: 2rem minmax(0, 1fr); }
   .path h3 { font-size: 1.5rem; }
-  .pathTrack { margin-left: 2.5rem; padding-left: .7rem; }
-  .pathStops { grid-template-columns: minmax(0, 1fr); gap: .35rem; padding: .15rem 0 .15rem 1.6rem; }
-  .routeTrace { top: .35rem; left: .7rem; width: 1px; height: calc(100% - .7rem); }
-  .routeTrace path { display: none; }
-  .pathStops::before { position: absolute; top: .55rem; bottom: .55rem; left: 2.35rem; width: 1px; background: var(--route-ink); opacity: .48; content: ""; }
-  .pathStops li { grid-template-columns: 1.7rem minmax(0, 1fr); justify-items: start; gap: .55rem; padding-top: 0; }
-  .pathStopNode { width: 1.5rem; height: 1.5rem; }
+  .pathTrack { margin-left: 2.1rem; padding: .35rem 0 .25rem 1.3rem; }
+  .routeTrace { display: none; }
+  .routeTraceMobile { position: absolute; top: 0; bottom: 0; left: 0; z-index: 0; display: block; width: 2.4rem; height: 100%; overflow: visible; }
+  .routeTraceMobile path { fill: none; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+  .routeTraceMobile .routeEcho { stroke-width: 1; opacity: .55; }
+  .routeTraceMobile .routeLine { stroke-width: 1.6; opacity: .72; }
+  .pathStops { grid-template-columns: minmax(0, 1fr); gap: .2rem; padding: .15rem 0 .15rem .45rem; }
+  .pathStops li, .pathStops li:nth-child(even) { grid-template-columns: 1.7rem minmax(0, 1fr); justify-items: start; gap: .4rem; padding-top: 0; transform: none; }
+  .pathStopNode { min-width: 1.5rem; height: 1.4rem; }
   .pathStops a { justify-content: flex-start; text-align: left; font-size: .8rem; }
+  .path:hover, .path:focus-within { padding-inline: 0; }
   .routeNote { margin-left: 0; }
 }
 
 @media (max-width: 380px) {
   .heroStats { gap: .2rem .55rem; }
-  .heroStats strong { font-size: 1.38rem; }
-  .heroStats span { font-size: .75rem; }
-  .landmark { width: 48%; }
-  .landmark strong { font-size: 1.04rem; }
-  .landmark em { font-size: .82rem; }
+  .heroStats strong { font-size: .86rem; }
+  .heroStats span { font-size: .7rem; }
+  .landscapeArtwork img { height: 25rem; }
+  .landmark { width: 46%; }
+  .landmark strong { font-size: .98rem; }
+  .landmark em { font-size: .78rem; }
   .fieldAction { font-size: .53rem; }
   .fieldGroups { grid-template-columns: minmax(0, 1fr); }
-  .pathTrack { margin-left: 2rem; }
-  .pathStops { padding-left: 1.35rem; }
-  .pathStops::before { left: 2.1rem; }
+  .pathTrack { margin-left: 1.8rem; padding-left: 1rem; }
+  .routeTraceMobile { width: 2rem; }
+  .pathStops { padding-left: .35rem; }
+  .form[data-kind="study"], .form[data-kind="method"] { padding-right: .25rem; }
+  .form[data-kind="study"] .formGesture, .form[data-kind="method"] .formGesture { width: 82%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

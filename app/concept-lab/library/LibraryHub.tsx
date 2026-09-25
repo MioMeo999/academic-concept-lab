@@ -46,17 +46,23 @@ const KNOWLEDGE_FORMS: readonly {
 const ROUTE_PRESENTATION = {
   "organise-sound": {
     className: styles.routeBlue,
-    trace: "M 125 56 C 205 12 300 98 375 56 S 550 12 625 56 S 800 98 875 56",
+    trace: "M 125 61 C 204 57 294 66 375 62 S 544 55 625 60 S 790 66 875 55",
+    echo: "M 125 66 C 205 62 294 71 375 67 S 544 60 625 65 S 790 71 875 60",
+    mobileTrace: "M39 0 C24 44 57 88 39 138 S25 229 43 278 S55 377 37 480",
   },
   "musical-expectation": {
     className: styles.routeCoral,
-    trace: "M 167 56 C 270 4 405 108 500 56 S 740 4 833 56",
+    trace: "M 167 58 C 265 55 405 69 500 62 S 700 53 833 49",
+    echo: "M 167 63 C 265 60 405 74 500 67 S 700 58 833 54",
+    mobileTrace: "M39 0 C53 48 22 91 43 139 S57 223 36 270 S24 373 42 480",
   },
   "learn-model-predict": {
     className: styles.routeTeal,
-    trace: "M 167 56 C 290 56 365 22 500 56 S 710 56 833 56",
+    trace: "M 167 64 C 270 54 399 58 500 60 S 700 70 833 53",
+    echo: "M 167 69 C 270 59 399 63 500 65 S 700 75 833 58",
+    mobileTrace: "M39 0 C24 41 51 88 40 137 S25 221 45 272 S52 374 36 419 S40 457 40 480",
   },
-} satisfies Record<(typeof LEARNING_PATHS)[number]["id"], { className: string; trace: string }>;
+} satisfies Record<(typeof LEARNING_PATHS)[number]["id"], { className: string; trace: string; echo: string; mobileTrace: string }>;
 
 type LibraryHubProps = {
   records: AnyRecord[];
@@ -68,13 +74,13 @@ function KnowledgeLandscape() {
   return (
     <figure className={styles.landscape} aria-labelledby="library-landscape-caption">
       <picture className={styles.landscapeArtwork}>
-        <source media="(max-width: 760px)" srcSet="/visual-language/library/library-atlas-mobile.webp" type="image/webp" />
+        <source media="(max-width: 760px)" srcSet="/visual-language/library/library-sketch-mobile-v2.webp" type="image/webp" />
         <Image
-          src="/visual-language/library/library-atlas-wide.webp"
+          src="/visual-language/library/library-sketch-wide.webp"
           width={1536}
           height={1024}
           sizes="(min-width: 1040px) 62vw, (min-width: 761px) 50vw, calc(100vw - 2rem)"
-          alt="A continuous coloured-pencil landscape with a mountain observatory, a research town, a workshop and connected river valleys."
+          alt="An open graphite research sketch: an incomplete viewing frame, evidence traces, a working scaffold and a branching pencil pathway, accented with restrained colour."
           loading="eager"
           fetchPriority="high"
           unoptimized
@@ -84,13 +90,13 @@ function KnowledgeLandscape() {
       <nav className={styles.landscapeLinks} aria-label="Enter a Library by knowledge form">
         {KNOWLEDGE_FORMS.map(({ kind, role }) => (
           <Link className={`${styles.landmark} ${styles[kind]}`} href={`/concept-lab/library?kind=${kind}`} key={kind}>
-            <span className={styles.landmarkDot} aria-hidden="true" />
-            <span><strong>{KIND[kind].nav}</strong><em>{role}</em></span>
+            <span className={styles.landmarkText}><strong>{KIND[kind].nav}</strong><em>{role}</em></span>
+            <span className={styles.landmarkStroke} aria-hidden="true" />
           </Link>
         ))}
       </nav>
       <figcaption id="library-landscape-caption" className={styles.mapCaption}>
-        A drawn atlas for finding a way in. Its paths are editorial orientation, not evidence or causal relations.
+        Four ways in, drawn as working marks rather than territories. The sketch offers orientation, not evidence or causal relations.
       </figcaption>
     </figure>
   );
@@ -106,20 +112,64 @@ function SectionLead({ headingId, number, eyebrow, title, note }: { headingId: s
   );
 }
 
+function KnowledgeGesture({ kind }: { kind: RecordKind }) {
+  return (
+    <svg className={styles.formGesture} viewBox="0 0 220 94" aria-hidden="true" focusable="false">
+      {kind === "theory" && (
+        <>
+          <path className={styles.gestureGraphite} d="M13 73 C28 47 53 23 85 17 C113 11 146 20 180 42 M26 83 C45 57 65 38 91 32 C118 26 143 35 164 51" />
+          <path className={styles.gestureGhost} d="M23 59 C47 25 73 15 102 18 C128 21 153 36 171 61 M53 15 C73 30 93 49 104 80" />
+          <path className={styles.gestureAccent} d="M40 68 C63 45 86 36 113 37" />
+          <circle className={styles.gesturePoint} cx="105" cy="37" r="3.2" />
+        </>
+      )}
+      {kind === "study" && (
+        <>
+          <path className={styles.gestureGraphite} d="M19 29 H95 M27 48 H76 M34 68 H104 M115 34 C136 30 151 43 173 37 S195 25 207 29" />
+          <path className={styles.gestureGhost} d="M18 33 H99 M28 52 H72 M111 40 C137 36 152 48 176 42 S196 31 208 34" />
+          <path className={styles.gestureAccent} d="M119 67 H184" />
+          <circle className={styles.gesturePoint} cx="147" cy="37" r="3" />
+          <circle className={styles.gesturePoint} cx="177" cy="40" r="3" />
+          <circle className={styles.gesturePoint} cx="197" cy="29" r="3" />
+        </>
+      )}
+      {kind === "method" && (
+        <>
+          <path className={styles.gestureGraphite} d="M29 78 V24 M30 27 H179 M62 28 V60 M100 27 V72 M140 28 V52 M62 60 H100 M100 72 H179" />
+          <path className={styles.gestureGhost} d="M25 82 V29 M35 22 H174 M67 31 V63 M105 30 V69 M145 31 V55" />
+          <path className={styles.gestureAccent} d="M58 64 H104 M137 48 H181" />
+        </>
+      )}
+      {kind === "mechanism" && (
+        <>
+          <path className={styles.gestureGraphite} d="M15 47 C47 47 55 25 83 25 C105 25 112 51 137 51 C159 51 167 33 204 33 M83 25 C103 25 106 72 132 72 C159 72 167 52 204 52" />
+          <path className={styles.gestureGhost} d="M13 52 C47 52 60 31 83 30 C106 30 115 56 137 56 C164 56 172 39 207 39" />
+          <path className={styles.gestureAccent} d="M82 23 C106 23 108 69 133 69 C159 69 170 49 202 49" />
+          <circle className={styles.gesturePoint} cx="83" cy="27" r="3.2" />
+          <circle className={styles.gesturePoint} cx="137" cy="53" r="3.2" />
+        </>
+      )}
+    </svg>
+  );
+}
+
 function KnowledgeForms({ records }: { records: AnyRecord[] }) {
   return (
     <section className={`${styles.section} ${styles.formsSection}`} id="knowledge-forms" aria-labelledby="knowledge-forms-heading">
-      <SectionLead headingId="knowledge-forms-heading" number="01" eyebrow="A shared map of ideas" title="Four ways of knowing" />
+      <SectionLead headingId="knowledge-forms-heading" number="01" eyebrow="A shared map of ideas" title="Four ways of knowing" note="One collection, entered through different kinds of explanation, evidence and practice." />
       <div className={styles.formGrid}>
         {KNOWLEDGE_FORMS.map(({ kind, role, explanation }, index) => {
           const examples = records.filter((record) => record.kind === kind).slice(0, 2);
           const kindCount = records.filter((record) => record.kind === kind).length;
           return (
-            <article className={`${styles.form} ${styles[kind]}`} key={kind}>
+            <article className={`${styles.form} ${styles[kind]}`} data-kind={kind} key={kind}>
               <span className={styles.formIndex}>0{index + 1} <span aria-hidden="true">/</span> {kindCount} {kindCount === 1 ? "record" : "records"}</span>
-              <h3><Link href={`/concept-lab/library?kind=${kind}`}>{KIND[kind].nav}</Link></h3>
-              <p className={styles.formRole}>{role}</p>
-              <p className={styles.formExplanation}>{explanation}</p>
+              <KnowledgeGesture kind={kind} />
+              <div className={styles.formCopy}>
+                <h3><Link href={`/concept-lab/library?kind=${kind}`}>{KIND[kind].nav}</Link></h3>
+                <p className={styles.formRole}>{role}</p>
+                <p className={styles.formExplanation}>{explanation}</p>
+              </div>
               {examples.length > 0 && (
                 <ul className={styles.formExamples} aria-label={`Examples in ${KIND[kind].nav}`}>
                   {examples.map((record) => <li key={record.id}><Link href={recordHref(record)}>{record.title}</Link></li>)}
@@ -148,7 +198,7 @@ function RecordLinks({ records }: { records: AnyRecord[] }) {
 function FieldGroups({ disciplineId, records }: { disciplineId: string; records: AnyRecord[] }) {
   if (disciplineId === "ob") {
     return (
-      <div className={styles.fieldGroups}>
+      <div className={`${styles.fieldGroups} ${styles.workGroups}`}>
         {getPresentationGroupsForDiscipline(records, disciplineId).map((group) => (
           <div className={styles.fieldGroup} key={group.id}>
             <h4>{group.label}</h4>
@@ -166,7 +216,7 @@ function FieldGroups({ disciplineId, records }: { disciplineId: string; records:
       .filter((group) => group.records.length > 0);
     const unbranched = getUnbranchedRecords(records, disciplineId);
     return (
-      <div className={styles.fieldGroups}>
+      <div className={`${styles.fieldGroups} ${styles.musicGroups}`}>
         {branches.map(({ branch, records: branchRecords }) => (
           <div className={styles.fieldGroup} key={branch.id}>
             <h4>{branch.label}</h4>
@@ -188,6 +238,28 @@ function FieldGroups({ disciplineId, records }: { disciplineId: string; records:
   return <RecordLinks records={records.filter((record) => record.discipline === disciplineId)} />;
 }
 
+function DisciplineGesture({ disciplineId }: { disciplineId: string }) {
+  if (disciplineId === "ob") {
+    return (
+      <svg className={styles.disciplineGesture} viewBox="0 0 184 72" aria-hidden="true" focusable="false">
+        <path d="M8 18 C38 16 60 20 89 18 S143 18 175 16 M10 36 C41 34 66 39 95 36 S145 34 173 37 M8 55 C39 53 67 57 96 54 S145 55 176 53" />
+        <path className={styles.disciplineGhost} d="M9 21 C41 19 62 23 89 21 M10 39 C40 37 65 42 95 39 M9 58 C39 56 65 60 95 57" />
+        <circle cx="39" cy="18" r="2.8" /><circle cx="91" cy="36" r="2.8" /><circle cx="145" cy="54" r="2.8" />
+      </svg>
+    );
+  }
+  if (disciplineId === "music-psych") {
+    return (
+      <svg className={styles.disciplineGesture} viewBox="0 0 184 72" aria-hidden="true" focusable="false">
+        <path d="M8 18 C49 16 94 21 176 17 M8 27 C48 25 102 30 176 26 M8 36 C48 34 100 39 176 35 M8 45 C48 43 100 48 176 44 M8 54 C48 52 100 57 176 53" />
+        <path className={styles.disciplineAccent} d="M29 46 C48 41 61 26 79 27 S109 48 128 45 S151 30 169 28" />
+        <circle cx="29" cy="46" r="2.5" /><circle cx="79" cy="27" r="2.5" /><circle cx="128" cy="45" r="2.5" /><circle cx="169" cy="28" r="2.5" />
+      </svg>
+    );
+  }
+  return null;
+}
+
 function DisciplineField({
   discipline,
   records,
@@ -202,12 +274,13 @@ function DisciplineField({
   const count = getDisciplineRecordCount(records, discipline.id);
 
   return (
-    <article className={`${styles.disciplineField} ${size === "primary" ? styles.primaryField : styles.secondaryField}`}>
+    <article className={`${styles.disciplineField} ${size === "primary" ? styles.primaryField : styles.secondaryField}`} data-discipline={discipline.id}>
       <header className={styles.disciplineHeader}>
         <div>
           <span className={styles.fieldCount}>{count} {count === 1 ? "record" : "records"}</span>
           <h3>{discipline.name}</h3>
         </div>
+        <DisciplineGesture disciplineId={discipline.id} />
         <Link className={styles.fieldAction} href={`/concept-lab/library?discipline=${discipline.id}#collection-browser`} aria-label={`Browse ${count} records in ${discipline.name}`}>
           Browse field <span aria-hidden="true">↗</span>
         </Link>
@@ -270,9 +343,9 @@ function LearningRoutes({ records }: { records: AnyRecord[] }) {
       <SectionLead
         headingId="learning-paths-heading"
         number="03"
-        eyebrow="A few encoded routes"
+        eyebrow="Follow a question"
         title="Follow a question."
-        note={`${paths.length} curated sequences are encoded in the atlas, all in ${DISCIPLINES["music-psych"].name}. Each opens records in their own right.`}
+        note={`${paths.length} curated reading routes cross ${DISCIPLINES["music-psych"].name}. Each record remains a separate way in.`}
       />
       <ol className={styles.pathList}>
         {paths.map((path, pathIndex) => {
@@ -291,7 +364,12 @@ function LearningRoutes({ records }: { records: AnyRecord[] }) {
               {path.pathRecords.length > 0 && (
                 <div className={styles.pathTrack}>
                   <svg className={styles.routeTrace} viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-                    <path d={route.trace} />
+                    <path className={styles.routeEcho} d={route.echo} />
+                    <path className={styles.routeLine} d={route.trace} />
+                  </svg>
+                  <svg className={styles.routeTraceMobile} viewBox="0 0 80 480" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                    <path className={styles.routeEcho} d={route.mobileTrace} transform="translate(2 0)" />
+                    <path className={styles.routeLine} d={route.mobileTrace} />
                   </svg>
                   <ol className={styles.pathStops} aria-label={`Records in the curated route: ${path.question}`} style={{ "--stop-count": path.pathRecords.length } as CSSProperties}>
                     {path.pathRecords.map((record, index) => (
@@ -307,7 +385,7 @@ function LearningRoutes({ records }: { records: AnyRecord[] }) {
           );
         })}
       </ol>
-      <p className={styles.routeNote}>The drawn lines mark curated reading sequences; each title opens its own record.</p>
+      <p className={styles.routeNote}>The drawn lines suggest a reading sequence; each title opens its own record.</p>
     </section>
   );
 }
