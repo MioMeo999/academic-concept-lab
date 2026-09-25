@@ -26,10 +26,17 @@
 
 .heroEyebrow,
 .sectionEyebrow,
-.collectionEyebrow,
-.formIndex,
-.fieldCount,
-.pathField {
+.heroNavLabel,
+.formChoiceIndex,
+.formChoiceCount,
+.formReadingMeta,
+.fieldChoiceCount,
+.fieldReadingMeta,
+.fieldGroupIndex,
+.fieldLabel,
+.pathChoiceNumber,
+.pathField,
+.pathStepMeta {
   color: var(--pen-3);
   font: 550 .64rem/1.5 var(--cat);
   letter-spacing: .105em;
@@ -71,411 +78,230 @@
   list-style: none;
 }
 
-.heroStats li {
-  display: inline-flex;
-  min-width: max-content;
-  align-items: baseline;
-  gap: .25rem;
-  color: var(--pen-3);
-}
-.heroStats strong {
-  color: var(--pen-2);
-  font: 500 1rem/1.2 var(--read);
-  font-variant-numeric: lining-nums tabular-nums;
-}
-.heroStats span {
-  color: var(--pen-3);
-  font: 400 .78rem/1.3 var(--read);
-}
+.heroStats li { display: inline-flex; min-width: max-content; align-items: baseline; gap: .25rem; color: var(--pen-3); }
+.heroStats strong { color: var(--pen-2); font: 500 1rem/1.2 var(--read); font-variant-numeric: lining-nums tabular-nums; }
+.heroStats span { color: var(--pen-3); font: 400 .78rem/1.3 var(--read); }
 .heroStats li + li::before { margin-right: .72rem; color: var(--hair-strong, #bfc1c5); content: "·"; }
 
-.heroNav {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: .15rem .85rem;
-  margin-top: 1.2rem;
-}
-
-.heroNavLabel {
-  flex-basis: 100%;
-  color: var(--pen-3);
-  font: 500 .86rem/1.3 var(--script);
-}
-
+.heroNav { display: flex; flex-wrap: wrap; align-items: baseline; gap: .15rem .85rem; margin-top: 1.2rem; }
+.heroNavLabel { flex-basis: 100%; color: var(--pen-3); font: 500 .86rem/1.3 var(--script); letter-spacing: 0; text-transform: none; }
 .heroNav a,
-.fieldAction,
-.formAction,
-.savedLink {
-  display: inline-flex;
-  min-height: 44px;
-  align-items: center;
-  gap: .4rem;
-  color: var(--pen-2);
-  font: 430 .82rem/1.4 var(--read);
-  letter-spacing: 0;
-  text-decoration-color: var(--hair);
-  text-underline-offset: .24em;
-  text-transform: none;
-}
-
+.savedLink { display: inline-flex; min-height: 44px; align-items: center; gap: .4rem; color: var(--pen-2); font: 430 .82rem/1.4 var(--read); text-decoration-color: var(--hair); text-underline-offset: .24em; }
 .heroNav a:hover,
-.fieldAction:hover,
-.formAction:hover,
 .savedLink:hover { color: var(--cobalt, #205ea8); text-decoration-color: currentColor; }
 
-.heroNav a:focus-visible,
-.landmark:focus-visible,
-.form a:focus-visible,
-.fieldAction:focus-visible,
-.recordLinks a:focus-visible,
-.path a:focus-visible,
-.savedLink:focus-visible,
-.searchBrowser :global(a:focus-visible),
-.searchBrowser :global(button:focus-visible),
-.searchBrowser :global(input:focus-visible) {
-  outline: 2px solid var(--cobalt, #205ea8);
-  outline-offset: 4px;
-}
-
-.landscape {
-  position: relative;
-  min-width: 0;
-  margin: 0;
-}
-
+.landscape { min-width: 0; margin: 0; }
 .landscapeArtwork,
-.landscapeArtwork img {
-  display: block;
-  width: 100%;
-}
-
+.landscapeArtwork img { display: block; width: 100%; }
 .landscapeArtwork img { height: auto; mix-blend-mode: multiply; }
+.mapCaption { max-width: 58ch; margin: .1rem .5rem 0 auto; color: var(--pen-3); font: 400 .7rem/1.45 var(--read); text-align: right; }
 
-.landscapeLinks {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.landmark {
-  position: absolute;
-  display: grid;
-  min-width: 0;
-  max-width: 12rem;
-  min-height: 48px;
-  align-content: end;
-  justify-items: start;
-  gap: .18rem;
-  padding: .08rem .08rem .3rem;
-  color: var(--kind-ink);
-  text-decoration: none;
-  pointer-events: auto;
-}
-
-.landmarkText { display: grid; gap: .08rem; }
-.landmark strong { color: var(--pen); font: 480 1.13rem/1.08 var(--read); letter-spacing: -.025em; }
-.landmark em { color: var(--kind-ink); font: 500 .96rem/1.12 var(--script); }
-.landmarkStroke { display: block; width: 38%; height: .28rem; border-bottom: 1px solid currentColor; transform: rotate(-1.8deg); transition: width 180ms ease, border-width 180ms ease; }
-.landmark:hover .landmarkStroke,
-.landmark:focus-visible .landmarkStroke { width: 83%; border-bottom-width: 2px; }
-.landmark.theory { --kind-ink: var(--teal-deep); top: 4%; left: 4%; }
-.landmark.study { --kind-ink: var(--red-deep); top: 5%; right: 1%; }
-.landmark.method { --kind-ink: #87550e; bottom: 20%; left: 2%; }
-.landmark.mechanism { --kind-ink: var(--plum-deep); right: 1%; bottom: 14%; }
-
-.mapCaption {
-  max-width: 46ch;
-  margin: -.15rem .5rem 0 auto;
-  color: var(--pen-3);
-  font: 400 .7rem/1.45 var(--read);
-  text-align: right;
-}
-
-.section {
-  padding: clamp(3.4rem, 7vw, 6rem) 0;
-  border-bottom: 1px solid var(--hair);
-  scroll-margin-top: 1.5rem;
-}
-
-.sectionLead {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(15rem, .62fr);
-  align-items: end;
-  gap: 1rem 2rem;
-  margin-bottom: clamp(1.7rem, 4vw, 3.2rem);
-}
-
-.sectionEyebrow {
-  grid-column: 1 / -1;
-  display: flex;
-  gap: 1rem;
-  margin: 0;
-}
+.section { padding: clamp(3.4rem, 7vw, 6rem) 0; border-bottom: 1px solid var(--hair); scroll-margin-top: 1.5rem; }
+.sectionLead { display: grid; grid-template-columns: minmax(0, 1fr) minmax(15rem, .62fr); align-items: end; gap: 1rem 2rem; margin-bottom: clamp(1.7rem, 4vw, 3.2rem); }
+.sectionEyebrow { grid-column: 1 / -1; display: flex; gap: 1rem; margin: 0; }
 .sectionEyebrow span { color: var(--teal-deep); font-variant-numeric: tabular-nums; }
-.sectionLead h2 {
-  max-width: 15ch;
-  margin: 0;
-  color: var(--pen);
-  font: 420 clamp(2.55rem, 5vw, 4.8rem)/.94 var(--read);
-  letter-spacing: -.065em;
-}
-.sectionNote {
-  max-width: 42ch;
-  margin: 0 0 .15rem;
-  color: var(--pen-3);
-  font: 400 1rem/1.56 var(--read);
-}
+.sectionLead h2,
+.searchLead h2 { max-width: 15ch; margin: 0; color: var(--pen); font: 420 clamp(2.55rem, 5vw, 4.8rem)/.94 var(--read); letter-spacing: -.065em; }
+.sectionNote { max-width: 42ch; margin: 0 0 .15rem; color: var(--pen-3); font: 400 1rem/1.56 var(--read); }
 
-.formGrid {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: clamp(2rem, 4vw, 3.5rem) clamp(1rem, 2vw, 1.65rem);
-  align-items: start;
-}
-.form {
+/* Knowledge forms share one selector and one field of evidence, not four cards. */
+.formExplorer { --active-ink: var(--teal-deep); }
+.formExplorer[data-kind="study"] { --active-ink: var(--red-deep); }
+.formExplorer[data-kind="method"] { --active-ink: #87550e; }
+.formExplorer[data-kind="mechanism"] { --active-ink: var(--plum-deep); }
+.formExplorerBody { display: grid; grid-template-columns: minmax(16rem, .74fr) minmax(0, 1.26fr); gap: clamp(2rem, 5vw, 5rem); align-items: stretch; }
+.formSelector { align-self: start; border-top: 1px solid var(--hair); }
+.formChoice {
   position: relative;
-  min-width: 0;
   display: grid;
-  align-content: start;
-  gap: .3rem .75rem;
-  padding: .7rem 0 .15rem;
-  border-top: 1px solid color-mix(in srgb, var(--kind-ink) 45%, var(--hair));
-}
-.form::before {
-  position: absolute;
-  top: -2px;
-  left: 0;
-  width: 2.6rem;
-  height: 2px;
-  background: var(--kind-ink);
-  content: "";
-}
-.theory { --kind-ink: var(--teal-deep); }
-.study { --kind-ink: var(--red-deep); }
-.method { --kind-ink: #87550e; }
-.mechanism { --kind-ink: var(--plum-deep); }
-.form[data-kind="theory"] {
-  grid-column: span 7;
-  grid-template-columns: minmax(0, 1fr) minmax(8rem, .62fr);
-  grid-template-areas: "index gesture" "copy gesture" "examples action";
-  padding-top: .9rem;
-}
-.form[data-kind="study"] {
-  grid-column: span 5;
-  grid-template-areas: "index" "gesture" "copy" "examples" "action";
-  align-self: center;
-  margin-top: 1.15rem;
-  padding: 1.3rem 0 0 1.3rem;
-  border-top: 0;
-  border-left: 1px solid var(--hair);
-}
-.form[data-kind="study"]::before { top: 1.3rem; left: -1px; width: 2px; height: 2.3rem; }
-.form[data-kind="method"] {
-  grid-column: span 5;
-  grid-template-columns: minmax(0, 1fr) minmax(7rem, .62fr);
-  grid-template-areas: "index gesture" "copy gesture" "examples action";
-  padding-top: 1.2rem;
-  border-top-style: dashed;
-}
-.form[data-kind="method"]::before { width: 4rem; }
-.form[data-kind="mechanism"] {
-  grid-column: span 7;
-  grid-template-columns: minmax(0, 1fr) minmax(9rem, .8fr);
-  grid-template-areas: "index gesture" "copy gesture" "examples action";
-  align-self: center;
-  margin-top: .65rem;
-  padding-top: .9rem;
-  border-top: 0;
-}
-.form[data-kind="mechanism"]::before { top: -.2rem; width: 76%; height: 1px; background: var(--hair); }
-.formIndex { grid-area: index; display: block; letter-spacing: .065em; }
-.form h3 { margin: .3rem 0 .1rem; font: 440 clamp(1.5rem, 2.55vw, 2.25rem)/1.02 var(--read); letter-spacing: -.045em; }
-.form h3 a { display: inline-flex; min-height: 44px; align-items: center; color: var(--pen); text-decoration: none; text-decoration-color: var(--kind-ink); text-underline-offset: .18em; }
-.form h3 a:hover { text-decoration: underline; }
-.formCopy { grid-area: copy; min-width: 0; }
-.formRole { margin: .35rem 0 0; color: var(--kind-ink); font: italic 450 1.08rem/1.2 var(--read); }
-.formExplanation { max-width: 32ch; margin: .65rem 0 0; color: var(--pen-2); font: 400 .91rem/1.52 var(--read); }
-.formGesture { grid-area: gesture; display: block; width: 100%; max-height: 7rem; align-self: center; overflow: visible; transition: transform 180ms ease, opacity 180ms ease; }
-.formGesture path { fill: none; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-linejoin: round; }
-.gestureGraphite { stroke: var(--pen-2); stroke-width: 1.45; }
-.gestureGhost { stroke: var(--pen-3); stroke-width: .8; stroke-dasharray: 1 2; opacity: .68; }
-.gestureAccent { stroke: var(--kind-ink); stroke-width: 2.2; }
-.gesturePoint { fill: var(--kind-ink); opacity: .82; }
-.formExamples { grid-area: examples; display: grid; gap: .08rem; min-width: 0; margin: .7rem 0 0; padding: .55rem 0 0; border-top: 1px solid var(--hair); list-style: none; }
-.formExamples li { min-width: 0; }
-.formExamples a { display: inline-flex; min-height: 44px; align-items: center; color: var(--pen-2); font: 400 .85rem/1.35 var(--read); text-decoration-color: transparent; text-underline-offset: .18em; }
-.formExamples a:hover { text-decoration-color: currentColor; }
-.formAction { grid-area: action; justify-self: end; align-self: end; margin-top: .5rem; color: var(--kind-ink); white-space: nowrap; }
-.form[data-kind="study"] .formGesture { width: 74%; justify-self: end; transform: rotate(-2deg); }
-.form[data-kind="method"] .formGesture { transform: translateY(.3rem); }
-.form[data-kind="mechanism"] .formGesture { width: 95%; justify-self: end; }
-.form:hover .formGesture,
-.form:focus-within .formGesture { opacity: 1; transform: translateY(-.12rem); }
-.form[data-kind="study"]:hover .formGesture,
-.form[data-kind="study"]:focus-within .formGesture { transform: rotate(-2deg) translateY(-.12rem); }
-.form[data-kind="method"]:hover .formGesture,
-.form[data-kind="method"]:focus-within .formGesture { transform: translateY(.16rem); }
-
-.browseSection { padding-bottom: 2.5rem; }
-.primaryFields { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: clamp(1.6rem, 3.7vw, 3.4rem); }
-.disciplineField { min-width: 0; border-top: 1px solid var(--hair); }
-.primaryField { padding-top: 1rem; }
-.disciplineHeader { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: end; gap: .45rem .8rem; }
-.disciplineHeader h3 { max-width: 17ch; margin: .25rem 0 0; font: 430 clamp(1.65rem, 3vw, 2.6rem)/1.02 var(--read); letter-spacing: -.045em; }
-.fieldCount { color: var(--field-ink, var(--pen-3)); font-variant-numeric: tabular-nums; }
-.primaryField[data-discipline="ob"] { --field-ink: var(--teal-deep); }
-.primaryField[data-discipline="music-psych"] { --field-ink: var(--plum-deep); }
-.disciplineGesture { display: block; width: clamp(4.3rem, 12vw, 8.8rem); max-height: 3.5rem; align-self: center; overflow: visible; color: var(--field-ink, var(--pen-3)); }
-.disciplineGesture path { fill: none; stroke: var(--pen-3); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-linecap: round; opacity: .78; }
-.disciplineGesture .disciplineGhost { stroke-width: .65; stroke-dasharray: 1 2; opacity: .5; }
-.disciplineGesture .disciplineAccent { stroke: var(--field-ink, var(--pen-3)); stroke-width: 1.7; }
-.disciplineGesture circle { fill: var(--field-ink, var(--pen-3)); opacity: .78; }
-.fieldAction { flex: none; font-size: .59rem; }
-.disciplineSummary { max-width: 52ch; margin: .7rem 0 1.35rem; color: var(--pen-3); font: 400 .98rem/1.55 var(--read); }
-.fieldGroups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.3rem; }
-.fieldGroup { position: relative; min-width: 0; padding: .75rem 0 .85rem; border-top: 1px solid color-mix(in srgb, var(--hair) 75%, white); }
-.fieldGroup h4 { margin: 0; color: var(--pen); font: 480 1.08rem/1.25 var(--read); }
-.fieldGroup > p { max-width: 42ch; margin: .25rem 0 0; color: var(--pen-3); font: 400 .82rem/1.45 var(--read); }
-.recordLinks { display: flex; flex-wrap: wrap; gap: .25rem .9rem; margin: .45rem 0 0; padding: 0; list-style: none; }
-.recordLinks a { display: inline-flex; min-height: 44px; align-items: center; color: var(--pen-2); font: 400 .78rem/1.35 var(--read); text-decoration-color: var(--hair); text-underline-offset: .18em; }
-.recordLinks a:hover { color: var(--teal-deep); text-decoration-color: currentColor; }
-.workGroups .fieldGroup { border-top: 0; border-bottom: 1px solid color-mix(in srgb, var(--field-ink) 16%, var(--hair)); }
-.workGroups .fieldGroup::before { position: absolute; top: .9rem; left: -.55rem; width: .24rem; height: .32rem; border-left: 1px solid var(--field-ink); border-radius: 50%; content: ""; }
-.workGroups .fieldGroup h4 { max-width: 29ch; }
-.musicGroups .fieldGroup { padding-left: .9rem; border-top: 0; border-left: 1px solid color-mix(in srgb, var(--field-ink) 32%, var(--hair)); }
-.musicGroups .fieldGroup::before { position: absolute; top: 1rem; left: -.23rem; width: .38rem; height: .38rem; border: 1px solid var(--field-ink); border-radius: 50%; background: #fff; content: ""; }
-.musicGroups .fieldGroup:nth-child(2n) { margin-left: .45rem; }
-.musicGroups .fieldGroup:nth-child(2n) h4 { color: color-mix(in srgb, var(--pen) 88%, var(--field-ink)); }
-
-.otherFields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.2rem, 3vw, 2.7rem); margin-top: 2rem; padding-top: 1.2rem; border-top: 1px solid var(--hair); }
-.secondaryField { position: relative; padding: .15rem 0 0 1rem; border-top: 0; border-left: 1px solid var(--hair); }
-.secondaryField::before { position: absolute; top: 0; left: -1px; width: 2.5rem; border-top: 1px solid var(--pen-3); content: ""; }
-.secondaryField .disciplineHeader h3 { font-size: clamp(1.35rem, 2.4vw, 1.85rem); }
-.secondaryField .disciplineSummary { margin: .45rem 0 .5rem; font-size: .87rem; }
-.secondaryField .fieldAction { margin-left: auto; }
-
-.collectionTools {
-  display: grid;
-  grid-template-columns: minmax(14rem, .72fr) minmax(0, 1.28fr);
-  align-items: start;
-  gap: 1rem clamp(2rem, 5vw, 5rem);
-  margin-top: clamp(2.6rem, 5vw, 4.8rem);
-  padding-top: clamp(1.5rem, 3vw, 2.6rem);
-  border-top: 1px solid var(--hair);
-  scroll-margin-top: 2rem;
-}
-.searchTools { display: flex; flex-direction: column; align-items: flex-start; gap: .35rem; }
-.collectionEyebrow { margin: 0; color: var(--teal-deep); }
-.searchTools h3 { margin: .25rem 0 0; font: 430 clamp(1.75rem, 3.2vw, 2.75rem)/1.05 var(--read); letter-spacing: -.045em; }
-.searchTools p:not(.collectionEyebrow) { max-width: 34ch; margin: .4rem 0 .5rem; color: var(--pen-2); font: 400 .94rem/1.52 var(--read); }
-.savedLink { flex: none; color: var(--teal-deep); }
-.searchBrowser { min-width: 0; margin-top: .15rem; padding-left: clamp(1rem, 2.5vw, 2rem); border-left: 1px solid var(--hair); }
-.searchBrowser :global(.filters) { display: grid; grid-template-columns: minmax(15rem, 1fr) minmax(0, auto); align-items: end; gap: 1rem 1.5rem; margin-top: 0; padding: .8rem 0 1rem; border-block: 1px solid var(--hair); }
-.searchBrowser :global(.field) { min-width: 0; }
-.searchBrowser :global(.field-search) { min-width: 0; }
-.searchBrowser :global(.field-search) { grid-column: 1 / -1; }
-.searchBrowser :global(.field .k) { color: var(--pen-3); font: 550 .62rem/1.4 var(--cat); letter-spacing: .09em; text-transform: uppercase; }
-.searchBrowser :global(.field input),
-.searchBrowser :global(.field select) {
   width: 100%;
-  min-width: 0;
-  min-height: 44px;
-  padding: .48rem .15rem;
+  min-height: 4.8rem;
+  grid-template-columns: 2.1rem minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
+  gap: .15rem .6rem;
+  align-items: baseline;
+  padding: .82rem .25rem .78rem 0;
   border: 0;
   border-bottom: 1px solid var(--hair);
-  border-radius: 0;
-  background: #fff;
+  background: transparent;
   color: var(--pen);
-  font: 420 1.08rem/1.3 var(--read);
+  cursor: pointer;
+  text-align: left;
 }
-.searchBrowser :global(.field input) { border-bottom-color: color-mix(in srgb, var(--pen-3) 50%, var(--hair)); }
+.formChoice::before { position: absolute; right: 100%; bottom: -1px; left: 0; height: 1px; background: var(--active-ink); content: ""; transition: transform 180ms ease; transform: scaleX(0); transform-origin: left; }
+.formChoice[aria-pressed="true"]::before { right: 0; transform: scaleX(1); }
+.formChoiceIndex { grid-row: 1 / span 2; align-self: start; padding-top: .15rem; color: var(--active-ink); font-variant-numeric: tabular-nums; }
+.formChoiceName { color: var(--pen); font: 480 1.35rem/1.08 var(--read); letter-spacing: -.03em; }
+.formChoiceRole { grid-column: 2; color: var(--active-ink); font: italic 450 .92rem/1.2 var(--read); }
+.formChoiceCount { grid-column: 3; grid-row: 1 / span 2; align-self: center; white-space: nowrap; letter-spacing: .06em; }
+.formChoice[aria-pressed="false"] .formChoiceRole,
+.formChoice[aria-pressed="false"] .formChoiceCount { color: var(--pen-3); }
+.formReading { position: relative; min-width: 0; padding: .2rem 0 .4rem clamp(1.5rem, 3.5vw, 3.1rem); border-left: 1px solid var(--hair); }
+.formReadingHeading { display: flex; gap: 1rem; align-items: flex-start; }
+.formReadingMark { flex: 0 0 1.1rem; height: .55rem; margin-top: .52rem; border-bottom: 2px solid var(--active-ink); transform: rotate(-2deg); }
+.formReadingMeta { margin: 0; color: var(--active-ink); font-size: .62rem; }
+.formReading h3 { margin: .28rem 0 0; color: var(--pen); font: 440 clamp(2rem, 3.4vw, 3rem)/1 var(--read); letter-spacing: -.05em; }
+.formReadingExplanation { max-width: 54ch; margin: 1rem 0 0 2.1rem; color: var(--pen-2); font: 420 clamp(1.03rem, 1.55vw, 1.26rem)/1.5 var(--read); }
+.formExampleField { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: .8rem; margin: 1.4rem 0 0 2.1rem; padding-top: .85rem; border-top: 1px solid var(--hair); }
+.fieldLabel { margin: .28rem 0 0; color: var(--pen-3); font-size: .61rem; }
+.formExampleField ul,
+.fieldRecordList ul { display: flex; flex-wrap: wrap; gap: .25rem 1.3rem; margin: 0; padding: 0; list-style: none; }
+.formExampleField a,
+.fieldGroupReading a,
+.fieldRecordList a { color: var(--pen-2); font: 430 .94rem/1.45 var(--read); text-decoration-color: var(--hair-strong, #bfc1c5); text-underline-offset: .19em; }
+.formExampleField a:hover,
+.fieldGroupReading a:hover,
+.fieldRecordList a:hover { color: var(--active-ink, var(--cobalt, #205ea8)); text-decoration-color: currentColor; }
+.formBrowseLink,
+.fieldBrowseLink { display: inline-flex; min-height: 44px; align-items: center; gap: .5rem; color: var(--active-ink, var(--teal-deep)); font: 550 .67rem/1.4 var(--cat); letter-spacing: .08em; text-decoration: none; text-transform: uppercase; }
+.formBrowseLink { margin: 1rem 0 0 2.1rem; }
+.formBrowseLink:hover,
+.fieldBrowseLink:hover { text-decoration: underline; text-underline-offset: .25em; }
+.formEvidenceNote { max-width: 65ch; margin: 1.6rem 0 0; color: var(--pen-3); font: italic 400 .78rem/1.5 var(--read); }
+
+/* Discipline navigation is a field index; its selected groups retain source order. */
+.disciplineExplorer { --active-ink: var(--teal-deep); }
+.fieldExperience { display: grid; grid-template-columns: minmax(14rem, .54fr) minmax(0, 1.46fr); gap: clamp(1.7rem, 4vw, 4rem); align-items: start; }
+.fieldSelector { display: grid; border-top: 1px solid var(--hair); }
+.fieldChoice { display: grid; width: 100%; min-height: 3.65rem; grid-template-columns: 2.3rem minmax(0, 1fr); gap: .65rem; align-items: center; padding: .55rem .4rem .55rem 0; border: 0; border-bottom: 1px solid var(--hair); background: transparent; color: var(--pen-2); cursor: pointer; font: 430 1rem/1.3 var(--read); text-align: left; transition: color 160ms ease, padding 160ms ease; }
+.fieldChoice:hover { color: var(--teal-deep); }
+.fieldChoice[aria-pressed="true"] { color: var(--pen); padding-left: .25rem; }
+.fieldChoiceCount { color: var(--teal-deep); font-size: .63rem; font-variant-numeric: tabular-nums; }
+.fieldChoice[aria-pressed="false"] .fieldChoiceCount { color: var(--pen-3); }
+.fieldReading { min-width: 0; padding-left: clamp(1.5rem, 3.5vw, 3.1rem); border-left: 1px solid var(--hair); }
+.fieldReadingHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.2rem; padding-bottom: 1.5rem; }
+.fieldReadingHeader > div { min-width: 0; }
+.fieldReadingMeta { margin: 0; font-size: .61rem; }
+.fieldReadingHeader h3 { max-width: 25ch; margin: .35rem 0 0; color: var(--pen); font: 440 clamp(1.7rem, 3vw, 2.65rem)/1.04 var(--read); letter-spacing: -.045em; }
+.fieldReadingSummary { max-width: 54ch; margin: .65rem 0 0; color: var(--pen-2); font: 400 .98rem/1.52 var(--read); }
+.fieldBrowseLink { flex: 0 0 auto; margin-top: .5rem; color: var(--teal-deep); }
+.fieldGroupList { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1.7rem; border-top: 1px solid var(--hair); }
+.fieldGroupReading { display: grid; grid-template-columns: 1.6rem minmax(0, 1fr); gap: .6rem; align-content: start; padding: 1rem 0 .9rem; border-bottom: 1px solid var(--hair); }
+.fieldGroupIndex { margin: .13rem 0 0; color: var(--teal-deep); font-size: .58rem; font-variant-numeric: tabular-nums; }
+.fieldGroupReading h4 { margin: 0; color: var(--pen); font: 470 1.08rem/1.24 var(--read); }
+.fieldGroupReading > div > p { margin: .38rem 0 0; color: var(--pen-3); font: 400 .8rem/1.45 var(--read); }
+.fieldGroupReading ul { display: grid; gap: .2rem; margin: .65rem 0 0; padding: 0; list-style: none; }
+.fieldGroupReading a { font-size: .84rem; }
+.fieldRecordList { margin-top: .4rem; padding: 1rem 0; border-top: 1px solid var(--hair); }
+.fieldRecordList .fieldLabel { margin: 0 0 .7rem; }
+.fieldRecordList ul { gap: .5rem 1.4rem; }
+.fieldRecordList li { min-width: min(100%, 14rem); }
+
+.searchExperience { display: grid; grid-template-columns: minmax(15rem, .7fr) minmax(0, 1.3fr); gap: 1.5rem clamp(2rem, 5vw, 5rem); align-items: start; }
+.searchLead { min-width: 0; }
+.searchLead .sectionEyebrow { margin: 0 0 .7rem; }
+.searchLead h2 { max-width: 12ch; font-size: clamp(2.1rem, 3.8vw, 3.7rem); }
+.searchLead > div > p:last-child { max-width: 43ch; margin: .8rem 0 0; color: var(--pen-3); font: 400 .96rem/1.55 var(--read); }
+.savedLink { margin-top: .75rem; }
+.searchBrowser { min-width: 0; padding-left: clamp(1.4rem, 3vw, 2.5rem); border-left: 1px solid var(--hair); }
+.searchBrowser :global(.filters) { display: grid; grid-template-columns: minmax(0, 1fr); gap: .85rem; }
+.searchBrowser :global(.field) { min-width: 0; }
+.searchBrowser :global(.field .k) { color: var(--pen-3); font: 550 .61rem/1.4 var(--cat); letter-spacing: .09em; text-transform: uppercase; }
+.searchBrowser :global(.field input) { width: 100%; min-width: 0; min-height: 48px; padding: .5rem .15rem; border: 0; border-bottom: 1px solid color-mix(in srgb, var(--pen-3) 50%, var(--hair)); border-radius: 0; background: #fff; color: var(--pen); font: 420 1.08rem/1.3 var(--read); }
 .searchBrowser :global(.field input::placeholder) { color: var(--pen-3); opacity: .88; }
-.searchBrowser :global(.pills) { gap: .25rem; }
-.searchBrowser :global(.pill) { --filter-ink: var(--pen-3); position: relative; min-height: 44px; padding: .4rem .55rem; border: 0; border-bottom: 1px solid transparent; border-radius: 0; background: transparent; color: var(--pen-2); font: 500 .69rem/1.35 var(--cat); transition: color 160ms ease, border-color 160ms ease; }
+.searchBrowser :global(.pills) { display: flex; flex-wrap: wrap; gap: .15rem .3rem; }
+.searchBrowser :global(.pill) { position: relative; min-height: 44px; padding: .4rem .55rem; border: 0; border-bottom: 1px solid transparent; border-radius: 0; background: transparent; color: var(--pen-2); font: 500 .69rem/1.35 var(--cat); cursor: pointer; transition: color 160ms ease, border-color 160ms ease; }
 .searchBrowser :global(.pill.teal) { --filter-ink: var(--teal-deep); }
 .searchBrowser :global(.pill.red) { --filter-ink: var(--red-deep); }
 .searchBrowser :global(.pill.gold) { --filter-ink: #87550e; }
 .searchBrowser :global(.pill.plum) { --filter-ink: var(--plum-deep); }
 .searchBrowser :global(.pill:hover) { border-bottom-color: var(--hair); color: var(--pen); }
-.searchBrowser :global(.pill[aria-pressed="true"]) { border-bottom: 2px solid var(--filter-ink); background: transparent; color: var(--filter-ink); }
-.searchBrowser :global(.pill[aria-pressed="true"])::after { position: absolute; right: .45rem; bottom: -3px; left: .45rem; height: 1px; background: color-mix(in srgb, var(--filter-ink) 45%, white); content: ""; transform: rotate(-1deg); }
-.searchBrowser :global(.card:hover .inner),
-.searchBrowser :global(.card:focus-within .inner) { transform: none; }
-.searchBrowser :global(.card .go) { position: relative; z-index: 3; }
+.searchBrowser :global(.pill[aria-pressed="true"]) { border-bottom: 2px solid var(--filter-ink, var(--pen)); background: transparent; color: var(--filter-ink, var(--pen)); }
 .searchBrowser :global(.resultline) { margin-top: .85rem; }
 .searchBrowser :global(.resultline .k) { color: var(--pen-3); font-size: .59rem; }
 .searchBrowser :global(.resultline .quiet-link) { color: var(--teal-deep); font: 500 .66rem/1.4 var(--cat); }
 .searchBrowser :global(.library-browse-prompt) { max-width: 62ch; margin: 1.1rem 0 0; color: var(--pen-3); font: 400 .9rem/1.55 var(--read); }
+.searchBrowser :global(.card:hover .inner),
+.searchBrowser :global(.card:focus-within .inner) { transform: none; }
+.searchBrowser :global(.card .go) { position: relative; z-index: 1; }
 
+/* A route is an ordered reading, not a causal chain. Selecting a stop opens its own description. */
 .routesSection { border-bottom: 0; }
-.pathList { margin: 0; padding: 0; list-style: none; }
-.path { --route-ink: var(--cobalt, #205ea8); position: relative; display: grid; grid-template-columns: minmax(15rem, .78fr) minmax(0, 1.5fr); gap: clamp(1.2rem, 3vw, 2.5rem); align-items: center; padding: 1.8rem 0 2rem; border-top: 1px solid var(--hair); transition: padding 180ms ease; }
-.path:last-child { border-bottom: 1px solid var(--hair); }
-.path:hover,
-.path:focus-within { padding-inline: .4rem; }
-.routeBlue { --route-ink: var(--cobalt, #205ea8); }
-.routeCoral { --route-ink: var(--red-deep); }
-.routeTeal { --route-ink: var(--teal-deep); }
-.pathIntro { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: .5rem; align-items: start; }
-.pathIndex { padding-top: .22rem; color: var(--route-ink); font: 500 .72rem/1.4 var(--cat); font-variant-numeric: tabular-nums; }
-.pathField { display: block; }
-.path h3 { margin: .32rem 0 0; color: var(--pen); font: 440 clamp(1.45rem, 2.5vw, 2.1rem)/1.12 var(--read); letter-spacing: -.035em; }
-.pathIntro p { max-width: 72ch; margin: .4rem 0 0; color: var(--pen-3); font: 400 .9rem/1.52 var(--read); }
-.pathTrack { position: relative; min-width: 0; padding-top: .15rem; }
-.routeTrace { position: absolute; top: .15rem; left: 0; z-index: 0; width: 100%; height: 2.9rem; overflow: visible; }
-.routeTraceMobile { display: none; }
-.routeTrace path { fill: none; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; transition: opacity 180ms ease, stroke-width 180ms ease; }
+.pathSelector { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 3vw, 2.5rem); border-top: 1px solid var(--hair); }
+.pathChoice { display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: .55rem; align-content: start; min-width: 0; min-height: 6.4rem; padding: 1rem .2rem .9rem 0; border: 0; border-bottom: 1px solid var(--hair); background: transparent; color: var(--pen-2); cursor: pointer; font: 430 clamp(1rem, 1.5vw, 1.22rem)/1.3 var(--read); text-align: left; transition: color 160ms ease; }
+.pathChoice:hover { color: var(--pen); }
+.pathChoice[aria-pressed="true"] { border-bottom: 2px solid var(--route-ink); color: var(--pen); }
+.pathChoiceNumber { grid-row: 1 / span 2; padding-top: .12rem; color: var(--route-ink); font-size: .61rem; font-variant-numeric: tabular-nums; }
+.pathTone_blue { --route-ink: var(--cobalt, #205ea8); }
+.pathTone_coral { --route-ink: var(--red-deep); }
+.pathTone_teal { --route-ink: var(--teal-deep); }
+.pathReading { padding: 1.8rem 0 0; }
+.pathReadingHeader { display: grid; grid-template-columns: minmax(0, 1fr) minmax(16rem, .8fr); gap: .55rem 2rem; align-items: end; }
+.pathField { grid-column: 1 / -1; color: var(--route-ink); }
+.pathReadingHeader h3 { margin: 0; color: var(--pen); font: 440 clamp(1.7rem, 3vw, 2.7rem)/1.06 var(--read); letter-spacing: -.045em; }
+.pathReadingHeader p { max-width: 60ch; margin: 0; color: var(--pen-3); font: 400 .91rem/1.5 var(--read); }
+.pathReadingBody { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(16rem, .65fr); gap: clamp(1.5rem, 4vw, 3.8rem); align-items: center; margin-top: 1.2rem; padding: 1.2rem 0 0; border-top: 1px solid var(--hair); }
+.pathStepField { position: relative; min-width: 0; }
+.pathReadingTrace { position: absolute; top: .1rem; left: 0; z-index: 0; width: 100%; height: 2.9rem; overflow: visible; }
+.pathReadingTraceMobile { display: none; }
+.pathReadingTrace path,
+.pathReadingTraceMobile path { fill: none; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; transition: opacity 180ms ease, stroke-width 180ms ease; }
 .routeEcho { stroke: color-mix(in srgb, var(--route-ink) 48%, white); stroke-width: 1; stroke-dasharray: 1 3; opacity: .65; }
-.routeLine { stroke: var(--route-ink); stroke-width: 1.8; opacity: .62; }
-.routeCoral .routeLine { stroke-dasharray: 7 2 1 2; }
-.routeTeal .routeLine { stroke-width: 2.2; }
-.pathStops { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(var(--stop-count), minmax(0, 1fr)); gap: .3rem; margin: 0; padding: 0; list-style: none; }
-.pathStops li { min-width: 0; display: grid; justify-items: center; align-content: start; gap: .25rem; padding-top: .85rem; transition: transform 180ms ease; }
-.pathStops li:nth-child(even) { transform: translateY(.35rem); }
-.pathStopNode { position: relative; display: grid; min-width: 1.65rem; height: 1.35rem; place-items: center; color: var(--route-ink); font: 500 .57rem/1 var(--cat); font-variant-numeric: tabular-nums; }
+.routeLine { stroke: var(--route-ink); stroke-width: 1.8; opacity: .7; }
+.pathTone_coral .routeLine { stroke-dasharray: 7 2 1 2; }
+.pathTone_teal .routeLine { stroke-width: 2.2; }
+.pathStepList { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(var(--stop-count), minmax(0, 1fr)); gap: .3rem; margin: 0; padding: 0; list-style: none; }
+.pathStepChoice { display: grid; width: 100%; min-height: 5.4rem; justify-items: center; align-content: start; gap: .45rem; padding: .7rem .25rem .25rem; border: 0; border-radius: 0; background: transparent; color: var(--pen-2); cursor: pointer; font: inherit; text-align: center; }
+.pathStopNode { position: relative; display: grid; min-width: 1.75rem; height: 1.45rem; place-items: center; color: var(--route-ink); font: 550 .62rem/1 var(--cat); font-variant-numeric: tabular-nums; }
 .pathStopNode::after { position: absolute; right: .3rem; bottom: .05rem; left: .3rem; border-bottom: 1px solid var(--route-ink); content: ""; transform: rotate(-2deg); opacity: .65; }
-.pathStops a { display: inline-flex; min-height: 44px; align-items: flex-start; justify-content: center; color: var(--pen-2); font: 450 .86rem/1.38 var(--read); text-align: center; text-decoration-color: transparent; text-underline-offset: .2em; }
-.pathStops a:hover,
-.pathStops a:focus-visible { color: var(--route-ink); text-decoration: underline; text-decoration-color: currentColor; }
-.path:hover .routeLine,
-.path:focus-within .routeLine { stroke-width: 2.6; opacity: .95; }
-.path:hover .routeEcho,
-.path:focus-within .routeEcho { opacity: .9; }
-.routeNote { margin: 1rem 0 0 4rem; color: var(--pen-3); font: 400 .82rem/1.45 var(--read); }
+.pathStepTitle { max-width: 19ch; color: var(--pen-2); font: 430 .85rem/1.35 var(--read); text-decoration-color: transparent; text-underline-offset: .2em; }
+.pathStepChoice:hover .pathStepTitle { color: var(--route-ink); text-decoration: underline; text-decoration-color: currentColor; }
+.pathStepChoice[aria-pressed="true"] .pathStopNode { font-weight: 700; }
+.pathStepChoice[aria-pressed="true"] .pathStepTitle { color: var(--pen); text-decoration: underline; text-decoration-color: var(--route-ink); text-decoration-thickness: 1px; }
+.pathStepDetail { min-height: 11rem; padding-left: clamp(1.2rem, 2.6vw, 2.2rem); border-left: 1px solid var(--route-ink); }
+.pathStepMeta { margin: 0; color: var(--route-ink); font-size: .6rem; }
+.pathStepDetail h4 { margin: .55rem 0 0; color: var(--pen); font: 460 1.4rem/1.18 var(--read); letter-spacing: -.025em; }
+.pathStepDetail h4 a { color: inherit; text-decoration-color: var(--route-ink); text-underline-offset: .18em; }
+.pathStepDetail > p:not(.pathStepMeta) { margin: .55rem 0 0; color: var(--pen-2); font: 400 .9rem/1.5 var(--read); }
+.pathSequencePosition { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem 1.1rem; margin: .9rem 0 0; padding-top: .7rem; border-top: 1px solid var(--hair); }
+.pathSequencePosition > div { min-width: 0; }
+.pathSequencePosition dt { color: var(--pen-3); font: 550 .58rem/1.4 var(--cat); letter-spacing: .08em; text-transform: uppercase; }
+.pathSequencePosition dd { margin: .2rem 0 0; color: var(--pen-2); font: 400 .8rem/1.42 var(--read); }
+.pathStepBoundary { display: block; margin-top: .85rem; color: var(--pen-3); font: italic 400 .74rem/1.45 var(--read); }
+
+.heroNav a:focus-visible,
+.formChoice:focus-visible,
+.formBrowseLink:focus-visible,
+.fieldChoice:focus-visible,
+.fieldBrowseLink:focus-visible,
+.searchExperience a:focus-visible,
+.pathChoice:focus-visible,
+.pathStepChoice:focus-visible,
+.pathStepDetail a:focus-visible,
+.searchBrowser :global(a:focus-visible),
+.searchBrowser :global(button:focus-visible),
+.searchBrowser :global(input:focus-visible) { outline: 2px solid var(--cobalt, #205ea8); outline-offset: 4px; }
+
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; clip-path: inset(50%); }
+.staticFallback { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--hair); color: var(--pen-2); font: 400 .9rem/1.5 var(--read); }
+.staticFallback h2 { color: var(--pen); font: 440 2rem/1.1 var(--read); }
+.staticFallback h3 { margin: 1.6rem 0 .6rem; color: var(--pen); font: 460 1.3rem/1.2 var(--read); }
+.staticFallback h4 { margin: 1.1rem 0 .3rem; color: var(--pen); font: 470 1.05rem/1.25 var(--read); }
+.staticFallback h5 { margin: .8rem 0 .2rem; color: var(--pen-2); font: 470 .95rem/1.3 var(--read); }
+.staticFallback p { max-width: 70ch; }
+.staticFallback a { color: var(--cobalt, #205ea8); text-underline-offset: .18em; }
 
 @media (max-width: 1039px) {
   .hero { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(1.2rem, 2.7vw, 2rem); padding-top: 3rem; }
-  .heroCopy { display: block; }
   .hero h1 { max-width: 6ch; font-size: clamp(3.8rem, 7vw, 5.4rem); }
   .heroLede { max-width: 33ch; margin-top: 1.15rem; font-size: clamp(1.12rem, 1.75vw, 1.34rem); }
-  .heroContext { font-size: .9rem; }
   .heroStats { gap: .2rem .45rem; margin-top: 1.15rem; }
   .heroStats li + li::before { margin-right: .45rem; }
   .heroStats strong { font-size: .92rem; }
   .heroStats span { font-size: .72rem; }
   .heroNav { gap: .1rem .6rem; }
-  .landmark { max-width: 9.5rem; }
-  .landmark strong { font-size: 1rem; }
-  .landmark em { font-size: .83rem; }
-  .formGrid { column-gap: 1rem; row-gap: 2.4rem; }
-  .form[data-kind="theory"] { grid-template-columns: minmax(0, 1fr) minmax(6rem, .52fr); }
-  .form[data-kind="study"] { padding-left: 1rem; }
-  .form[data-kind="method"] { grid-template-columns: minmax(0, 1fr) minmax(5rem, .5fr); }
-  .form[data-kind="mechanism"] { grid-template-columns: minmax(0, 1fr) minmax(7rem, .62fr); }
-  .form h3 { font-size: clamp(1.4rem, 2.35vw, 1.95rem); }
-  .formRole { font-size: 1rem; }
-  .formExplanation { font-size: .86rem; }
-  .collectionTools { grid-template-columns: minmax(11rem, .66fr) minmax(0, 1.34fr); gap: 1rem 1.6rem; }
-  .searchBrowser { padding-left: 1rem; }
-  .searchBrowser :global(.filters) { grid-template-columns: minmax(0, 1fr); }
-  .path { grid-template-columns: minmax(12rem, .72fr) minmax(0, 1.3fr); gap: .8rem; }
+  .formExplorerBody { grid-template-columns: minmax(14rem, .72fr) minmax(0, 1.28fr); gap: 2rem; }
+  .formChoice { grid-template-columns: 1.55rem minmax(0, 1fr); }
+  .formChoiceCount { grid-column: 2; grid-row: 3; justify-self: start; margin-top: .1rem; }
+  .fieldExperience { grid-template-columns: minmax(12rem, .58fr) minmax(0, 1.42fr); gap: 1.4rem; }
+  .fieldGroupList { column-gap: 1.1rem; }
+  .searchExperience { grid-template-columns: minmax(12rem, .65fr) minmax(0, 1.35fr); gap: 1.5rem 2rem; }
+  .pathReadingBody { grid-template-columns: minmax(0, 1.2fr) minmax(14rem, .8fr); gap: 1.2rem; }
 }
 
 @media (max-width: 760px) {
   .page { width: calc(100% - 2rem); }
   .hero { grid-template-columns: minmax(0, 1fr); gap: 1rem; padding: 2.6rem 0 2rem; }
-  .heroCopy { display: block; }
   .heroEyebrow { margin-bottom: .9rem; }
   .hero h1 { max-width: 8ch; font-size: clamp(3.8rem, 16vw, 5.6rem); }
   .heroLede { max-width: 35ch; margin-top: 1rem; font-size: clamp(1.18rem, 5.1vw, 1.45rem); }
@@ -485,70 +311,70 @@
   .heroNav a { font-size: .78rem; }
   .landscape { width: min(100%, 420px); margin: .3rem auto 0; }
   .landscapeArtwork img { height: min(118vw, 28rem); object-fit: contain; }
-  .landmark { width: 38%; min-height: 48px; padding: .15rem 0 .25rem; }
-  .landmark strong { font-size: 1.05rem; }
-  .landmark em { font-size: .84rem; }
-  .landmark.theory { top: 4%; left: 2%; }
-  .landmark.study { top: 34%; right: 1%; }
-  .landmark.method { top: 67%; bottom: auto; left: 1%; }
-  .landmark.mechanism { top: 82%; right: 1%; bottom: auto; }
   .mapCaption { margin: .25rem .2rem 0; font-size: .68rem; text-align: left; }
   .section { padding: 3.4rem 0; }
   .sectionLead { display: block; margin-bottom: 1.6rem; }
   .sectionEyebrow { margin-bottom: .6rem; }
   .sectionLead h2 { font-size: clamp(2.55rem, 11vw, 3.7rem); }
   .sectionNote { max-width: 40ch; margin-top: .75rem; }
-  .formGrid { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 2rem .85rem; }
-  .form[data-kind="theory"], .form[data-kind="mechanism"] { grid-column: 1 / -1; }
-  .form[data-kind="study"], .form[data-kind="method"] { grid-column: span 6; align-self: start; margin-top: 0; padding: .8rem .5rem 0 0; border-left: 0; border-top: 1px solid color-mix(in srgb, var(--kind-ink) 45%, var(--hair)); }
-  .form[data-kind="study"]::before, .form[data-kind="method"]::before { top: -2px; left: 0; width: 1.7rem; height: 2px; }
-  .form[data-kind="theory"], .form[data-kind="mechanism"] { grid-template-columns: minmax(0, 1fr) minmax(6rem, .42fr); }
-  .form[data-kind="study"], .form[data-kind="method"] { grid-template-columns: minmax(0, 1fr); grid-template-areas: "index" "gesture" "copy" "examples" "action"; }
-  .form[data-kind="study"] .formGesture, .form[data-kind="method"] .formGesture { width: 74%; max-height: 3.6rem; justify-self: start; margin: .2rem 0; }
-  .form[data-kind="mechanism"] .formGesture { width: 88%; }
-  .form[data-kind="theory"] .formGesture { width: 100%; }
-  .formCopy { min-width: 0; }
-  .form h3 { font-size: clamp(1.45rem, 6.2vw, 1.9rem); }
-  .formRole { font-size: .98rem; }
-  .formExplanation { font-size: .85rem; }
-  .formExamples { gap: 0; margin-top: .45rem; }
-  .formExamples a { min-height: 40px; font-size: .77rem; }
-  .formAction { display: inline-flex; width: fit-content; max-width: 100%; min-height: 44px; margin-top: .3rem; padding-block: .5rem; font-size: .76rem; white-space: normal; }
-  .primaryFields { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
-  .disciplineHeader { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
-  .disciplineGesture { width: clamp(4rem, 19vw, 7rem); grid-column: 2; grid-row: 1; }
-  .disciplineHeader .fieldAction { grid-column: 1 / -1; grid-row: 2; justify-self: start; margin-top: -.4rem; }
-  .disciplineHeader h3 { font-size: clamp(1.7rem, 7vw, 2.35rem); }
-  .disciplineSummary { margin: .7rem 0 .8rem; }
-  .fieldGroups { column-gap: .9rem; }
-  .fieldGroup h4 { font-size: 1rem; }
-  .fieldGroup > p { font-size: .78rem; }
-  .recordLinks { gap: .3rem .75rem; }
-  .recordLinks a { font-size: .76rem; }
-  .otherFields { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
-  .secondaryField + .secondaryField { padding-top: 1rem; border-top: 0; }
-  .collectionTools { grid-template-columns: minmax(0, 1fr); gap: 1.2rem; }
-  .searchTools { display: flex; }
-  .savedLink { margin-top: .4rem; }
-  .searchBrowser { margin-top: 0; padding: 1rem 0 0; border-top: 1px solid var(--hair); border-left: 0; }
-  .searchBrowser :global(.filters) { grid-template-columns: minmax(0, 1fr); gap: .75rem; padding-top: .2rem; border-top: 0; }
-  .searchBrowser :global(.pills) { display: flex; flex-wrap: wrap; gap: .1rem .3rem; }
+  .formExplorerBody { grid-template-columns: minmax(0, 1fr); gap: 1.3rem; }
+  .formSelector { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-left: 1px solid var(--hair); }
+  .formChoice { min-height: 5.2rem; grid-template-columns: 1.55rem minmax(0, 1fr); align-content: start; padding: .75rem .55rem .65rem .65rem; border-right: 1px solid var(--hair); }
+  .formChoice:nth-child(odd) { padding-left: 0; border-right: 0; }
+  .formChoiceName { font-size: 1.19rem; }
+  .formChoiceRole { font-size: .84rem; }
+  .formChoiceCount { grid-column: 2; grid-row: 3; justify-self: start; font-size: .58rem; }
+  .formReading { padding: .2rem 0 .2rem 1rem; }
+  .formReadingHeading { gap: .65rem; }
+  .formReadingMark { flex-basis: .7rem; }
+  .formReading h3 { font-size: clamp(2rem, 9vw, 2.7rem); }
+  .formReadingExplanation { margin: .8rem 0 0 1.35rem; font-size: 1rem; }
+  .formExampleField { grid-template-columns: minmax(0, 1fr); gap: .35rem; margin: 1rem 0 0 1.35rem; }
+  .formExampleField ul { display: grid; gap: .2rem; }
+  .formBrowseLink { margin-left: 1.35rem; }
+  .formEvidenceNote { margin-top: 1rem; }
+  .fieldExperience { grid-template-columns: minmax(0, 1fr); gap: 1.3rem; }
+  .fieldSelector { grid-template-columns: repeat(2, minmax(0, 1fr)); border-left: 1px solid var(--hair); }
+  .fieldChoice { min-height: 3.7rem; grid-template-columns: 1.9rem minmax(0, 1fr); padding-right: .5rem; border-right: 1px solid var(--hair); font-size: .9rem; }
+  .fieldChoice:nth-child(odd) { border-right: 0; }
+  .fieldReading { padding-left: 0; border-left: 0; }
+  .fieldReadingHeader { display: block; padding-bottom: 1.1rem; }
+  .fieldReadingHeader h3 { font-size: clamp(1.8rem, 7.5vw, 2.5rem); }
+  .fieldReadingSummary { max-width: 42ch; font-size: .91rem; }
+  .fieldBrowseLink { margin-top: .35rem; }
+  .fieldGroupList { grid-template-columns: minmax(0, 1fr); }
+  .fieldGroupReading { grid-template-columns: 1.8rem minmax(0, 1fr); padding: .85rem 0; }
+  .fieldGroupReading h4 { font-size: 1.02rem; }
+  .fieldGroupReading > div > p { max-width: 50ch; }
+  .fieldRecordList ul { display: grid; }
+  .searchExperience { grid-template-columns: minmax(0, 1fr); gap: 1.2rem; }
+  .searchLead h2 { max-width: 14ch; font-size: clamp(2.2rem, 9vw, 3.3rem); }
+  .searchLead > div > p:last-child { margin-top: .7rem; }
+  .savedLink { margin-top: .15rem; }
+  .searchBrowser { padding: 1.1rem 0 0; border-top: 1px solid var(--hair); border-left: 0; }
+  .searchBrowser :global(.filters) { gap: .6rem; }
+  .searchBrowser :global(.pills) { gap: .1rem .3rem; }
   .searchBrowser :global(.pill) { padding-inline: .5rem; }
-  .path { grid-template-columns: minmax(0, 1fr); gap: .85rem; align-items: start; }
-  .pathIntro { grid-template-columns: 2rem minmax(0, 1fr); }
-  .path h3 { font-size: 1.5rem; }
-  .pathTrack { margin-left: 2.1rem; padding: .35rem 0 .25rem 1.3rem; }
-  .routeTrace { display: none; }
-  .routeTraceMobile { position: absolute; top: 0; bottom: 0; left: 0; z-index: 0; display: block; width: 2.4rem; height: 100%; overflow: visible; }
-  .routeTraceMobile path { fill: none; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
-  .routeTraceMobile .routeEcho { stroke-width: 1; opacity: .55; }
-  .routeTraceMobile .routeLine { stroke-width: 1.6; opacity: .72; }
-  .pathStops { grid-template-columns: minmax(0, 1fr); gap: .2rem; padding: .15rem 0 .15rem .45rem; }
-  .pathStops li, .pathStops li:nth-child(even) { grid-template-columns: 1.7rem minmax(0, 1fr); justify-items: start; gap: .4rem; padding-top: 0; transform: none; }
+  .pathSelector { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .pathChoice { min-height: 3.8rem; grid-template-columns: 2rem minmax(0, 1fr); padding: .7rem .2rem .65rem 0; font-size: 1.02rem; }
+  .pathReading { padding-top: 1.3rem; }
+  .pathReadingHeader { grid-template-columns: minmax(0, 1fr); gap: .4rem; }
+  .pathField { grid-column: auto; }
+  .pathReadingHeader h3 { font-size: 1.65rem; }
+  .pathReadingHeader p { margin-top: .1rem; }
+  .pathReadingBody { grid-template-columns: minmax(0, 1fr); gap: 1.1rem; margin-top: 1rem; }
+  .pathReadingTrace { display: none; }
+  .pathReadingTraceMobile { position: absolute; top: 0; bottom: 0; left: 0; z-index: 0; display: block; width: 2.4rem; height: 100%; overflow: visible; }
+  .pathReadingTraceMobile .routeEcho { stroke-width: 1; opacity: .55; }
+  .pathReadingTraceMobile .routeLine { stroke-width: 1.6; opacity: .72; }
+  .pathStepList { grid-template-columns: minmax(0, 1fr); gap: .08rem; padding: .1rem 0 .1rem .3rem; }
+  .pathStepChoice { min-height: 3.4rem; grid-template-columns: 2rem minmax(0, 1fr); justify-items: start; align-items: center; gap: .45rem; padding: .3rem .15rem; text-align: left; }
   .pathStopNode { min-width: 1.5rem; height: 1.4rem; }
-  .pathStops a { justify-content: flex-start; text-align: left; font-size: .8rem; }
-  .path:hover, .path:focus-within { padding-inline: 0; }
-  .routeNote { margin-left: 0; }
+  .pathStepTitle { max-width: none; font-size: .9rem; }
+  .pathStepDetail { min-height: 0; padding: .9rem 0 0; border-top: 1px solid var(--route-ink); border-left: 0; }
+  .pathStepDetail h4 { font-size: 1.3rem; }
+  .pathSequencePosition { gap: .6rem; }
+  .pathSequencePosition dd { font-size: .76rem; }
 }
 
 @media (max-width: 380px) {
@@ -556,16 +382,13 @@
   .heroStats strong { font-size: .86rem; }
   .heroStats span { font-size: .7rem; }
   .landscapeArtwork img { height: 25rem; }
-  .landmark { width: 46%; }
-  .landmark strong { font-size: .98rem; }
-  .landmark em { font-size: .78rem; }
-  .fieldAction { font-size: .53rem; }
-  .fieldGroups { grid-template-columns: minmax(0, 1fr); }
-  .pathTrack { margin-left: 1.8rem; padding-left: 1rem; }
-  .routeTraceMobile { width: 2rem; }
-  .pathStops { padding-left: .35rem; }
-  .form[data-kind="study"], .form[data-kind="method"] { padding-right: .25rem; }
-  .form[data-kind="study"] .formGesture, .form[data-kind="method"] .formGesture { width: 82%; }
+  .heroNav { column-gap: .55rem; }
+  .heroNav a { font-size: .73rem; }
+  .formChoice { grid-template-columns: 1.25rem minmax(0, 1fr); padding-right: .35rem; }
+  .formChoiceName { font-size: 1.08rem; }
+  .formChoiceRole { font-size: .78rem; }
+  .fieldChoice { grid-template-columns: 1.55rem minmax(0, 1fr); font-size: .82rem; }
+  .pathStepDetail h4 { font-size: 1.2rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
