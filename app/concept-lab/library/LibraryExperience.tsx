@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { useState, type CSSProperties } from "react";
-import type { AnyRecord, RecordKind } from "@/content/types";
+import type { AnyRecord, CraftColumn, ProcedureStep, RecordKind } from "@/content/types";
 import type { Discipline } from "@/content/disciplines";
 import { KIND } from "@/content/records";
 import { LibraryBrowser } from "../_components/LibraryBrowser";
 import styles from "./library-hub.module.css";
 
-type RecordReference = {
+export type RecordReference = {
   id: string;
   title: string;
   href: string;
@@ -16,12 +16,67 @@ type RecordReference = {
   oneSentence: string;
 };
 
-type KnowledgeForm = {
+type FormArt = {
+  description: string;
+  caption: string;
+};
+
+type FormStudyLine = {
+  label: string;
+  result: string;
+};
+
+type MethodPractice =
+  | {
+      movement: "close-reading";
+      record: RecordReference;
+      summary: string;
+      columns: Pick<CraftColumn, "title">[];
+    }
+  | {
+      movement: "recursive";
+      record: RecordReference;
+      summary: string;
+      phases: { n: ProcedureStep["n"]; title: string }[];
+      recursionNote: string;
+    };
+
+type FormReading =
+  | {
+      kind: "theory";
+      question: string;
+      examples: RecordReference[];
+    }
+  | {
+      kind: "study";
+      record?: RecordReference;
+      question?: string;
+      studies: FormStudyLine[];
+      supportedClaim?: { claim: string; status: string };
+      boundary?: string;
+    }
+  | {
+      kind: "method";
+      practices: MethodPractice[];
+      distinction: string;
+    }
+  | {
+      kind: "mechanism";
+      record?: RecordReference;
+      nodes: { label: string; sub: string }[];
+      messengers: string[];
+      feedbackLabel: string;
+      caption: string;
+    };
+
+export type KnowledgeForm = {
   kind: RecordKind;
   role: string;
   explanation: string;
   count: number;
   examples: RecordReference[];
+  art: FormArt;
+  reading: FormReading;
 };
 
 type FieldGroup = {
@@ -73,6 +128,122 @@ function SectionLead({ headingId, number, eyebrow, title, note }: { headingId: s
   );
 }
 
+function KnowledgeReading({ selected }: { selected: KnowledgeForm }) {
+  const reading = selected.reading;
+
+  if (reading.kind === "theory") {
+    return (
+      <div className={styles.readingLayout} data-reading="theory">
+        <figure className={styles.formMaterial}>
+          <div className={styles.formArtRaster} role="img" aria-label={selected.art.description} />
+          <span className={styles.materialAnnotation}>look through / ask what the frame leaves out</span>
+          <figcaption>{selected.art.caption}</figcaption>
+        </figure>
+        <div className={styles.readingContent}>
+          <p className={styles.readingPrompt}>{reading.question}</p>
+          <div className={styles.lensReadings}>
+            {reading.examples.map((record, index) => (
+              <section className={styles.lensReading} key={record.id}>
+                <span className={styles.readingIndex}>{String(index + 1).padStart(2, "0")} · theory example</span>
+                <h4><Link href={record.href}>{record.title}</Link></h4>
+                <p>{record.oneSentence}</p>
+              </section>
+            ))}
+          </div>
+          <Link className={styles.formBrowseLink} href="/concept-lab/library?kind=theory">Browse theory records <span aria-hidden="true">→</span></Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (reading.kind === "study") {
+    return (
+      <div className={styles.readingLayout} data-reading="study">
+        <figure className={styles.formMaterial}>
+          <div className={styles.formArtRaster} role="img" aria-label={selected.art.description} />
+          <div className={styles.evidenceMarks} aria-hidden="true"><i /><i /><i /></div>
+          <figcaption>{selected.art.caption}</figcaption>
+        </figure>
+        <div className={styles.readingContent}>
+          {reading.record && <p className={styles.readingRecord}><Link href={reading.record.href}>{reading.record.title}</Link> <span>· registered Study record</span></p>}
+          {reading.question && <div className={styles.studyQuestion}><span className={styles.readingIndex}>Research question</span><p>{reading.question}</p></div>}
+          <ol className={styles.studyEvidence}>
+            {reading.studies.map((study) => (
+              <li key={study.label}>
+                <span className={styles.studyEvidenceMark} aria-hidden="true" />
+                <div><h4>{study.label}</h4><p>{study.result}</p></div>
+              </li>
+            ))}
+          </ol>
+          {reading.supportedClaim && (
+            <aside className={styles.studyClaim}>
+              <span className={styles.readingIndex}>{reading.supportedClaim.status.toLowerCase()}</span>
+              <h4>{reading.supportedClaim.claim}</h4>
+            </aside>
+          )}
+          {reading.boundary && <p className={styles.studyBoundary}><span className={styles.readingIndex}>Evidence boundary</span>{reading.boundary}</p>}
+          {reading.record && <Link className={styles.formBrowseLink} href={reading.record.href}>Read full design, results and limitations <span aria-hidden="true">→</span></Link>}
+        </div>
+      </div>
+    );
+  }
+
+  if (reading.kind === "method") {
+    return (
+      <div className={styles.readingLayout} data-reading="method">
+        <figure className={styles.formMaterial}>
+          <div className={styles.formArtRaster} role="img" aria-label={selected.art.description} />
+          <span className={styles.materialAnnotation}>material → analytic work → account</span>
+          <figcaption>{selected.art.caption}</figcaption>
+        </figure>
+        <div className={styles.readingContent}>
+          <p className={styles.methodDistinction}>{reading.distinction}</p>
+          <div className={styles.methodPractices}>
+            {reading.practices.map((practice) => (
+              <section className={styles.methodPractice} key={practice.record.id} data-movement={practice.movement}>
+                <header><span className={styles.readingIndex}>{practice.movement === "close-reading" ? "A close pass" : "A recursive movement"}</span><h4><Link href={practice.record.href}>{practice.record.title}</Link></h4><p>{practice.summary}</p></header>
+                {practice.movement === "close-reading" ? (
+                  <ol className={styles.craftColumns} aria-label="Four parts of an IPA close-reading pass">{practice.columns.map((column, index) => <li key={column.title}><span>{String(index + 1).padStart(2, "0")}</span><strong>{column.title}</strong></li>)}</ol>
+                ) : (
+                  <>
+                    <ol className={styles.recursivePhases}>{practice.phases.map((phase) => <li key={phase.n}><span>{phase.n}</span>{phase.title}</li>)}</ol>
+                    <p className={styles.recursionNote}>{practice.recursionNote}</p>
+                  </>
+                )}
+              </section>
+            ))}
+          </div>
+          <Link className={styles.formBrowseLink} href="/concept-lab/library?kind=method">Browse research methods <span aria-hidden="true">→</span></Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.readingLayout} data-reading="mechanism">
+      <figure className={styles.formMaterial}>
+        <div className={styles.formArtRaster} role="img" aria-label={selected.art.description} />
+        <span className={styles.materialAnnotation}>components · messengers · return</span>
+        <figcaption>{selected.art.caption}</figcaption>
+      </figure>
+      <div className={styles.readingContent}>
+        {reading.record && <p className={styles.readingRecord}><Link href={reading.record.href}>{reading.record.title}</Link> <span>· canonical mechanism record</span></p>}
+        <ol className={styles.mechanismPath}>
+          {reading.nodes.map((node, index) => (
+            <li key={node.label}>
+              <span className={styles.mechanismNode}>{String(index + 1).padStart(2, "0")}</span>
+              <div><h4>{node.label}</h4><p>{node.sub}</p></div>
+              {index < reading.messengers.length && <span className={styles.mechanismMessenger}>{reading.messengers[index]}</span>}
+            </li>
+          ))}
+        </ol>
+        <div className={styles.feedbackReading}><span className={styles.feedbackTrace} aria-hidden="true" /><div><span className={styles.readingIndex}>{reading.feedbackLabel}</span><p>{reading.caption}</p></div></div>
+        {reading.record && <Link className={styles.formBrowseLink} href={reading.record.href}>Trace the HPA Axis record <span aria-hidden="true">→</span></Link>}
+      </div>
+    </div>
+  );
+}
+
 function KnowledgeFormExplorer({ forms }: { forms: KnowledgeForm[] }) {
   const [activeKind, setActiveKind] = useState<RecordKind>("theory");
   const selected = forms.find((form) => form.kind === activeKind) ?? forms[0];
@@ -108,28 +279,16 @@ function KnowledgeFormExplorer({ forms }: { forms: KnowledgeForm[] }) {
           ))}
         </div>
 
-        <article className={styles.formReading}>
+        <article className={styles.formReading} aria-labelledby="selected-form-title">
           <div className={styles.formReadingHeading}>
             <span className={styles.formReadingMark} aria-hidden="true" />
             <div>
               <p className={styles.formReadingMeta}>{selected.count} {selected.count === 1 ? "record" : "records"} · {selected.role}</p>
-              <h3>{KIND[selected.kind].nav}</h3>
+              <h3 id="selected-form-title">{KIND[selected.kind].nav}</h3>
             </div>
           </div>
           <p className={styles.formReadingExplanation}>{selected.explanation}</p>
-          {selected.examples.length > 0 && (
-            <div className={styles.formExampleField}>
-              <p className={styles.fieldLabel}>Begin with</p>
-              <ul>
-                {selected.examples.map((record) => (
-                  <li key={record.id}><Link href={record.href}>{record.title}</Link></li>
-                ))}
-              </ul>
-            </div>
-          )}
-          <Link className={styles.formBrowseLink} href={`/concept-lab/library?kind=${selected.kind}`}>
-            Browse {KIND[selected.kind].nav.toLowerCase()} records <span aria-hidden="true">→</span>
-          </Link>
+          <KnowledgeReading selected={selected} />
         </article>
       </div>
       <p className={styles.formEvidenceNote}>The distinctions name what kind of account a record offers; they do not rank the records or their evidence.</p>

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { AnyRecord, RecordKind } from "@/content/types";
+import type { AnyRecord, MethodRecord, PaperRecord, RecordKind } from "@/content/types";
 import type { Discipline } from "@/content/disciplines";
 import { recordHref } from "@/content/records";
 import {
@@ -11,7 +11,7 @@ import {
 } from "@/content/atlas/presentation";
 import { LEARNING_PATHS } from "@/content/atlas/learningPaths";
 import { Crumbs } from "../_components/RecordShell";
-import { LibraryExperience } from "./LibraryExperience";
+import { LibraryExperience, type KnowledgeForm } from "./LibraryExperience";
 import styles from "./library-hub.module.css";
 
 const KNOWLEDGE_FORMS: readonly {
@@ -40,6 +40,120 @@ const KNOWLEDGE_FORMS: readonly {
     explanation: "An account of the process through which something happens.",
   },
 ];
+
+const FORM_ART = {
+  theory: {
+    description: "An unfinished graphite viewing frame with a blue pencil arc, suggesting a perspective brought to a phenomenon.",
+    caption: "A lens does not contain the phenomenon; it changes what can be brought into view.",
+  },
+  study: {
+    description: "Three red pencil evidence marks and graphite traces, held as a set of observations rather than a scale.",
+    caption: "Evidence enters through a design; a claim remains bounded by what that design can show.",
+  },
+  method: {
+    description: "Graphite construction lines, unfinished scaffolding and a small gold pencil circle around working material.",
+    caption: "A method is a practice of working with material, not a decorative sequence of steps.",
+  },
+  mechanism: {
+    description: "A branching and converging field of teal and plum pencil lines, with visible joins and unfinished paths.",
+    caption: "Follow the components and return paths; the drawing is a schematic, not a measurement.",
+  },
+} as const;
+
+// These short method orientations are Library-only paraphrases of each record's
+// oneSentence. The complete canonical explanations stay on their own records.
+const HUB_METHOD_SUMMARIES = {
+  ipa: "A close, case-by-case reading of how a person makes sense of a significant experience.",
+  "reflexive-thematic-analysis": "Interpretation develops patterns of shared meaning; themes are made, and researcher subjectivity is part of the analysis.",
+} as const;
+
+// Display labels shorten the canonical RTA procedure titles for this overview;
+// the record retains the complete phase descriptions and their detail.
+const HUB_RTA_PHASE_LABELS = [
+  "Familiarise",
+  "Code",
+  "Generate themes",
+  "Review themes",
+  "Define / name",
+  "Write up",
+] as const;
+
+function buildFormReading(kind: RecordKind, records: AnyRecord[]): KnowledgeForm["reading"] {
+  if (kind === "theory") {
+    const theories = records.filter((record) => record.kind === "theory");
+    const preferred = ["person-environment-fit", "job-demands-resources"]
+      .map((id) => theories.find((record) => record.id === id))
+      .filter((record): record is AnyRecord => Boolean(record));
+    return {
+      kind,
+      question: "What does this perspective bring into focus — and what remains outside its frame?",
+      examples: (preferred.length > 0 ? preferred : theories.slice(0, 2)).map(reference),
+    };
+  }
+
+  if (kind === "study") {
+    const record = records.find((candidate): candidate is PaperRecord => candidate.kind === "study");
+    if (!record) return { kind, studies: [] };
+    const supportedClaim = record.claimEvidencePairs.find((pair) => pair.status === "CONVERGENT EVIDENCE");
+    return {
+      kind,
+      record: reference(record),
+      question: record.researchQuestion,
+      // Keep the record's study-level findings verbatim; design and full limits
+      // remain on the individual Study page for readers who continue inward.
+      studies: record.studies.map(({ label, result }) => ({ label, result })),
+      supportedClaim: supportedClaim ? {
+        claim: supportedClaim.claim,
+        status: supportedClaim.status,
+      } : undefined,
+      // Keep one concise boundary in the Hub; detailed limitations remain on
+      // the Study record. This selects the canonical limitation by its wording.
+      boundary: record.limitations.find((limit) => limit.startsWith("Observer perception")),
+    };
+  }
+
+  if (kind === "method") {
+    const methods = records.filter((candidate): candidate is MethodRecord => candidate.kind === "method");
+    const ipa = methods.find((record) => record.id === "ipa");
+    const rta = methods.find((record) => record.id === "reflexive-thematic-analysis");
+    const practices: Extract<KnowledgeForm["reading"], { kind: "method" }>["practices"] = [];
+    if (ipa) practices.push({
+      movement: "close-reading",
+      record: reference(ipa),
+      summary: HUB_METHOD_SUMMARIES.ipa,
+      columns: (ipa.craft ?? []).map(({ title }) => ({ title })),
+    });
+    if (rta) practices.push({
+      movement: "recursive",
+      record: reference(rta),
+      summary: HUB_METHOD_SUMMARIES["reflexive-thematic-analysis"],
+      phases: (rta.procedure ?? []).map(({ n, title }, index) => ({
+        n,
+        title: HUB_RTA_PHASE_LABELS[index] ?? title,
+      })),
+      recursionNote: "The phases are recursive, not sequential.",
+    });
+    return {
+      kind,
+      practices,
+      distinction: "Two different practices; the shared label “method” does not make their commitments interchangeable.",
+    };
+  }
+
+  const mechanism = records.find((candidate) => candidate.kind === "mechanism" && candidate.id === "hpa-axis");
+  const cascade = mechanism?.kind === "mechanism" ? mechanism.cascade : undefined;
+  return {
+    kind,
+    record: mechanism ? reference(mechanism) : undefined,
+    nodes: cascade?.nodes.map(({ label, sub }) => ({ label, sub })) ?? [],
+    messengers: cascade?.messengers ?? [],
+    feedbackLabel: cascade?.feedback ?? "negative feedback",
+    // This Library-only wording stays valid when the pathway changes from
+    // horizontal desktop layout to vertical mobile layout; canonical caption
+    // in content/hpa-axis.ts is unchanged.
+    caption: "The sequence and direction of travel are meaningful; organ shape, position and scale are not depicted and should not be inferred. The dashed return marks negative feedback: cortisol acts back on the pituitary, hypothalamus and wider brain circuitry to regulate further activity.",
+  };
+}
 
 const ROUTE_PRESENTATION = {
   "organise-sound": {
@@ -110,9 +224,15 @@ export function LibraryHub({ records, disciplines, initialDiscipline }: LibraryH
     { value: activeKinds, label: activeKinds === 1 ? "way of knowing" : "ways of knowing" },
   ];
 
-  const forms = KNOWLEDGE_FORMS.map((form) => {
+  const forms: KnowledgeForm[] = KNOWLEDGE_FORMS.map((form) => {
     const matching = records.filter((record) => record.kind === form.kind);
-    return { ...form, count: matching.length, examples: matching.slice(0, 2).map(reference) };
+    return {
+      ...form,
+      count: matching.length,
+      examples: matching.slice(0, 2).map(reference),
+      art: FORM_ART[form.kind],
+      reading: buildFormReading(form.kind, records),
+    };
   });
 
   const fields = Object.values(disciplines)
