@@ -11,7 +11,7 @@
   overflow-x: clip;
 }
 
-.folio :where(h1, h2, h3, h4) { text-wrap: balance; }
+:global(.acl) .folio :where(h1, :global(.acl) h2, :global(.acl) h3, :global(.acl) h4) { text-wrap: balance; }
 .folio :where(p, li, dd) { text-wrap: pretty; }
 .folio :where(a, button, input, select, summary, [tabindex]):focus-visible {
   outline: 2px solid var(--cobalt);
@@ -273,3 +273,10 @@
 @media (prefers-reduced-motion: reduce) {
   .mapTitle { transition: none; }
 }
+
+/* The shared root clips with overflow:hidden, which turns it into a scroll
+   container and silently disables every sticky element beneath it. Pages
+   that carry a folio restore clipping without creating that container, so
+   the chapter map and sticky figures can follow the reader. Scoped with
+   :has() so no other surface changes. */
+:global(.acl):has(.folio) { overflow: visible; overflow-x: clip; }

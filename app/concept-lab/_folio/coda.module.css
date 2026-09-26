@@ -3,7 +3,7 @@
 
 .codaHead { max-width: 60rem; margin-bottom: clamp(1.8rem, 4vw, 3rem); }
 .codaKicker { margin: 0 0 .8rem; color: var(--pen-3); font: 600 .66rem/1.4 var(--cat); letter-spacing: .12em; text-transform: uppercase; }
-.codaHead h2 { margin: 0; font: 420 clamp(2rem, 3.8vw, 3.3rem)/1 var(--read); letter-spacing: -.045em; }
+:global(.acl) .codaHead h2 { margin: 0; font: 420 clamp(2rem, 3.8vw, 3.3rem)/1 var(--read); letter-spacing: -.045em; }
 .codaLede { max-width: 58ch; margin-top: 1rem; color: var(--pen-2); font: 400 1.04rem/1.6 var(--read); }
 
 /* ---------- sources ---------------------------------------------------- */
@@ -45,7 +45,7 @@
 .provGlyph[data-glyph="●"] { color: var(--pen); }
 .provGlyph[data-glyph="?"] { color: var(--cobalt); }
 .provGlyph[data-glyph="✦"] { color: var(--gold-deep); }
-.provenance h3 { margin: 0; font: 600 .74rem/1.4 var(--cat); letter-spacing: .08em; text-transform: uppercase; }
+:global(.acl) .provenance h3 { margin: 0; font: 600 .74rem/1.4 var(--cat); letter-spacing: .08em; text-transform: uppercase; }
 .provenance p { margin: .35rem 0 0; color: var(--pen-2); font: 400 .95rem/1.55 var(--read); }
 
 /* ---------- evidence ledger -------------------------------------------- */
@@ -55,7 +55,7 @@
 .evidenceHead { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr); gap: 1rem; align-items: start; }
 .evidenceNum { color: var(--pen-3); font: 500 .72rem/2.1 var(--cat); font-variant-numeric: lining-nums tabular-nums; }
 .evidenceLabel { margin: 0 0 .25rem; color: var(--pen-3); font: 600 .64rem/1.4 var(--cat); letter-spacing: .11em; text-transform: uppercase; }
-.evidenceHead h3 { margin: 0; font: 450 clamp(1.3rem, 2.2vw, 1.7rem)/1.15 var(--read); letter-spacing: -.02em; }
+:global(.acl) .evidenceHead h3 { margin: 0; font: 450 clamp(1.3rem, 2.2vw, 1.7rem)/1.15 var(--read); letter-spacing: -.02em; }
 .evidenceBody {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -76,11 +76,11 @@
   gap: 0 clamp(1rem, 3vw, 2.6rem);
   align-items: stretch;
 }
-.boundary h3 { margin: 0 0 .9rem; font: 600 .7rem/1.4 var(--cat); letter-spacing: .11em; text-transform: uppercase; }
+:global(.acl) .boundary h3 { margin: 0 0 .9rem; font: 600 .7rem/1.4 var(--cat); letter-spacing: .11em; text-transform: uppercase; }
 .boundary ul { margin: 0; padding: 0; list-style: none; }
 .boundary li { padding: .7rem 0; border-top: 1px solid var(--hair); font: 400 1rem/1.5 var(--read); }
 .inside li { color: var(--pen); }
-.outside h3, .outside li { color: var(--pen-3); }
+:global(.acl) .outside h3, .outside li { color: var(--pen-3); }
 .outside li::before { content: "↦ "; color: var(--grey); }
 .edge svg { width: 100%; height: 100%; min-height: 12rem; overflow: visible; }
 .edge path { fill: none; stroke: var(--kind, var(--pen)); stroke-width: 1.6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
@@ -96,7 +96,7 @@
   border-top: 1px solid var(--hair);
 }
 .trailYear { color: var(--pen); font: 400 clamp(1.6rem, 2.6vw, 2.2rem)/1 var(--read); letter-spacing: -.03em; font-variant-numeric: lining-nums; }
-.trail h3 { margin: 0; font: 500 1.05rem/1.35 var(--read); }
+:global(.acl) .trail h3 { margin: 0; font: 500 1.05rem/1.35 var(--read); }
 .trailWork { margin: .2rem 0 0; color: var(--pen-2); font: italic 400 .95rem/1.45 var(--read); }
 .trailContribution { margin: .5rem 0 0; color: var(--pen-3); font: 400 .92rem/1.55 var(--read); max-width: 64ch; }
 
