@@ -49,7 +49,7 @@ export function IPAExperience({ record: r }: { record: MethodRecord }) {
         <picture>
           <source media="(max-width: 760px)" srcSet="/visual-language/methods/ipa/ipa-double-hermeneutic-760.webp" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/visual-language/methods/ipa/ipa-double-hermeneutic.webp" width={1200} height={820} alt="" fetchPriority="high" />
+          <img src="/visual-language/methods/ipa/ipa-double-hermeneutic.webp" width={1400} height={1008} alt="" fetchPriority="high" />
         </picture>
         <span className={s.fieldLabel} data-at="experience">an experience</span>
         <span className={s.fieldLabel} data-at="participant">the participant making sense of it</span>
@@ -149,7 +149,7 @@ export function IPAExperience({ record: r }: { record: MethodRecord }) {
       <Chapter id="themes" density="active" className={s.band}>
         <div className={s.head}>
           <Kicker num="06">Quality</Kicker>
-          <h2 className={s.h2}>A theme name is an <em>analytic claim</em>.</h2>
+          <h2 className={s.h2}>Could this theme head <em>any</em> study?</h2>
           <p className={s.headLede}>{r.themeContrastLede}</p>
         </div>
         {r.themeContrast && (

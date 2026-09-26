@@ -70,16 +70,28 @@ export function CommitmentLenses({ commitments }: { commitments: Commitment[] })
 
 type VS = keyof typeof VOICE_SENSE.readings;
 
+/* Where the researcher's loop sits in each reading: hugging the participant's
+   (paraphrase), around it at a distance (interpretation), or pulled away
+   toward its own centre (theory over the account). */
+const RESEARCHER_LOOP: Record<VS, { cx: number; cy: number; rx: number; ry: number }> = {
+  voice: { cx: 172, cy: 134, rx: 94, ry: 79 },
+  both: { cx: 188, cy: 128, rx: 146, ry: 108 },
+  theory: { cx: 262, cy: 112, rx: 86, ry: 74 },
+};
+
 export function VoiceAndSense() {
   const [mode, setMode] = useState<VS>("both");
   const r = VOICE_SENSE.readings[mode];
+  const loop = RESEARCHER_LOOP[mode];
   return (
     <div className={s.vs} data-mode={mode}>
       <figure className={s.vsFigure} aria-hidden="true">
-        <svg viewBox="0 0 360 260">
+        <svg viewBox="0 0 400 260">
           <ellipse className={s.vsExperience} cx="170" cy="134" rx="42" ry="34" filter="url(#folio-pencil)" />
           <ellipse className={s.vsParticipant} cx="170" cy="134" rx="84" ry="70" filter="url(#folio-pencil)" />
-          <ellipse className={s.vsResearcher} filter="url(#folio-pencil)" />
+          <ellipse className={s.vsResearcher} cx={loop.cx} cy={loop.cy} rx={loop.rx} ry={loop.ry} filter="url(#folio-pencil)" />
+          <text className={s.vsTagP} x="170" y="54" textAnchor="middle">participant</text>
+          <text className={s.vsTagR} x={loop.cx + loop.rx * 0.62} y={loop.cy + loop.ry + 20} textAnchor="middle">researcher</text>
         </svg>
       </figure>
       <div className={s.vsPanel}>
@@ -172,10 +184,12 @@ export function OneCaseAtATime({ steps, rule }: { steps: Step[]; rule: string })
         <div className={s.sheet} data-sheet="3"><span className={s.sheetLabel}>case 3</span><span className={s.lines} />{stage >= 7 && <span className={s.pet}>PETs</span>}</div>
         {stage >= 7 && !shortcut && (
           <svg className={s.across} viewBox="0 0 400 200" preserveAspectRatio="none">
-            <path d="M60 150 C 140 110, 260 110, 340 150" filter="url(#folio-pencil)" />
-            <path className={s.diverge} d="M60 160 C 150 190, 250 60, 340 160" filter="url(#folio-pencil)" />
+            <path d="M62 132 C 120 104, 280 104, 338 132" filter="url(#folio-pencil)" />
+            <path className={s.diverge} d="M62 150 C 118 178, 282 178, 338 150" filter="url(#folio-pencil)" />
           </svg>
         )}
+        {stage >= 7 && !shortcut && <span className={s.acrossTag} data-kind="converge">where cases meet</span>}
+        {stage >= 7 && !shortcut && <span className={s.acrossTag} data-kind="diverge">where they differ — kept</span>}
         {stage === 8 && !shortcut && <div className={s.account}>account<br /><small>traceable to extracts</small></div>}
         {shortcut && <div className={s.merged}>one merged pile<br /><small>no case finished</small></div>}
       </figure>

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { RECORDS, findRecord } from "@/content/records";
 import type { MethodRecord } from "@/content/types";
 import { MethodBody } from "../../_components/MethodBody";
+import { IPAExperience } from "../../_experiences/ipa/Experience";
 
 export function generateStaticParams() {
   return RECORDS.filter((r) => r.kind === "method").map((r) => ({ slug: r.slug }));
@@ -18,5 +19,6 @@ export default async function MethodPage({ params }: { params: Promise<{ slug: s
   const { slug } = await params;
   const record = findRecord("method", slug) as MethodRecord | undefined;
   if (!record) notFound();
+  if (slug === "interpretative-phenomenological-analysis") return <IPAExperience record={record} />;
   return <MethodBody record={record} />;
 }

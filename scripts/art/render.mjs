@@ -4,7 +4,7 @@
  *   node scripts/art/render.mjs <scene-name> [more scenes…] [--preview]
  *
  * Each scene lives in scripts/art/scenes/<name>.js and exports a default
- * object: { width, height, scale?, seed?, outputs: [{ file, width, quality? }],
+ * object: { width, height, scale?, seed?, crop?: [x, y, w, h], outputs: [{ file, width, quality? }],
  * draw(hand, PIGMENT) }. The scene is drawn by pencil.js inside headless
  * Edge/Chromium and written as WebP under public/. --preview also writes a PNG
  * beside the scratch output for review. This is an authoring tool: its
@@ -59,9 +59,14 @@ for (const name of names) {
     const s = mod.default;
     const hand = createHand(s.width, s.height, { seed: s.seed ?? 1, scale: s.scale ?? 2, tooth: s.tooth ?? 1 });
     await s.draw(hand, PIGMENT);
-    return { data: hand.export({ background: s.background === undefined ? "#ffffff" : s.background }), outputs: s.outputs };
+    return { data: hand.export({ background: s.background === undefined ? "#ffffff" : s.background }), outputs: s.outputs, crop: s.crop ?? null, scale: s.scale ?? 2 };
   }, name);
-  const png = Buffer.from(result.data.split(",")[1], "base64");
+  let png = Buffer.from(result.data.split(",")[1], "base64");
+  // Optional crop, given in drawing units: [x, y, width, height].
+  if (result.crop) {
+    const [cx, cy, cw, ch] = result.crop.map((v) => Math.round(v * result.scale));
+    png = await sharp(png).extract({ left: cx, top: cy, width: cw, height: ch }).png().toBuffer();
+  }
   for (const out of result.outputs) {
     const target = path.join(root, out.file);
     fs.mkdirSync(path.dirname(target), { recursive: true });

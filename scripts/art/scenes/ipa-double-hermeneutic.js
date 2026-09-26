@@ -18,9 +18,11 @@ export default {
   height: 820,
   scale: 2,
   seed: 33,
+  // Export only the drawn field; the white margin is the page's job.
+  crop: [150, 60, 1000, 720],
   outputs: [
-    { file: "public/visual-language/methods/ipa/ipa-double-hermeneutic.webp", width: 1200, quality: 84 },
-    { file: "public/visual-language/methods/ipa/ipa-double-hermeneutic-760.webp", width: 760, quality: 80 },
+    { file: "public/visual-language/methods/ipa/ipa-double-hermeneutic.webp", width: 1400, quality: 84 },
+    { file: "public/visual-language/methods/ipa/ipa-double-hermeneutic-760.webp", width: 800, quality: 80 },
   ],
   draw(h, P) {
     const [ex, ey] = CENTRES.experience;
