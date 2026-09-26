@@ -31,8 +31,8 @@ async function loadExperienceContext() {
     for (const block of source.replace(/\r\n/g, "\n").split(/\n\s*\},\n\s*\{/)) {
       const experienceId = block.match(/experienceId:\s*"([^"]+)"/)?.[1];
       const route = block.match(/route:\s*"([^"]+)"/)?.[1];
-      const status = block.match(/status:\s*"(benchmark|frozen)"/)?.[1];
-      if (experienceId && route && status) context.set(route, { experienceId, status, notice: status === "frozen" ? "FROZEN EXPERIENCE — VISUAL CHANGE REQUIRES EXPLICIT REVIEW" : "BENCHMARK EXPERIENCE — VISUAL CHANGE REQUIRES REVIEW" });
+      const status = block.match(/status:\s*"(benchmark|frozen|candidate)"/)?.[1];
+      if (experienceId && route && status) context.set(route, { experienceId, status, notice: status === "frozen" ? "FROZEN EXPERIENCE — VISUAL CHANGE REQUIRES EXPLICIT REVIEW" : status === "candidate" ? "CANDIDATE EXPERIENCE — AWAITING HUMAN REVIEW" : "BENCHMARK EXPERIENCE — VISUAL CHANGE REQUIRES REVIEW" });
     }
     return context;
   } catch {

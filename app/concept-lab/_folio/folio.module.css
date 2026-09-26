@@ -6,6 +6,7 @@
   --folio-w: min(1320px, calc(100% - 2 * var(--folio-gutter)));
   --folio-measure: 64ch;
   --kind: var(--pen);
+  --kind-ink: var(--pen);
   position: relative;
   color: var(--pen);
   overflow-x: clip;
@@ -37,7 +38,7 @@
   background: var(--kind);
   box-shadow: 0 0 0 2px #fff, 0 0 0 3px color-mix(in srgb, var(--kind) 40%, transparent);
 }
-.kindLabel { color: var(--kind); }
+.kindLabel { color: var(--kind-ink); }
 .identitySep { color: var(--grey); }
 .standing { color: var(--pen-2); }
 .save { margin-left: .3rem; display: inline-flex; }
@@ -62,7 +63,7 @@
   letter-spacing: .12em;
   text-transform: uppercase;
 }
-.kickerNum { color: var(--kind); font-variant-numeric: lining-nums tabular-nums; }
+.kickerNum { color: var(--kind-ink); font-variant-numeric: lining-nums tabular-nums; }
 
 .margin {
   margin: 0;
@@ -70,7 +71,7 @@
   font: 500 clamp(1.18rem, 1.6vw, 1.42rem)/1.12 var(--script);
   letter-spacing: 0;
 }
-.margin[data-tone="kind"] { color: var(--kind); }
+.margin[data-tone="kind"] { color: var(--kind-ink); }
 .margin[data-tone="red"] { color: var(--vermilion); }
 .margin[data-tone="teal"] { color: var(--teal-deep); }
 .margin[data-tone="cobalt"] { color: var(--cobalt); }
@@ -192,7 +193,7 @@
     text-align: left;
     cursor: pointer;
   }
-  .mapToggleNum { color: var(--kind); font: 600 .7rem/1 var(--cat); letter-spacing: .06em; font-variant-numeric: lining-nums tabular-nums; }
+  .mapToggleNum { color: var(--kind-ink); font: 600 .7rem/1 var(--cat); letter-spacing: .06em; font-variant-numeric: lining-nums tabular-nums; }
   .mapToggleLabel { overflow: hidden; font: 480 1rem/1.2 var(--read); white-space: nowrap; text-overflow: ellipsis; }
   .mapToggleHint { color: var(--pen-3); font: 500 1.05rem/1 var(--script); }
   .mapList {
@@ -280,3 +281,5 @@
    the chapter map and sticky figures can follow the reader. Scoped with
    :has() so no other surface changes. */
 :global(.acl):has(.folio) { overflow: visible; overflow-x: clip; }
+/* Keep keyboard focus and in-page jumps clear of the sticky chapter map. */
+:global(html):has(.folio) { scroll-padding-top: 4.5rem; }

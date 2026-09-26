@@ -27,7 +27,7 @@ export function CommitmentLenses({ commitments }: { commitments: Commitment[] })
     { cx: 305, cy: 150 },
     { cx: 240, cy: 255 },
   ];
-  const tone = ["var(--teal)", "var(--gold-deep)", "var(--vermilion)"];
+  const tone = ["var(--teal-deep)", "#87550e", "var(--red-deep)"];
   return (
     <div className={s.lenses}>
       <figure className={s.lensFigure} data-dropped={dropped ?? undefined}>
@@ -279,7 +279,7 @@ export function ClosePass({ columns, attendTo }: { columns: { title: string; ask
             const has = present.has(f);
             return (
               <button key={f} type="button" aria-pressed={feature === f} disabled={!has} onClick={() => setFeature(feature === f ? null : (f as AttendFeature))} title={has ? undefined : "Not in this short extract"}>
-                {f}
+                {f}{!has && <span className={s.sr}> — not in this short extract</span>}
               </button>
             );
           })}

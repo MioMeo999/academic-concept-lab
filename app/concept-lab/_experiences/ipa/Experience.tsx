@@ -99,11 +99,11 @@ export function IPAExperience({ record: r }: { record: MethodRecord }) {
           <p className={s.headLede}>{r.questionFitLede?.replace("Click a question", "Open each question")}</p>
         </div>
         <QuestionSieve items={r.questionFit ?? []} />
-        <aside className={s.aside}>
+        <div role="note" className={s.aside}>
           <Margin tone="kind">instrument, not quality</Margin>
           <p>{r.questionFitNote}</p>
           <p className={s.teachingNote}><Glyph g="▲" /> The questions are teaching illustrations; no study is being characterised through them.</p>
-        </aside>
+        </div>
       </Chapter>
 
       <Chapter id="one-case" density="active" className={s.band}>

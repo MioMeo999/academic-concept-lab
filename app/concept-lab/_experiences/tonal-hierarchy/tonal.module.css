@@ -6,7 +6,7 @@
 .page {
   --home: var(--vermilion);
   --triad: var(--teal-deep);
-  --diatonic: var(--gold-deep);
+  --diatonic: #8a5a10;
   --outside: var(--pen-3);
   --variable: var(--cobalt);
 }
@@ -152,7 +152,7 @@ button.tone { cursor: pointer; }
 /* ---------- 01 context ----------------------------------------------------- */
 .equation { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem 1.1rem; margin: 0 0 2rem; font: 400 clamp(1.6rem, 3.4vw, 2.8rem)/1.1 var(--read); letter-spacing: -.03em; }
 .equation span { color: var(--pen-2); font-style: italic; }
-.equation b { color: var(--grey); font-weight: 300; }
+.equation b { color: var(--pen-3); font-weight: 300; }
 .equation strong { color: var(--home); font-weight: 400; }
 .glossary { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: 0 clamp(1rem, 3vw, 2.4rem); margin: 0; }
 .glossary > div { padding: .9rem 0; border-top: 2px solid var(--c, var(--pen)); }
@@ -167,7 +167,7 @@ button.tone { cursor: pointer; }
 .path { display: flex; flex-wrap: wrap; gap: .4rem 0; margin: 0 0 2rem; padding: 0; list-style: none; }
 .path li { display: inline-flex; align-items: baseline; gap: .35rem; color: var(--pen); font: 500 .8rem/1.4 var(--cat); }
 .path li span { color: var(--triad); font-size: .64rem; }
-.path li + li::before { content: "→"; margin: 0 .7rem; color: var(--grey); }
+.path li + li::before { content: "→"; margin: 0 .7rem; color: var(--pen-3); }
 .path li:nth-child(n+5) { color: var(--diatonic); }
 .labLede { max-width: 64ch; margin: 0 0 1.6rem; color: var(--pen-2); font: 400 1rem/1.58 var(--read); }
 .lab { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); grid-template-areas: "instrument ladder" "aside ladder"; gap: 1.5rem clamp(1.5rem, 4vw, 3.5rem); align-items: start; }

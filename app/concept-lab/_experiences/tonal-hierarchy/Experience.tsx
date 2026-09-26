@@ -90,13 +90,13 @@ export function TonalExperience({ record: r }: { record: TheoryRecord }) {
         <Glossary items={t.context.cards} />
         <Note html={t.context.note} />
         {r.conceptualStatus && (
-          <aside className={s.status}>
+          <div role="note" className={s.status}>
             <Margin tone="kind">what kind of knowledge this is</Margin>
             <div>
               <Rich as="p" className={s.statusFlag} html={r.conceptualStatus.flag} />
               <Rich as="p" html={r.conceptualStatus.body} />
             </div>
-          </aside>
+          </div>
         )}
       </Chapter>
 

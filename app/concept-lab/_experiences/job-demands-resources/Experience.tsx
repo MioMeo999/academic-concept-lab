@@ -133,10 +133,10 @@ export function JDRExperience({ record: r }: { record: TheoryRecord }) {
             </article>
           ))}
         </div>
-        <aside className={s.adviceNote}>
+        <div role="note" className={s.adviceNote}>
           <Margin tone="kind">the type decides the advice</Margin>
           <p>{r.demandTypesNote}</p>
-        </aside>
+        </div>
       </Chapter>
 
       <Chapter id="touch" density="active" className={s.band}>
@@ -168,10 +168,10 @@ export function JDRExperience({ record: r }: { record: TheoryRecord }) {
         </div>
         <ModelWidens origins={r.origins} expansions={r.expansions ?? []} />
         {r.originsNote && (
-          <aside className={s.arcNote}>
+          <div role="note" className={s.arcNote}>
             <Margin>on the arc</Margin>
             <Rich as="p" html={r.originsNote} />
-          </aside>
+          </div>
         )}
       </Chapter>
 

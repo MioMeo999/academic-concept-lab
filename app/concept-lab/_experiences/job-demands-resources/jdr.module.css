@@ -246,8 +246,8 @@
 .currentsControls { display: flex; justify-content: center; }
 .routes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.4rem, 4vw, 4rem); margin-top: 1rem; }
 .route { padding-top: 1rem; border-top: 3px solid var(--route); transition: opacity 260ms ease; }
-.route[data-route="health"] { --route: var(--demand); }
-.route[data-route="motivational"] { --route: var(--resource); }
+.route[data-route="health"] { --route: var(--demand); --route-ink: var(--demand-deep); }
+.route[data-route="motivational"] { --route: var(--resource); --route-ink: var(--resource-deep); }
 .route[data-muted] { opacity: .45; border-top-color: var(--grey); }
 :global(.acl) .route h3 { margin: 0; font: 450 1.4rem/1.15 var(--read); letter-spacing: -.02em; }
 .routeBlurb { margin: .6rem 0 0; color: var(--pen-2); font: 400 .97rem/1.58 var(--read); }
@@ -259,8 +259,8 @@
   color: var(--pen);
   font: 500 .82rem/1.4 var(--cat);
 }
-.routeSteps li span { color: var(--route); font-size: .66rem; font-variant-numeric: tabular-nums; }
-.routeSteps li + li::before { content: "→"; margin: 0 .55rem; color: var(--grey); }
+.routeSteps li span { color: var(--route-ink); font-size: .66rem; font-variant-numeric: tabular-nums; }
+.routeSteps li + li::before { content: "→"; margin: 0 .55rem; color: var(--pen-3); }
 
 /* ---------- misreading -------------------------------------------------- */
 .misreading {
@@ -425,7 +425,7 @@
   color: var(--pen-2);
   font: 400 1.02rem/1.55 var(--read);
 }
-.widenCaptionYear { color: var(--kind); font: 400 1.9rem/1 var(--read); letter-spacing: -.03em; }
+.widenCaptionYear { color: var(--kind-ink); font: 400 1.9rem/1 var(--read); letter-spacing: -.03em; }
 .widenExpansions {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));

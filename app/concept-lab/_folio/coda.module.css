@@ -109,7 +109,7 @@
   padding: 1rem 0;
   border-top: 1px solid var(--hair);
 }
-.cautions > li > span { color: var(--kind, var(--pen-3)); font: 500 .72rem/2 var(--cat); font-variant-numeric: lining-nums tabular-nums; }
+.cautions > li > span { color: var(--kind-ink, var(--pen-3)); font: 500 .72rem/2 var(--cat); font-variant-numeric: lining-nums tabular-nums; }
 .cautions p { margin: 0; color: var(--pen-2); font: 400 1.02rem/1.55 var(--read); max-width: 62ch; }
 .cautions b { color: var(--pen); font-weight: 600; }
 

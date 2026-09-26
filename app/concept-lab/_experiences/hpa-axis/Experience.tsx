@@ -184,11 +184,11 @@ export function HPAExperience({ record: r }: { record: TheoryRecord }) {
         </div>
 
         {jdr && jdrRecord && (
-          <aside className={s.editorialLink}>
+          <div role="note" className={s.editorialLink}>
             <p className={s.smallHead}><Glyph g="✦" /> Editorial connection — ours, not the sources&rsquo;</p>
             <h3>Could this be one physical route through the <a href={recordHref(jdrRecord)}>{jdrRecord.title}</a> health-impairment process?</h3>
             <Rich as="p" html={jdr.body} />
-          </aside>
+          </div>
         )}
       </Chapter>
 
@@ -262,10 +262,10 @@ export function HPAExperience({ record: r }: { record: TheoryRecord }) {
             ))}
           </tbody>
         </table>
-        <aside className={s.warning}>
+        <div role="note" className={s.warning}>
           <Margin tone="violet">carry this one</Margin>
           <Rich as="p" html={r.measuresNote ?? ""} />
-        </aside>
+        </div>
       </Chapter>
 
       <Chapter id="chronic" density="quiet" className={s.band}>

@@ -172,11 +172,11 @@ export function ProbeLab({ context, probes, levels, note }: { context: TonalCont
           <Rich as="p" className={s.ladderBody} html={levels[2]?.body ?? ""} />
         </li>
       </ol>
-      <aside className={s.labAside}>
+      <div role="note" className={s.labAside}>
         <p className={s.labKicker}>{levels[3]?.label}</p>
         <Rich as="p" html={levels[3]?.body ?? ""} />
         <p className={s.teachingNote}>{note}</p>
-      </aside>
+      </div>
     </div>
   );
 }
