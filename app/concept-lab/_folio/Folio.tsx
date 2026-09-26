@@ -189,7 +189,6 @@ export function Plate({
       <div className={s.plateArt}>
         <picture>
           {mobileSrc && <source media="(max-width: 760px)" srcSet={mobileSrc} />}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={src} alt={alt} width={width} height={height} loading={priority ? "eager" : "lazy"} decoding="async" fetchPriority={priority ? "high" : undefined} />
         </picture>
         {children}

@@ -316,6 +316,14 @@
 .forkVerdict[data-type="hindrance"] strong { color: var(--demand-deep); }
 .forkRelates { color: var(--pen-3) !important; font-style: italic; }
 .forkIdle { color: var(--pen-3) !important; font-style: italic; }
+.forkTypes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.4rem, 4vw, 4rem); margin-top: clamp(2rem, 4vw, 3rem); }
+.forkTypes article { padding-top: .9rem; border-top: 3px solid var(--ft); }
+.forkTypes article[data-type="challenge"] { --ft: var(--resource); }
+.forkTypes article[data-type="hindrance"] { --ft: var(--demand); }
+:global(.acl) .forkTypes h3 { margin: 0; font: 450 1.35rem/1.15 var(--read); letter-spacing: -.02em; }
+.forkTypes p { margin: .5rem 0 0; color: var(--pen-2); font: 400 .97rem/1.55 var(--read); }
+.forkTypeExamples { color: var(--pen-3) !important; font: 500 .78rem/1.4 var(--cat) !important; }
+.forkTypeRelates { color: var(--pen-3) !important; font-style: italic !important; }
 .adviceNote {
   display: grid;
   grid-template-columns: minmax(10rem, .35fr) minmax(0, 1fr);
@@ -500,7 +508,7 @@
   .routes { grid-template-columns: 1fr; }
   .misreading { grid-template-columns: 1fr; }
   .adviceNote, .arcNote { grid-template-columns: 1fr; }
-  .hypotheses { grid-template-columns: 1fr; }
+  .hypotheses, .forkTypes { grid-template-columns: 1fr; }
   .widenYears { display: flex; overflow-x: auto; }
   .widenYears button { flex: 0 0 4.4rem; }
   .widenYear { font-size: 1.3rem; }

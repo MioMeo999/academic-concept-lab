@@ -123,12 +123,8 @@ export function VoiceAndSense() {
 type Q = { question: string; fits: boolean; why: string };
 
 export function QuestionSieve({ items }: { items: Q[] }) {
+  // Native disclosure: every judgement is in the page and opens without script.
   const [open, setOpen] = useState<Set<number>>(new Set());
-  const toggle = (i: number) => setOpen((prev) => {
-    const next = new Set(prev);
-    if (next.has(i)) next.delete(i); else next.add(i);
-    return next;
-  });
   const judged = open.size;
   return (
     <div className={s.sieve}>
@@ -138,14 +134,21 @@ export function QuestionSieve({ items }: { items: Q[] }) {
           const isOpen = open.has(i);
           return (
             <li key={q.question} data-open={isOpen || undefined} data-fits={isOpen ? String(q.fits) : undefined}>
-              <button type="button" aria-expanded={isOpen} aria-controls={`ipa-q-${i}`} onClick={() => toggle(i)}>
-                <span className={s.sieveNum} aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
-                <span className={s.sieveQ}>{q.question}</span>
-                <span className={s.sieveHint} aria-hidden="true">{isOpen ? (q.fits ? "an IPA question" : "better elsewhere") : "judge"}</span>
-              </button>
-              <div id={`ipa-q-${i}`} className={s.sieveWhy} hidden={!isOpen}>
-                <p><b>{q.fits ? "Fits IPA." : "Not an IPA question."}</b> {q.why}</p>
-              </div>
+              <details
+                onToggle={(e) => {
+                  const now = (e.currentTarget as HTMLDetailsElement).open;
+                  setOpen((prev) => { const next = new Set(prev); if (now) next.add(i); else next.delete(i); return next; });
+                }}
+              >
+                <summary>
+                  <span className={s.sieveNum} aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                  <span className={s.sieveQ}>{q.question}</span>
+                  <span className={s.sieveHint} aria-hidden="true">{isOpen ? (q.fits ? "an IPA question" : "better elsewhere") : "judge"}</span>
+                </summary>
+                <div className={s.sieveWhy}>
+                  <p><b>{q.fits ? "Fits IPA." : "Not an IPA question."}</b> {q.why}</p>
+                </div>
+              </details>
             </li>
           );
         })}
@@ -157,7 +160,8 @@ export function QuestionSieve({ items }: { items: Q[] }) {
 /* ------------------------------------------------------------------------
    One case at a time. The procedure's eight steps are played on a small
    stack of case sheets; the idiographic rule is what the stack enforces.
-   The shortcut shows what happens when it is broken.
+   Every step stays readable in the list; choosing one brings it forward and
+   moves the sheets. The shortcut shows what breaking the rule does.
    --------------------------------------------------------------------- */
 
 type Step = { n: string; title: string; body: string };
@@ -165,60 +169,56 @@ type Step = { n: string; title: string; body: string };
 export function OneCaseAtATime({ steps, rule }: { steps: Step[]; rule: string }) {
   const [i, setI] = useState(0);
   const [shortcut, setShortcut] = useState(false);
-  const step = steps[i];
-  // Which sheet is on top and how marked it is.
   const stage = i + 1; // 1..8
   const marks = Math.min(5, stage); // steps 1–5 build up the first case
   return (
     <div className={s.cases} data-stage={stage} data-shortcut={shortcut || undefined}>
-      <figure className={s.stack} aria-hidden="true">
-        <div className={s.sheet} data-sheet="1">
-          <span className={s.sheetLabel}>case 1</span>
-          <span className={s.lines} />
-          {marks >= 2 && <span className={s.notes} />}
-          {marks >= 3 && <span className={s.statements}><i /><i /><i /></span>}
-          {marks >= 4 && <span className={s.links} />}
-          {marks >= 5 && <span className={s.pet}>PETs</span>}
-        </div>
-        <div className={s.sheet} data-sheet="2"><span className={s.sheetLabel}>case 2</span><span className={s.lines} />{stage >= 7 && <span className={s.pet}>PETs</span>}</div>
-        <div className={s.sheet} data-sheet="3"><span className={s.sheetLabel}>case 3</span><span className={s.lines} />{stage >= 7 && <span className={s.pet}>PETs</span>}</div>
-        {stage >= 7 && !shortcut && (
-          <svg className={s.across} viewBox="0 0 400 200" preserveAspectRatio="none">
-            <path d="M62 132 C 120 104, 280 104, 338 132" filter="url(#folio-pencil)" />
-            <path className={s.diverge} d="M62 150 C 118 178, 282 178, 338 150" filter="url(#folio-pencil)" />
-          </svg>
-        )}
-        {stage >= 7 && !shortcut && <span className={s.acrossTag} data-kind="converge">where cases meet</span>}
-        {stage >= 7 && !shortcut && <span className={s.acrossTag} data-kind="diverge">where they differ — kept</span>}
-        {stage === 8 && !shortcut && <div className={s.account}>account<br /><small>traceable to extracts</small></div>}
-        {shortcut && <div className={s.merged}>one merged pile<br /><small>no case finished</small></div>}
-      </figure>
-
-      <div className={s.casesPanel}>
-        <ol className={s.stepTicks} aria-label="Procedure steps">
-          {steps.map((st, k) => (
-            <li key={st.n}>
-              <button type="button" aria-current={k === i ? "step" : undefined} aria-label={`Step ${st.n}: ${st.title}`} onClick={() => { setI(k); setShortcut(false); }}>
-                <span>{st.n}</span>
-              </button>
-            </li>
-          ))}
-        </ol>
-        <div className={s.stepRead} aria-live="polite">
-          <p className={s.stepScope}>{stage <= 6 ? "one participant" : "across cases"}</p>
-          <h3>{step.title}</h3>
-          <p>{step.body}</p>
-        </div>
-        <div className={s.stepNav}>
-          <button type="button" onClick={() => { setI(Math.max(0, i - 1)); setShortcut(false); }} disabled={i === 0}>← previous</button>
-          <button type="button" onClick={() => { setI(Math.min(steps.length - 1, i + 1)); setShortcut(false); }} disabled={i === steps.length - 1}>next →</button>
-        </div>
+      <div className={s.stackCol}>
+        <figure className={s.stack} aria-hidden="true">
+          <div className={s.sheet} data-sheet="1">
+            <span className={s.sheetLabel}>case 1</span>
+            <span className={s.lines} />
+            {marks >= 2 && <span className={s.notes} />}
+            {marks >= 3 && <span className={s.statements}><i /><i /><i /></span>}
+            {marks >= 4 && <span className={s.links} />}
+            {marks >= 5 && <span className={s.pet}>PETs</span>}
+          </div>
+          <div className={s.sheet} data-sheet="2"><span className={s.sheetLabel}>case 2</span><span className={s.lines} />{stage >= 7 && <span className={s.pet}>PETs</span>}</div>
+          <div className={s.sheet} data-sheet="3"><span className={s.sheetLabel}>case 3</span><span className={s.lines} />{stage >= 7 && <span className={s.pet}>PETs</span>}</div>
+          {stage >= 7 && !shortcut && (
+            <svg className={s.across} viewBox="0 0 400 200" preserveAspectRatio="none">
+              <path d="M62 132 C 120 104, 280 104, 338 132" filter="url(#folio-pencil)" />
+              <path className={s.diverge} d="M62 150 C 118 178, 282 178, 338 150" filter="url(#folio-pencil)" />
+            </svg>
+          )}
+          {stage >= 7 && !shortcut && <span className={s.acrossTag} data-kind="converge">where cases meet</span>}
+          {stage >= 7 && !shortcut && <span className={s.acrossTag} data-kind="diverge">where they differ — kept</span>}
+          {stage === 8 && !shortcut && <div className={s.account}>account<br /><small>traceable to extracts</small></div>}
+          {shortcut && <div className={s.merged}>one merged pile<br /><small>no case finished</small></div>}
+        </figure>
+        <p className={s.stackState} aria-live="polite">
+          {shortcut ? "Shortcut: every transcript coded at once — no case was finished first." : `Step ${steps[i].n} · ${stage <= 6 ? "one participant" : "across cases"}`}
+        </p>
         <div className={s.shortcut}>
           <button type="button" aria-pressed={shortcut} onClick={() => setShortcut((v) => !v)}>
             {shortcut ? "Undo the shortcut" : "Try the shortcut: code every transcript at once"}
           </button>
-          {shortcut && <p className={s.shortcutRule} aria-live="polite">{rule}</p>}
         </div>
+      </div>
+
+      <div className={s.casesPanel}>
+        <ol className={s.stepList} aria-label="The procedure">
+          {steps.map((st, k) => (
+            <li key={st.n} data-on={k === i || undefined} data-scope={k < 6 ? "case" : "across"}>
+              <button type="button" aria-pressed={k === i} onClick={() => { setI(k); setShortcut(false); }}>
+                <span className={s.stepNum}>{st.n}</span>
+                <span className={s.stepTitle}>{st.title}</span>
+              </button>
+              <p className={s.stepBody}>{st.body}</p>
+            </li>
+          ))}
+        </ol>
+        <p className={s.rule}><b>The rule that governs it.</b> {rule}</p>
       </div>
     </div>
   );

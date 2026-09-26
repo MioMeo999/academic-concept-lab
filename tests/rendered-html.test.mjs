@@ -294,6 +294,20 @@ for (const pathname of recordPaths) {
       ? /How this record is constructed/
       : /Where every claim came from/;
     assert.match(html, provenanceHeading, `${pathname} renders no provenance block`);
+    // Redesigned folio records replace the contents rail with a chapter map.
+    // The same guarantee holds: every entry lands on a real chapter, in order,
+    // and nothing in the map points at a section that was never rendered.
+    if (html.includes("data-chapter-map")) {
+      const map = html.slice(html.indexOf("data-chapter-map"));
+      const mapLinks = [...map.slice(0, map.indexOf("</nav>")).matchAll(/href="#([a-z0-9-]+)"/g)].map((m) => m[1]);
+      const chapters = [...html.matchAll(/<section id="([a-z0-9-]+)"[^>]*data-chapter/g)].map((m) => m[1]);
+      assert.ok(mapLinks.length >= 4, `${pathname}: chapter map has only ${mapLinks.length} entries`);
+      assert.deepEqual(mapLinks, chapters, `${pathname}: chapter map and rendered chapters disagree`);
+      assert.match(html, /class="savebtn[^"]*"[^>]*aria-pressed/, `${pathname} renders no Save control`);
+      assert.match(html, /aria-label="Breadcrumb"/, `${pathname} renders no trail back to the Library`);
+      assert.match(html, /Where this idea leads/, `${pathname} renders no relation ledger`);
+      return;
+    }
     // Section numbering and the contents rail are generated together; a
     // mismatch means a block was added without a heading. Each entry renders
     // twice: once in the desktop rail, once in the mobile fold-out box.
@@ -304,6 +318,83 @@ for (const pathname of recordPaths) {
     assert.match(html, /class="contents-m"/, `${pathname} renders no mobile contents box`);
   });
 }
+
+/* A visual redesign may move scholarship around the page, but it must not
+   drop it. For each redesigned record, every provenance note, citation,
+   caution and qualification in the canonical content has to appear in the
+   rendered page. The strings are taken from content/, not copied here. */
+const { RECORDS } = await import("../content/records.ts");
+const plain = (value) => String(value)
+  .replace(/<!--[\s\S]*?-->/g, "")
+  .replace(/<[^>]+>/g, " ")
+  .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"").replace(/&#x27;|&#39;/g, "'").replace(/&nbsp;/g, " ")
+  .replace(/\s+/g, " ")
+  .trim();
+
+for (const [kind, slug] of [
+  ["theory", "job-demands-resources"],
+  ["mechanism", "hpa-axis"],
+  ["method", "interpretative-phenomenological-analysis"],
+  ["theory", "tonal-hierarchy"],
+]) {
+  test(`redesigned ${slug} keeps its complete scholarly apparatus`, async () => {
+    const record = RECORDS.find((candidate) => candidate.kind === kind && candidate.slug === slug);
+    assert.ok(record, `${slug} is registered`);
+    const page = plain(await (await render(`/concept-lab/${kind}/${slug}`)).text());
+    const required = [
+      record.title,
+      record.hook,
+      record.oneSentence,
+      ...record.provenance.flatMap((item) => [item.label, item.note]),
+      ...(record.minimumReading ?? record.coreReading ?? []).map((source) => source.citation),
+      ...record.fullSources.map((source) => source.citation),
+      ...(record.oversimplifications ?? record.misuses ?? []),
+      ...record.qualifications,
+    ];
+    for (const text of required) {
+      assert.ok(page.includes(plain(text)), `${slug} dropped canonical text: "${plain(text).slice(0, 90)}…"`);
+    }
+  });
+}
+
+test("redesigned records keep their record-specific teaching boundaries", async () => {
+  const jdrRecord = RECORDS.find((candidate) => candidate.id === "job-demands-resources");
+  const jdr = plain(await (await render("/concept-lab/theory/job-demands-resources")).text());
+  for (const d of jdrRecord.demandTypes) assert.ok(jdr.includes(plain(d.definition)) && jdr.includes(plain(d.relates)), `JD–R dropped ${d.title}`);
+  for (const o of jdrRecord.origins) assert.ok(jdr.includes(plain(o.contribution)), `JD–R dropped the ${o.year} trail marker`);
+  for (const x of jdrRecord.expansions) assert.ok(jdr.includes(plain(x.body)), `JD–R dropped the ${x.title} expansion`);
+  for (const text of ["Job demands", "Job resources", "The health-impairment process", "The motivational process", "Challenge demands", "Hindrance demands", "The buffering hypothesis", "The boosting hypothesis", "Teaching analogy — JD–R describes directions of relationship. The line weights are not magnitudes, and nothing here is calculated.", "Close supervision is a resource to a novice and a demand to an expert", "2001", "2007", "2010", "2014", "2023"]) {
+    assert.ok(jdr.includes(text), `JD–R is missing ${text}`);
+  }
+  const hpaRecord = RECORDS.find((candidate) => candidate.id === "hpa-axis");
+  const hpa = plain(await (await render("/concept-lab/mechanism/hpa-axis")).text());
+  for (const m of hpaRecord.measures) assert.ok(hpa.includes(plain(m.tells)) && hpa.includes(plain(m.caution)), `HPA dropped the ${m.method} measure`);
+  for (const o of hpaRecord.origins) assert.ok(hpa.includes(plain(o.contribution)), `HPA dropped the ${o.year} trail marker`);
+  for (const text of ["A system, not a theory", "CRH", "ACTH", "cortisol", "negative feedback", "Not this page: the SAM system", "Salivary cortisol", "Hair cortisol", "Cortisol awakening response", "Diurnal slope", "Reactivity", "salivary cortisol is a biomarker related to HPA functioning — not a direct measurement of the HPA axis.", "Treat this as our editorial connection", "No concentration is shown or implied"]) {
+    assert.ok(hpa.includes(text), `HPA axis is missing ${text}`);
+  }
+  const ipaRecord = RECORDS.find((candidate) => candidate.id === "ipa");
+  const ipa = plain(await (await render("/concept-lab/method/interpretative-phenomenological-analysis")).text());
+  for (const item of ipaRecord.questionFit) assert.ok(ipa.includes(plain(item.question)) && ipa.includes(plain(item.why)), `IPA dropped a question-fit item: ${item.question}`);
+  for (const step of ipaRecord.procedure) assert.ok(ipa.includes(plain(step.title)) && ipa.includes(plain(step.body)), `IPA dropped procedure step ${step.n}`);
+  for (const marker of ipaRecord.qualityMarkers) assert.ok(ipa.includes(plain(marker.title)), `IPA dropped quality marker ${marker.n}`);
+  assert.ok(ipa.includes(plain(ipaRecord.cardinalRule)), "IPA keeps its cardinal rule visible beside the procedure");
+  assert.ok(ipa.includes("Worked illustration · constructed extract · not data"), "IPA labels its worked extract as constructed");
+  assert.ok(ipa.includes("paraphrased after Smith (2019)"), "IPA keeps the double hermeneutic marked as paraphrase");
+  const tonalHtml = await (await render("/concept-lab/theory/tonal-hierarchy")).text();
+  const tonal = plain(tonalHtml);
+  const tonalRecord = RECORDS.find((candidate) => candidate.id === "tonal-hierarchy");
+  for (const item of tonalRecord.tonal.profile.items) assert.ok(tonal.includes(plain(item.body)), `Tonal profile dropped ${item.note}`);
+  for (const context of tonalRecord.tonal.sameNote.contexts) assert.ok(tonal.includes(plain(context.body)) && tonal.includes(plain(context.role)), `Tonal dropped the ${context.label} reading`);
+  for (const level of tonalRecord.tonal.neighbourhood.levels) assert.ok(tonal.includes(plain(level.body)), `Tonal dropped key-space level ${level.label}`);
+  for (const state of tonalRecord.tonal.dynamics.states) assert.ok(tonal.includes(plain(state.body)), `Tonal dropped dynamic stage ${state.label}`);
+  for (const text of ["C major", "F major", "A minor", "D major", "Krumhansl & Shepard (1979)", "Temperley & Marvin (2008)", "Exact empirical profile values require direct source verification before they are displayed.", "no exact empirical profile values are shown", "It is not a donut-shaped neural storage site.", "learner-generated teaching data, not a published profile"]) {
+    assert.ok(tonal.includes(text), `Tonal Hierarchy is missing ${text}`);
+  }
+  for (const pc of ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"]) {
+    assert.match(tonalHtml, new RegExp(`aria-label="${pc}: (tonic|tonic-triad member|other diatonic tone|nondiatonic tone)"`), `Tonal field gives ${pc} no accessible role`);
+  }
+});
 
 // Cross-record links (the `relatedTo` block) resolve to real pages. A wrong
 // recordId renders nothing at all, so nothing else would notice.

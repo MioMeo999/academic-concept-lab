@@ -253,6 +253,15 @@ export function HPAExperience({ record: r }: { record: TheoryRecord }) {
           <Rich as="p" className={s.headLede} html={r.measuresLede ?? ""} />
         </div>
         <DayStrip mode="measure" measures={measures} />
+        <table className={s.measureTable}>
+          <caption className={s.smallHead}>All seven measures, side by side</caption>
+          <thead><tr><th scope="col">Measure</th><th scope="col">What it tells you</th><th scope="col">Handle with care</th></tr></thead>
+          <tbody>
+            {measures.map((m) => (
+              <tr key={m.method}><th scope="row">{m.method}</th><td>{m.tells}</td><td>{m.caution}</td></tr>
+            ))}
+          </tbody>
+        </table>
         <aside className={s.warning}>
           <Margin tone="violet">carry this one</Margin>
           <Rich as="p" html={r.measuresNote ?? ""} />

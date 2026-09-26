@@ -31,6 +31,14 @@ test("conceptual probes resolve to representative routes with an explicit policy
   assert.equal(CONCEPTUAL_PROBES.tunedOutAttribution.reducedMotion, true);
   assert.equal(CONCEPTUAL_PROBES.tunedOutStudy.reducedMotion, true);
   assert.equal(CONCEPTUAL_PROBES.tunedOutClaim.reducedMotion, true);
+  for (const key of ["jdrSortByFunction", "hpaRhythm", "ipaCommitment", "tonalSameNote"] as const) {
+    assert.equal(CONCEPTUAL_PROBES[key].reducedMotion, true, key + " must also run under reduced motion");
+    assert.ok(CONCEPTUAL_PROBES[key].stableSelector, key + " needs a stable reference that must survive the state change");
+  }
+  for (const [routeId, probeId] of [["jdr", "jdr-sort-by-function"], ["hpa-axis", "hpa-rhythm-timescale"], ["ipa", "ipa-lift-commitment"], ["specialized-music", "tonal-same-note-context"]]) {
+    const route = REPRESENTATIVE_ROUTES.find((candidate) => candidate.id === routeId);
+    assert.deepEqual(route?.probes.map((probe) => probe.id), [probeId, "save-restore"], routeId + " probes its conceptual interaction and Save");
+  }
   const tunedOut = REPRESENTATIVE_ROUTES.find((route) => route.id === "tuned-out");
   assert.deepEqual(tunedOut?.probes.map((probe) => probe.id), [
     "tuned-out-attribution-reading",

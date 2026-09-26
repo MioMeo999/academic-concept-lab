@@ -13,7 +13,7 @@
  */
 export const RINGS = { triad: 170, diatonic: 290, nondiatonic: 410, rim: 455 };
 
-export default {
+const scene = {
   width: 1000,
   height: 1000,
   scale: 2,
@@ -24,17 +24,6 @@ export default {
   ],
   draw(h, P) {
     const c = 500;
-    const band = (r, w, seed) => {
-      const outer = [], inner = [];
-      for (let i = 0; i <= 96; i++) {
-        const t = (i / 96) * Math.PI * 2;
-        const wob = 1 + 0.018 * Math.sin(t * 5 + seed) + 0.012 * Math.sin(t * 11 + seed * 2);
-        outer.push([c + Math.cos(t) * (r + w / 2) * wob, c + Math.sin(t) * (r + w / 2) * wob]);
-        inner.push([c + Math.cos(-t) * (r - w / 2) * wob, c + Math.sin(-t) * (r - w / 2) * wob]);
-      }
-      return [...outer, ...inner];
-    };
-
     /* Ghost construction: the rim on which tones sit before any context, and
        twelve faint spokes — identity lines that never move. */
     h.layer(P.graphite, (pen) => {
@@ -84,3 +73,5 @@ export default {
     }, { seed: 14, pressure: 0.34 });
   },
 };
+
+export default scene;

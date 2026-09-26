@@ -244,6 +244,13 @@
 .measureRead dt { color: var(--pen-3); font: 600 .64rem/1.4 var(--cat); letter-spacing: .12em; text-transform: uppercase; }
 .measureRead dd { margin: .3rem 0 0; color: var(--pen); font: 400 1.02rem/1.5 var(--read); }
 .measureRead > div + div dd { color: var(--pen-2); font-style: italic; }
+.measureTable { width: 100%; max-width: 64rem; margin-top: clamp(2rem, 4vw, 3rem); border-collapse: collapse; }
+.measureTable caption { text-align: left; }
+.measureTable th, .measureTable td { padding: .6rem .8rem .6rem 0; border-top: 1px solid var(--hair); text-align: left; vertical-align: top; }
+.measureTable thead th { color: var(--pen-3); font: 600 .62rem/1.4 var(--cat); letter-spacing: .12em; text-transform: uppercase; border-top-color: var(--pen); }
+.measureTable tbody th { color: var(--pen); font: 450 .98rem/1.35 var(--read); }
+.measureTable td { color: var(--pen-2); font: 400 .93rem/1.5 var(--read); }
+.measureTable td:last-child { color: var(--pen-3); font-style: italic; }
 .warning { display: grid; grid-template-columns: minmax(9rem, .3fr) minmax(0, 1fr); gap: 1rem 2rem; max-width: 64rem; margin-top: clamp(2rem, 4vw, 3rem); padding-top: 1.2rem; border-top: 1px dashed var(--hair); }
 .warning p:last-child { margin: 0; color: var(--pen); font: 400 1.08rem/1.55 var(--read); }
 
@@ -293,6 +300,9 @@
   .dayPan { overflow-x: auto; margin-inline: calc(-1 * var(--folio-gutter)); padding: 0 var(--folio-gutter) .4rem; overscroll-behavior-inline: contain; }
   .daySvg { width: 760px; max-width: none; }
   .warning { grid-template-columns: 1fr; }
+  .measureTable thead { display: none; }
+  .measureTable tr { display: grid; padding: .6rem 0; border-top: 1px solid var(--hair); }
+  .measureTable th, .measureTable td { padding: .1rem 0; border: 0; }
   .triptych { grid-template-columns: 1fr 1fr 1fr; gap: .6rem; }
   .tri figcaption { font-size: .92rem; }
 }

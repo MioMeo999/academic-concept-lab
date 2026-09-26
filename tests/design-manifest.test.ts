@@ -77,3 +77,19 @@ test("frozen benchmark experiences point only to frozen artwork", () => {
     }
   }
 });
+
+test("candidate experiences use only their own record's active artwork", () => {
+  const assets = new Map(ART_ASSETS.map((asset) => [asset.id, asset] as const));
+  const candidates = EXPERIENCE_MANIFEST.filter((entry) => entry.status === "candidate");
+  assert.ok(candidates.length >= 4, "Batch 1 records are registered as candidate experiences");
+  for (const experience of candidates) {
+    assert.equal(experience.owner.kind, "record");
+    assert.ok(experience.artAssetIds.length > 0, experience.experienceId + " names its artwork");
+    const routeSlug = experience.route.split("/").at(-1);
+    for (const assetId of experience.artAssetIds) {
+      const asset = assets.get(assetId);
+      assert.equal(asset?.status, "active", experience.experienceId + " uses non-active art " + assetId);
+      assert.ok(asset?.owner === experience.owner.id || asset?.owner === routeSlug, assetId + " belongs to another record");
+    }
+  }
+});

@@ -13,7 +13,7 @@ export const CENTRES = {
   researcher: [610, 400],
 };
 
-export default {
+const scene = {
   width: 1200,
   height: 820,
   scale: 2,
@@ -107,3 +107,5 @@ export default {
     }, { seed: 30, pressure: 0.45 });
   },
 };
+
+export default scene;

@@ -10,13 +10,14 @@ import type { ArtAssetId } from "./art-manifest";
  * mobile narrative sequence remain specific to the knowledge.
  */
 
-export type ExperienceStatus = "benchmark" | "frozen";
+/** candidate = designed and verified, awaiting human review; not yet a benchmark. */
+export type ExperienceStatus = "benchmark" | "frozen" | "candidate";
 export type ExperienceOwner =
   | { kind: "surface"; id: "home" | "about" }
-  | { kind: "record"; id: "gestalt-principles-in-music" | "reflexive-thematic-analysis" | "affective-events-theory" };
+  | { kind: "record"; id: "gestalt-principles-in-music" | "reflexive-thematic-analysis" | "affective-events-theory" | "job-demands-resources" | "hpa-axis" | "ipa" | "tonal-hierarchy" };
 
 export type ExperienceManifestEntry = {
-  experienceId: "home" | "about" | "gestalt" | "rta" | "aet";
+  experienceId: "home" | "about" | "gestalt" | "rta" | "aet" | "jdr" | "hpa" | "ipa" | "tonal";
   owner: ExperienceOwner;
   route: string;
   /** Historical provenance only; retired routes are not runtime destinations. */
@@ -144,6 +145,90 @@ export const EXPERIENCE_MANIFEST: readonly ExperienceManifestEntry[] = [
     mobileStrategy: "Environment → event → reaction → affect-driven response → evaluation → deliberate action; preserve the stable map beneath the reading.",
     quietEnding: "Relationship ledger, evidence, boundaries, sources and provenance move the page from experience into scholarship.",
     doNotFlattenInto: ["a generic causal flowchart", "a universal storyboard", "a single outcome scale", "a purely decorative workplace illustration"],
+  },
+  {
+    experienceId: "jdr",
+    owner: { kind: "record", id: "job-demands-resources" },
+    route: "/concept-lab/theory/job-demands-resources",
+    status: "candidate",
+    knowledgeIdentity: "Organisational Behaviour: functional categories and parallel processes.",
+    pageThesis: "ONE JOB · TWO CURRENTS. Conditions are sorted by what they do, and each category sets off its own process.",
+    primaryGeometry: "One authored working world read five ways: a field of conditions, one desk where a condition changes category, two parallel currents, a fork of one effort, and a junction where resources change the relationship — then a model that widens across dated sources.",
+    persistentObject: "The same drawn workplace and the same desk.",
+    primaryVerb: "sort → follow → compare",
+    primaryInteraction: "Change who is doing the work, follow either current, place a demand on its route, turn the resource dial, step through the dated sources.",
+    whatChanges: ["category of one condition", "focused process", "demand route", "route weight under resources", "state of the model by year"],
+    whatStaysConstant: ["same workplace", "both processes present", "the demand held high", "canonical definitions and sources"],
+    artIntensity: "Rich authored fields for the opening and three interactions; quiet typographic scholarship from the limits onward.",
+    artAssetIds: ["jdr-working-world", "jdr-two-currents", "jdr-challenge-hindrance", "jdr-resource-interaction"],
+    handwritingRole: "Short margin notes that name misreadings (not one dial; the type decides the advice).",
+    annotationRole: "Keep marginalia in the artwork illustrative; all theory labels stay live HTML.",
+    mobileStrategy: "Drawings become thumb-pannable strips in labelled, focusable containers; the sorting desk moves above both category columns.",
+    quietEnding: "Cautions, qualifications, the dated trail, sources and provenance.",
+    doNotFlattenInto: ["a burnout-versus-engagement dial", "a two-column pros and cons card", "a generic causal flowchart"],
+  },
+  {
+    experienceId: "hpa",
+    owner: { kind: "record", id: "hpa-axis" },
+    route: "/concept-lab/mechanism/hpa-axis",
+    status: "candidate",
+    knowledgeIdentity: "Psychobiology: a regulated neuroendocrine pathway.",
+    pageThesis: "A LOOP, NOT A LINE. Through what — not why.",
+    primaryGeometry: "An acronym opening that steps down like the cascade; a sticky drawn descent walked step by step with its feedback loop; SAM and HPA as different timescales; one schematic day carrying the rhythms and the windows each measure looks through.",
+    persistentObject: "The same cascade drawing, then the same schematic day.",
+    primaryVerb: "descend → return → measure",
+    primaryInteraction: "Scroll down the steps while the drawing lights each link; choose a timescale; choose a measure and see the time window it looks through.",
+    whatChanges: ["lit link of the pathway", "timescale read on the day", "measurement window"],
+    whatStaysConstant: ["whole pathway visible", "same day curve", "no concentration values"],
+    artIntensity: "One procedural pencil field carries the descent; the rest is code-drawn schematic line work and typography.",
+    artAssetIds: ["hpa-cascade-loop"],
+    handwritingRole: "A few margin notes: through what — not why; carry this one.",
+    annotationRole: "Keep schematic status explicit next to every drawn pathway and curve.",
+    mobileStrategy: "The cascade appears once above the steps; step pips mark position; day strips pan sideways; the seven measures stack as a readable table.",
+    quietEnding: "Chronic ≠ high, contradicted shortcuts, the dated trail, sources and provenance.",
+    doNotFlattenInto: ["an anatomy illustration", "a three-box flowchart", "a stress score"],
+  },
+  {
+    experienceId: "ipa",
+    owner: { kind: "record", id: "ipa" },
+    route: "/concept-lab/method/interpretative-phenomenological-analysis",
+    status: "candidate",
+    knowledgeIdentity: "Qualitative method: interpretative, idiographic practice.",
+    pageThesis: "ONE PERSON AT A TIME · A READING OF A READING.",
+    primaryGeometry: "Nested loops of the double hermeneutic; three commitments that can be lifted out; a line read three ways; a question sieve; a stack of case sheets that enforces idiography; a slow four-column pass over one constructed extract.",
+    persistentObject: "The case — first one participant's sheet, then the stack of cases.",
+    primaryVerb: "judge → read closely → distil",
+    primaryInteraction: "Lift a commitment, move the researcher's loop, judge questions, step the procedure (and try the forbidden shortcut), foreground a column and find features in the extract, audit a draft.",
+    whatChanges: ["distance between the two readings", "procedure stage", "foregrounded analytic column", "marked language feature"],
+    whatStaysConstant: ["the participant's words", "all procedure steps readable", "constructed material labelled as not data"],
+    artIntensity: "One procedural pencil field for the opening; the rest is typographic worktable and quiet method scholarship.",
+    artAssetIds: ["ipa-double-hermeneutic"],
+    handwritingRole: "The researcher's voice: verdicts on readings, scope of the current step.",
+    annotationRole: "Mark the difference between paraphrase, interpretation and theory without claiming any reading is final.",
+    mobileStrategy: "The case sheets stay pinned while the procedure list scrolls; the four columns become labelled rows with the chosen column foregrounded.",
+    quietEnding: "Misuses, what IPA does not claim, core reading and provenance.",
+    doNotFlattenInto: ["a generic coding pipeline", "the RTA worktable", "a list of steps without the case"],
+  },
+  {
+    experienceId: "tonal",
+    owner: { kind: "record", id: "tonal-hierarchy" },
+    route: "/concept-lab/theory/tonal-hierarchy",
+    status: "candidate",
+    knowledgeIdentity: "Music Psychology: context-dependent tonal function.",
+    pageThesis: "HOME IS A RELATION. Each pitch keeps its identity; the context decides its distance from home.",
+    primaryGeometry: "One tonal field — twelve spokes and orbits of relative fit — that opens with no context, organises when given one, and is re-read as the teaching profile, as a held C4 across four contexts, beside a probe lab, key neighbourhoods and moving home.",
+    persistentObject: "The same tonal field and the same twelve pitch classes.",
+    primaryVerb: "listen → locate → re-read",
+    primaryInteraction: "Hear context and probes, give the tones a context, rate probes on a keyboard, change the context before the same C4, step through key-space and dynamic stages.",
+    whatChanges: ["distance of each tone from home", "context before the held probe", "key-space level", "balance between tonal regions"],
+    whatStaysConstant: ["each pitch class's spoke", "the physical C4 probe", "no empirical profile values"],
+    artIntensity: "One procedural pencil field reused throughout; live tone markers carry every label.",
+    artAssetIds: ["tonal-field"],
+    handwritingRole: "Short readings of role (tonic / scale degree 1; the same C4).",
+    annotationRole: "Name roles and boundaries without implying liking, probability or neural geometry.",
+    mobileStrategy: "The field stays square; the context choice sits above the field it changes; comparison tables and lists carry the static reading path.",
+    quietEnding: "Profile ≠ process, the evidence ledger, scope boundary, lineage, cautions, the trail and provenance.",
+    doNotFlattenInto: ["a bar chart of note heights", "a card per concept", "a universal Western default"],
   },
 ];
 

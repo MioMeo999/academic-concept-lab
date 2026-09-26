@@ -85,7 +85,6 @@ export function Descent({ steps, caption }: { steps: StepContent[]; caption: str
           <div className={s.cascadeArt}>
             <picture>
               <source media="(max-width: 760px)" srcSet={`${ART}/hpa-cascade-600.webp`} />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={`${ART}/hpa-cascade.webp`} width={900} height={1500} alt="" loading="lazy" decoding="async" />
             </picture>
             <span className={s.spotlight} aria-hidden="true" />

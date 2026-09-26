@@ -1,4 +1,4 @@
-export default {
+const scene = {
   width: 1200,
   height: 700,
   scale: 2,
@@ -50,3 +50,5 @@ export default {
     h.erase(h.blob(220, 300, 40, 70, { seed: 30 }), { strength: 0.8 });
   },
 };
+
+export default scene;

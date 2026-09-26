@@ -1,6 +1,6 @@
 import type { TheoryRecord } from "@/content/types";
 import { Folio, FolioIdentity, Chapter, Kicker, Margin, Plate, Glyph, type ChapterEntry } from "../../_folio/Folio";
-import { SourceShelf, ProvenanceLedger, Cautions, OpenQuestions, CodaHead } from "../../_folio/Coda";
+import { SourceShelf, ProvenanceLedger, Cautions, OpenQuestions, CodaHead, Trail } from "../../_folio/Coda";
 import { Rich } from "../../_components/Sketch";
 import { SortByFunction, TwoCurrents, DemandFork, ResourceDial, ModelWidens } from "./Interactions";
 import s from "./jdr.module.css";
@@ -123,6 +123,16 @@ export function JDRExperience({ record: r }: { record: TheoryRecord }) {
           <div className={s.headLede}><p>{r.demandTypesLede}</p></div>
         </div>
         <DemandFork types={demandTypes} />
+        <div className={s.forkTypes}>
+          {demandTypes.map((d, i) => (
+            <article key={d.title} data-type={i === 0 ? "challenge" : "hindrance"}>
+              <h3>{d.title}</h3>
+              <p>{d.definition}</p>
+              <p className={s.forkTypeExamples}>{d.examples.join(" · ")}</p>
+              <p className={s.forkTypeRelates}>Relates to <Rich html={d.relates} /></p>
+            </article>
+          ))}
+        </div>
         <aside className={s.adviceNote}>
           <Margin tone="kind">the type decides the advice</Margin>
           <p>{r.demandTypesNote}</p>
@@ -181,7 +191,9 @@ export function JDRExperience({ record: r }: { record: TheoryRecord }) {
       </Chapter>
 
       <Chapter id="sources" density="scholarly" className={s.band}>
-        <CodaHead kicker="07 · Sources" title={r.minimumReadingLabel ?? "Minimum reading"} />
+        <CodaHead kicker="07 · Sources" title="The trail, and what to read." />
+        <Trail nodes={r.origins} />
+        <h3 className={s.subhead}>{r.minimumReadingLabel ?? "Minimum reading"}</h3>
         <SourceShelf items={r.minimumReading} />
         <h3 className={s.subhead}>The full trail</h3>
         <SourceShelf items={r.fullSources} />

@@ -19,14 +19,8 @@ type Who = "novice" | "expert";
 
 type Category = { title: string; definition: string; examples: string[] };
 
-export function SortByFunction({ demands, resources, note }: { demands: Category; resources: Category; note: string }) {
-  const [who, setWho] = useState<Who>("novice");
-  const toResources = who === "novice";
-  const reading = toResources
-    ? { side: "a job resource", why: "it gives guidance while the task is still being learned" }
-    : { side: "a job demand", why: "it constrains discretion in work the person already knows" };
-
-  const Side = ({ cat, tone, joined }: { cat: Category; tone: "demand" | "resource"; joined: boolean }) => (
+function Side({ cat, tone, joined }: { cat: Category; tone: "demand" | "resource"; joined: boolean }) {
+  return (
     <article className={s.sortSide} data-tone={tone} data-joined={joined || undefined}>
       <h3>{cat.title}</h3>
       <p>{cat.definition}</p>
@@ -38,6 +32,15 @@ export function SortByFunction({ demands, resources, note }: { demands: Category
       </ul>
     </article>
   );
+}
+
+export function SortByFunction({ demands, resources, note }: { demands: Category; resources: Category; note: string }) {
+  const [who, setWho] = useState<Who>("novice");
+  const toResources = who === "novice";
+  const reading = toResources
+    ? { side: "a job resource", why: "it gives guidance while the task is still being learned" }
+    : { side: "a job demand", why: "it constrains discretion in work the person already knows" };
+
 
   return (
     <div className={s.sort}>
@@ -219,7 +222,6 @@ export function DemandFork({ types }: { types: DemandType[] }) {
               <p className={s.forkVerdict} data-type={item.type}>
                 <b>{item.label}</b> is treated as a <strong>{t.title.toLowerCase().replace(/s$/, "")}</strong>.
               </p>
-              <p>{t.definition}</p>
               <p className={s.forkRelates}>Tends to relate to <Rich html={t.relates} /></p>
             </>
           ) : (

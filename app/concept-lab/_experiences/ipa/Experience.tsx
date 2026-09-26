@@ -48,7 +48,6 @@ export function IPAExperience({ record: r }: { record: MethodRecord }) {
       <figure className={s.openingField}>
         <picture>
           <source media="(max-width: 760px)" srcSet="/visual-language/methods/ipa/ipa-double-hermeneutic-760.webp" />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/visual-language/methods/ipa/ipa-double-hermeneutic.webp" width={1400} height={1008} alt="" fetchPriority="high" />
         </picture>
         <span className={s.fieldLabel} data-at="experience">an experience</span>

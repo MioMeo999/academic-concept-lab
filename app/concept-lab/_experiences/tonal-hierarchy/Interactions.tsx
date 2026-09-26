@@ -112,8 +112,11 @@ export function ProbeLab({ context, probes, levels, note }: { context: TonalCont
   const rated = Object.keys(ratings).length;
   const choose = (n: number) => { setPc(n); const p = byPc.get(n); if (p) void play(p.note, contextThenProbe(context, p.midi)); };
 
-  const Key = ({ n, black }: { n: number; black?: boolean }) => (
+  // A plain render function, not a nested component: keys must not remount
+  // on every rating, or keyboard focus would be lost.
+  const renderKey = (n: number, black = false) => (
     <button
+      key={n}
       type="button"
       className={black ? s.keyBlack : s.keyWhite}
       style={{ "--i": black ? [0.7, 1.7, 3.7, 4.7, 5.7][BLACK.indexOf(n)] : WHITE.indexOf(n) } as CSSProperties}
@@ -143,8 +146,8 @@ export function ProbeLab({ context, probes, levels, note }: { context: TonalCont
           })}
         </div>
         <div className={s.keyboard} role="group" aria-label="Twelve probe tones, one octave">
-          {WHITE.map((n) => <Key key={n} n={n} />)}
-          {BLACK.map((n) => <Key key={n} n={n} black />)}
+          {WHITE.map((n) => renderKey(n))}
+          {BLACK.map((n) => renderKey(n, true))}
         </div>
         <p className={s.keyboardNote}>The pencil strokes above the keys are your own ratings: learner-generated teaching data, not a published profile.</p>
       </div>
@@ -185,21 +188,28 @@ export function ProbeLab({ context, probes, levels, note }: { context: TonalCont
 export function Landscape({ items }: { items: TonalProfileItem[] }) {
   const [sel, setSel] = useState<number | null>(7);
   const levels = levelsFor(0, "major");
-  const item = sel === null ? null : items.find((i) => PCS.indexOf(i.pitchClass as (typeof PCS)[number]) === sel) ?? null;
+  const pcOfItem = (i: TonalProfileItem) => PCS.indexOf(i.pitchClass as (typeof PCS)[number]);
+  const groups = (["anchor", "triad", "diatonic", "nondiatonic"] as const).map((level) => ({ level, items: items.filter((i) => i.level === level) }));
   return (
     <div className={s.landscape}>
       <TonalField levels={levels} tonicLabel="C" selected={sel} onSelect={setSel} ariaLabel="The C-major teaching profile as a field: C at home, E and G on the tonic-triad band, D, F, A and B on the diatonic band, and the five nondiatonic tones furthest out." />
-      <div className={s.landscapeRead} aria-live="polite">
-        {item ? (
-          <>
-            <p className={s.landscapeNote}>{item.note}</p>
-            <p className={s.landscapeRole}>{item.role}</p>
-            <p>{item.body}</p>
-          </>
-        ) : <p>Choose a tone to read its role in this context.</p>}
-        <ul className={s.legend} aria-label="Distance from home">
-          {(["anchor", "triad", "diatonic", "nondiatonic"] as const).map((l) => <li key={l} data-level={l}><span aria-hidden="true" />{LEVEL_LABEL[l]}</li>)}
-        </ul>
+      <div className={s.profileList}>
+        {groups.map((g) => (
+          <section key={g.level} className={s.profileGroup} data-level={g.level} aria-label={LEVEL_LABEL[g.level]}>
+            <p className={s.profileGroupHead}><span aria-hidden="true" />{LEVEL_LABEL[g.level]}<em>{({ anchor: "home", triad: "near", diatonic: "further", nondiatonic: "furthest" } as const)[g.level]}</em></p>
+            <ul>
+              {g.items.map((it) => {
+                const pc = pcOfItem(it);
+                return (
+                  <li key={it.note} data-on={sel === pc || undefined}>
+                    <button type="button" aria-pressed={sel === pc} onClick={() => setSel(pc)}>{it.note}</button>
+                    <span>{it.body}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        ))}
       </div>
     </div>
   );
@@ -245,6 +255,19 @@ export function SameNote({ probe, contexts }: { probe: TonalProbe; contexts: Ton
           <p>{ctx.controls}</p>
         </details>
       </div>
+      <table className={s.sameTable}>
+        <caption className={s.smallHeadInline}>The same {probe.note}, four readings</caption>
+        <thead><tr><th scope="col">Context</th><th scope="col">What establishes it</th><th scope="col">Role of {probe.note}</th></tr></thead>
+        <tbody>
+          {contexts.map((c, k) => (
+            <tr key={c.id} data-on={k === i || undefined}>
+              <th scope="row">{c.label}</th>
+              <td>{c.body}</td>
+              <td>{c.role}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
@@ -298,11 +321,18 @@ export function KeySpace({ levels }: { levels: { label: string; body: string; re
         <figcaption className={s.caption}><Glyph g="▲" /> Teaching sketch: major keys on the outer circle of fifths, relative minors inside. Distance here stands for psychological similarity between key profiles, not physical distance.</figcaption>
       </figure>
       <div className={s.keysPanel}>
-        <Choices<string> label="Progressive key-space view" value={cur.label} onChange={(v) => setL(Math.max(0, levels.findIndex((x) => x.label === v)))} options={levels.map((x) => ({ value: x.label, label: x.label }))} />
-        <div aria-live="polite" className={s.keysRead}>
-          <p>{cur.body}</p>
-          <ul>{cur.relations.map((r) => <li key={r}>{r}</li>)}</ul>
-        </div>
+        <ol className={s.levelList} aria-label="Progressive key-space view">
+          {levels.map((x, k) => (
+            <li key={x.label} data-on={k === l || undefined}>
+              <button type="button" aria-pressed={k === l} onClick={() => setL(k)}>
+                <span className={s.levelNum}>{String(k + 1).padStart(2, "0")}</span>
+                <span className={s.levelTitle}>{x.label}</span>
+              </button>
+              <p>{x.body}</p>
+              <p className={s.levelRel}>{x.relations.join(" · ")}</p>
+            </li>
+          ))}
+        </ol>
       </div>
     </div>
   );
@@ -346,11 +376,17 @@ export function MovingHome({ states, note }: { states: TonalCard[]; note: string
         </svg>
       </figure>
       <div className={s.movingPanel}>
-        <Choices<string> label="Stage in the unfolding context" value={states[i].label} onChange={(v) => setI(Math.max(0, states.findIndex((x) => x.label === v)))} options={states.map((x, k) => ({ value: x.label, label: `0${k + 1}`, hint: x.label }))} />
-        <div aria-live="polite" className={s.movingRead}>
-          <p className={s.sameRole}>{states[i].label}</p>
-          <p>{states[i].body}</p>
-        </div>
+        <ol className={s.levelList} aria-label="Stage in the unfolding context">
+          {states.map((x, k) => (
+            <li key={x.label} data-on={k === i || undefined}>
+              <button type="button" aria-pressed={k === i} onClick={() => setI(k)}>
+                <span className={s.levelNum}>{String(k + 1).padStart(2, "0")}</span>
+                <span className={s.levelTitle}>{x.label}</span>
+              </button>
+              <p>{x.body}</p>
+            </li>
+          ))}
+        </ol>
         <p className={s.teachingNote}>{note}</p>
       </div>
     </div>

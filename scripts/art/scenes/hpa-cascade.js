@@ -18,7 +18,7 @@ export const NODES = {
   body: [450, 1330],
 };
 
-export default {
+const scene = {
   width: 900,
   height: 1500,
   scale: 2,
@@ -121,3 +121,5 @@ export default {
     }, { seed: 90, pressure: 0.42 });
   },
 };
+
+export default scene;
