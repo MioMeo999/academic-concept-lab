@@ -2,14 +2,11 @@ import type { Metadata } from "next";
 import { RECORDS, KIND } from "@/content/records";
 import { DISCIPLINES } from "@/content/disciplines";
 import type { MethodRecord, RecordKind } from "@/content/types";
-import { LibraryBrowser } from "../_components/LibraryBrowser";
-import { DisciplineNav } from "../_components/DisciplineNav";
-import { Crumbs } from "../_components/RecordShell";
-import { ReadingCompass } from "../_components/VisualAtlas";
 import { TheoryLibrary } from "./TheoryLibrary";
 import { StudyLibrary } from "./StudyLibrary";
 import { MethodLibrary } from "./MethodLibrary";
 import { MechanismLibrary, type MechanismRecord } from "./MechanismLibrary";
+import { LibraryHub } from "./LibraryHub";
 
 export const metadata: Metadata = { title: "Library" };
 
@@ -45,21 +42,5 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
     return <MechanismLibrary records={mechanisms} />;
   }
 
-  return (
-    <div className="wrap">
-      <Crumbs items={[{ label: "Home", href: "/concept-lab" }, { label: "Library" }]} />
-      <section className="hero page-hero page-hero-library">
-        <div>
-          <span className="k">the working index</span>
-          <h1 className="title" style={{ fontSize: "clamp(2.1rem,5vw,4rem)" }}>The library</h1>
-          <p className="lede" style={{ marginTop: ".7rem" }}>
-            Every record, filterable. The library is the surface that scales — no record ever needs to appear in the main navigation.
-          </p>
-        </div>
-        <ReadingCompass />
-      </section>
-      <DisciplineNav disciplines={DISCIPLINES} current={discipline} />
-      <LibraryBrowser records={RECORDS} disciplines={DISCIPLINES} initialKind={kind} initialDiscipline={discipline} showDisciplineSelect={false} />
-    </div>
-  );
+  return <LibraryHub records={RECORDS} disciplines={DISCIPLINES} initialDiscipline={discipline} />;
 }

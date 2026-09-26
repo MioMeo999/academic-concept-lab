@@ -23,6 +23,8 @@ type Props = {
   initialDiscipline?: string;
   /** The main Library page has visible editorial discipline navigation. */
   showDisciplineSelect?: boolean;
+  /** The root Library already lists records by field; show an invitation until a reader narrows the collection. */
+  showUnfilteredResults?: boolean;
 };
 
 const KIND_FILTERS: readonly ["all" | RecordKind, string, string][] = [
@@ -81,7 +83,7 @@ function SelectedDisciplineRecords({ discipline, records, disciplines }: { disci
   );
 }
 
-export function LibraryBrowser({ records, disciplines, onlySaved = false, initialKind, initialDiscipline, showDisciplineSelect = true }: Props) {
+export function LibraryBrowser({ records, disciplines, onlySaved = false, initialKind, initialDiscipline, showDisciplineSelect = true, showUnfilteredResults = true }: Props) {
   const [q, setQ] = useState("");
   const [kind, setKind] = useState<"all" | RecordKind>(initialKind ?? "all");
   const [discipline, setDiscipline] = useState(initialDiscipline ?? "all");
@@ -140,12 +142,16 @@ export function LibraryBrowser({ records, disciplines, onlySaved = false, initia
           <FlatRecords records={list} />
         ) : selectedDiscipline ? (
           <SelectedDisciplineRecords discipline={selectedDiscipline} records={list} disciplines={disciplines} />
-        ) : (
+        ) : showUnfilteredResults ? (
           <div className="atlas-discipline-sections">
             {groupRecordsByDiscipline(list, disciplines).map(({ discipline: field, records: fieldRecords }) => (
               <AtlasRecordGroup key={field.id} id={`discipline-${field.id}`} title={field.name} records={fieldRecords} />
             ))}
           </div>
+        ) : (
+          <p className="library-browse-prompt read">
+            Records are already arranged by field above. Search here, or narrow by knowledge form, when you have a question in mind.
+          </p>
         )
       ) : (
         <div className="sk-box dash tilt-r2" style={{ marginTop: "1.2rem" }}>

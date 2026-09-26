@@ -10,7 +10,7 @@ async function render(pathname) {
 
 for (const [pathname, expected] of [
   ["/concept-lab", "Academic Concept"],
-  ["/concept-lab/library", "The library"],
+  ["/concept-lab/library", "The Library"],
   ["/concept-lab/about", "The Lab"],
 ]) {
   test(`server renders ${pathname}`, async () => {
@@ -209,6 +209,20 @@ test("theory editorial numbers remain stable when the field is filtered", () => 
 });
 
 const recordPaths = [...new Set([...libraryHtml.matchAll(/\/concept-lab\/(?:theory|study|method|mechanism)\/[a-z0-9-]+/g)].map((m) => m[0]))];
+
+test("the root Library orients readers by knowledge form, discipline, and encoded routes", () => {
+  for (const label of ["A lens", "An argument from evidence", "A practice", "A pathway"]) {
+    assert.ok(libraryHtml.includes(label), `root Library is missing the ${label} orientation`);
+  }
+  for (const field of ["Organizational Behaviour", "Psychology of Music", "Qualitative Methods", "Psychobiology"]) {
+    assert.ok(libraryHtml.includes(field), `root Library is missing the ${field} field`);
+  }
+  for (const question of ["How does the mind organise sound?", "Why does music create expectations?", "How are musical regularities learned and modelled?"]) {
+    assert.ok(libraryHtml.includes(question), `root Library is missing the encoded path ${question}`);
+  }
+  assert.match(libraryHtml, /Records are already arranged by field above/);
+  assert.doesNotMatch(libraryHtml, /1,240 records|Leadership and power|Technology and society/);
+});
 
 test("the library links to every record", () => {
   assert.ok(recordPaths.length >= 9, `library links to only ${recordPaths.length} records`);
