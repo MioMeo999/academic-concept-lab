@@ -4,6 +4,7 @@ import { RECORDS, findRecord } from "@/content/records";
 import type { TheoryRecord } from "@/content/types";
 import { TheoryBody } from "../../_components/TheoryBody";
 import { isPersonEnvironmentFitRecord, PersonEnvironmentFitBody } from "../../_components/PersonEnvironmentFitBody";
+import { TonalExperience } from "../../_experiences/tonal-hierarchy/Experience";
 import { JDRExperience } from "../../_experiences/job-demands-resources/Experience";
 import { GestaltFrame } from "../../_components/GestaltFrame";
 import { GestaltTargetContent } from "../../_components/GestaltTargetPage";
@@ -29,5 +30,6 @@ export default async function TheoryPage({ params }: { params: Promise<{ slug: s
     return <PersonEnvironmentFitBody record={record} />;
   }
   if (slug === "job-demands-resources") return <JDRExperience record={record} />;
+  if (slug === "tonal-hierarchy" && record.tonal) return <TonalExperience record={record} />;
   return <TheoryBody record={record} />;
 }
