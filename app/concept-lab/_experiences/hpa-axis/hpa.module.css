@@ -248,7 +248,7 @@
 .measureTable caption { text-align: left; }
 .measureTable th, .measureTable td { padding: .6rem .8rem .6rem 0; border-top: 1px solid var(--hair); text-align: left; vertical-align: top; }
 .measureTable thead th { color: var(--pen-3); font: 600 .62rem/1.4 var(--cat); letter-spacing: .12em; text-transform: uppercase; border-top-color: var(--pen); }
-.measureTable tbody th { color: var(--pen); font: 450 .98rem/1.35 var(--read); }
+:global(.acl) .measureTable tbody th { color: var(--pen); font: 450 .98rem/1.35 var(--read); letter-spacing: 0; text-transform: none; }
 .measureTable td { color: var(--pen-2); font: 400 .93rem/1.5 var(--read); }
 .measureTable td:last-child { color: var(--pen-3); font-style: italic; }
 .warning { display: grid; grid-template-columns: minmax(9rem, .3fr) minmax(0, 1fr); gap: 1rem 2rem; max-width: 64rem; margin-top: clamp(2rem, 4vw, 3rem); padding-top: 1.2rem; border-top: 1px dashed var(--hair); }
