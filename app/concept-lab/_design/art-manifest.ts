@@ -18,6 +18,7 @@ export const ART_ASSET_IDS = [
   "aet-workday-strip",
   "aet-macrostructure-cinematography",
   "rta-interpretive-field",
+  "tuned-out-observer-lens",
 ] as const;
 
 export type ArtAssetId = typeof ART_ASSET_IDS[number];
@@ -243,6 +244,24 @@ export const ART_ASSETS: readonly ArtAsset[] = [
     responsiveGuidance: "Keep the researcher and surrounding field legible; the live method copy remains the canonical account on narrow screens.",
     provenanceNote: "Authored RTA teaching artwork; it does not reproduce participant data or establish a finding.",
     status: "frozen",
+  },
+  {
+    id: "tuned-out-observer-lens",
+    src: "/study-tuned-out-assets/observer-lens.png",
+    owner: "tuned-out-or-dialed-in",
+    dimensions: { width: 1536, height: 1024 },
+    conceptualRole: "Keeps one visible act of music listening in view while making alternative observer readings legible.",
+    materialRole: "scene",
+    accessibilityRole: "contextual",
+    baseDescription: "An editorial pencil reconstruction of an employee listening to music while working, with two coworkers observing the same scene through distinct coral and teal traces.",
+    epistemicRole: "teaching",
+    evidenceStatus: "not-empirical-evidence",
+    cropCandidates: [
+      { id: "tuned-out-observer-field", bounds: [0, 0, 1536, 1024], conceptualRole: "The whole observer-interpretation field for the study opening." },
+    ],
+    responsiveGuidance: "Keep the listener and both observer positions readable; labels and all scholarly interpretation remain live HTML, especially at mobile widths.",
+    provenanceNote: "Generated editorial reconstruction for explanation only; it does not depict study participants, data, results or a reproduced source figure.",
+    status: "active",
   },
 ] as const;
 
