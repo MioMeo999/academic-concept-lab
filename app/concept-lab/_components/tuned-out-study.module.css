@@ -86,7 +86,8 @@
 .routeEnd { display: flex; min-width: 8rem; align-items: center; justify-content: flex-end; color: var(--pen-3); text-align: right; }
 
 .experience { width: 100%; background: #fff; }
-.section { width: 100%; max-width: none !important; padding: clamp(2.5rem, 5vw, 4.6rem) 0 !important; border-top: 0 !important; background: #fff; scroll-margin-top: 6rem; }
+.section { width: 100%; max-width: none !important; padding: clamp(1.7rem, 2.7vw, 2.4rem) 0 !important; border-top: 0 !important; background: #fff; scroll-margin-top: 6rem; }
+.experience > :global(.divider) { height: 8px; margin: .4rem 0; color: color-mix(in srgb, var(--pen) 22%, transparent); }
 .sectionHeading { max-width: 72ch; margin-bottom: 1.45rem; }
 .sectionHeading > span { display: block; color: var(--red-deep); }
 .sectionHeading h2 { margin: .45rem 0 0; font-size: clamp(1.9rem, 3.2vw, 3.15rem); font-weight: 400; letter-spacing: -.055em; line-height: .99; }
@@ -184,9 +185,20 @@
 .claimSelect strong { font-family: var(--read); font-size: .9rem; font-weight: 400; line-height: 1.3; }
 .claimSelect[aria-pressed="true"] { border-left-color: var(--red-deep); color: var(--pen); }
 .claimSelect[aria-pressed="true"] span { color: var(--red-deep); }
-.claimPanel { min-height: 13rem; padding: 1.1rem 0 1rem 1.35rem; border-left: 1px solid var(--hair); }
-.claimPanel h3 { max-width: 35ch; margin: .5rem 0 0; font-family: var(--read); font-size: clamp(1.45rem,2.8vw,2.2rem); font-weight: 400; letter-spacing: -.035em; line-height: 1.12; }
-.claimPanel > p:last-child { max-width: 66ch; margin: .9rem 0 0; color: var(--pen-2); font-size: .93rem; line-height: 1.58; }
+.claimPanel { --claim-accent: var(--red-deep); min-width: 0; min-height: 0; padding: .15rem 0 .2rem 1.2rem; border-left: 2px solid var(--claim-accent); }
+.claimPanel[data-status="convergent-evidence"] { --claim-accent: var(--teal-deep); }
+.claimPanel[data-status="important-distinction"] { --claim-accent: var(--pen-2); }
+.claimPanel[data-status="qualified"] { --claim-accent: #8a6418; }
+.claimPanelTopline { display: flex; align-items: baseline; justify-content: space-between; gap: .75rem; padding-bottom: .55rem; border-bottom: 1px solid var(--hair); }
+.claimStatus { color: var(--claim-accent); font-family: var(--cat); font-size: .57rem; font-weight: 650; letter-spacing: .1em; line-height: 1.35; text-align: right; text-transform: uppercase; }
+.claimPanel h3 { max-width: 46ch; margin: .8rem 0 0; font-family: var(--read); font-size: clamp(1.45rem,2.8vw,2.2rem); font-weight: 400; letter-spacing: -.035em; line-height: 1.12; }
+.claimSource { display: grid; grid-template-columns: minmax(9.5rem,.55fr) minmax(0,1.45fr); gap: .7rem 1.25rem; align-items: start; margin-top: .9rem; padding-top: .78rem; border-top: 1px solid var(--hair); }
+.claimSource > .marginLabel { padding-top: .1rem; }
+.claimSource p { max-width: 66ch; margin: 0; color: var(--pen-2); font-size: .93rem; line-height: 1.58; }
+.claimBoundary { display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem 1.25rem; margin-top: .9rem; padding-top: .65rem; border-top: 1px solid var(--hair); }
+.claimBoundary a { color: var(--pen-2); font-family: var(--cat); font-size: .63rem; text-decoration-color: var(--hair); text-underline-offset: .2em; }
+.claimBoundary a:hover { color: var(--pen); text-decoration-color: var(--claim-accent); }
+.claimBoundary a:focus-visible { outline: 2px solid var(--claim-accent); outline-offset: 3px; }
 
 .boundaryGrid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,.92fr); gap: clamp(1.4rem,4vw,4.5rem); margin-top: 1.25rem; }
 .robustness > p { max-width: 65ch; margin: .45rem 0 .65rem; color: var(--pen-2); font-size: .8rem; line-height: 1.52; }
@@ -267,7 +279,8 @@
   .routeIntro { grid-column: 1 / -1; padding-bottom: .5rem; border-bottom: 1px solid var(--hair); }
   .readingRoute a { min-height: 2.8rem; border-bottom: 1px solid var(--hair-2); }
   .readingRoute a strong { font-size: .75rem; }
-  .section { padding: 2.2rem 0 !important; }
+  .section { padding: 1.55rem 0 !important; }
+  .experience > :global(.divider) { margin: .3rem 0; }
   .sectionHeading { margin-bottom: 1.1rem; }
   .sectionHeading h2 { font-size: clamp(1.75rem,9vw,2.35rem); }
   .sectionHeading p,.sectionLede { font-size: .85rem; }
@@ -313,9 +326,13 @@
   .claimSelector { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0 .6rem; }
   .claimSelect { min-height: 5rem; padding: .55rem .25rem; }
   .claimSelect strong { font-size: .81rem; }
-  .claimPanel { min-height: 0; padding: .8rem 0 .5rem .8rem; }
+  .claimPanel { padding: .65rem 0 .45rem .8rem; }
+  .claimPanelTopline { align-items: flex-start; }
+  .claimStatus { max-width: 56%; }
   .claimPanel h3 { font-size: 1.5rem; }
-  .claimPanel > p:last-child { font-size: .85rem; }
+  .claimSource { grid-template-columns: 1fr; gap: .25rem; margin-top: .7rem; padding-top: .62rem; }
+  .claimSource p { font-size: .85rem; }
+  .claimBoundary { align-items: flex-start; flex-direction: column; gap: .2rem; margin-top: .7rem; padding-top: .55rem; }
   .boundaryGrid,.limitColumns,.contributions,.sourceTrail { grid-template-columns: 1fr; gap: 1.2rem; }
   .alternatives,.contributions > div + div,.provenance { padding-left: .8rem; border-left: 1px solid var(--hair); }
   .robustness ul { gap: .25rem .45rem; }

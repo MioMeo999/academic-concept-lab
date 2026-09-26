@@ -83,7 +83,7 @@ export function AttributionExplorer({
           </ol>
           <svg className={styles.modelTraces} viewBox="0 0 1000 220" preserveAspectRatio="none" aria-hidden="true">
             <path className={`${styles.trace} ${styles.traceLeisure}`} d="M70 110 C155 110 178 45 280 45 C374 45 390 110 482 110" />
-            <path className={`${styles.trace} ${styles.traceProductivity}`} d="M70 110 C155 110 178 175 280 175 C374 175 390 110 482 110" />
+            <path className={`${styles.trace} ${styles.traceProductivity}`} d="M70 110 C155 110 178 200 280 200 C374 200 390 110 482 110" />
             <path className={`${styles.trace} ${styles.traceShared}`} d="M482 110 C585 110 610 110 704 110 S850 110 940 110" />
           </svg>
         </div>
@@ -186,10 +186,26 @@ export function ClaimEvidenceExplorer({ claims }: { claims: Claim[] }) {
           </button>
         ))}
       </div>
-      <article className={styles.claimPanel} data-claim-panel aria-live="polite" aria-atomic="true">
-        <p className={styles.marginLabel}>Evidence status · {claim.status}</p>
+      <article
+        className={styles.claimPanel}
+        data-claim-panel
+        data-status={claim.status.toLowerCase().replaceAll(" ", "-")}
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        <div className={styles.claimPanelTopline}>
+          <span className={styles.marginLabel}>Selected claim</span>
+          <span className={styles.claimStatus}>{claim.status}</span>
+        </div>
         <h3>{claim.claim}</h3>
-        <p>{claim.evidence}</p>
+        <div className={styles.claimSource}>
+          <span className={styles.marginLabel}>Source-grounded account</span>
+          <p>{claim.evidence}</p>
+        </div>
+        <div className={styles.claimBoundary}>
+          <span className={styles.marginLabel}>Conclusion boundary</span>
+          <a href="#boundaries">Read the study boundaries below <span aria-hidden="true">↘</span></a>
+        </div>
       </article>
     </div>
   );
