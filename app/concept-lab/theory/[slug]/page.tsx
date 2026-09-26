@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { RECORDS, findRecord } from "@/content/records";
 import type { TheoryRecord } from "@/content/types";
 import { TheoryBody } from "../../_components/TheoryBody";
+import { isPersonEnvironmentFitRecord, PersonEnvironmentFitBody } from "../../_components/PersonEnvironmentFitBody";
 import { GestaltFrame } from "../../_components/GestaltFrame";
 import { GestaltTargetContent } from "../../_components/GestaltTargetPage";
 
@@ -22,6 +23,9 @@ export default async function TheoryPage({ params }: { params: Promise<{ slug: s
   if (!record) notFound();
   if (slug === "gestalt-principles-in-music") {
     return <GestaltFrame><GestaltTargetContent /></GestaltFrame>;
+  }
+  if (slug === "person-environment-fit" && isPersonEnvironmentFitRecord(record)) {
+    return <PersonEnvironmentFitBody record={record} />;
   }
   return <TheoryBody record={record} />;
 }
