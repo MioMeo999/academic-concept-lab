@@ -51,6 +51,30 @@ export const CONCEPTUAL_PROBES = {
     "aria-selected changes to true and the analysis panel changes",
     { stableSelector: "#rta-analysis-panel" },
   ),
+  tunedOutAttribution: probe(
+    "tuned-out-attribution-reading",
+    "toggle",
+    '#model [data-attribution-control="leisure"]',
+    "Leisure attribution",
+    "aria-pressed changes while both the shared event and alternative reading remain present",
+    { stableSelector: "#model [data-model-reading]", reducedMotion: true },
+  ),
+  tunedOutStudy: probe(
+    "tuned-out-study-selection",
+    "toggle",
+    '#studies [data-study-control="1"]',
+    "Study 2",
+    "the selected study and its evidence sheet change without removing the study sequence",
+    { stableSelector: "#studies [data-study-panel]", reducedMotion: true },
+  ),
+  tunedOutClaim: probe(
+    "tuned-out-claim-evidence",
+    "toggle",
+    '#claims [data-claim-control="1"]',
+    "second claim and its evidence status",
+    "the evidence register changes to the selected claim and documented status",
+    { stableSelector: "#claims [data-claim-panel]", reducedMotion: true },
+  ),
   neighbourhoodRelation: probe(
     "knowledge-neighbourhood-relation",
     "link",
@@ -97,7 +121,7 @@ export const REPRESENTATIVE_ROUTES = [
   record("rta", "method", "reflexive-thematic-analysis", "Frozen reflexive method benchmark.", "rta", [CONCEPTUAL_PROBES.rtaPhase]),
   record("ipa", "method", "interpretative-phenomenological-analysis", "Generic method route and quiet scholarship.", "record"),
   record("hpa-axis", "mechanism", "hpa-axis", "Mechanism route with structured explanatory sections.", "record"),
-  record("tuned-out", "study", "tuned-out-or-dialed-in", "Study route with evidence and provenance.", "record"),
+  record("tuned-out", "study", "tuned-out-or-dialed-in", "Study route with interactive observer readings, three-study evidence dossier, and provenance.", "tuned-out-study", [CONCEPTUAL_PROBES.tunedOutAttribution, CONCEPTUAL_PROBES.tunedOutStudy, CONCEPTUAL_PROBES.tunedOutClaim, CONCEPTUAL_PROBES.save]),
 ];
 
 export const FULL_SITE_ROUTES = [

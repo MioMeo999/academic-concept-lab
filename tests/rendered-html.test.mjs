@@ -251,6 +251,16 @@ for (const pathname of recordPaths) {
       assert.match(html, /read the map/);
       return;
     }
+    if (pathname === "/concept-lab/study/tuned-out-or-dialed-in") {
+      assert.match(html, /The same cue, read from the outside/);
+      assert.match(html, /Three studies, one line of inquiry/);
+      assert.match(html, /Claim versus evidence/);
+      assert.match(html, /How to read the marks/);
+      assert.match(html, /Directly reported/);
+      assert.match(html, /editorial reconstruction/i);
+      assert.match(html, /data-record-id="tuned-out-or-dialed-in"/);
+      return;
+    }
     // Provenance is the field that makes everything else trustworthy.
     assert.match(html, /Where every claim came from/, `${pathname} renders no provenance block`);
     // Section numbering and the contents rail are generated together; a

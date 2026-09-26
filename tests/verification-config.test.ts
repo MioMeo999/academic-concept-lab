@@ -28,6 +28,16 @@ test("conceptual probes resolve to representative routes with an explicit policy
   assert.equal(CONCEPTUAL_PROBES.aetMap.reducedMotion, true);
   assert.equal(CONCEPTUAL_PROBES.gestaltListening.reducedMotion, true);
   assert.equal(CONCEPTUAL_PROBES.rtaPhase.reducedMotion, false);
+  assert.equal(CONCEPTUAL_PROBES.tunedOutAttribution.reducedMotion, true);
+  assert.equal(CONCEPTUAL_PROBES.tunedOutStudy.reducedMotion, true);
+  assert.equal(CONCEPTUAL_PROBES.tunedOutClaim.reducedMotion, true);
+  const tunedOut = REPRESENTATIVE_ROUTES.find((route) => route.id === "tuned-out");
+  assert.deepEqual(tunedOut?.probes.map((probe) => probe.id), [
+    "tuned-out-attribution-reading",
+    "tuned-out-study-selection",
+    "tuned-out-claim-evidence",
+    "save-restore",
+  ]);
 });
 
 test("contact-sheet modes preserve their distinct screenshot sources", () => {
