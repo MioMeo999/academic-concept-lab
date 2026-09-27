@@ -304,7 +304,8 @@ export function KeySpace({ levels }: { levels: { label: string; body: string; re
           {chords.map(([a, ta, b, tb], k) => {
             const [x1, y1] = at(a, ta); const [x2, y2] = at(b, tb);
             const qx = Math.round((x1 + x2) / 2 + (500 - (x1 + x2) / 2) * 0.35), qy = Math.round((y1 + y2) / 2 + (500 - (y1 + y2) / 2) * 0.35);
-            return <path key={k} className={s.keysChord} d={`M${x1} ${y1} Q ${qx} ${qy} ${x2} ${y2}`} filter="url(#folio-pencil)" />;
+            const hasArea = Math.min(x1, qx, x2) !== Math.max(x1, qx, x2) && Math.min(y1, qy, y2) !== Math.max(y1, qy, y2);
+            return <path key={k} className={s.keysChord} d={`M${x1} ${y1} Q ${qx} ${qy} ${x2} ${y2}`} filter={hasArea ? "url(#folio-pencil)" : undefined} />;
           })}
           {FIFTHS.map((n, k) => { const [x, y] = P(k, outer); return <text key={n} x={x} y={y + 10} textAnchor="middle" className={s.keysMajor} data-lit={litMajor.includes(k) || undefined} data-home={k === 0 || undefined}>{n}</text>; })}
           {REL_MINORS.map((n, k) => { const [x, y] = P(k, inner); return <text key={n} x={x} y={y + 9} textAnchor="middle" className={s.keysMinor} data-lit={litMinor.includes(k) || undefined}>{n}</text>; })}
