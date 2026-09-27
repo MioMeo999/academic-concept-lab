@@ -29,3 +29,10 @@ The reader must be able to understand the academic argument without relying on
 raster handwriting. When an authored source field is reused, the consuming
 context decides whether it is decorative, contextual or explanatory; one
 asset does not have one permanent alt string.
+
+## Use the visual reference library
+
+Read the [visual reference library](../../../docs/visual-reference/README.md) before major visual work. Its grammar, brief, and review guide explain the shared material language.
+Use them to make page-specific choices from the knowledge.
+
+The boards are documentation references. They are not runtime artwork, academic evidence, or page templates. The art manifest remains the source of truth for registered artwork. The experience manifest remains the source of truth for page-specific experiences. Do not add the boards to the art manifest or import them into the site.
