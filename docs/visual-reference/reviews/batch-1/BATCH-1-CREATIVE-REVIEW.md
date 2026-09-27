@@ -72,7 +72,7 @@ With no context, the artwork and pitch markers recede, leaving twelve identities
 
 ![Tonal Hierarchy on mobile, with F major selected and the field beginning below the controls.](images/tonal-mobile-state.png)
 
-Full field captures: [desktop](images/tonal-art-desktop.png), [mobile](images/tonal-art-mobile.png). Context-free opening: [desktop](images/tonal-desktop-opening.png), [mobile](images/tonal-mobile-opening.png).
+Full field captures in the selected F-major context: [desktop](images/tonal-art-desktop.png), [mobile](images/tonal-art-mobile.png). Context-free opening: [desktop](images/tonal-desktop-opening.png), [mobile](images/tonal-mobile-opening.png).
 
 ## Review decision
 
