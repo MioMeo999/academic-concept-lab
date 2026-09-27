@@ -8,9 +8,9 @@ I reviewed the complete desktop and mobile pages in a browser at 1440px and 390p
 
 The browser review exposed a shared rendering fault: the SVG pencil filters clipped their strokes. Changing the filter region to follow each mark made the authored paths appear across JD–R, HPA, IPA, and Tonal. The large illustrations and academic content remain as reviewed; this repair reveals the interactive marks and diagrams that were already part of the explanations. One vertical Tonal chord has no two-dimensional bounds, so it renders directly without the texture filter.
 
-## Full-page captures
+## Earlier single-shot captures
 
-Each link opens a full-page browser screenshot. The selected-state captures below show the artwork beside its live explanation where the layout allows.
+These are the original browser captures used for the art-direction review. A full-page raster taller than about 16,384px can have a white lower region even though the live page continues. For complete desktop/mobile coverage, page-end views, and the viewport-segmented replacement, see the [Batch 1 final closeout](BATCH-1-FINAL-CLOSEOUT.md). The selected-state captures below show the artwork beside its live explanation where the layout allows.
 
 | Experience | Desktop composition (1440px) | Mobile composition (390px) |
 | --- | --- | --- |

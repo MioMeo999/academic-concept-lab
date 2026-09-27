@@ -336,6 +336,7 @@
 
 /* ---------- 04 dial ------------------------------------------------------ */
 .dial { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(16rem, .85fr); gap: clamp(1.4rem, 3vw, 3rem); align-items: center; }
+.dialMap { display: none; }
 .dialInk { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .dialInk path { fill: none; stroke-linecap: round; opacity: .72; vector-effect: non-scaling-stroke; transition: stroke-width 520ms cubic-bezier(.4, 0, .2, 1); }
 .dialStrain { stroke: var(--demand); }
@@ -502,6 +503,21 @@
   .stageInner { width: 190%; }
   .dialStage .stageInner { width: 175%; }
   .panHint { display: block; margin: .35rem var(--folio-gutter) 0; color: var(--pen-3); font: 500 1.05rem/1 var(--script); text-align: right; }
+  .dialMap { display: flex; justify-content: space-between; gap: .5rem; margin: .25rem var(--folio-gutter) .35rem; }
+  .dialMap button {
+    min-height: 44px;
+    padding: .4rem .1rem;
+    border: 0;
+    background: none;
+    color: var(--pen-2);
+    font: 500 .74rem/1.2 var(--cat);
+    text-decoration: underline;
+    text-decoration-color: var(--hair);
+    text-underline-offset: .28em;
+    cursor: pointer;
+  }
+  .dialMap button[aria-pressed="true"] { color: var(--pen); font-weight: 650; text-decoration-color: var(--pen); }
+  .dialMap button:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
   .widenPan { overflow-x: auto; margin-inline: calc(-1 * var(--folio-gutter)); padding-inline: var(--folio-gutter); overscroll-behavior-inline: contain; }
   .widenSvg { width: 760px; max-width: none; }
   .stageCaption { padding-inline: var(--folio-gutter); }

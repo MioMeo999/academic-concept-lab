@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
+import { useRef, useState, type CSSProperties } from "react";
 import { Choices } from "../../_folio/Choices";
 import { Glyph } from "../../_folio/Folio";
 import { Rich } from "../../_components/Sketch";
@@ -248,12 +248,44 @@ const DIAL = [
 
 export function ResourceDial({ options, label, caption }: { options: string[]; label: string; caption: string }) {
   const [i, setI] = useState(0);
+  const [artView, setArtView] = useState<"demands" | "resources">("demands");
+  const panRef = useRef<HTMLDivElement>(null);
   const st = DIAL[i];
   const w = (v: number) => (2 + v * 13).toFixed(1);
+  const moveArt = (view: "demands" | "resources") => {
+    setArtView(view);
+    const pan = panRef.current;
+    if (!pan) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    pan.scrollTo({
+      left: view === "resources" ? pan.scrollWidth - pan.clientWidth : 0,
+      behavior: reducedMotion ? "auto" : "smooth",
+    });
+  };
+
+  const chooseLevel = (value: string) => {
+    const next = Math.max(0, options.indexOf(value));
+    setI(next);
+    moveArt(next === 0 ? "demands" : "resources");
+  };
+
   return (
     <div className={s.dial}>
       <figure className={s.dialStage}>
-        <div className={s.pan} tabIndex={0} role="group" aria-label="Drawing of the same work situation; scroll sideways on small screens">
+        <div
+          className={s.pan}
+          ref={panRef}
+          tabIndex={0}
+          role="group"
+          aria-label="Pannable drawing of one work situation. On a small screen, swipe or use the view controls below to move between demands and resource pathways."
+          onScroll={() => {
+            const pan = panRef.current;
+            if (!pan) return;
+            const view = pan.scrollLeft + pan.clientWidth / 2 >= pan.scrollWidth / 2 ? "resources" : "demands";
+            setArtView((current) => current === view ? current : view);
+          }}
+        >
         <div className={s.stageInner}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -274,13 +306,17 @@ export function ResourceDial({ options, label, caption }: { options: string[]; l
         <span className={s.dialTagMotiv} aria-hidden="true">motivational route</span>
         </div>
         </div>
+        <div className={s.dialMap} role="group" aria-label="Choose a view of the workplace drawing">
+          <button type="button" aria-pressed={artView === "demands"} onClick={() => moveArt("demands")}>← Demands + worker</button>
+          <button type="button" aria-pressed={artView === "resources"} onClick={() => moveArt("resources")}>Resource pathways →</button>
+        </div>
       </figure>
       <div className={s.dialPanel}>
         <p className={s.dialHeld}>Demands held high</p>
         <Choices<string>
           label={label}
           value={options[i]}
-          onChange={(v) => setI(Math.max(0, options.indexOf(v)))}
+          onChange={chooseLevel}
           options={options.map((o) => ({ value: o, label: o }))}
         />
         <p className={s.dialState} aria-live="polite">{st.t}</p>
