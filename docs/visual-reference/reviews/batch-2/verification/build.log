@@ -1,0 +1,55 @@
+
+> site-creator-vinext-starter@0.1.0 build
+> vinext build
+
+
+  vinext build  (Vite 8.0.13)
+
+[1/5] analyze client references...
+[2K
+transforming...✓ 306 modules transformed.
+rendering chunks...
+✓ built in 1.47s
+[2/5] analyze server references...
+[2K
+transforming...✓ 205 modules transformed.
+rendering chunks...
+✓ built in 724ms
+[3/5] build rsc environment...
+[2K
+transforming...✓ 312 modules transformed.
+rendering chunks...
+computing gzip size...
+✓ built in 1.47s
+[4/5] build client environment...
+[2K
+transforming...✓ 212 modules transformed.
+rendering chunks...
+computing gzip size...
+✓ built in 861ms
+[5/5] build ssr environment...
+[2K
+transforming...✓ 211 modules transformed.
+rendering chunks...
+computing gzip size...
+✓ built in 592ms
+[0m
+  Route (app)
+  ┌ ? /
+  ├ ? /concept-lab
+  ├ ? /concept-lab/about
+  ├ ? /concept-lab/library
+  ├ ƒ /concept-lab/mechanism/:slug
+  ├ ƒ /concept-lab/method/:slug
+  ├ ? /concept-lab/method/reflexive-thematic-analysis
+  ├ ? /concept-lab/saved
+  ├ ƒ /concept-lab/study/:slug
+  ├ ƒ /concept-lab/theory/:slug
+  └ ? /concept-lab/theory/affective-events-theory
+
+  ƒ Dynamic  ? Unknown
+
+  ? Some routes could not be classified. vinext currently uses static analysis
+    and cannot detect dynamic API usage (headers(), cookies(), etc.) at build time.
+    Automatic classification will be improved in a future release.
+  Build complete. Run `vinext start` to start the production server.

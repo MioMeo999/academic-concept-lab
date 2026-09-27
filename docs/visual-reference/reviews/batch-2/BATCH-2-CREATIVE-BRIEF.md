@@ -1,6 +1,6 @@
 # Batch 2 — Creative brief and review plan
 
-Status: visual review prepared · Local branch: `codex/batch2-creative-redesign` · Base: `f2bd7964ba8a0dd6db01a38e20b92af2b107f2df`
+Status: art direction approved · Focused readability refinements ready for final human review · Branch: `codex/batch2-creative-redesign` · Base: `f2bd7964ba8a0dd6db01a38e20b92af2b107f2df`
 
 ## Scope and completion test
 
@@ -25,9 +25,8 @@ The work is ready for human review when:
   responsive overflow, reduced motion, console output, lint and repository
   tests have been checked.
 - The complete branch diff contains no changes to Home, Library Hub or the
-  approved Batch 1 records. The work remains local and isolated for review;
-  there is no merge, push, Vercel deployment or Production release before the
-  human visual review.
+  approved Batch 1 records. Keep the work on its isolated branch and deploy a
+  Vercel Preview for review. Do not merge to `main` or deploy Production.
 
 ## Why these three
 
@@ -78,6 +77,10 @@ Gestalt records without borrowing their compositions.
   field. Name the timeline as Concept Lab synthesis and retain the boundary
   between Huron’s theory, constructed audio, empirical expectancy evidence and
   unresolved system independence.
+- In the final closeout, give each label and explanation a wide reading rail
+  beside its qualitative band. Prediction and Reaction keep the same plotted
+  start and end. In the timing comparison, expected and actual markers keep
+  their original positions and values while their labels occupy separate rows.
 - Relevant references: page rhythm and shared vocabulary; material, pressure
   and marks; applied theory and annotation.
 
@@ -135,9 +138,10 @@ needed by these records and must not change a protected experience.
 6. **Whole-page review** — complete. Inspected desktop/mobile, selected states, sources,
    footer, focus, touch, reduced motion, console and overflow. Capture the
    actual browser renders and prepare the review package.
-7. **Release gate** — complete for human review. Lint and repository tests pass;
-   the full diff against the approved base is limited to the three Batch 2
-   records and their review artifacts. The branch remains local and undeployed.
+7. **Release gate** — the focused closeout passes lint, TypeScript, build, the
+   repository tests and browser checks. Push the isolated branch and use a
+   Vercel Preview for final human review. Do not merge to `main` or deploy
+   Production.
 
 ### Source and evidence basis
 

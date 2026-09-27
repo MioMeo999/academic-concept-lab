@@ -1,6 +1,6 @@
 # Batch 2 — Visual and Learning Experience Review
 
-Status: prepared for human review
+Status: overall art direction approved · focused closeout ready for final human review
 Branch: `codex/batch2-creative-redesign`
 Base: `f2bd7964ba8a0dd6db01a38e20b92af2b107f2df`
 
@@ -48,6 +48,14 @@ interaction changes the question asked of the same surprise. Prediction and
 Reaction remain distinct and parallel in the page’s timeline, while Appraisal
 keeps a longer, revisable reach.
 
+The closeout gives each response name, function, question and boundary enough
+horizontal space to stay readable beside its plotted band. Prediction and
+Reaction keep the same post-onset span. The event hinge and the other three
+windows keep their prior positions. The timing comparison now labels expected
+and actual arrivals on separate rows and shows the unchanged values in three
+readout fields. It remains a qualitative teaching example, not a clock or
+physiological measure.
+
 The broad composition uses the boards’ expressive stroke vocabulary and the
 shared editorial rhythm. Its central axis is a teaching coordinate only: it
 does not encode durations, neural activity or physiological magnitude.
@@ -90,13 +98,26 @@ operated by keyboard as well as touch-style clicks; visible focus remained on
 the selected Huron and IDyOM controls. The HPA Axis and the four approved Batch
 1 records, Home, Library Hub and shared global styles are outside this change.
 
+## Focused closeout captures
+
+The handoff ZIP includes the full, segmented Huron page after refinement and
+before-and-after crops for the desktop outcome hinge and the mobile timing
+comparison at 390px and 360px. It also retains the earlier full-page and
+selected-state captures for Meyer and IDyOM, whose artwork and interactions
+did not change in this closeout. The ZIP contains this review, the creative
+brief, and the verification record.
+
+The editorial pass found no further issue that justified changing Meyer or
+IDyOM. Huron’s response wording, plotted spans, teaching values, source trail
+and qualifications remain present.
+
 ## Remaining review boundary
 
 All three new images are Concept Lab teaching illustrations. They are not
 source figures, stimuli, model outputs or empirical evidence. Live academic
-copy and provenance remain intact. The screenshot package provides actual
-local browser renders; it is not a hosted Vercel Preview. The branch remains
-local and isolated for human visual review before any push, merge or deploy.
+copy and provenance remain intact. The candidate will be available through a
+Vercel Preview for final human review. It has not been merged into `main` or
+deployed to Production.
 
 See `BATCH-2-VERIFICATION.md` for retained lint and test output and the browser
 capture audit.
