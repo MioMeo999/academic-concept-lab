@@ -14,10 +14,10 @@ import type { ArtAssetId } from "./art-manifest";
 export type ExperienceStatus = "benchmark" | "frozen" | "candidate";
 export type ExperienceOwner =
   | { kind: "surface"; id: "home" | "about" }
-  | { kind: "record"; id: "gestalt-principles-in-music" | "reflexive-thematic-analysis" | "affective-events-theory" | "job-demands-resources" | "hpa-axis" | "ipa" | "tonal-hierarchy" };
+  | { kind: "record"; id: "gestalt-principles-in-music" | "reflexive-thematic-analysis" | "affective-events-theory" | "job-demands-resources" | "hpa-axis" | "ipa" | "tonal-hierarchy" | "meyers-expectancy-theory" | "hurons-itpra-theory" | "idyom-information-dynamics-of-music" };
 
 export type ExperienceManifestEntry = {
-  experienceId: "home" | "about" | "gestalt" | "rta" | "aet" | "jdr" | "hpa" | "ipa" | "tonal";
+  experienceId: "home" | "about" | "gestalt" | "rta" | "aet" | "jdr" | "hpa" | "ipa" | "tonal" | "meyer" | "huron" | "idyom";
   owner: ExperienceOwner;
   route: string;
   /** Historical provenance only; retired routes are not runtime destinations. */
@@ -229,6 +229,69 @@ export const EXPERIENCE_MANIFEST: readonly ExperienceManifestEntry[] = [
     mobileStrategy: "The field stays square; the context choice sits above the field it changes; comparison tables and lists carry the static reading path.",
     quietEnding: "Profile ≠ process, the evidence ledger, scope boundary, lineage, cautions, the trail and provenance.",
     doNotFlattenInto: ["a bar chart of note heights", "a card per concept", "a universal Western default"],
+  },
+  {
+    experienceId: "meyer",
+    owner: { kind: "record", id: "meyers-expectancy-theory" },
+    route: "/concept-lab/theory/meyers-expectancy-theory",
+    status: "candidate",
+    knowledgeIdentity: "Historical aesthetic-psychological account of musical expectation and meaning.",
+    pageThesis: "A phrase can leave several futures open; later context can change what an earlier event means.",
+    primaryGeometry: "One unresolved phrase reaches a hinge, opens into several qualitative continuations, and leaves a faint retrospective trace.",
+    persistentObject: "The same musical setup as its continuation and later context change.",
+    primaryVerb: "listen → imagine → re-hear",
+    primaryInteraction: "Choose a qualitative continuation, hear the constructed phrase, then compare fulfilment, delay and diversion while the same setup remains present.",
+    whatChanges: ["selected continuation", "delay or diversion", "later interpretation of an earlier event"],
+    whatStaysConstant: ["same initial context", "multiple futures remain possible", "no numerical probability or universal response"],
+    artIntensity: "One spacious branching phrase field with a quiet, drawn-backward trace; the scholarly argument is typeset around it.",
+    artAssetIds: ["meyer-open-phrase"],
+    handwritingRole: "A short marginal question at the open phrase; not a quotation from Meyer.",
+    annotationRole: "Name alternative futures and retrospective reading without assigning probability or affective magnitude.",
+    mobileStrategy: "Keep the hinge and selected continuation in view; stack the audio choice beside its live explanation and preserve a static path through the meaning states.",
+    quietEnding: "Historical scope, later theories, evidence boundaries, sources and provenance.",
+    doNotFlattenInto: ["one correct next note", "a probability tree", "a pleasure meter"],
+  },
+  {
+    experienceId: "huron",
+    owner: { kind: "record", id: "hurons-itpra-theory" },
+    route: "/concept-lab/theory/hurons-itpra-theory-of-expectation",
+    status: "candidate",
+    knowledgeIdentity: "Integrative theory of functionally distinct response systems around anticipated outcomes.",
+    pageThesis: "Expectation is not one feeling and ITPRA is not a five-step conveyor.",
+    primaryGeometry: "Unequal response windows approach, meet and extend beyond one outcome hinge; two post-onset functions remain parallel and appraisal can recur.",
+    persistentObject: "The same anticipated musical outcome across timing and response-system readings.",
+    primaryVerb: "wait → meet → appraise",
+    primaryInteraction: "Keep the outcome constant while changing its constructed timing; select a response function and inspect its role in the shared temporal field.",
+    whatChanges: ["constructed onset timing", "focused response function", "explanatory reading of the same outcome"],
+    whatStaysConstant: ["same outcome", "all five response systems remain conceptually present", "no measured timeline or physiology"],
+    artIntensity: "One wide, materially varied outcome field; live response labels and timing controls sit at the hinge, then scholarship becomes quiet.",
+    artAssetIds: ["huron-outcome-hinge"],
+    handwritingRole: "Brief prompts attached to anticipation, onset and later appraisal.",
+    annotationRole: "Locate response functions in relation to the hinge without presenting exact timing or physiological amplitude.",
+    mobileStrategy: "Reflow before, hinge and after as labelled reading bands; keep Prediction and Reaction visibly parallel after onset.",
+    quietEnding: "Construct status, evidence boundary, system independence, sources and provenance.",
+    doNotFlattenInto: ["five equal steps", "a neural trace", "a universal pleasure mechanism"],
+  },
+  {
+    experienceId: "idyom",
+    owner: { kind: "record", id: "idyom-information-dynamics-of-music" },
+    route: "/concept-lab/theory/idyom-information-dynamics-of-music",
+    status: "candidate",
+    knowledgeIdentity: "Computational cognitive model of learned musical expectation.",
+    pageThesis: "A model distributes expectation over possible events; distributional uncertainty differs from the information of one realised event.",
+    primaryGeometry: "Long-term regularities and local musical context overlap as a model field; a separate live distribution reveals possible next events and calculated measures.",
+    persistentObject: "One constructed event across two model distributions and different context windows.",
+    primaryVerb: "learn → distribute → compare",
+    primaryInteraction: "Change the model-context reading, inspect the same realised event inside different distributions, and compare entropy with information content.",
+    whatChanges: ["modelled local context", "distribution spread", "which measure is foregrounded"],
+    whatStaysConstant: ["selected realised event", "constructed data remain teaching material", "the model is not a proven brain mechanism"],
+    artIntensity: "A layered context field introduces the model; the calculated distribution remains separate, legible and live.",
+    artAssetIds: ["idyom-context-field"],
+    handwritingRole: "Short model-reading prompts; no hand-written equations or unlabelled metrics.",
+    annotationRole: "Keep long-term context, local context, candidate events, probability, entropy and information content distinct.",
+    mobileStrategy: "Recompose context layers above a full-width live distribution; keep measures and the teaching-construction note adjacent to the values.",
+    quietEnding: "Model fit versus mechanism, representation and corpus boundaries, sources and provenance.",
+    doNotFlattenInto: ["a brain illustration", "a static surprise score", "a generic prediction loop"],
   },
 ];
 

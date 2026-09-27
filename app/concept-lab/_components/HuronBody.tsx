@@ -7,6 +7,7 @@ import { AudioExample } from "./AudioExample";
 import { Rich, SecHead, Divider, pad2 } from "./Sketch";
 import { RecordShell } from "./RecordShell";
 import { EvidenceXray as EvidenceCards } from "./TheoryPatterns";
+import { HuronPageHero } from "./batch2/Batch2RecordHeroes";
 
 type Block = { key: string; toc: string; title: string; colour: string; body: ReactNode };
 
@@ -206,5 +207,5 @@ export function HuronBody({ record: r }: { record: TheoryRecord }) {
   add("provenance", "Provenance", "Where every claim came from", "var(--teal)", <div className="prov huron-provenance">{r.provenance.map((item) => <div className="prov-item" key={item.label} data-reveal="rise"><span className="g" style={{ color: item.colour }} aria-hidden="true">{item.glyph}</span><div><h3>{item.label}</h3><p>{item.note}</p></div></div>)}</div>);
 
   const toc: [string, string, string][] = blocks.map((block, index) => [`${String(index + 1).padStart(2, "0")}`, block.toc, `s${index + 1}`]);
-  return <RecordShell record={r} toc={toc}>{blocks.map((block, index) => <span key={block.key} style={{ display: "contents" }}>{index > 0 && <Divider />}<section className="rec" id={`s${index + 1}`}><SecHead num={pad2(index + 1)} title={block.title} colour={block.colour} />{block.body}</section></span>)}</RecordShell>;
+  return <RecordShell record={r} toc={toc} hero={<HuronPageHero record={r} />}>{blocks.map((block, index) => <span key={block.key} style={{ display: "contents" }}>{index > 0 && <Divider />}<section className="rec" id={`s${index + 1}`}><SecHead num={pad2(index + 1)} title={block.title} colour={block.colour} />{block.body}</section></span>)}</RecordShell>;
 }

@@ -6,6 +6,7 @@ import { KIND, RECORDS, recordHref } from "@/content/records";
 import { entropyBits, informationBits, probabilitySum, assertProbabilityDistribution } from "./idyomMath";
 import { Divider, Rich, SecHead, pad2 } from "./Sketch";
 import { RecordShell } from "./RecordShell";
+import { IdyomPageHero } from "./batch2/Batch2RecordHeroes";
 
 type Block = { key: string; toc: string; title: string; colour: string; body: ReactNode };
 
@@ -175,10 +176,10 @@ export function IdyomBody({ record: r }: { record: TheoryRecord }) {
   const add = (key: string, toc: string, title: string, colour: string, body: ReactNode) => blocks.push({ key, toc, title, colour, body });
 
   add("opening", "What did the model expect?", "What did the model expect?", "var(--teal)", <><SectionIntro data={data.opening} /><Identity data={data.identity} /></>);
+  add("signature", "Same surprise, different uncertainty", "Same surprise. Different uncertainty.", "var(--red)", <><Rich className="lede" as="p" html={data.signature.lede} /><SignatureInteraction data={data.signature} /></>);
   add("distribution", "It doesn’t guess one note", "It doesn’t guess one note", "var(--teal)", <SectionIntro data={data.distribution} />);
   add("uncertainty", "Before the note: uncertainty", "Before the note: uncertainty", "var(--gold-deep)", <SectionIntro data={data.uncertainty} />);
   add("information", "After the note: information", "After the note: information", "var(--red)", <SectionIntro data={data.information} />);
-  add("signature", "Same surprise, different uncertainty", "Same surprise. Different uncertainty.", "var(--red)", <><Rich className="lede" as="p" html={data.signature.lede} /><SignatureInteraction data={data.signature} /></>);
   add("learning", "Where did the probabilities come from?", "Where did the probabilities come from?", "var(--teal)", <SectionIntro data={data.learning} />);
   add("memories", "Two memories of music", "Two memories of music", "var(--teal)", <SectionIntro data={data.memories} />);
   add("configurations", "Five configurations", "Five configurations, not five minds", "var(--gold-deep)", <><Rich className="lede" as="p" html={data.configurations.lede} /><div className="idyom-config-grid">{data.configurations.items.map((item) => <article className="idyom-config" key={item.label} style={{ "--idyom-colour": item.colour } as CSSProperties}><b>{item.label}</b><p>{item.body}</p></article>)}</div><Note text={data.configurations.note} /></>);
@@ -202,5 +203,5 @@ export function IdyomBody({ record: r }: { record: TheoryRecord }) {
   add("provenance", "Provenance", "Where every claim came from", "var(--teal)", <div className="prov idyom-provenance">{r.provenance.map((item) => <div className="prov-item" key={item.label}><span className="g" style={{ color: item.colour }} aria-hidden="true">{item.glyph}</span><div><h3>{item.label}</h3><p>{item.note}</p></div></div>)}</div>);
 
   const toc: [string, string, string][] = blocks.map((block, index) => [pad2(index + 1), block.toc, `s${index + 1}`]);
-  return <RecordShell record={r} toc={toc}>{blocks.map((block, index) => <span key={block.key} style={{ display: "contents" }}>{index > 0 && <Divider />}<section className="rec" id={`s${index + 1}`}><SecHead num={pad2(index + 1)} title={block.title} colour={block.colour} />{block.body}</section></span>)}</RecordShell>;
+  return <RecordShell record={r} toc={toc} hero={<IdyomPageHero record={r} />}>{blocks.map((block, index) => <span key={block.key} style={{ display: "contents" }}>{index > 0 && <Divider />}<section className="rec" id={`s${index + 1}`}><SecHead num={pad2(index + 1)} title={block.title} colour={block.colour} />{block.body}</section></span>)}</RecordShell>;
 }

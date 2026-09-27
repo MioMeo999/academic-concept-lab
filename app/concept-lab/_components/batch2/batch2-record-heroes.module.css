@@ -1,0 +1,193 @@
+.meyer,
+.huron,
+.idyom {
+  min-width: 0;
+  padding: clamp(2.4rem, 6vw, 5rem) 0 2.2rem;
+  color: var(--pen);
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+}
+
+.index {
+  display: block;
+  margin-top: 1.3rem;
+  color: var(--pen-3);
+  font-family: var(--cat);
+  font-size: .62rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+  margin-top: 1.2rem;
+  padding-top: .65rem;
+  border-top: 1px dashed var(--grey);
+}
+
+.topics span {
+  padding-bottom: .1rem;
+  border-bottom: 2px solid var(--blue);
+  color: var(--pen-2);
+  font-family: var(--hand);
+  font-size: .95rem;
+}
+
+.topics span[data-tone="red"] { border-color: var(--coral); }
+
+.meyer {
+  display: grid;
+  grid-template-columns: minmax(15rem, .72fr) minmax(0, 1.28fr);
+  grid-template-rows: auto auto;
+  column-gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: center;
+}
+
+.meyerHeading { grid-column: 1; grid-row: 1; }
+.meyerHeading :global(.title),
+.huronHeading :global(.title),
+.idyomCopy :global(.title) {
+  margin-top: .8rem;
+  font-family: var(--read);
+  font-size: clamp(2.8rem, 5.4vw, 5.4rem);
+  font-weight: 400;
+  letter-spacing: -.075em;
+  line-height: .88;
+  overflow-wrap: anywhere;
+}
+
+.meyerHeading :global(.hook),
+.huronHeading :global(.hook),
+.idyomCopy :global(.hook) {
+  max-width: 31ch;
+  margin-top: 1.3rem;
+  color: var(--pen);
+  font-family: var(--hand);
+  font-size: clamp(1.35rem, 2vw, 1.9rem);
+  line-height: 1.14;
+}
+
+.meyerField {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-width: 0;
+  margin: 0;
+}
+
+.meyerField figure { margin: 0; }
+.meyerImage { position: relative; }
+.routeFocus { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.routeFocus path { fill: none; stroke: transparent; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; transition: stroke .18s ease, opacity .18s ease; }
+.routeFocus .routeSelected { stroke: rgba(197, 68, 26, .56); }
+.routeStatus { min-height: 2.7em; margin: .55rem .4rem .7rem; color: var(--red-deep); font-family: var(--hand); font-size: .96rem; line-height: 1.35; }
+.meyerField :global(.music-opening-context) { max-width: 32rem; margin: 0 auto .7rem; }
+.meyerField :global(.music-audio-choice-grid) { margin-top: .4rem; }
+
+.meyerField img,
+.huronField img,
+.idyomField img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.meyerField figcaption,
+.huronField figcaption,
+.idyomField figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: .7rem;
+  color: var(--pen-3);
+  font-family: var(--cat);
+  font-size: .61rem;
+  letter-spacing: .08em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.meyerField figcaption { margin: -.1rem .4rem 0; }
+.meyerReading { grid-column: 1; grid-row: 2; align-self: start; }
+.meyerReading > :global(.lede),
+.huronReading > :global(.lede) { max-width: 54ch; margin-top: .3rem; line-height: 1.55; }
+
+.marginQuestion {
+  max-width: 34ch;
+  margin-top: .8rem;
+  color: var(--red-deep);
+  font-family: var(--hand);
+  font-size: 1.08rem;
+  line-height: 1.24;
+}
+
+.openingLede { margin-top: .75rem; color: var(--pen-2); font-family: var(--read); font-size: .86rem; line-height: 1.5; }
+.constructedNote { margin-top: .65rem; color: var(--pen-3); font-family: var(--hand); font-size: .8rem; line-height: 1.42; }
+.constructedNote b { color: var(--gold-deep); }
+.meyerCallout { margin-top: .7rem; color: var(--red-deep); font-family: var(--hand); font-size: 1.12rem; line-height: 1.2; }
+.openingNote { margin-top: .55rem; color: var(--pen-2); font-family: var(--read); font-size: .8rem; line-height: 1.45; }
+
+.huron { padding-top: clamp(2.4rem, 5vw, 4rem); }
+.huronTop { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.huronTop .index { margin-top: 0; }
+.huronHeading { display: grid; grid-template-columns: minmax(0, 1fr) minmax(15rem, .6fr); gap: 2rem; align-items: end; margin: 2.4rem 0 1.1rem; }
+.huronHeading :global(.hook) { margin: 0 0 .3rem; }
+.huronHeading :global(.title) { max-width: 14ch; }
+.huronField { margin: 0; }
+.huronField img { max-height: 29rem; object-fit: contain; }
+.huronField figcaption { padding: 0 1rem; }
+.huronField figcaption b { color: var(--red-deep); font-weight: 700; }
+.huronReading { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(14rem, .8fr); column-gap: 2rem; align-items: start; margin-top: .8rem; }
+.huronReading .topics { grid-column: 1 / -1; }
+
+.idyom { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(19rem, .95fr); gap: clamp(1.6rem, 4vw, 4rem); align-items: center; }
+.idyomField { min-width: 0; }
+.idyomField figure { margin: 0; }
+.idyomField figcaption { padding: 0 .3rem; }
+.idyomCopy { min-width: 0; }
+.idyomCopy :global(.lede) { max-width: 47ch; margin-top: 1rem; line-height: 1.55; }
+.idyomCopy .topics { margin-top: 1.2rem; }
+.measureNote { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin-top: 1.2rem; color: var(--teal-deep); font-family: var(--hand); font-size: 1.08rem; }
+.measureNote b { color: var(--coral); font-family: var(--read); font-size: .9rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html) { scroll-behavior: auto !important; }
+  .routeFocus path { transition: none; }
+}
+
+@media (max-width: 760px) {
+  .meyer,
+  .idyom { grid-template-columns: minmax(0, 1fr); padding-top: 2rem; gap: 1.2rem; }
+  .meyerHeading,
+  .meyerField,
+  .meyerReading { grid-column: 1; }
+  .meyerHeading { grid-row: 1; }
+  .meyerField { grid-row: 2; }
+  .meyerReading { grid-row: 3; }
+  .meyerHeading :global(.title),
+  .huronHeading :global(.title),
+  .idyomCopy :global(.title) { font-size: clamp(2.75rem, 13vw, 4rem); }
+  .meyerField figcaption,
+  .huronField figcaption,
+  .idyomField figcaption { gap: .35rem; font-size: .53rem; letter-spacing: .04em; }
+  .huron { padding-top: 2rem; }
+  .huronHeading { grid-template-columns: minmax(0, 1fr); gap: .5rem; margin-top: 1.6rem; }
+  .huronHeading :global(.hook) { margin-top: .5rem; }
+  .huronField img { max-height: none; }
+  .huronReading { grid-template-columns: minmax(0, 1fr); gap: .3rem; }
+  .idyom { gap: .8rem; }
+  .idyomField { order: 2; }
+  .idyomCopy { order: 1; }
+}

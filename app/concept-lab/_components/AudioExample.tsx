@@ -66,6 +66,7 @@ export function AudioExample({
   description,
   colour = "var(--teal)",
   markers,
+  onPlayIntent,
 }: {
   label: string;
   notes?: AudioNote[];
@@ -73,6 +74,7 @@ export function AudioExample({
   description: string;
   colour?: string;
   markers?: AudioMarker[];
+  onPlayIntent?: () => void;
 }) {
   const [playing, setPlaying] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
@@ -164,7 +166,7 @@ export function AudioExample({
       </div>
       <AudioPitchLine events={scheduledEvents} markers={markers} />
       <div className="music-audio-controls">
-        <button type="button" className="music-audio-play" onClick={() => void play()} aria-label={`${playing ? "Replay" : "Play"} ${label}`}>
+        <button type="button" className="music-audio-play" onClick={() => { onPlayIntent?.(); void play(); }} aria-label={`${playing ? "Replay" : "Play"} ${label}`}>
           {playing ? "Replay" : "Play"}
         </button>
         <button type="button" className="music-audio-stop" onClick={stop} disabled={!playing}>Stop</button>
