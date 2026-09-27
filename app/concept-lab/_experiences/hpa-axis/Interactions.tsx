@@ -7,8 +7,7 @@ import s from "./hpa.module.css";
 
 const ART = "/visual-language/mechanisms/hpa";
 
-/* Node positions as fractions of the 900 × 1500 cascade drawing
-   (see scripts/art/scenes/hpa-cascade.js). Position means order only. */
+/* Labels attach to the authored field; position means sequence, not anatomy or scale. */
 export const STAGES = ["brain", "crh", "acth", "cortisol", "feedback"] as const;
 export type Stage = (typeof STAGES)[number];
 
@@ -84,8 +83,8 @@ export function Descent({ steps, caption }: { steps: StepContent[]; caption: str
         <figure className={s.descentFigure} data-active={active} style={{ "--sx": `${spot.x}%`, "--sy": `${spot.y}%`, "--srx": `${spot.rx}%`, "--sry": `${spot.ry}%` } as CSSProperties}>
           <div className={s.cascadeArt}>
             <picture>
-              <source media="(max-width: 760px)" srcSet={`${ART}/hpa-cascade-600.webp`} />
-              <img src={`${ART}/hpa-cascade.webp`} width={900} height={1500} alt="" loading="lazy" decoding="async" />
+              <source media="(max-width: 760px)" srcSet={`${ART}/hpa-cascade-art-directed-600.webp`} />
+              <img src={`${ART}/hpa-cascade-art-directed.webp`} width={900} height={1500} alt="" loading="lazy" decoding="async" />
             </picture>
             <span className={s.spotlight} aria-hidden="true" />
             {LABELS.map((l) => (

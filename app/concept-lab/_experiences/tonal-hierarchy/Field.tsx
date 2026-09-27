@@ -84,7 +84,7 @@ export function TonalField({
     <div className={[s.field, className].filter(Boolean).join(" ")} data-organised={organised || undefined}>
       <div className={s.fieldArt} role="img" aria-label={ariaLabel}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/visual-language/theories/tonal/tonal-field.webp" srcSet="/visual-language/theories/tonal/tonal-field-600.webp 600w, /visual-language/theories/tonal/tonal-field.webp 1000w" sizes="(max-width: 760px) 92vw, 44vw" alt="" width={1000} height={1000} decoding="async" />
+        <img src="/visual-language/theories/tonal/tonal-field-art-directed.webp" srcSet="/visual-language/theories/tonal/tonal-field-art-directed-600.webp 600w, /visual-language/theories/tonal/tonal-field-art-directed.webp 1000w" sizes="(max-width: 760px) 92vw, 44vw" alt="" width={1000} height={1000} decoding="async" />
         <svg className={s.fieldRim} viewBox="0 0 1000 1000" aria-hidden="true">
           <circle cx="500" cy="500" r="455" filter="url(#folio-graphite)" />
         </svg>
