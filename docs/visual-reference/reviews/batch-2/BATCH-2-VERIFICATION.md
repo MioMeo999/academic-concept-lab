@@ -28,14 +28,26 @@ four approved Batch 1 records had no axe violations. The report marks routes
 for human visual review by design; it does not treat that status as an
 automated accessibility failure.
 
-The focused browser audit passed 24 checks. It verified Huron’s On-time and
-Delayed states at 390px and 360px, confirmed that the Expected and Actual
+The focused local browser audit passed 24 checks. It verified Huron’s On-time
+and Delayed states at 390px and 360px, confirmed that the Expected and Actual
 labels do not overlap, and confirmed the unchanged values: 4.00 s / 4.00 s / 0
 ms and 4.00 s / 5.50 s / 1.50 s. Keyboard selection, touch selection, audio
 Play and Stop, reduced motion, desktop and mobile layout, and Save persistence
 passed. Meyer’s third continuation updated the highlighted path and live
 reading. IDyOM’s constructed teaching label remained visible; the Entropy + IC
 and Later current piece states passed keyboard selection.
+
+## Vercel Preview
+
+The isolated branch deployed successfully for commit `fa6fa049baef1f6d78db28d962302efc8b7ba441`.
+The [Batch 2 Preview](https://academic-concept-hwy8adlvn-mio11.vercel.app/)
+is Ready. Deployment ID: `dpl_FMoWX1KdS1GcaVNHLbv8fwYHkk1N`. Its Vercel target
+is not Production.
+
+The hosted browser audit passed all 42 checks. Huron’s desktop timeline and
+390px/360px timing states passed, as did Home, Library Hub, JD–R, HPA Axis,
+IPA and Tonal Hierarchy at desktop and both mobile widths. Preview screenshots
+in the handoff ZIP come from this deployment.
 
 The route audit found no external anchor elements in the three records’ source
 lists. Their citations, DOI identifiers, provenance and source trails render
@@ -44,11 +56,10 @@ no external source link targets to resolve in the browser.
 
 ## Local production server note
 
-The browser harness run with `--server start` returned HTTP 200 for the HTML
-but 404 for its generated JavaScript and CSS assets on every route. That run
-did not verify the rendered site. The development server run above supplied
-the browser verification instead. Vercel Preview must be checked on its own
-before final handoff.
+The local browser harness run with `--server start` returned HTTP 200 for the
+HTML but 404 for its generated JavaScript and CSS assets on every route. That
+local run did not verify the rendered site. The development server and the
+hosted Vercel Preview both served and exercised the page successfully.
 
 ## Handoff
 
@@ -56,5 +67,5 @@ The review ZIP contains the creative brief, visual review, this record, the
 prior complete Meyer and IDyOM capture sets, fresh segmented Huron desktop and
 mobile captures, the before and after Huron screenshots, and browser reports.
 
-The isolated branch will be pushed to trigger a Vercel Preview. Do not merge
-into `main` or deploy Production. Final human review remains the release gate.
+The isolated branch is pushed. Do not merge into `main` or deploy Production.
+Final human review remains the release gate.

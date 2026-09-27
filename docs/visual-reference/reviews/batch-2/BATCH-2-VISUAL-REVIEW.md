@@ -115,9 +115,9 @@ and qualifications remain present.
 
 All three new images are Concept Lab teaching illustrations. They are not
 source figures, stimuli, model outputs or empirical evidence. Live academic
-copy and provenance remain intact. The candidate will be available through a
-Vercel Preview for final human review. It has not been merged into `main` or
-deployed to Production.
+copy and provenance remain intact. The candidate is available in the [Vercel
+Preview](https://academic-concept-hwy8adlvn-mio11.vercel.app/). It has not been
+merged into `main` or deployed to Production.
 
 See `BATCH-2-VERIFICATION.md` for retained lint and test output and the browser
 capture audit.
