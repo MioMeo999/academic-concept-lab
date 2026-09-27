@@ -39,9 +39,9 @@ and Later current piece states passed keyboard selection.
 
 ## Vercel Preview
 
-The isolated branch deployed successfully for commit `fa6fa049baef1f6d78db28d962302efc8b7ba441`.
-The [Batch 2 Preview](https://academic-concept-hwy8adlvn-mio11.vercel.app/)
-is Ready. Deployment ID: `dpl_FMoWX1KdS1GcaVNHLbv8fwYHkk1N`. Its Vercel target
+The isolated branch deployed successfully for commit `b947cc4a23e67ee37244171f057f1b672d964d0c`.
+The [Batch 2 Preview](https://academic-concept-lcpqxetzg-mio11.vercel.app/)
+is Ready. Deployment ID: `dpl_877HUFDZTqxZbWh1Uo3nC6skU7JU`. Its Vercel target
 is not Production.
 
 The hosted browser audit passed all 42 checks. Huron’s desktop timeline and
