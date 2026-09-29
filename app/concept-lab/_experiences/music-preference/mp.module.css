@@ -1,0 +1,300 @@
+/* Music Preference and Person–Music Fit · a field, not a theory
+   A crowd of individual tastes and the shape they make. Teal is the listener's
+   side, red the situation's; ink is the sound. Colour never works alone: every
+   strand, side, lane and quality is named beside its drawing, and each quality
+   of sound is told apart by the shape of its trace. */
+
+.page {
+  --accent: var(--teal-deep);
+  --c-taste: var(--teal);
+  --c-work: var(--red);
+}
+.band { width: var(--folio-w); margin-inline: auto; }
+.band .h2 { margin: 0; font: 400 clamp(2.3rem, 5vw, 4.4rem)/.97 var(--read); letter-spacing: -.055em; }
+.band .h2 em { color: var(--accent); }
+.band .h3 { margin: .3rem 0 0; font: 400 clamp(1.7rem, 3.2vw, 2.7rem)/1.02 var(--read); letter-spacing: -.045em; }
+.band .h3 em { color: var(--accent); }
+.head { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: .6rem clamp(1.5rem, 4vw, 4rem); align-items: end; margin-bottom: clamp(2rem, 4.5vw, 3.4rem); }
+.head > :first-child { grid-column: 1 / -1; margin-bottom: 0; }
+.headLede { margin: 0; color: var(--pen-2); font: 400 1.03rem/1.6 var(--read); }
+.smallHead { margin: 0 0 .7rem; color: var(--pen-3); font: 600 .66rem/1.4 var(--cat); letter-spacing: .12em; text-transform: uppercase; }
+.subhead { margin: clamp(3.5rem, 7vw, 6rem) 0 clamp(1.4rem, 3vw, 2.2rem); max-width: 46rem; }
+.subLede { margin: .9rem 0 0; color: var(--pen-2); font: 400 1.03rem/1.6 var(--read); max-width: 56ch; }
+.note { margin: 1rem 0 0; max-width: 68ch; color: var(--pen-3); font: 400 .8rem/1.55 var(--cat); }
+.aside { margin: clamp(1.4rem, 3vw, 2.2rem) 0 0; max-width: 62ch; padding-left: 1rem; border-left: 3px solid var(--c-work); color: var(--pen-2); font: 400 1.03rem/1.6 var(--read); }
+.caution { margin: clamp(1.2rem, 3vw, 2rem) 0 0; max-width: 62ch; padding-left: 1rem; border-left: 3px solid var(--c-work); color: var(--pen); font: 400 1.03rem/1.6 var(--read); }
+.figNote { margin: .8rem 0 0; color: var(--pen-3); font: 400 .78rem/1.55 var(--cat); max-width: 60ch; }
+.glyph { color: var(--gold-deep); }
+
+/* ---------- diagrams and drawn text ---------------------------------------- */
+.diagram { display: block; width: 100%; height: auto; overflow: visible; }
+.diagHead { fill: var(--pen); font: 500 20px var(--read); }
+.diagSub { fill: var(--pen-3); font: italic 400 14px var(--read); }
+.diagTag { fill: var(--pen); font: 500 15px var(--read); }
+.tag { fill: var(--pen-3); font: 500 12px var(--cat); }
+.swapIn { animation: swap-in 360ms ease both; }
+@keyframes swap-in { from { opacity: 0; } to { opacity: 1; } }
+.person path { fill: none; stroke: var(--pen); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- controls shared by the figures ---------------------------------- */
+.reading { margin: 0; max-width: 52ch; color: var(--pen); font: 400 1.03rem/1.58 var(--read); }
+.page button[aria-pressed] { padding: .95rem 1.35rem; }
+.map, .qualities, .instrument, .levers, .flip, .road, .office, .fit { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 0 clamp(1.5rem, 4vw, 4rem); align-items: start; }
+.mapFigure, .qualFigure, .instrumentFigure, .leversFigure, .flipFigure, .roadFigure, .officeFigure, .fitFigure { margin: 0; min-width: 0; background: #fff; }
+.mapPanel, .qualPanel, .instrumentPanel, .leversPanel, .flipPanel, .roadPanel, .officePanel, .fitPanel { display: grid; gap: 1.1rem; min-width: 0; align-content: start; }
+
+/* ---------- the four questions ------------------------------------------------ */
+.questions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.4rem clamp(1.2rem, 3vw, 2.6rem); margin: 0; padding: 0; list-style: none; }
+.questions li { display: grid; gap: .5rem; align-content: start; padding-top: .9rem; border-top: 2.5px solid var(--accent); color: var(--pen-2); font: 400 1rem/1.55 var(--read); }
+.questions li:nth-child(2) { border-top-color: var(--c-work); }
+.questions li:nth-child(3) { border-top-color: var(--gold); }
+.questions li:nth-child(4) { border-top-color: var(--plum); }
+.questions b { color: var(--pen); font-weight: 600; }
+.qNum { color: var(--pen-3); font: 700 .7rem/1 var(--cat); letter-spacing: .12em; }
+.origins { margin: clamp(1.6rem, 3.5vw, 2.6rem) 0 0; max-width: 60ch; color: var(--pen-2); font: italic 400 1.03rem/1.6 var(--read); }
+
+/* ---------- the field, as two literatures -------------------------------------- */
+.laneLine { fill: none; stroke-width: 3.2; stroke-linecap: round; }
+.laneLine[data-lane="taste"] { stroke: var(--c-taste); }
+.laneLine[data-lane="work"] { stroke: var(--c-work); }
+.bridge { fill: none; stroke: var(--gold-deep); stroke-width: 2.2; stroke-dasharray: 5 6; stroke-linecap: round; }
+.bridgeText { fill: var(--gold-deep); font: italic 500 14px var(--read); }
+.knot { cursor: pointer; }
+.knotDot { fill: #fff; stroke-width: 2.6; transition: r 200ms ease; }
+.knot[data-lane="taste"] .knotDot { stroke: var(--c-taste); }
+.knot[data-lane="work"] .knotDot { stroke: var(--c-work); }
+.knot[data-on][data-lane="taste"] .knotDot { fill: var(--c-taste); }
+.knot[data-on][data-lane="work"] .knotDot { fill: var(--c-work); }
+.knotRing { fill: none; stroke-width: 2.4; }
+.knot[data-lane="taste"] .knotRing { stroke: var(--c-taste); }
+.knot[data-lane="work"] .knotRing { stroke: var(--c-work); }
+.knotNum { fill: var(--pen); font: 700 13px var(--cat); pointer-events: none; }
+.knot[data-on] .knotNum { fill: #fff; }
+.legend { display: flex; flex-wrap: wrap; gap: .3rem 1.4rem; margin: .6rem 0 0; padding: 0; list-style: none; color: var(--pen-2); font: 500 .78rem/1.4 var(--cat); }
+.legend li { display: flex; align-items: center; gap: .5rem; }
+.legend li::before { content: ""; width: 1.6rem; height: 0; border-top: 3.2px solid var(--c-taste); border-radius: 2px; }
+.legend li[data-lane="work"]::before { border-top-color: var(--c-work); }
+.mapReading { display: grid; gap: .35rem; }
+.mapKick { margin: 0; font: 600 .66rem/1.4 var(--cat); letter-spacing: .12em; text-transform: uppercase; color: var(--c-taste); }
+.mapKick[data-lane="taste"] { color: var(--teal-deep); }
+.mapKick[data-lane="work"] { color: var(--c-work); }
+.mapWork { margin: 0; color: var(--pen); font: 500 1.2rem/1.3 var(--read); }
+.mapAuthors { margin: 0; color: var(--pen-3); font: 500 .8rem/1.4 var(--cat); }
+
+/* ---------- five qualities of sound ---------------------------------------------- */
+.trace { --ink: var(--pen); }
+.traceBase { fill: none; stroke: var(--grey); stroke-width: 1.4; }
+.traceLine { fill: none; stroke: var(--ink); stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+.trace[data-quality="M"] .traceLine { stroke: var(--blue); }
+.trace[data-quality="S"] .traceLine { stroke: var(--violet); }
+.trace[data-quality="S"] .traceLine[data-strand="1"] { stroke: var(--plum); stroke-width: 2.6; }
+.trace[data-quality="S"] .traceLine[data-strand="2"] { stroke: var(--teal-deep); stroke-width: 2.2; }
+.trace[data-quality="I"] .traceLine { stroke: var(--red); stroke-width: 4.2; stroke-linejoin: miter; }
+.traceHalo { fill: none; stroke: var(--blue); stroke-width: 18; stroke-linecap: round; opacity: .13; }
+.traceFill { fill: none; stroke: var(--red); stroke-width: 3; opacity: .34; stroke-linecap: round; }
+.beat path { fill: none; stroke: var(--pen); stroke-width: 4; stroke-linecap: round; }
+.beat circle { fill: var(--gold-deep); }
+.beatHat path { fill: none; stroke: var(--pen-3); stroke-width: 3; stroke-linecap: round; }
+.trace[data-quality="U"] .beat path { stroke: var(--green); stroke-width: 3.6; }
+.trace[data-quality="U"] .traceLine { stroke: var(--green); }
+.trace[data-quality="C"] .beat path { stroke: var(--gold-deep); }
+.trace[data-mini] .traceLine, .trace[data-mini] .beat path, .trace[data-mini] .beatHat path { vector-effect: non-scaling-stroke; stroke-width: 1.6; }
+.trace[data-mini] .traceHalo, .trace[data-mini] .traceFill { display: none; }
+.trace[data-mini] .beat circle { display: none; }
+.traceIn { animation: swap-in 420ms ease both; }
+.playhead { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; }
+.sketchBar { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; margin-top: .7rem; }
+.play { display: inline-flex; align-items: center; gap: .6rem; min-height: 44px; padding: .5rem 1.1rem; border: 1.8px solid var(--pen); border-radius: 3px 10px 3px 9px; background: #fff; color: var(--pen); font: 600 .82rem/1.2 var(--cat); letter-spacing: .02em; cursor: pointer; }
+.play:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.play[aria-pressed="true"] { background: var(--pen); color: #fff; }
+.playMark { width: 0; height: 0; border-left: .62rem solid currentColor; border-top: .4rem solid transparent; border-bottom: .4rem solid transparent; }
+.play[aria-pressed="true"] .playMark { width: .62rem; height: .62rem; border: 0; background: currentColor; }
+.playState { color: var(--pen-3); font: italic 400 .84rem/1.4 var(--read); }
+.qChoice { display: inline-flex; align-items: center; gap: .55rem; }
+.qChoice b { font: 700 .95rem/1 var(--read); }
+.mini { flex: none; width: 3.9rem; height: 1.3rem; }
+.facets { margin: 0; padding: 0; list-style: none; display: grid; gap: .9rem; }
+.facets li { padding-left: .9rem; border-left: 2px solid var(--hair); color: var(--pen-3); font: 400 .98rem/1.55 var(--read); transition: color 300ms ease, border-color 300ms ease; }
+.facets li[data-on] { border-left: 3px solid var(--accent); color: var(--pen); }
+.facets b { display: block; margin-bottom: .1rem; color: var(--pen-2); font: 700 .8rem/1.4 var(--cat); letter-spacing: .06em; text-transform: uppercase; }
+.facets li[data-on] b { color: var(--accent); }
+
+/* ---------- two ways of measuring ------------------------------------------------ */
+.instrument { --mode: var(--gold-deep); }
+.instrument[data-mode="excerpts"] { --mode: var(--teal-deep); }
+.cardBox { fill: none; stroke: var(--mode); stroke-width: 2.6; }
+.cardWord { fill: var(--pen); font: italic 400 24px var(--read); }
+.cardWave { fill: none; stroke: var(--pen); stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; }
+.cardPad { fill: none; stroke: var(--pen); stroke-width: 2.6; }
+.flow path { fill: none; stroke: var(--pen-2); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.block { shape-rendering: auto; }
+.blockFill { fill: var(--mode); opacity: .16; }
+.blockBox { fill: none; stroke: var(--mode); stroke-width: 2.6; }
+.blockLetter { fill: var(--pen); font: 700 20px var(--read); }
+.baselineMark { fill: none; stroke: var(--hair); stroke-width: 1.4; }
+.models { margin: 0; padding: 0; list-style: none; display: grid; gap: 1.1rem; }
+.models li { display: grid; gap: .25rem; padding-left: .9rem; border-left: 2px solid var(--hair); color: var(--pen-3); transition: color 300ms ease, border-color 300ms ease; }
+.models li[data-on] { border-left: 3px solid var(--accent); color: var(--pen); }
+.instrument[data-mode="names"] .models li[data-on] { border-left-color: var(--gold-deep); }
+.modelHead { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: .1rem .6rem; }
+.modelHead b { color: var(--pen-2); font: 400 1.6rem/1 var(--read); letter-spacing: -.03em; }
+.modelHead span { color: var(--pen); font: 500 1.08rem/1.35 var(--read); }
+.modelSource { margin: 0; color: var(--pen-3); font: 500 .74rem/1.45 var(--cat); letter-spacing: .02em; }
+.modelBody, .modelNote { margin: .2rem 0 0; font: 400 .98rem/1.55 var(--read); }
+.modelBody { color: inherit; }
+.modelNote { color: var(--pen-2); font-style: italic; }
+.models li:not([data-on]) .modelNote { color: var(--pen-3); }
+
+/* ---------- five levers, one rope ------------------------------------------------- */
+.strandHalo { fill: none; stroke: #fff; stroke-width: 8; stroke-linecap: round; }
+.strandLine { fill: none; stroke: var(--ink); stroke-width: 4.6; stroke-linecap: round; }
+.strand { transition: opacity 300ms ease; }
+.levers .strand:not([data-on]) { opacity: .34; }
+.strandLabel { fill: var(--pen-3); font: 500 15px var(--read); transition: fill 300ms ease; }
+.strandLabel[data-on] { fill: var(--ink); font-weight: 700; }
+.tie { fill: none; stroke: var(--pen-2); stroke-width: 1.8; stroke-linecap: round; }
+.leverList { margin: 0; padding: 0; list-style: none; display: grid; gap: .9rem; }
+.leverList li { padding-left: .9rem; border-left: 2px solid var(--hair); color: var(--pen-3); font: 400 .98rem/1.55 var(--read); transition: color 300ms ease, border-color 300ms ease; }
+.leverList li[data-on] { border-left: 3px solid var(--ink); color: var(--pen); }
+.leverHead { margin: 0 0 .15rem; display: flex; align-items: center; gap: .5rem; color: var(--pen-2); }
+.leverHead b { font: 700 .8rem/1.4 var(--cat); letter-spacing: .06em; text-transform: uppercase; }
+.leverList li[data-on] .leverHead b { color: var(--inkText); }
+.leverIcon { flex: none; width: 1.3rem; height: 1.3rem; }
+.leverBody { margin: 0; }
+
+/* ---------- who likes it, or what it is for ------------------------------------------ */
+.noteHead { fill: none; stroke: var(--pen); stroke-width: 3; }
+.noteFill { fill: var(--pen); opacity: .82; }
+.noteStem { fill: none; stroke: var(--pen); stroke-width: 3; stroke-linecap: round; }
+.arrowInk path { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.flip[data-ask="for"] .arrowInk path { stroke: var(--gold-deep); }
+.bubble { fill: none; stroke: var(--pen); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.miniNote { fill: var(--pen); }
+.pairs { margin: 0; padding: 0; list-style: none; display: grid; gap: 1.1rem; }
+.pairs li { padding-left: .9rem; border-left: 3px solid var(--gold); }
+.pairKick { margin: 0; color: var(--pen-3); font: 600 .66rem/1.4 var(--cat); letter-spacing: .1em; text-transform: uppercase; }
+.pairTitle { margin: .1rem 0 .25rem; color: var(--pen); font: 500 1.2rem/1.3 var(--read); }
+.pairBody { margin: 0; color: var(--pen-2); font: 400 .98rem/1.55 var(--read); }
+
+/* ---------- how a taste gets built ------------------------------------------------------ */
+.roadBed { fill: none; stroke: var(--gold); stroke-width: 18; stroke-linecap: round; stroke-linejoin: round; opacity: .2; }
+.roadLine { fill: none; stroke: var(--pen); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+.roadFar { fill: none; stroke: var(--pen-3); stroke-width: 2.6; stroke-dasharray: 4 9; stroke-linecap: round; opacity: .6; }
+.boundary { fill: none; stroke: var(--c-work); stroke-width: 2.4; stroke-dasharray: 2 7; stroke-linecap: round; }
+.dimension { fill: none; stroke: var(--pen-3); stroke-width: 1.8; stroke-linecap: round; }
+.stop { cursor: pointer; }
+.stopDot { fill: #fff; stroke: var(--pen); stroke-width: 2.6; }
+.stop[data-on] .stopDot { fill: var(--accent); stroke: var(--accent); }
+.stopRing { fill: none; stroke: var(--accent); stroke-width: 2.4; }
+.stopNum { fill: var(--pen); font: 700 14px var(--cat); pointer-events: none; }
+.stop[data-on] .stopNum { fill: #fff; }
+.roadTitle { margin: 0; color: var(--pen); font: 500 1.25rem/1.3 var(--read); }
+.roadBlurb { margin: 0; color: var(--pen-2); font: 400 .98rem/1.55 var(--read); }
+.stepList { margin: 0; padding: 0; list-style: none; counter-reset: step; display: grid; gap: .6rem; }
+.stepList li { counter-increment: step; display: flex; gap: .7rem; padding-left: .9rem; border-left: 2px solid var(--hair); color: var(--pen-3); font: 400 1rem/1.5 var(--read); transition: color 300ms ease, border-color 300ms ease; }
+.stepList li::before { content: counter(step); flex: none; color: var(--pen-3); font: 700 .8rem/1.9 var(--cat); }
+.stepList li[data-on] { border-left: 3px solid var(--accent); color: var(--pen); }
+.stepList li[data-on]::before { color: var(--accent); }
+
+/* ---------- when the listening happens at work -------------------------------------------- */
+.room { fill: none; stroke: var(--pen-3); stroke-width: 2.4; }
+.desk { fill: none; stroke: var(--pen-2); stroke-width: 2.4; }
+.laptop { fill: none; stroke: var(--pen-3); stroke-width: 2; }
+.speaker { fill: none; stroke: var(--pen); stroke-width: 2.6; }
+.speakerCone { fill: none; stroke: var(--pen); stroke-width: 2.6; }
+.sound { fill: none; stroke: var(--gold-deep); stroke-width: 2.4; stroke-dasharray: 4 6; stroke-linecap: round; }
+.phones { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; }
+.pad { fill: var(--accent); stroke: none; }
+.dial { fill: #fff; stroke: var(--accent); stroke-width: 2.4; }
+.dialTick { fill: none; stroke: var(--accent); stroke-width: 2.6; stroke-linecap: round; }
+.claim { fill: none; stroke: var(--c-work); stroke-width: 2.4; stroke-dasharray: 3 7; stroke-linecap: round; }
+.studies { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem clamp(1.2rem, 3vw, 2.6rem); margin: clamp(2rem, 4vw, 3rem) 0 0; padding: 0; list-style: none; }
+.studies li { padding-top: .9rem; border-top: 2.5px solid var(--c-work); }
+.studyKick { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: .1rem .7rem; }
+.studyKick b { color: var(--pen); font: 400 1.7rem/1 var(--read); letter-spacing: -.03em; }
+.studyKick span { color: var(--c-work); font: 600 .66rem/1.4 var(--cat); letter-spacing: .12em; text-transform: uppercase; }
+.studyAuthors { margin: .4rem 0 0; color: var(--pen-2); font: 500 .86rem/1.4 var(--cat); }
+.studyWork { margin: .25rem 0 0; color: var(--pen); font: italic 400 1rem/1.4 var(--read); }
+.studyBody { margin: .5rem 0 0; color: var(--pen-2); font: 400 .98rem/1.55 var(--read); }
+
+/* ---------- Person–Music Fit: two pieces (this page's own frame) ---------------------------- */
+.pieceFillA { fill: var(--c-taste); opacity: .14; }
+.pieceFillB { fill: var(--c-work); opacity: .14; }
+.pieceA .pieceInk { fill: none; stroke: var(--c-taste); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.pieceB .pieceInk { fill: none; stroke: var(--c-work); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.pieceTitle { fill: var(--pen); font: 500 19px var(--read); }
+.pieceA, .pieceB { transition: opacity 420ms ease, transform 520ms ease; }
+.pieceA:not([data-shown]), .pieceB:not([data-shown]) { opacity: .16; }
+.fitArc { fill: none; stroke: var(--gold-deep); stroke-width: 2.4; stroke-dasharray: 5 7; stroke-linecap: round; }
+.sides { margin: 0; padding: 0; list-style: none; display: grid; gap: 1.1rem; }
+.sides li { padding-left: .9rem; border-left: 2px solid var(--hair); color: var(--pen-3); transition: color 300ms ease, border-color 300ms ease; }
+.sides li[data-on][data-side="person"] { border-left: 3px solid var(--c-taste); color: var(--pen); }
+.sides li[data-on][data-side="situation"] { border-left: 3px solid var(--c-work); color: var(--pen); }
+.sideHead { margin: 0 0 .2rem; display: flex; align-items: center; gap: .5rem; color: var(--pen-2); }
+.sideHead b { font: 700 .82rem/1.4 var(--cat); letter-spacing: .06em; text-transform: uppercase; }
+.sides li[data-on][data-side="person"] .sideHead b { color: var(--teal-deep); }
+.sides li[data-on][data-side="situation"] .sideHead b { color: var(--c-work); }
+.sideBody { margin: 0; font: 400 .98rem/1.55 var(--read); }
+.chips { display: flex; flex-wrap: wrap; gap: .3rem .5rem; margin: .6rem 0 0; padding: 0; list-style: none; }
+.chips li { padding: .2rem .65rem; border: 1.5px solid currentColor; border-left-width: 1.5px; border-radius: 3px 9px 3px 8px; color: var(--pen-2); font: 500 .74rem/1.4 var(--cat); letter-spacing: .03em; }
+.sides li:not([data-on]) .chips li { color: var(--pen-3); }
+
+.trailWrap { margin-top: clamp(3.5rem, 7vw, 6rem); padding-top: clamp(1.6rem, 3vw, 2.4rem); border-top: 1px solid var(--hair); }
+
+/* ---------- opening ---------------------------------------------------------- */
+.opening { width: min(1440px, 100%); margin: 0 auto; padding: clamp(1.4rem, 4vw, 3rem) var(--folio-gutter) 0; display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); grid-template-areas: "head side" "hero hero" "glance glance"; gap: 1rem clamp(1.5rem, 4vw, 3.5rem); }
+.openingHead { grid-area: head; padding-top: clamp(.6rem, 2.4vw, 2rem); min-width: 0; }
+:global(.acl) .title { margin: 1.2rem 0 0; font: 400 clamp(2.2rem, 5.2vw, 5.4rem)/.94 var(--read); letter-spacing: -.055em; }
+:global(.acl) .title em { color: var(--accent); letter-spacing: -.05em; }
+.openingSide { grid-area: side; align-self: end; padding-bottom: .6rem; }
+.hook { max-width: 32ch; margin: 0; color: var(--pen); font: italic 400 clamp(1.25rem, 1.9vw, 1.55rem)/1.3 var(--read); letter-spacing: -.015em; }
+.lede { max-width: 44ch; margin: 1rem 0 0; color: var(--pen-2); font: 400 1.03rem/1.62 var(--read); }
+.openingMargin { margin-top: 1rem; }
+.hero { grid-area: hero; position: relative; margin: clamp(.4rem, 2vw, 1.4rem) calc(-1 * var(--folio-gutter)) 0; }
+.hero img { display: block; width: 100%; height: auto; mix-blend-mode: multiply; }
+.heroKey { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 1.6rem; margin: .6rem 0 0; padding: 0 var(--folio-gutter); list-style: none; }
+.heroKey li { padding-top: .5rem; border-top: 3px solid var(--hue, var(--grey)); color: var(--pen-2); font: 400 .9rem/1.45 var(--read); }
+.heroKey b { display: block; color: var(--hue, var(--pen-2)); font: 600 .64rem/1.5 var(--cat); letter-spacing: .12em; text-transform: uppercase; }
+.heroCaption { max-width: 66ch; margin: 1rem 0 0; padding-inline: var(--folio-gutter); color: var(--pen-3); font: 400 .74rem/1.5 var(--cat); }
+.glance { grid-area: glance; display: grid; gap: 1rem; margin-top: .8rem; }
+.identity { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem 1.6rem; margin: 0; padding: .9rem 0 0; border-top: 1px solid var(--hair); }
+.identity div { display: grid; gap: .1rem; }
+.identity dt { color: var(--pen-3); font: 600 .62rem/1.4 var(--cat); letter-spacing: .1em; text-transform: uppercase; }
+.identity dd { margin: 0; color: var(--pen-2); font: 400 .95rem/1.45 var(--read); }
+.facts { display: flex; flex-wrap: wrap; gap: .35rem 1.1rem; margin: 0; padding: 0; list-style: none; color: var(--pen-3); font: 500 .72rem/1.4 var(--cat); letter-spacing: .05em; text-transform: uppercase; }
+.limits { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 5rem); margin-top: clamp(2rem, 5vw, 4rem); align-items: start; }
+
+/* on a wide screen the figure stays in view while the longer panel beside it is read */
+@media (min-width: 900px) {
+  .mapFigure, .qualFigure, .instrumentFigure, .leversFigure, .flipFigure, .roadFigure, .officeFigure, .fitFigure { position: sticky; top: 4.4rem; }
+}
+
+/* ---------- narrow screens: recompose, pin the figure, do not shrink text -- */
+@media (max-width: 899px) {
+  .opening { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "side" "hero" "glance"; }
+  .openingSide { align-self: start; }
+  .heroKey { grid-template-columns: minmax(0, 1fr); gap: .5rem; }
+  .identity { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .head, .limits { grid-template-columns: minmax(0, 1fr); }
+  .questions, .studies { grid-template-columns: minmax(0, 1fr); }
+  .map, .qualities, .instrument, .levers, .flip, .road, .office, .fit { display: block; }
+  .mapFigure, .qualFigure, .instrumentFigure, .leversFigure, .flipFigure, .roadFigure, .officeFigure, .fitFigure { position: sticky; top: 3.1rem; z-index: 3; padding: .4rem 0 .7rem; margin-bottom: .8rem; box-shadow: 0 12px 14px -14px rgba(23, 23, 26, .28); }
+  .mapFigure .diagram, .instrumentFigure .diagram, .leversFigure .diagram, .flipFigure .diagram, .roadFigure .diagram, .officeFigure .diagram, .fitFigure .diagram { max-height: 13rem; }
+  .qualFigure .diagram { max-height: 9.5rem; }
+  .mapPanel, .qualPanel, .instrumentPanel, .leversPanel, .flipPanel, .roadPanel, .officePanel, .fitPanel { margin-top: 1.1rem; }
+  .tag { font-size: 21px; }
+  .diagHead { font-size: 26px; }
+  .diagTag { font-size: 21px; }
+  .diagSub { font-size: 20px; }
+  .bridgeText { font-size: 19px; }
+  .strandLabel { font-size: 21px; }
+  .cardWord { font-size: 30px; }
+  .pieceTitle { font-size: 24px; }
+  .blockLetter { font-size: 24px; }
+  .knotNum { font-size: 15px; }
+  .stopNum { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .swapIn, .traceIn { animation: none; }
+  .facets li, .models li, .leverList li, .sides li, .stepList li, .strand, .strandLabel, .pieceA, .pieceB, .knotDot { transition: none; }
+}

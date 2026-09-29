@@ -17,6 +17,7 @@ export function Choices<T extends string>({
   onChange,
   className,
   tone,
+  compact,
 }: {
   label: string;
   options: ChoiceOption<T>[];
@@ -24,9 +25,11 @@ export function Choices<T extends string>({
   onChange: (value: T) => void;
   className?: string;
   tone?: string;
+  /** short numbered choices: on a narrow screen only the numeral is drawn, and each hint stays in the button's accessible name */
+  compact?: boolean;
 }) {
   return (
-    <div className={[s.choices, className].filter(Boolean).join(" ")} role="group" aria-label={label} style={tone ? ({ "--choice": tone } as React.CSSProperties) : undefined}>
+    <div className={[s.choices, className].filter(Boolean).join(" ")} role="group" aria-label={label} data-compact={compact || undefined} style={tone ? ({ "--choice": tone } as React.CSSProperties) : undefined}>
       {options.map((o) => {
         const on = o.value === value;
         return (

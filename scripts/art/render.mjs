@@ -4,7 +4,7 @@
  *   node scripts/art/render.mjs <scene-name> [more scenes…] [--preview]
  *
  * Each scene lives in scripts/art/scenes/<name>.js and exports a default
- * object: { width, height, scale?, seed?, crop?: [x, y, w, h], outputs: [{ file, width, quality? }],
+ * object: { width, height, scale?, seed?, crop?: [x, y, w, h], outputs: [{ file, width, quality?, rotate?, flop?, stack? }],
  * draw(hand, PIGMENT) }. The scene is drawn by pencil.js inside headless
  * Edge/Chromium and written as WebP under public/. --preview also writes a PNG
  * beside the scratch output for review. This is an authoring tool: its
@@ -70,7 +70,23 @@ for (const name of names) {
   for (const out of result.outputs) {
     const target = path.join(root, out.file);
     fs.mkdirSync(path.dirname(target), { recursive: true });
-    await sharp(png).resize({ width: out.width }).webp({ quality: out.quality ?? 84, effort: 6 }).toFile(target);
+    // `rotate` (degrees) recomposes a wide field for a narrow screen: a panorama read left-to-right becomes a vertical stack.
+    let pipeline = sharp(png);
+    // `stack` recomposes a wide field for a narrow screen without turning it: each crop (in drawing units) is cut out, and the crops are laid one under another.
+    if (out.stack) {
+      const sc = result.scale;
+      const tiles = await Promise.all(out.stack.map(([x, y, w, h]) => sharp(png).extract({ left: Math.round(x * sc), top: Math.round(y * sc), width: Math.round(w * sc), height: Math.round(h * sc) }).png().toBuffer()));
+      const meta = await sharp(tiles[0]).metadata();
+      const composed = await sharp({ create: { width: meta.width, height: meta.height * tiles.length, channels: 3, background: "#ffffff" } })
+        .composite(tiles.map((input, i) => ({ input, top: i * meta.height, left: 0 })))
+        .png()
+        .toBuffer();
+      pipeline = sharp(composed);
+    }
+    if (out.rotate) pipeline = sharp(await pipeline.rotate(out.rotate).png().toBuffer());
+    // `flop` mirrors left-to-right, so a turned panorama keeps actor A on the left.
+    if (out.flop) pipeline = sharp(await pipeline.flop().png().toBuffer());
+    await pipeline.resize({ width: out.width }).webp({ quality: out.quality ?? 84, effort: 6 }).toFile(target);
     const kb = Math.round(fs.statSync(target).size / 1024);
     console.log(`${name} → ${out.file} (${out.width}px, ${kb} KB)`);
   }

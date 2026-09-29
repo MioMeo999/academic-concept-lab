@@ -263,6 +263,10 @@
 .choice[aria-pressed="true"]::before { opacity: 1; }
 .choice[aria-pressed="true"] .choiceDot { border-color: var(--choice); background: var(--choice); }
 @media (prefers-reduced-motion: reduce) { .choice, .choice::before, .choiceDot { transition: none; } }
+@media (max-width: 899px) {
+  .choices[data-compact] .choice { padding-inline: .8rem; }
+  .choices[data-compact] .choiceHint { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
 
 .neighbourhood {
   width: var(--folio-w);

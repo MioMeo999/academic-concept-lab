@@ -441,18 +441,18 @@ export function createHand(W, H, { seed = 1, scale = 2, tooth = 1 } = {}) {
     },
 
     /** Lift pigment in a region, leaving residue — erasure is revision. */
-    erase(poly, { strength = 0.7, angle = 20, seed: s = 3 } = {}) {
+    erase(poly, { strength = 0.7, angle = 20, seed: s = 3, count = 220, len = [10, 40], width = [3, 8] } = {}) {
       const L = newLayer();
       const r = rng(s);
       const test = inside(poly);
       const [x0, y0, x1, y1] = bounds(poly);
       const th = (angle * Math.PI) / 180, ux = Math.cos(th), uy = Math.sin(th);
-      for (let k = 0; k < 220; k++) {
+      for (let k = 0; k < count; k++) {
         const x = lerp(x0, x1, r()), y = lerp(y0, y1, r());
         if (!test(x, y)) continue;
-        const l = 10 + r() * 30;
+        const l = len[0] + r() * (len[1] - len[0]);
         L.ctx.strokeStyle = `rgba(0,0,0,${strength * (0.4 + r() * 0.6)})`;
-        L.ctx.lineWidth = 3 + r() * 5;
+        L.ctx.lineWidth = width[0] + r() * (width[1] - width[0]);
         L.ctx.beginPath(); L.ctx.moveTo(x, y); L.ctx.lineTo(x + ux * l, y + uy * l); L.ctx.stroke();
       }
       sctx.save();

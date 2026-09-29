@@ -1,0 +1,223 @@
+/* Auditory Scene Analysis · one mixture, several streams
+   One plane carries the page: time across, pitch up, a dash for every tone.
+   Teal is the low stream and the first source; red is the high stream and the
+   second; violet is the third; ochre is the contour a listener draws. Colour
+   never works alone — the low and the high sit at different heights, every
+   contour is a different line, and every setting has its words. */
+
+.page {
+  --accent: var(--teal-deep);
+  --lo: var(--teal);
+  --hi: var(--red);
+  --third: var(--violet);
+  --contour: var(--gold-deep);
+}
+.band { width: var(--folio-w); margin-inline: auto; }
+.band .h2 { margin: 0; font: 400 clamp(2.3rem, 5vw, 4.4rem)/.97 var(--read); letter-spacing: -.055em; }
+.band .h2 em { color: var(--accent); }
+.band .h3 { margin: .3rem 0 0; font: 400 clamp(1.7rem, 3.2vw, 2.7rem)/1.02 var(--read); letter-spacing: -.045em; }
+.band .h3 em { color: var(--accent); }
+.head { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: .6rem clamp(1.5rem, 4vw, 4rem); align-items: end; margin-bottom: clamp(2rem, 4.5vw, 3.4rem); }
+.head > :first-child { grid-column: 1 / -1; margin-bottom: 0; }
+.headLede { margin: 0; color: var(--pen-2); font: 400 1.03rem/1.6 var(--read); }
+.headLede p { margin: 0 0 .8rem; }
+.headLede p:last-child { margin-bottom: 0; }
+.smallHead { margin: 0 0 .7rem; color: var(--pen-3); font: 600 .66rem/1.4 var(--cat); letter-spacing: .12em; text-transform: uppercase; }
+.subhead { margin: clamp(3.5rem, 7vw, 6rem) 0 clamp(1.4rem, 3vw, 2.2rem); max-width: 46rem; }
+.subLede { margin: .9rem 0 0; color: var(--pen-2); font: 400 1.03rem/1.6 var(--read); max-width: 56ch; }
+.note { margin: 1rem 0 0; max-width: 68ch; color: var(--pen-3); font: 400 .8rem/1.55 var(--cat); }
+.figNote { margin: .8rem 0 0; color: var(--pen-3); font: 400 .76rem/1.5 var(--cat); max-width: 62ch; }
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+
+/* ---------- the plane -------------------------------------------------------- */
+.planeSvg { display: block; width: 100%; height: auto; overflow: visible; }
+.frame { fill: none; stroke: var(--pen-3); stroke-width: 2.2; stroke-linecap: round; }
+.frame path { fill: none; stroke: var(--pen-3); stroke-width: 2.2; stroke-linecap: round; }
+.tick { fill: none; stroke: var(--pen-3); stroke-width: 1.6; stroke-linecap: round; }
+.axisWord { fill: var(--pen-3); font: 400 17px var(--script); }
+.guide { fill: none; stroke: var(--grey); stroke-width: 1.4; stroke-dasharray: 3 8; }
+.dash, .dashUnder { fill: none; stroke: var(--pen-2); stroke-linecap: round; }
+.dash { stroke-width: 8; transition: stroke-width 160ms ease; }
+.dashUnder { stroke-width: 5; opacity: .45; }
+.dashGroup[data-band="lo"] path { stroke: var(--lo); }
+.dashGroup[data-band="hi"] path { stroke: var(--hi); }
+.dashGroup[data-now] .dash { stroke-width: 12; }
+.contourOne, .contourTwo { fill: none; stroke-linecap: round; stroke-linejoin: round; transition: opacity 360ms ease, stroke-width 360ms ease; }
+.contourOne { stroke: var(--pen-2); stroke-width: 1.8; stroke-dasharray: 3 8; opacity: .4; }
+.contourTwo { stroke: var(--contour); stroke-width: 1.8; stroke-dasharray: 3 8; opacity: .4; }
+.contourOne[data-emph], .contourTwo[data-emph] { stroke-dasharray: none; stroke-width: 3.2; opacity: .95; }
+.playhead { fill: none; stroke: var(--pen); stroke-width: 2; opacity: .6; stroke-linecap: round; }
+
+/* ---------- controls shared by the figures ---------------------------------- */
+.player { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; }
+.play, .stopBtn { min-height: 44px; padding: .5rem 1.15rem; border: 1.8px solid var(--pen); border-radius: 4px 10px 4px 9px; background: #fff; color: var(--pen); font: 600 .84rem/1.2 var(--cat); letter-spacing: .02em; cursor: pointer; transition: background 160ms ease, color 160ms ease; }
+.play:hover:not(:disabled) { background: var(--pen); color: #fff; }
+.stopBtn { border-color: var(--grey); color: var(--pen-2); font-weight: 500; }
+.stopBtn:disabled { color: var(--pen-3); cursor: default; }
+.playState { color: var(--pen-3); font: 500 .74rem/1.3 var(--cat); letter-spacing: .06em; text-transform: uppercase; }
+.reading { margin: 0; max-width: 48ch; color: var(--pen); font: 400 1.03rem/1.58 var(--read); }
+.meta { margin: 0; max-width: 54ch; color: var(--pen-3); font: 400 .74rem/1.55 var(--cat); }
+.meta b { color: var(--pen-2); font-weight: 600; }
+.page button[aria-pressed] { padding-block: .72rem; }
+.settings { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1.2rem clamp(1rem, 2.4vw, 2.2rem); margin: clamp(1.6rem, 3vw, 2.4rem) 0 0; padding: 0; list-style: none; grid-column: 1 / -1; }
+.settings li { display: grid; gap: .3rem; padding-top: .8rem; border-top: 1px solid var(--hair); }
+.settings li[data-on] { border-top: 2.5px solid var(--accent); }
+.settings b { font: 600 .68rem/1.4 var(--cat); letter-spacing: .1em; text-transform: uppercase; color: var(--pen-2); }
+.settings li[data-on] b { color: var(--accent); }
+.settings span { color: var(--pen-2); font: 400 .95rem/1.55 var(--read); }
+.settings em { color: var(--pen-3); font: 400 .72rem/1.5 var(--cat); font-style: normal; }
+.chips { display: flex; flex-wrap: wrap; gap: .4rem .5rem; margin: .8rem 0 0; padding: 0; list-style: none; }
+.chips li { padding: .28rem .72rem; border: 1.5px solid var(--grey); border-radius: 3px 8px 3px 7px; color: var(--pen-2); font: 500 .8rem/1.25 var(--cat); }
+
+/* two-column figures: the plane, and what the reader sets */
+.splitter, .bistable, .mixture, .srcStream, .twoQ, .pull, .fuse, .oldNew, .music { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 0 clamp(1.5rem, 4vw, 4rem); align-items: start; }
+.splitterFigure, .bistableFigure, .mixtureFigure, .srcStreamFigure, .twoQFigure, .pullFigure, .fuseFigure, .oldNewFigure, .musicFigure { margin: 0; min-width: 0; background: #fff; }
+.splitterPanel, .bistablePanel, .mixturePanel, .srcStreamPanel, .twoQPanel, .pullPanel, .fusePanel, .oldNewPanel, .musicPanel { display: grid; gap: 1.1rem; min-width: 0; align-content: start; }
+
+/* ---------- 01 · states of one percept --------------------------------------- */
+.states { margin: 0; padding: .9rem 0 0; border-top: 1px solid var(--hair); list-style: none; display: grid; gap: .7rem; }
+.states li { padding-left: .9rem; border-left: 2px solid var(--hair); color: var(--pen-3); font: 400 .96rem/1.55 var(--read); transition: color 300ms ease, border-color 300ms ease; }
+.states li[data-on] { border-left: 3px solid var(--hue, var(--accent)); color: var(--pen); }
+.states b { display: block; margin-bottom: .1rem; color: var(--pen-2); font: 600 .64rem/1.5 var(--cat); letter-spacing: .1em; }
+
+/* ---------- 02 · one sum -------------------------------------------------------- */
+.srcTrace { transition: transform 620ms cubic-bezier(.45, .05, .25, 1), opacity 460ms ease; }
+.srcTrace path { fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+.srcTrace[data-k="0"] path { stroke: var(--lo); }
+.srcTrace[data-k="1"] path { stroke: var(--hi); }
+.srcTrace[data-k="2"] path { stroke: var(--third); }
+.srcTrace:not([data-on]) { opacity: .1; }
+.mixture[data-view="ear"] .srcTrace { opacity: 0; }
+.mixTrace { fill: none; stroke: var(--pen); stroke-width: 4.4; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity 460ms ease; }
+.mixture[data-view="ear"] .mixTrace { opacity: 1; }
+.sources { margin: 0; padding: .9rem 0 0; border: 0; border-top: 1px solid var(--hair); display: flex; flex-wrap: wrap; gap: .5rem 1.2rem; }
+.sources legend { padding: 0; margin: 0 0 .5rem; color: var(--pen-3); font: 600 .66rem/1.4 var(--cat); letter-spacing: .12em; text-transform: uppercase; }
+.sources label { position: relative; display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; padding: 0 .2rem; color: var(--pen-3); font: 450 .98rem/1.3 var(--read); cursor: pointer; }
+.sources label[data-on] { color: var(--pen); }
+.sources input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.srcSwatch { width: 1.5rem; height: .7rem; border-radius: 2px 5px 2px 4px; border: 1.6px solid var(--grey); }
+.sources label[data-on] .srcSwatch { background: var(--sw); border-color: var(--sw); }
+.sources label[data-k="0"] { --sw: var(--lo); }
+.sources label[data-k="1"] { --sw: var(--hi); }
+.sources label[data-k="2"] { --sw: var(--third); }
+.sources input:focus-visible + .srcSwatch { outline: 2px solid var(--cobalt); outline-offset: 3px; }
+.layers { margin: 0; padding: .9rem 0 0; border-top: 1px solid var(--hair); list-style: none; display: grid; gap: .7rem; }
+.layers li { padding-left: .9rem; border-left: 2px solid var(--hair); color: var(--pen-3); font: 400 .95rem/1.55 var(--read); transition: color 300ms ease, border-color 300ms ease; }
+.layers li[data-on] { border-left: 3px solid var(--hue, var(--accent)); color: var(--pen); }
+.layers b { display: block; margin-bottom: .1rem; color: var(--pen-2); font: 600 .64rem/1.5 var(--cat); letter-spacing: .1em; }
+
+/* ---------- 02 · source or stream ------------------------------------------- */
+.colouredDash .dashGroup path { stroke: var(--lo); }
+.colouredDash[data-c="1"] .dashGroup path { stroke: var(--hi); }
+.kindsNote { margin: 0; color: var(--pen-3); font: 500 .8rem/1.4 var(--cat); }
+.twoCards { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.4rem, 3vw, 3rem); margin-top: clamp(1.6rem, 3vw, 2.4rem); }
+.twoCards article, .musicCards article { padding-top: .9rem; border-top: 1px solid var(--hair); }
+.twoCards article[data-on], .musicCards article[data-on] { border-top: 2.5px solid var(--hue, var(--accent)); }
+.twoCards p:last-child, .musicCards p:last-child { margin: 0; color: var(--pen-2); font: 400 .98rem/1.6 var(--read); }
+.cardKick { margin: 0 0 .35rem; color: var(--hue, var(--pen-3)); font: 600 .66rem/1.4 var(--cat); letter-spacing: .12em; text-transform: uppercase; }
+
+/* ---------- 03 · two questions ------------------------------------------------ */
+.across, .atOnce { fill: none; stroke-linecap: round; stroke-linejoin: round; transition: opacity 360ms ease; opacity: .25; }
+.across { stroke: var(--contour); stroke-width: 2.4; stroke-dasharray: 3 9; }
+.atOnce { stroke: var(--pen-2); stroke-width: 2.6; }
+.across[data-on] { stroke-dasharray: none; stroke-width: 3.4; opacity: .95; }
+.atOnce[data-on] { opacity: 1; }
+.questions { display: grid; gap: 1.2rem; }
+.questions article { padding-top: .9rem; border-top: 1px solid var(--hair); }
+.questions article[data-on] { border-top: 2.5px solid var(--accent); }
+.qText { margin: 0 0 .3rem; font: 450 1.18rem/1.35 var(--read); letter-spacing: -.015em; color: var(--pen-2); }
+.questions article[data-on] .qText { color: var(--pen); }
+.qEx { margin: 0; color: var(--pen-3); font: italic 400 .95rem/1.5 var(--read); }
+
+/* ---------- 03 · cues pull ----------------------------------------------------- */
+.pullTone { transition: transform 520ms cubic-bezier(.45, .05, .25, 1); }
+.join { fill: none; stroke: var(--contour); stroke-width: 3; stroke-linecap: round; }
+.join[data-ambiguous] { stroke-dasharray: 4 8; stroke-width: 2.2; opacity: .75; }
+.pullVerdict { margin: 0; padding-bottom: .8rem; border-bottom: 1px solid var(--hair); color: var(--pen); font: 400 1.15rem/1.4 var(--read); }
+.pullVerdict b { color: var(--accent); font-weight: 600; }
+.cue { min-width: 0; margin: 0; padding: .8rem 0 0; border: 0; border-top: 1px solid var(--hair); display: grid; gap: .5rem; }
+.cue legend { padding: 0; float: left; width: 100%; margin: 0 0 .1rem; color: var(--hue, var(--pen-3)); font: 600 .66rem/1.4 var(--cat); letter-spacing: .12em; text-transform: uppercase; }
+.cue legend + * { clear: both; }
+.cue p { margin: 0; color: var(--pen-2); font: 400 .92rem/1.5 var(--read); }
+.page .cueChoices { gap: .2rem .35rem; }
+.page .cueChoices button[aria-pressed] { padding-inline: .8rem; padding-block: .5rem; min-height: 44px; }
+
+/* ---------- 04 · fuse; old plus new ------------------------------------------- */
+.fuseQuestion { margin: 0; color: var(--pen); font: italic 400 clamp(1.15rem, 1.8vw, 1.4rem)/1.35 var(--read); letter-spacing: -.01em; }
+.component[data-target] .dash { stroke-width: 10; }
+.barFill { stroke: none; }
+.barEdge { fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.oldBars .barFill { fill: var(--lo); opacity: .5; }
+.oldBars .barEdge { stroke: var(--lo); }
+.oldBars, .enterBars, .mixBars, .residueBars { transition: opacity 420ms ease; }
+.enterBars, .mixBars, .residueBars { opacity: 0; }
+.enterBars .barFill { fill: var(--hi); opacity: .3; }
+.enterBars .barEdge { stroke: var(--hi); stroke-dasharray: 6 6; }
+.mixBars .barFill { fill: var(--pen-2); opacity: .42; }
+.mixBars .barEdge { stroke: var(--pen-2); }
+.residueBars .barFill { fill: var(--hi); opacity: .55; }
+.residueBars .barEdge { stroke: var(--hi); }
+.enterBars[data-on], .mixBars[data-on], .residueBars[data-on] { opacity: 1; }
+.oldNew[data-step="2"] .oldBars { opacity: 0; }
+
+/* ---------- 05 · where organisation comes from ---------------------------------- */
+.learned { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 4rem); align-items: center; }
+.learnedSvg { display: block; width: 100%; height: auto; overflow: visible; }
+.learnedStream { fill: none; stroke: var(--lo); stroke-width: 7; stroke-linecap: round; }
+.learnedLine { fill: none; stroke: var(--contour); stroke-width: 2.4; stroke-linecap: round; opacity: .8; }
+.learnedArrow { fill: none; stroke: var(--pen-2); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.learnedSpot { fill: none; stroke: var(--hi); stroke-width: 2.4; stroke-dasharray: 5 7; stroke-linecap: round; }
+.learnedLists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem; }
+.learnedLists ul { margin: 0; padding: 0 0 0 1.1rem; color: var(--pen-2); font: 400 .98rem/1.55 var(--read); }
+.learnedLists li { margin-bottom: .4rem; }
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem clamp(1.2rem, 3vw, 2.6rem); margin: 0; padding: 0; list-style: none; }
+.cards li { padding-top: .9rem; border-top: 2.5px solid var(--hue, var(--grey)); }
+.cards p:last-child { margin: 0; color: var(--pen-2); font: 400 .98rem/1.6 var(--read); }
+
+/* ---------- 06 · music --------------------------------------------------------- */
+.musicCards { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.2rem, 3vw, 2.6rem); margin-top: clamp(1.6rem, 3vw, 2.4rem); }
+
+/* ---------- 09 · lineage -------------------------------------------------------- */
+.lineage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(2rem, .35fr) minmax(0, 1.5fr); gap: 0; align-items: center; max-width: 68rem; }
+.lineageRoot, .lineageBranches li { padding: .9rem 1.1rem; border: 1.8px solid var(--hue, var(--pen-2)); border-radius: 3px 10px 3px 9px; }
+.lineageRoot p:last-child, .lineageBranches p:last-child { margin: 0; color: var(--pen-2); font: 400 .95rem/1.55 var(--read); }
+.lineageLinks { display: block; width: 100%; height: 100%; min-height: 15rem; overflow: visible; }
+.lineageLinks path { fill: none; stroke: var(--pen-3); stroke-width: 2; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.lineageBranches { display: grid; gap: .8rem; margin: 0; padding: 0; list-style: none; }
+.trailWrap { margin-top: clamp(3.5rem, 7vw, 6rem); padding-top: clamp(1.6rem, 3vw, 2.4rem); border-top: 1px solid var(--hair); }
+
+/* ---------- opening ------------------------------------------------------------- */
+.opening { width: min(1440px, 100%); margin: 0 auto; padding: clamp(1.4rem, 4vw, 3rem) var(--folio-gutter) 0; display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); grid-template-areas: "head side" "field field" "facts facts"; gap: 1rem clamp(1.5rem, 4vw, 3.5rem); }
+.openingHead { grid-area: head; padding-top: clamp(.6rem, 2.4vw, 2rem); min-width: 0; }
+:global(.acl) .title { margin: 1.2rem 0 0; font: 400 clamp(2.5rem, 6.1vw, 6.2rem)/.92 var(--read); letter-spacing: -.06em; }
+:global(.acl) .title em { color: var(--accent); letter-spacing: -.05em; }
+.openingSide { grid-area: side; align-self: end; padding-bottom: .6rem; }
+.hook { max-width: 32ch; margin: 0; color: var(--pen); font: italic 400 clamp(1.25rem, 1.9vw, 1.55rem)/1.3 var(--read); letter-spacing: -.015em; }
+.lede { max-width: 42ch; margin: 1rem 0 0; color: var(--pen-2); font: 400 1.03rem/1.62 var(--read); }
+.openingMargin { margin-top: 1rem; }
+.field { grid-area: field; position: relative; margin: clamp(.4rem, 2vw, 1.4rem) calc(-1 * var(--folio-gutter)) 0; }
+.field img { display: block; width: 100%; height: auto; mix-blend-mode: multiply; }
+.stages { display: grid; grid-template-columns: 34% 32% 34%; margin: .6rem 0 0; padding: 0 0 0 3%; list-style: none; }
+.stages li { max-width: 30ch; color: var(--pen-2); font: 400 .92rem/1.5 var(--read); }
+.stages b { display: block; color: var(--pen); font: 600 .64rem/1.5 var(--cat); letter-spacing: .12em; text-transform: uppercase; }
+.fieldCaption { max-width: 66ch; margin: 1rem 0 0; padding-inline: var(--folio-gutter); color: var(--pen-3); font: 400 .74rem/1.5 var(--cat); }
+.facts { grid-area: facts; display: flex; flex-wrap: wrap; gap: .35rem 1.1rem; margin: 1.1rem 0 0; padding: .9rem 0 0; border-top: 1px solid var(--hair); list-style: none; color: var(--pen-3); font: 500 .72rem/1.4 var(--cat); letter-spacing: .05em; text-transform: uppercase; }
+.limits { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 5rem); margin-top: clamp(2rem, 5vw, 4rem); align-items: start; }
+
+/* ---------- narrow screens: recompose, pin the figure, do not shrink text -- */
+@media (max-width: 899px) {
+  .opening { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "side" "field" "facts"; }
+  .openingSide { align-self: start; }
+  .stages { grid-template-columns: minmax(0, 1fr); gap: .5rem; padding: 0 var(--folio-gutter); }
+  .head, .limits, .learned, .twoCards, .cards, .musicCards { grid-template-columns: minmax(0, 1fr); }
+  .learnedLists { grid-template-columns: minmax(0, 1fr); }
+  .splitter, .bistable, .mixture, .srcStream, .twoQ, .pull, .fuse, .oldNew, .music { display: block; }
+  .splitterFigure, .bistableFigure, .mixtureFigure, .srcStreamFigure, .twoQFigure, .pullFigure, .fuseFigure, .oldNewFigure, .musicFigure { position: sticky; top: 3.1rem; z-index: 3; padding: .4rem 0 .7rem; margin-bottom: .8rem; box-shadow: 0 12px 14px -14px rgba(23, 23, 26, .28); }
+  .splitterFigure .planeSvg, .bistableFigure .planeSvg, .mixtureFigure .planeSvg, .srcStreamFigure .planeSvg, .twoQFigure .planeSvg, .pullFigure .planeSvg, .fuseFigure .planeSvg, .oldNewFigure .planeSvg, .musicFigure .planeSvg { max-height: 12.5rem; }
+  .splitterPanel, .bistablePanel, .mixturePanel, .srcStreamPanel, .twoQPanel, .pullPanel, .fusePanel, .oldNewPanel, .musicPanel { margin-top: 1.1rem; }
+  .lineage { grid-template-columns: minmax(0, 1fr); gap: .8rem; }
+  .lineageLinks { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dash, .contourOne, .contourTwo, .srcTrace, .mixTrace, .across, .atOnce, .pullTone, .oldBars, .enterBars, .mixBars, .residueBars, .play, .states li, .layers li { transition: none; }
+}

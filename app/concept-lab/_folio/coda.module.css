@@ -5,6 +5,7 @@
 .codaKicker { margin: 0 0 .8rem; color: var(--pen-3); font: 600 .66rem/1.4 var(--cat); letter-spacing: .12em; text-transform: uppercase; }
 :global(.acl) .codaHead h2 { margin: 0; font: 420 clamp(2rem, 3.8vw, 3.3rem)/1 var(--read); letter-spacing: -.045em; }
 .codaLede { max-width: 58ch; margin-top: 1rem; color: var(--pen-2); font: 400 1.04rem/1.6 var(--read); }
+.codaLede p + p { margin-top: .8rem; }
 
 /* ---------- sources ---------------------------------------------------- */
 .sources { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--hair); }
@@ -82,7 +83,8 @@
 .inside li { color: var(--pen); }
 :global(.acl) .outside h3, .outside li { color: var(--pen-3); }
 .outside li::before { content: "↦ "; color: var(--grey); }
-.edge svg { width: 100%; height: 100%; min-height: 12rem; overflow: visible; }
+.edge { position: relative; min-height: 8rem; }
+.edge svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .edge path { fill: none; stroke: var(--kind, var(--pen)); stroke-width: 1.6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 .boundaryNote { grid-column: 1 / -1; max-width: 62ch; margin: 1.6rem 0 0; color: var(--pen-3); font: 400 .92rem/1.55 var(--read); }
 
@@ -128,3 +130,13 @@
 @media (min-width: 761px) and (max-width: 1080px) {
   .evidenceBody { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* ---------- beside other lenses ------------------------------------------ */
+.beside { max-width: 62rem; margin-top: clamp(2.6rem, 5vw, 4rem); padding-top: 1.4rem; border-top: 1px solid var(--hair); }
+.besideKick { margin: 0 0 .5rem; color: var(--pen-3); font: 600 .66rem/1.4 var(--cat); letter-spacing: .12em; text-transform: uppercase; }
+.besideLede { margin: 0; max-width: 62ch; color: var(--pen-2); font: 400 1.02rem/1.6 var(--read); }
+.besideList { margin: 1.2rem 0 0; padding: 0; list-style: none; display: grid; gap: 1.1rem; }
+.besideRel { margin: 0 0 .15rem; color: var(--pen-3); font: 500 .8rem/1.4 var(--cat); }
+.besideList a { color: var(--pen); font: 500 1.15rem/1.3 var(--read); letter-spacing: -.01em; }
+.besideList a span { margin-right: .5rem; color: var(--kind-ink, var(--pen-3)); font: 600 .6rem/1 var(--cat); letter-spacing: .1em; text-transform: uppercase; }
+.besideBody { margin: .3rem 0 0; max-width: 62ch; color: var(--pen-2); font: 400 .95rem/1.55 var(--read); }

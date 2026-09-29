@@ -1,5 +1,8 @@
 import type { ReactNode } from "react";
-import type { EvidenceXray, Provenance, ProvenanceGlyph, Source } from "@/content/types";
+import Link from "next/link";
+import type { AnyRecord, EvidenceXray, Provenance, ProvenanceGlyph, RecordLink, Source } from "@/content/types";
+import { KIND, RECORDS, recordHref } from "@/content/records";
+import { getKnowledgeNeighbourhood } from "@/content/atlas";
 import { Rich } from "../_components/Sketch";
 import { Glyph, cx } from "./Folio";
 import s from "./coda.module.css";
@@ -52,13 +55,13 @@ export function ProvenanceLedger({ items, className }: { items: Provenance[]; cl
 }
 
 /** One study or source examined as design → tested → found → not tested. */
-export function EvidenceLedger({ items, className, glyph = "●" }: { items: EvidenceXray[]; className?: string; glyph?: ProvenanceGlyph }) {
+export function EvidenceLedger({ items, className, glyph = "●", start = 1 }: { items: EvidenceXray[]; className?: string; glyph?: ProvenanceGlyph; start?: number }) {
   return (
-    <ol className={cx(s.evidence, className)}>
+    <ol className={cx(s.evidence, className)} start={start}>
       {items.map((e, i) => (
         <li key={e.title + i} className={s.evidenceRow}>
           <header className={s.evidenceHead}>
-            <span className={s.evidenceNum} aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+            <span className={s.evidenceNum} aria-hidden="true">{String(start + i).padStart(2, "0")}</span>
             <div>
               <p className={s.evidenceLabel}><Glyph g={glyph} /> {e.label}</p>
               <h3>{e.title}</h3>
@@ -171,5 +174,36 @@ export function CodaHead({ kicker, title, children, id }: { kicker: string; titl
       <h2 id={id}>{title}</h2>
       {children && <div className={s.codaLede}>{children}</div>}
     </header>
+  );
+}
+
+/**
+ * The record's own caution about its neighbours, and any relation the shared
+ * relation ledger leaves out. The ledger at the foot of a folio shows at most
+ * four connections; a record that names more should not lose the fifth, and
+ * a record that says its neighbours are not substitutes should keep saying so.
+ */
+export function BesideOtherLenses({ record, lede, className }: { record: AnyRecord & { relatedTo?: RecordLink[]; relatedToLede?: string }; lede?: string; className?: string }) {
+  const links = record.relatedTo ?? [];
+  const text = lede ?? record.relatedToLede;
+  if (!links.length && !text) return null;
+  const shown = new Set(getKnowledgeNeighbourhood(record).neighbours.map((n) => n.record.id));
+  const extra = links.map((l) => ({ link: l, target: RECORDS.find((r) => r.id === l.recordId) })).filter((x) => x.target && !shown.has(x.link.recordId));
+  return (
+    <div className={cx(s.beside, className)}>
+      <p className={s.besideKick}>Beside other lenses</p>
+      {text && <Rich as="p" className={s.besideLede} html={text} />}
+      {extra.length > 0 && (
+        <ul className={s.besideList} aria-label="Further neighbouring records">
+          {extra.map(({ link, target }) => (
+            <li key={link.recordId}>
+              <p className={s.besideRel}>this record {link.relation}</p>
+              <Link href={recordHref(target!)}><span>{KIND[target!.kind].label}</span> {target!.title}</Link>
+              <Rich as="p" className={s.besideBody} html={link.body} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
