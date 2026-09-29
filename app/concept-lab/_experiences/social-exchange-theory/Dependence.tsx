@@ -296,7 +296,7 @@ export function FamilyMap({ nodes }: { nodes: SETFamilyNode[] }) {
             const p = FAMILY_AT[n.label];
             if (!p) return null;
             return (
-              <button key={n.label} type="button" className={s.famNode} data-kind={n.kind} aria-pressed={k === sel} onClick={() => setSel(k)} style={{ left: `${(xOf(p.year) / FW) * 100}%`, top: `${(p.y / FH) * 100}%` }}>
+              <button key={n.label} type="button" className={s.famNode} data-kind={n.kind} aria-pressed={k === sel} aria-label={p.tag ? `${p.tag} ${n.label}` : n.label} onClick={() => setSel(k)} style={{ left: `${(xOf(p.year) / FW) * 100}%`, top: `${(p.y / FH) * 100}%` }}>
                 <span className={s.famYear}>{p.tag}</span>
                 <span className={s.famName}>{n.label}</span>
               </button>

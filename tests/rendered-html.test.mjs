@@ -508,6 +508,10 @@ test("redesigned Social Exchange Theory keeps every teaching element the record 
   }
   // The default power reading must follow Emerson: both actors start highly and equally dependent.
   assert.ok(page.includes("balanced power") && page.includes("high mutual dependence"), "the power lab opens on its balanced, high-dependence preset");
+  // every branch of the family map is a button that keeps its name when a narrow screen hides the drawn label
+  const famButtons = html.match(/<button[^>]*class="[^"]*famNode[^"]*"[^>]*>/g) ?? [];
+  assert.ok(famButtons.length >= 8, `the family map draws its branches as buttons (found ${famButtons.length} in ${html.length} characters)`);
+  for (const b of famButtons) assert.match(b, /aria-label="[^"]+"/, "each family-map button carries its own accessible name");
 });
 
 test("redesigned Person–Organisation Fit keeps every teaching element the record carries", async () => {
