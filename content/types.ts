@@ -61,6 +61,15 @@ export type Source = {
   doi?: string;
 };
 
+/** A source-grounded addition to a record: what a named source says, kept apart from the record's own framing.
+ *  `source` always names where the claim comes from, including "as reported in" when the source quotes another. */
+export type SourceNote = {
+  key: string;
+  label: string;
+  body: string;
+  source: string;
+};
+
 /** Fields every record carries, whatever its kind. */
 type RecordBase = {
   id: string;
@@ -1104,6 +1113,8 @@ export type TheoryRecord = RecordBase & {
   meyer?: MeyerRecordContent;
   asa?: ASARecordContent;
   tonal?: TonalRecordContent;
+  /** Literature-verified additions, placed by `key` where the page needs them. */
+  sourceNotes?: SourceNote[];
   sdt?: SDTRecordContent;
   set?: SETRecordContent;
   gestalt?: GestaltRecordContent;

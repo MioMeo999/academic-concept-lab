@@ -26,8 +26,15 @@ export function ChapterMap({ chapters, label }: { chapters: Chapter[]; label: st
     let frame = 0;
     const update = () => {
       frame = 0;
-      const marker = (navRef.current?.getBoundingClientRect().height ?? 48) + 40;
-      const current = sections.reduce((latest, section) => (section.getBoundingClientRect().top <= marker ? section : latest), sections[0]);
+      const navMarker = (navRef.current?.getBoundingClientRect().height ?? 48) + 40;
+      // A chapter reached by its map link comes to rest at scroll-padding + its own
+      // scroll-margin below the top edge; it counts as current from that point.
+      const rootPad = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+      const current = sections.reduce((latest, section) => {
+        const margin = parseFloat(getComputedStyle(section).scrollMarginTop) || 0;
+        const marker = Math.max(navMarker, rootPad + margin + 8);
+        return section.getBoundingClientRect().top <= marker ? section : latest;
+      }, sections[0]);
       setActive(current.id);
       const top = navRef.current?.getBoundingClientRect().top ?? 1;
       setStuck(top <= 0.5);

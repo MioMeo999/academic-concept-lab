@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { dependences, powerReading } from "../app/concept-lab/_experiences/social-exchange-theory/power";
-import { next, place, ROOM_SLOTS, ROUNDS, snapshot, STAGES, type Snapshot, type Stage } from "../app/concept-lab/_experiences/person-organisation-fit/population";
 import { CROWDED, PLAN, SEATS, SPARSE, TALK_CROWDED, TALK_SPARSE, chairAt, deskLinks, sightPairs } from "../app/concept-lab/_experiences/workplace-design/geometry";
 import { bands, centre, STREAM_AXIS } from "../app/concept-lab/_experiences/auditory-scene-analysis/geometry";
 import { auditorySceneAnalysis } from "../content/auditory-scene-analysis";
@@ -14,6 +13,8 @@ import { predictiveProcessingInMusic } from "../content/predictive-processing-in
 import { FACTORS, MAP, ROPE, fitState, knots, laneOf, rope, shortAuthors, spreadY, strandAt, xOfYear } from "../app/concept-lab/_experiences/music-preference/geometry";
 import { KICK_STEPS, QUALITIES, SKETCH_SECONDS, sketchStats, traceStats } from "../app/concept-lab/_experiences/music-preference/sound";
 import { musicPreference } from "../content/music-preference";
+import { CUTS, PLACE_ORDER, buildPlaces, groupOf, readFlags, type PlaceId } from "../app/concept-lab/_experiences/self-determination-theory/places";
+import { selfDeterminationTheory } from "../content/self-determination-theory";
 
 /* The redesigned experiences carry small pieces of teaching logic. They are
    pure functions so that an academic claim they make can be tested directly,
@@ -47,85 +48,6 @@ test("alternatives lower dependence and value raises it", () => {
   const valued = dependences({ aValue: 2, aAlt: 1, bValue: 0, bAlt: 1 });
   assert.ok(valued.aOnB > valued.bOnA);
 });
-
-/* ---- Person–Organisation fit: the Attraction–Selection–Attrition toy ------ */
-
-const every = (): Snapshot[] => {
-  const out: Snapshot[] = [];
-  let at: { round: number; stage: Stage } | null = { round: 1, stage: "start" };
-  while (at) { out.push(snapshot(at.round, at.stage)); at = next(at.round, at.stage); }
-  return out;
-};
-
-test("the toy opens mixed: four kinds in the room, and a crowd of twelve with three of each", () => {
-  const s = snapshot(1, "start");
-  assert.deepEqual(s.counts, [4, 3, 3, 2]);
-  assert.equal(s.kinds, 4);
-  const pool = s.people.filter((p) => p.where === "pool");
-  assert.equal(pool.length, 12);
-  for (const mark of [0, 1, 2, 3]) assert.equal(pool.filter((p) => p.mark === mark).length, 3);
-});
-
-test("each stage applies its own rule to what the stage before left behind", () => {
-  const a = snapshot(1, "attraction");
-  assert.deepEqual(a.info.seenAtDoor, [0, 1], "candidates look for the two most common marks in the room");
-  const queue = a.people.filter((p) => p.where === "queue");
-  assert.equal(queue.length, a.info.applicants);
-  assert.ok(queue.every((p) => a.info.seenAtDoor.includes(p.mark)), "only candidates who see someone like them apply");
-
-  const s = snapshot(1, "selection");
-  assert.equal(s.info.preferred, 0, "the organisation prefers the room's most common mark");
-  assert.equal(s.info.admitted, 3);
-  assert.equal(s.info.turnedAway, s.info.applicants - s.info.admitted);
-  assert.deepEqual(s.counts, [7, 3, 3, 2]);
-  assert.equal(s.people.filter((p) => p.where === "queue").length, 0, "nobody is left standing in the queue");
-
-  const t = snapshot(1, "attrition");
-  assert.deepEqual(t.info.left, [0, 0, 0, 2], "the smallest minority leaves");
-  assert.deepEqual(t.counts, [7, 3, 3, 0]);
-});
-
-test("three rounds sort the room down to one kind, and nothing in the toy asks whether that is good", () => {
-  assert.deepEqual(snapshot(1, "attrition").counts, [7, 3, 3, 0]);
-  assert.deepEqual(snapshot(2, "attrition").counts, [10, 3, 0, 0]);
-  assert.deepEqual(snapshot(3, "attrition").counts, [13, 0, 0, 0]);
-  assert.deepEqual([1, 2, 3].map((r) => snapshot(r, "attrition").kinds), [3, 2, 1]);
-});
-
-test("a fresh crowd arrives each round, while the room and the people who left carry over", () => {
-  const end = snapshot(1, "attrition");
-  const open = snapshot(2, "start");
-  const inRoom = (s: Snapshot) => s.people.filter((p) => p.where === "room").map((p) => `${p.id}@${p.slot}`).sort();
-  assert.deepEqual(inRoom(open), inRoom(end));
-  assert.equal(open.people.filter((p) => p.where === "gone").length, end.people.filter((p) => p.where === "gone").length);
-  const pool = open.people.filter((p) => p.where === "pool");
-  assert.equal(pool.length, 12);
-  assert.ok(pool.every((p) => p.id.startsWith("p2-")), "the crowd is new people, not last round's leftovers");
-});
-
-test("nobody stands on top of anybody, and the room never overflows", () => {
-  for (const snap of every()) {
-    const seen = new Set<string>();
-    for (const p of snap.people) {
-      const key = `${p.where}:${p.slot}`;
-      assert.ok(!seen.has(key), `${key} holds two people in round ${snap.round} ${snap.stage}`);
-      seen.add(key);
-      if (p.where === "room") assert.ok(p.slot >= 0 && p.slot < ROOM_SLOTS);
-      const at = place(p);
-      assert.ok(at.x > 0 && at.x < 1000 && at.y > 0 && at.y < 880, "every person is drawn inside the figure");
-    }
-  }
-});
-
-test("stepping visits every state once, in order, and stops after the third round's attrition", () => {
-  const all = every();
-  assert.equal(all.length, ROUNDS * STAGES.length);
-  assert.deepEqual([all[0].round, all[0].stage], [1, "start"]);
-  assert.deepEqual([all.at(-1)!.round, all.at(-1)!.stage], [ROUNDS, "attrition"]);
-  assert.equal(next(ROUNDS, "attrition"), null);
-});
-
-/* ---- Workplace Design: the one office plan every figure re-reads ------------ */
 
 test("the office seats twelve; the spacious room is part of the cramped one, and every talker sits in the room they talk in", () => {
   assert.equal(SEATS.length, 12);
@@ -517,4 +439,65 @@ test("a fit is the person's side and the situation's side together, and neither 
   assert.deepEqual(fitState("both"), { person: true, situation: true, joined: true });
   assert.equal(mp.categories!.length, 2);
   assert.match(mp.categoriesLede!, /Neither side alone settles the outcome/);
+});
+
+/* ---------- Self-Determination Theory: the terrain ------------------------- */
+
+const SDT_PLACES = buildPlaces(selfDeterminationTheory.sdt!.regulations, selfDeterminationTheory.sdt!.motives);
+
+test("the terrain's six places come from the record in terrain order, each joined to the statement that voices it", () => {
+  assert.deepEqual(SDT_PLACES.map((p) => p.id), PLACE_ORDER);
+  for (const p of SDT_PLACES) {
+    assert.ok(p.statement && p.explanation && p.body && p.descriptor, `${p.id} carries every string the record gives it`);
+  }
+  assert.equal(SDT_PLACES[0].name, "Amotivation");
+  assert.equal(SDT_PLACES[5].name, "Intrinsic motivation");
+});
+
+test("the two cuts divide the same six places, once each, and neither contains the other", () => {
+  for (const cut of ["purpose", "owner"] as const) {
+    const ids = CUTS[cut].groups.flatMap((g) => g.ids).sort();
+    assert.deepEqual(ids, [...PLACE_ORDER].sort(), `${cut}: every place appears exactly once`);
+  }
+  const extrinsic = CUTS.purpose.groups.find((g) => g.key === "extrinsic")!.ids;
+  const controlled = CUTS.owner.groups.find((g) => g.key === "controlled")!.ids;
+  const autonomous = CUTS.owner.groups.find((g) => g.key === "autonomous")!.ids;
+  // controlled sits wholly inside extrinsic; autonomous reaches both sides of the purpose cut
+  assert.ok(controlled.every((id) => extrinsic.includes(id)), "controlled reasons are extrinsic");
+  assert.ok(autonomous.some((id) => extrinsic.includes(id)) && autonomous.some((id) => !extrinsic.includes(id)), "autonomous reasons are partly extrinsic (identified, integrated) and partly not (intrinsic)");
+  assert.ok(!extrinsic.every((id) => controlled.includes(id)), "extrinsic does not mean controlled");
+});
+
+test("identified and integrated regulation are extrinsic and autonomous at once; amotivation is outside both cuts", () => {
+  const by = Object.fromEntries(SDT_PLACES.map((p) => [p.id, p]));
+  for (const id of ["identified", "integrated"] as PlaceId[]) {
+    assert.equal(by[id].purpose, "extrinsic");
+    assert.equal(by[id].owner, "autonomous");
+  }
+  assert.equal(by.amotivation.purpose, "none");
+  assert.equal(by.amotivation.owner, "none");
+  assert.equal(by.intrinsic.purpose, "intrinsic");
+  assert.equal(groupOf("integrated", "purpose").key, "extrinsic");
+  assert.equal(groupOf("integrated", "owner").key, "autonomous");
+});
+
+test("no flags give the prompt; one place reads as that place; both sides of ownership read as mixed motives", () => {
+  assert.equal(readFlags([]).kind, "prompt");
+  assert.match(readFlags(["external"]).sentences.join(" "), /relatively controlled/);
+  assert.match(readFlags(["intrinsic"]).sentences.join(" "), /relatively autonomous/);
+  assert.match(readFlags(["identified"]).sentences.join(" "), /still extrinsic/);
+  assert.match(readFlags(["external", "identified"]).sentences.join(" "), /both sides of the ownership cut/);
+  assert.match(readFlags(["identified", "intrinsic"]).sentences.join(" "), /both reasons that serve a separable outcome and the activity itself/);
+  assert.match(readFlags(["amotivation"]).sentences.join(" "), /lacks intention/);
+  assert.match(readFlags(["amotivation", "external"]).sentences.join(" "), /never added to them/);
+});
+
+test("every possible set of flags gets a reading, and no reading scores, ranks or adds anything up", () => {
+  for (let mask = 1; mask < 1 << PLACE_ORDER.length; mask++) {
+    const picked = PLACE_ORDER.filter((_, i) => mask & (1 << i));
+    const text = readFlags(picked).sentences.join(" ");
+    assert.ok(text.length > 40, `a reading exists for ${picked.join(", ")}`);
+    assert.ok(!/\d/.test(text.replace(/\(\d{4}\)/g, "")), `no number appears in the reading for ${picked.join(", ")}`);
+    assert.ok(!/(score|rating|index|total|best|worst)/i.test(text.replace(/not a score|does not compute|nothing is added up/gi, "")), `no ranking language for ${picked.join(", ")}`);
+  }
 });

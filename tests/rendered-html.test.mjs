@@ -412,14 +412,14 @@ test("redesigned Self-Determination Theory keeps every teaching element the reco
   const page = plain(html);
   const d = record.sdt;
   const need = (text, where) => assert.ok(page.includes(plain(text)), `SDT dropped ${where}: "${plain(text).slice(0, 80)}…"`);
-  for (const c of d.opening.cases) { need(c.quote, "an opening quote"); need(c.body, `the ${c.label} case`); }
+  for (const c of d.opening.cases) { need(c.label, "an opening case"); need(c.quote, "an opening quote"); need(c.body, `the ${c.label} case`); }
   need(d.opening.note, "the opening note");
   for (const m of d.motives) { need(m.statement, "a motive statement"); need(m.regulation, "a regulation name"); need(m.explanation, `the ${m.regulation} explanation`); }
   for (const r of d.regulations) { need(r.label, "a regulation"); need(r.descriptor, `the ${r.label} descriptor`); need(r.body, `the ${r.label} body`); }
   need(d.internalisation.lede, "the internalisation lede");
-  for (const b of d.internalisation.branches) { need(b.label, "an internalisation branch"); need(b.body, `the ${b.label} branch`); }
+  for (const b of d.internalisation.branches) { need(b.label, "an internalisation branch"); need(b.quote, `the ${b.label} sentence`); need(b.body, `the ${b.label} branch`); }
   need(d.internalisation.note, "the internalisation note");
-  for (const n of d.needs) { need(n.question, `the ${n.label} question`); need(n.meaning, `the ${n.label} meaning`); need(n.distinction, `the ${n.label} distinction`); }
+  for (const n of d.needs) { need(n.label, "a need"); need(n.question, `the ${n.label} question`); need(n.meaning, `the ${n.label} meaning`); need(n.distinction, `the ${n.label} distinction`); }
   for (const c of d.autonomyMatrix.cases) { need(c.label, "an autonomy case label"); need(c.title, "an autonomy case"); need(c.body, `the "${c.title}" case`); }
   need(d.autonomyMatrix.note, "the autonomy matrix note");
   for (const x of [...d.context.contextItems, ...d.context.personItems, ...d.context.outcomes]) need(x, "a context item");
@@ -432,7 +432,7 @@ test("redesigned Self-Determination Theory keeps every teaching element the reco
   need(d.needComparison.note, "the satisfaction / frustration note");
   for (const x of [...d.workModel.context, ...d.workModel.person, ...d.workModel.needs, ...d.workModel.motivations, ...d.workModel.outcomes]) need(x, "a workplace-model item");
   need(d.workModel.note, "the workplace model note");
-  for (const t of d.miniTheories) { need(t.title, "a mini-theory"); need(t.question, `the ${t.acronym} question`); }
+  for (const t of d.miniTheories) { need(t.acronym, "a mini-theory acronym"); need(t.title, "a mini-theory"); need(t.question, `the ${t.acronym} question`); }
   for (const x of [...d.scope.explains, ...d.scope.stops]) need(x, "a scope item");
   need(d.scope.note, "the scope note");
   for (const o of record.origins) { need(o.work, `the ${o.year} work`); need(o.contribution, `the ${o.year} trail marker`); }
@@ -440,20 +440,35 @@ test("redesigned Self-Determination Theory keeps every teaching element the reco
   need(record.trailLede, "the trail lede");
   for (const link of record.relatedTo) need(link.body, "a relation body");
   need(record.relatedToLede, "the caution about neighbouring lenses");
+  // the literature-verified additions, each with its attribution
+  assert.ok(record.sourceNotes.length >= 6, "the record carries its source notes");
+  for (const n of record.sourceNotes) { need(n.label, "a source-note heading"); need(n.body, `the "${n.label}" note`); need(n.source, `the attribution of "${n.label}"`); }
+  assert.ok(page.includes("What the sources add"), "source notes are headed as such");
   for (const text of [
-    "Same category? Not quite",
-    "Two extrinsic reasons",
-    "Places, not steps",
-    "The other reading",
+    "Select every reason that can describe a task you do",
+    "Read the same six reasons two ways",
+    "This is a teaching reading of the row, not a score and not a diagnosis.",
+    "A reading written for this page from the record’s distinctions",
     "Autonomy is not independence",
-    "Real behaviour can draw on mixed motives",
-    "The faded stroke and the opposed stroke are different marks on purpose",
-    "Closer means more of this record leans on it",
+    "Condition the same three needs",
+    "Same night, two reasons",
+    "Where does the same demand sit?",
+    "The same nominal reward",
+    "Teaching drawings. Fog and faded strokes are absence",
+    "This record leans on it",
+    "Adjacent, named but not developed",
+    "One note-taking action remains in view while overlapping pencil traces invite different readings of why it is done",
   ]) assert.ok(page.includes(text), `SDT is missing ${text}`);
-  assert.match(html, /sdt-hero\.webp/);
-  assert.match(html, /sdt-lens-wall\.webp/);
-  assert.equal((html.match(/<img\b(?![^>]*\balt=)/g) ?? []).length, 0, "every SDT image carries an alt attribute, empty when decorative");
-  for (const id of ["reason", "row", "owning", "needs", "context", "refinements", "family", "limits", "trail", "sources", "provenance"]) {
+  for (const file of ["sdt-reason-field-v2.webp", "sdt-rule-base.webp", "sdt-rule-external.webp", "sdt-rule-integrated.webp", "sdt-need-autonomy-supported.webp", "sdt-need-relatedness-blocked.webp", "sdt-lens-base.webp", "sdt-lens-informational.webp"]) {
+    assert.ok(html.includes(file), `SDT references ${file}`);
+  }
+  assert.equal((html.match(/<img(?![^>]*alt=)/g) ?? []).length, 0, "every SDT image carries an alt attribute, empty when decorative");
+  assert.equal((html.match(/<aside/g) ?? []).length, 0, "source notes are notes, not complementary landmarks");
+  // six reason selections, each a real button that names its live statement
+  const selections = html.match(/<button[^>]*aria-label="Mark [^"]+ in your reading:[^"]+"[^>]*>/g) ?? [];
+  assert.equal(selections.length, 6, "the register offers six selections");
+  for (const selection of selections) assert.match(selection, /aria-pressed/, "each selection exposes its pressed state");
+  for (const id of ["same", "rule", "needs", "context", "family", "limits", "trail", "sources", "provenance"]) {
     assert.match(html, new RegExp(`id="${id}"`), `SDT chapter ${id} is present for the chapter map`);
   }
 });
@@ -476,7 +491,7 @@ test("redesigned Social Exchange Theory keeps every teaching element the record 
   for (const x of d.hedonic) { need(x.label, "a hedonic cell"); need(x.body, `the ${x.label} cell`); }
   for (const x of d.constraints) { need(x.desired, "a constraint"); need(x.constrained, `the ${x.desired} response`); need(x.body, `the ${x.desired} body`); }
   for (const x of d.chain) { need(x.label, "a chain question"); need(x.body, `the ${x.label} step`); }
-  for (const a of d.audit) { need(a.label, "an audit case"); need(a.claim, `the ${a.label} claim`); need(a.verdict, `the ${a.label} verdict`); for (const ans of a.answers) need(ans, `an ${a.label} answer`); }
+  for (const a2 of d.audit) { need(a2.label, "an audit case"); need(a2.claim, `the ${a2.label} claim`); need(a2.verdict, `the ${a2.label} verdict`); for (const ans of a2.answers) need(ans, `an ${a2.label} answer`); }
   for (const f of d.family) { need(f.label, "a family branch"); need(f.body, `the ${f.label} branch`); }
   for (const x of [...d.scope.explains, ...d.scope.stops]) need(x, "a scope item");
   need(d.scope.note, "the scope note");
@@ -484,34 +499,40 @@ test("redesigned Social Exchange Theory keeps every teaching element the record 
   need(record.trailLede, "the trail lede");
   for (const link of record.relatedTo) need(link.body, "a relation body (five relations, though the shared ledger shows four)");
   need(record.relatedToLede, "the caution about neighbouring lenses");
+  assert.ok(record.sourceNotes.length >= 2, "the record carries its source notes");
+  for (const n of record.sourceNotes) { need(n.label, "a source-note heading"); need(n.body, `the "${n.label}" note`); need(n.source, `the attribution of "${n.label}"`); }
+  assert.ok(page.includes("What the sources add"), "source notes are headed as such");
   for (const text of [
-    "offers, withholds, or changes access",
-    "interprets, accepts, returns, or refuses",
-    "direct, generalised, negotiated, or norm-led",
-    "History + alternatives shape what each can receive next",
-    "resource / signal",
-    "The same resource can carry different meanings in different relationships.",
-    "not an official seven-dimension taxonomy",
-    "This is not a money/non-money or moral binary",
-    "A transaction can be one episode; a relationship is the feedback history that makes later exchanges meaningful.",
-    "Later theoretical remedies keep hedonic direction and activity distinct",
-    "They do not make response deterministic",
-    "Gouldner supplies the foundational norm of reciprocity",
-    "Concept Lab synthesis",
-    "audit reading",
-    "Emerson, 1962",
+    "Choose what passes between the parties",
+    "Three meanings that share a word",
+    "A return needs a rule to be intelligible",
+    "The same exchange can answer these questions differently",
+    "not an official typology or measured profile",
+    "A desired response meets what is possible",
+    "Change the time horizon",
+    "Put the five questions to a claim",
+    "A family, not a sealed diagram",
+    "balanced power",
+    "high mutual dependence",
+    "The resource descriptions follow the record’s Foa and Foa classification",
+    "A constructed transfer, with no return guaranteed",
+    "The next exchange has a past.",
   ]) assert.ok(page.includes(text), `SET is missing ${text}`);
-  assert.match(html, /set-hero\.webp/);
+  assert.match(html, /set-exchange-relation-v2\.webp/, "SET uses the new authored relational field");
+  assert.equal((html.match(/<img\b/g) ?? []).length, 3, "SET uses its opening plate, focused resource crop, and rule-specific explanatory study");
   assert.equal((html.match(/<img\b(?![^>]*\balt=)/g) ?? []).length, 0, "every SET image carries an alt attribute, empty when decorative");
-  for (const id of ["spec", "passes", "rules", "mixed", "dependence", "history", "response", "audit", "family", "limits", "sources", "provenance"]) {
+  assert.equal((html.match(/<aside\b/g) ?? []).length, 0, "source notes are notes, not complementary landmarks");
+  // The power lab opens on Emerson's balanced, high-mutual-dependence teaching state.
+  assert.match(html, /A depends on B/, "the first direction of dependence remains visible");
+  assert.match(html, /B depends on A/, "the reciprocal direction of dependence remains visible");
+  assert.doesNotMatch(html, /set-lab-base\.webp/, "the old procedural door-and-cord scene is retired");
+  // every group of choices is named, and every choice exposes its pressed state
+  for (const name of ["Resource in this constructed exchange", "Rule for this constructed exchange", "How much A values what passes through B", "How many alternatives B has to A", "History between the two parties"]) {
+    assert.ok(html.includes(`aria-label="${name}"`), `the "${name}" control is named for assistive tech`);
+  }
+  for (const id of ["what", "rule", "whom", "response", "next", "check", "family", "limits", "trail", "sources", "provenance"]) {
     assert.match(html, new RegExp(`id="${id}"`), `SET chapter ${id} is present for the chapter map`);
   }
-  // The default power reading must follow Emerson: both actors start highly and equally dependent.
-  assert.ok(page.includes("balanced power") && page.includes("high mutual dependence"), "the power lab opens on its balanced, high-dependence preset");
-  // every branch of the family map is a button that keeps its name when a narrow screen hides the drawn label
-  const famButtons = html.match(/<button[^>]*class="[^"]*famNode[^"]*"[^>]*>/g) ?? [];
-  assert.ok(famButtons.length >= 8, `the family map draws its branches as buttons (found ${famButtons.length} in ${html.length} characters)`);
-  for (const b of famButtons) assert.match(b, /aria-label="[^"]+"/, "each family-map button carries its own accessible name");
 });
 
 test("redesigned Person–Organisation Fit keeps every teaching element the record carries", async () => {
@@ -542,22 +563,21 @@ test("redesigned Person–Organisation Fit keeps every teaching element the reco
   for (const o of record.origins) { need(o.work, `the ${o.year} work`); need(o.contribution, `the ${o.year} trail marker`); }
   need(record.oversimplificationsLede, "the cautions lede");
   for (const text of [
-    "Twelve people work here: 4 ring, 3 bar, 3 cross and 2 chevron.",
-    "In this toy, a candidate applies if their mark is one of the two most common in the room",
-    "In this toy, the organisation admits applicants who carry the room's most common mark",
-    "In this toy, whoever carries the room's rarest mark leaves",
-    "A made-up room of made-up people.",
-    "not how fast, or how far, a real organisation sorts",
-    "Concept Lab reading",
-    "the record does not supply this instrument’s own items",
-    "Which example goes with which direction is Concept Lab’s reading of the record’s own definition",
-    "the people make the place",
+    "Fit is always fit",
+    "one person · this organisation",
+    "The relation in view",
+    "This combined reading is an editorial explanation",
+    "The endpoint is relative homogeneity",
+    "An imagined correspondence field",
   ]) assert.ok(page.includes(text), `P–O is missing ${text}`);
-  assert.match(html, /po-hero\.webp/);
-  assert.match(html, /po-hero-stack\.webp/);
+  assert.match(html, /Choose the environment target/, "the selected fit target is named in the live comparison field");
+  assert.match(html, /aria-pressed="true"/, "the current organisation target exposes its selected state");
+  assert.match(html, /aria-pressed="true"/, "the selected target exposes its state");
+  assert.match(html, /po-correspondence-landscape-v2\.webp/, "the opening and live correspondence reading use the authored relational field");
+  assert.doesNotMatch(html, /po-building-(?:before|after|asa)-/, "the earlier cutaway-building sequence is no longer shown");
   assert.equal((html.match(/<img\b(?![^>]*\balt=)/g) ?? []).length, 0, "every P–O image carries an alt attribute, empty when decorative");
-  assert.match(html, /data-room/, "the room toy renders on the server");
-  for (const id of ["name", "sits", "idea", "asa", "two", "measure", "targets", "trail", "limits", "sources", "provenance"]) {
+  assert.match(html, /data-target="org"/, "the organisation target is the initial selection");
+  for (const id of ["name", "two", "asa", "measure", "open", "trail", "sources", "provenance"]) {
     assert.match(html, new RegExp(`id="${id}"`), `P–O chapter ${id} is present for the chapter map`);
   }
 });
@@ -591,24 +611,19 @@ test("redesigned Workplace Design keeps every teaching element the record carrie
   for (const o of record.origins) { need(o.work, `the ${o.year} work`); need(o.contribution, `the ${o.year} trail marker`); }
   need(record.oversimplificationsLede, "the cautions lede");
   for (const text of [
-    "Two literatures answer to",
-    "Where to go instead",
-    "Concept Lab reading",
-    "Set two of them apart",
-    "Quiet and cramped",
-    "Spacious and unbearable",
-    "Twelve people share the room",
-    "A room that supports the task",
-    "This is the counterfactual; the record describes only what happens when support fails.",
-    "one room · five ways to read it",
-    "in the same sense as",
-    "a deadline",
+    "One name, two different objects",
+    "The room is a work condition",
+    "Read the room through its conditions",
+    "When the room makes work cost more effort",
+    "The open plan’s privacy–communication trade-off",
+    "An imagined architectural field for noticing physical conditions",
+    "one place · several conditions",
+    "The environment is not one variable",
   ]) assert.ok(page.includes(text), `Workplace Design is missing ${text}`);
-  for (const name of ["Which condition of the room?", "Walk the mechanism, one step at a time"]) assert.ok(html.includes(`aria-label="${name}"`), `the "${name}" control is named for assistive tech`);
-  assert.match(html, /wp-hero\.webp/);
-  assert.match(html, /wp-hero-stack\.webp/);
+  for (const name of ["Choose a physical condition to inspect", "Read the proposed workspace-stress account"]) assert.ok(html.includes(`aria-label="${name}"`), `the "${name}" control is named for assistive tech`);
+  assert.match(html, /wp-architectural-cutaway-v2\.webp/);
   assert.equal((html.match(/<img\b(?![^>]*\balt=)/g) ?? []).length, 0, "every Workplace Design image carries an alt attribute, empty when decorative");
-  for (const attr of ["data-focus", "data-level", "data-state"]) assert.match(html, new RegExp(attr), `the ${attr} figure renders on the server`);
+  for (const attr of ["data-focus", "data-state"]) assert.match(html, new RegExp(attr), `the ${attr} reading renders on the server`);
   for (const id of ["two", "idea", "elements", "mechanism", "tradeoff", "trail", "limits", "sources", "provenance"]) {
     assert.match(html, new RegExp(`id="${id}"`), `Workplace Design chapter ${id} is present for the chapter map`);
   }

@@ -1,271 +1,163 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
+import { useState } from "react";
+import Image from "next/image";
 import type { Expansion, Interaction, TheoryDemo } from "@/content/types";
-import { Choices } from "../../_folio/Choices";
 import { Glyph } from "../../_folio/Folio";
 import { Rich } from "../../_components/Sketch";
-import * as hand from "../../_folio/hand";
-import { AdjacencyLayer, FurnitureLayer, LightLayer, PlanBase, People, Partitions, SightLayer, SoundLayer, SpaceLayer, StrandsAndBubbles } from "./Plan";
-import { CROWDED, SPARSE, TALK_CROWDED, TALK_SPARSE, type Pt } from "./geometry";
 import s from "./wp.module.css";
 
-/* ---------------------------------------------------------------------------
-   The same room, read three more ways.
+const ROOM = "/visual-language/theories/wp/wp-architectural-cutaway-v2.webp";
+type Condition = "layout" | "noise" | "privacy" | "density" | "light" | "furniture";
 
-   The mixer takes the room's six conditions one at a time and lets two of them
-   — noise and crowding — be set apart from each other. The stress figure puts
-   one worker at one desk and lets the room stop supporting the task. The
-   trade-off figure takes the partitions away. Nothing here is a measurement:
-   marks carry direction, and where a weight is drawn it is a weight, not a
-   quantity.
-   ------------------------------------------------------------------------- */
+const CONDITIONS: { key: Condition; position: string; zoom: number; description: string }[] = [
+  { key: "layout", position: "50% 50%", zoom: 1, description: "Configuration: who sits near whom, what is visible, and how the space is arranged." },
+  { key: "noise", position: "54% 18%", zoom: 1.34, description: "Noise and acoustics: sound level matters, but so does whether speech can be understood." },
+  { key: "privacy", position: "18% 39%", zoom: 1.42, description: "Privacy has distinct visual and acoustic sides: being unseen and being unheard." },
+  { key: "density", position: "52% 54%", zoom: 1.38, description: "Density can be counted; crowding names the experience of sharing space." },
+  { key: "light", position: "84% 34%", zoom: 1.38, description: "Light and temperature are ambient conditions that employees may have little control over." },
+  { key: "furniture", position: "51% 58%", zoom: 1.5, description: "Furniture and workstation: the immediate physical support around the body doing the work." },
+];
+const ENCLOSURE_STATES: readonly ThreeStateIndex[] = [0, 1, 2];
 
-const L = (x1: number, y1: number, x2: number, y2: number, seed: number, segments = 6, wander = 1.2) => hand.line(x1, y1, x2, y2, { seed, wander, segments });
-
-/* ------------------------------------------------------------------------
-   Six conditions of one room
-   --------------------------------------------------------------------- */
-
-type Layer = "layout" | "noise" | "privacy" | "density" | "light" | "furniture";
-type Noise = "quiet" | "steady" | "talk";
-type Crowd = "spacious" | "cramped";
-// the record's six elements, in its own order
-const LAYERS: Layer[] = ["layout", "noise", "privacy", "density", "light", "furniture"];
+function ConditionMark({ condition }: { condition: Condition }) {
+  return (
+    <svg className={s.conditionMark} data-condition={condition} viewBox="0 0 80 48" aria-hidden="true" focusable="false">
+      <g data-mark="layout">
+        <path className={s.markEcho} d="M8 12 C25 11 29 18 41 19 S58 13 72 14" />
+        <path className={s.markLine} d="M7 15 C24 14 30 21 42 22 S59 16 72 17" />
+        <path className={s.markAccent} d="m43 22 8 8m-8-8 10-1" />
+      </g>
+      <g data-mark="noise">
+        <path className={s.markEcho} d="M7 13c7-8 12 8 19 0s12 8 19 0 12 8 19 0" />
+        <path className={s.markAccent} d="M8 22c7-8 12 8 19 0s12 8 19 0 12 8 19 0" />
+        <path className={s.markLine} d="M9 31c7-8 12 8 19 0s12 8 19 0 12 8 19 0" />
+      </g>
+      <g data-mark="privacy">
+        <path className={s.markLine} d="M12 36V19c0-10 12-16 23-14m9 0c11 0 20 7 20 17v14" />
+        <path className={s.markEcho} d="M8 38V18C8 5 20 0 31 2m17 0c13 2 22 9 22 21v15" />
+        <path className={s.markAccent} d="M34 5h6m-6 28h6" />
+      </g>
+      <g data-mark="density">
+        <path className={s.markEcho} d="M10 25c2-10 14-14 21-7 6 6 1 16-7 18-8 2-15-3-14-11Zm25-12c4-8 15-9 20-2 5 7 0 15-8 16-8 1-15-6-12-14Zm12 19c1-9 11-14 19-9 7 4 7 14-1 18-8 4-18 0-18-9Z" />
+        <path className={s.markAccent} d="M14 24c2-6 8-8 12-4m15-9c4-4 10-3 13 1m1 23c4 1 8-1 10-4" />
+      </g>
+      <g data-mark="light">
+        <path className={s.markEcho} d="M43 26 69 9M46 29 73 19M47 33 75 31M43 37 68 43" />
+        <path className={s.markAccent} d="m50 18 4-8m4 20h13m-19 12-5 7" />
+        <path className={s.markLine} d="M8 37c13-2 20-4 28-8" />
+      </g>
+      <g data-mark="furniture">
+        <path className={s.markEcho} d="M9 28c18-6 43-6 62 0M14 32c17-5 36-5 54 0" />
+        <path className={s.markLine} d="M11 25c18-6 42-6 59 0M17 29c16-4 34-4 50 0" />
+        <path className={s.markAccent} d="M20 31v10m43-10v10M16 42h51" />
+      </g>
+    </svg>
+  );
+}
 
 export function RoomMixer({ elements }: { elements: Expansion[] }) {
-  const [focus, setFocus] = useState<Layer>("layout");
-  const [noise, setNoise] = useState<Noise>("quiet");
-  const [crowd, setCrowd] = useState<Crowd>("cramped");
-  const ids = crowd === "cramped" ? CROWDED : SPARSE;
-  const talkers = noise === "talk" ? (crowd === "cramped" ? TALK_CROWDED : TALK_SPARSE) : [];
-  const preset = noise === "quiet" && crowd === "cramped" ? "qc" : noise === "talk" && crowd === "spacious" ? "su" : "";
-
-  const apply = (p: string) => {
-    if (p === "qc") { setNoise("quiet"); setCrowd("cramped"); setFocus("density"); }
-    if (p === "su") { setNoise("talk"); setCrowd("spacious"); setFocus("noise"); }
-  };
-
-  const crowdText = crowd === "cramped" ? "Twelve people share the room" : "Four people have the room to themselves";
-  const noiseText = { quiet: "and nothing carries across it.", steady: "and a steady sound fills it, the same at every desk.", talk: "and talk carries from desk to desk, in words." }[noise];
-  const note = preset === "qc"
-    ? "The record's first example: quiet, and cramped. The meter says quiet; the room is still crowded."
-    : preset === "su"
-      ? "The record's second example: spacious, and unbearable. One way it can happen: plenty of room, and talk that carries."
-      : "Set the two apart and the room is read differently. The conditions do not move together.";
-  const label = `One office plan with twelve desks, three windows along the top wall and a door in the bottom wall. ${crowdText} ${noiseText} Focus: ${elements[LAYERS.indexOf(focus)].title.toLowerCase()}.`;
+  if (elements.length !== CONDITIONS.length) throw new Error("Workplace Design requires six physical-environment conditions");
+  const [focus, setFocus] = useState<Condition>("layout");
+  const current = CONDITIONS.find((condition) => condition.key === focus);
+  if (!current) throw new Error(`Workplace Design is missing condition ${focus}`);
+  const conditionIndex = CONDITIONS.findIndex((condition) => condition.key === focus);
+  const selectedElement = elements[conditionIndex];
+  if (!selectedElement) throw new Error(`Workplace Design is missing the text for ${focus}`);
 
   return (
-    <div className={s.mixer} data-focus={focus} data-noise={noise} data-crowd={crowd}>
-      <figure className={s.mixerFigure}>
-        <svg className={s.planSvg} viewBox="0 0 640 400" role="img" aria-label={label}>
-          <PlanBase />
-          <g className={s.mixLayer} data-layer="layout"><AdjacencyLayer /></g>
-          <g className={s.mixLayer} data-layer="density"><SpaceLayer ids={ids} /></g>
-          <g className={s.mixLayer} data-layer="noise"><SoundLayer mode={noise} talkers={talkers} /></g>
-          <g className={s.mixLayer} data-layer="privacy"><SightLayer ids={ids} /></g>
-          <g className={s.mixLayer} data-layer="light"><LightLayer /></g>
-          <g className={s.mixLayer} data-layer="furniture"><FurnitureLayer /></g>
-          <People ids={ids} />
-        </svg>
-      </figure>
-
-      <div className={s.mixerPanel}>
-        <Choices<Layer>
-          label="Which condition of the room?"
-          value={focus}
-          onChange={setFocus}
-          options={LAYERS.map((l, i) => ({ value: l, label: elements[i].title }))}
-        />
-        <div className={s.dials}>
-          <p className={s.dialKick}>Set two of them apart</p>
-          <Choices<Noise> label="Noise" value={noise} onChange={setNoise} options={[{ value: "quiet", label: "quiet" }, { value: "steady", label: "steady sound" }, { value: "talk", label: "overheard talk" }]} />
-          <Choices<Crowd> label="Crowding" value={crowd} onChange={setCrowd} options={[{ value: "spacious", label: "spacious" }, { value: "cramped", label: "cramped" }]} />
-          <Choices<string> label="The record's two examples" value={preset} onChange={apply} options={[{ value: "qc", label: "Quiet and cramped" }, { value: "su", label: "Spacious and unbearable" }]} />
+    <div className={s.roomRead}>
+      <figure className={s.roomCrop} data-focus={focus}>
+        <div className={s.roomWindow}>
+          <Image src={ROOM} width={1536} height={1024} sizes="(max-width: 700px) 100vw, 56vw" alt={`A crop of an imagined workplace, shifting attention to ${selectedElement.title.toLowerCase()}. The picture is not a measured environment.`} style={{ objectPosition: current.position, transformOrigin: current.position, transform: `scale(${current.zoom})` }} loading="lazy" unoptimized />
         </div>
-        <p className={s.mixReading} aria-live="polite">{crowdText}, {noiseText} {note}</p>
+        <figcaption><Glyph g="▲" /> The same imagined workplace, read from a different point of attention. The drawing gives no measured setting or finding.</figcaption>
+      </figure>
+      <div className={s.conditionChooser} role="group" aria-label="Choose a physical condition to inspect">
+        {elements.map((element, index) => {
+          const condition = CONDITIONS[index];
+          if (!condition) return null;
+          return (
+            <button key={element.title} type="button" aria-pressed={condition.key === focus} onClick={() => setFocus(condition.key)}>
+              <span>{element.title}</span>
+              <small>{element.body}</small>
+            </button>
+          );
+        })}
       </div>
-
-      <ol className={s.elements} aria-label="The six conditions, in the record's words">
-        {elements.map((e, i) => (
-          <li key={e.title} data-on={LAYERS[i] === focus || undefined}>
-            <h3>{e.title}</h3>
-            <p>{e.body}</p>
-          </li>
-        ))}
-      </ol>
-      <p className={s.figNote}><Glyph g="▲" /> The plan, its people and every mark on it are a teaching drawing. Noise, sight and light are drawn as direction and reach, never as a measurement; the record names the dimensions but gives no room settings.</p>
+      <div className={s.conditionReading} data-condition={focus} aria-live="polite" aria-atomic="true">
+        <ConditionMark condition={focus} />
+        <div><span>Attention turns to</span><strong>{selectedElement.title}</strong></div>
+        <p>{current.description}</p>
+      </div>
     </div>
   );
 }
-
-/* ------------------------------------------------------------------------
-   A room that stops supporting the task
-   --------------------------------------------------------------------- */
-
-const coil = (x0: number, x1: number, y: number, turns: number): string => {
-  const pts: Pt[] = [];
-  const n = turns * 14;
-  for (let i = 0; i <= n; i++) {
-    const a = (i / n) * turns * Math.PI * 2;
-    pts.push([x0 + ((x1 - x0) * i) / n + Math.cos(a) * 9, y + Math.sin(a) * 11]);
-  }
-  return hand.curve(pts, { seed: 4, wander: 0.3 });
-};
 
 export function WorkspaceStress({ steps, caption }: { steps: string[]; caption: string }) {
-  const [level, setLevel] = useState(0);
-  const shoulder = (cx: number, cy: number, rx: number, ry: number, seed: number) => hand.curve(Array.from({ length: 11 }, (_, i) => { const t = Math.PI + (i / 10) * Math.PI; return [cx + Math.cos(t) * rx, cy - Math.sin(t) * ry] as Pt; }), { seed, wander: 0.4 });
-  const label = [
-    "One person at one desk in a calm room. The work and the effort it costs are the same length, and performance and wellbeing are undisturbed.",
-    "One person at one desk. A window throws glare on the screen, a neighbour's talk carries across, and the neighbours sit close. The work and the effort it costs are still the same length.",
-    "One person at one desk, with glare, carried talk and close neighbours. The work keeps its length, but the effort it costs now runs on into a long red coil of extra effort.",
-    "One person at one desk, with glare, carried talk and close neighbours. The extra effort beyond the work is labelled workspace stress.",
-    "One person at one desk, with glare, carried talk and close neighbours. The extra effort is labelled workspace stress, and performance and wellbeing are drawn with ripples round them: affected.",
-  ][level];
-
+  const [index, setIndex] = useState(0);
+  const current = steps[index] ?? steps[0] ?? "The proposed explanation is not available.";
   return (
-    <div className={s.stress} data-level={level}>
-      <figure className={s.stressFigure}>
-        <div className={s.stressStage}>
-          <svg className={s.stressSvg} viewBox="0 0 640 300" role="img" aria-label={label}>
-            {/* the workstation, from above */}
-            <path className={s.stressWindow} d={L(40, 30, 140, 30, 11, 5, 0.6) + L(40, 36, 140, 36, 12, 5, 0.6)} filter="url(#folio-pencil)" />
-            <path className={s.stressInk} d={L(56, 116, 268, 116, 1, 8, 1) + L(268, 116, 268, 164, 2, 4, 1) + L(268, 164, 56, 164, 3, 8, 1) + L(56, 164, 56, 116, 4, 4, 1)} filter="url(#folio-pencil)" />
-            <path className={s.stressInk} d={L(124, 124, 190, 124, 5, 4, 0.6) + L(190, 124, 190, 144, 6, 3, 0.6) + L(190, 144, 124, 144, 7, 4, 0.6) + L(124, 144, 124, 124, 8, 3, 0.6)} filter="url(#folio-pencil)" />
-            <path className={s.stressPaper} d={L(72, 124, 108, 124, 9, 3, 0.5) + L(108, 124, 108, 156, 10, 3, 0.5) + L(108, 156, 72, 156, 13, 3, 0.5) + L(72, 156, 72, 124, 14, 3, 0.5) + L(78, 134, 102, 134, 15, 2, 0.3) + L(78, 142, 102, 142, 16, 2, 0.3) + L(78, 150, 94, 150, 17, 2, 0.3)} filter="url(#folio-pencil)" />
-            <path className={s.stressFill} d={`${shoulder(160, 228, 40, 24, 20)}Z`} />
-            <path className={s.stressInk} d={shoulder(160, 228, 40, 24, 21)} filter="url(#folio-pencil)" />
-            <path className={s.stressInk} d={hand.ring(160, 204, 17, 18, { seed: 22 })} filter="url(#folio-pencil)" />
-
-            {/* 1 · what the room does when it does not support the task */}
-            <g className={s.stressStep} data-on={level >= 1 || undefined}>
-              {[0, 1, 2, 3, 4, 5].map((i) => <path key={i} className={s.stressRay} d={L(50 + i * 16, 42, 128 + i * 9, 112, 30 + i, 4, 0.6)} filter="url(#folio-pencil)" />)}
-              {[26, 46, 68].map((r, k) => <path key={r} className={s.stressRing} style={{ opacity: 0.95 - k * 0.24 }} d={hand.ring(292, 208, r, r, { seed: 40 + k, wobble: 0.03 })} filter="url(#folio-pencil)" />)}
-              <path className={s.stressFill} d={`${shoulder(292, 246, 32, 20, 50)}Z`} />
-              <path className={s.stressInk} d={shoulder(292, 246, 32, 20, 51)} filter="url(#folio-pencil)" />
-              <path className={s.stressInk} d={hand.ring(292, 224, 14, 15, { seed: 52 })} filter="url(#folio-pencil)" />
-              <path className={s.stressFill} d={`${shoulder(38, 246, 32, 20, 53)}Z`} />
-              <path className={s.stressInk} d={shoulder(38, 246, 32, 20, 54)} filter="url(#folio-pencil)" />
-            </g>
-
-            {/* the same work, and what it costs */}
-            <path className={s.workLine} d={L(360, 90, 500, 90, 60, 6, 0.8)} filter="url(#folio-pencil)" />
-            <path className={s.workLine} d={L(360, 170, 500, 170, 61, 6, 0.8)} filter="url(#folio-pencil)" />
-            <path className={s.sameEnd} d={L(500, 66, 500, 196, 62, 6, 0.6)} />
-            {/* 2 · more effort for the same work */}
-            <g className={s.stressStep} data-on={level >= 2 || undefined}>
-              <path className={s.stressCoil} d={coil(500, 612, 170, 5)} filter="url(#folio-pencil)" />
-            </g>
-            {/* 4 · performance and wellbeing */}
-            {[400, 540].map((x, i) => (
-              <g key={x}>
-                <path className={s.outcome} d={hand.ring(x, 254, 18, 18, { seed: 70 + i })} filter="url(#folio-pencil)" />
-                <g className={s.stressStep} data-on={level >= 4 || undefined}>
-                  {[28, 38].map((r, k) => <path key={r} className={s.ripple} d={hand.ring(x, 254, r, r, { seed: 80 + i * 2 + k, wobble: 0.04 })} filter="url(#folio-pencil)" />)}
-                </g>
-              </g>
-            ))}
-          </svg>
-          <span className={s.stressLabel} style={{ left: "56%", top: "22%" } as CSSProperties}>the work</span>
-          <span className={s.stressLabel} style={{ left: "56%", top: "62%" } as CSSProperties}>the effort it costs</span>
-          <span className={s.stressLabel} data-when="step" data-on={level >= 3 || undefined} style={{ left: "77%", top: "44%" } as CSSProperties}>workspace stress</span>
-          <span className={s.stressLabel} style={{ left: "77%", top: "22%" } as CSSProperties}>same work</span>
-          <span className={s.stressLabel} style={{ left: "62.5%", top: "93%", transform: "translateX(-50%)" } as CSSProperties}>performance</span>
-          <span className={s.stressLabel} style={{ left: "84.4%", top: "93%", transform: "translateX(-50%)" } as CSSProperties}>wellbeing</span>
-        </div>
-      </figure>
-
-      <div className={s.stressPanel}>
-        <Choices<string>
-          className={s.stressChoices}
-          label="Walk the mechanism, one step at a time"
-          value={String(level)}
-          onChange={(v) => setLevel(Number(v))}
-          options={[{ value: "0", label: "A room that supports the task", hint: "the counterfactual" }, ...steps.map((st, i) => ({ value: String(i + 1), label: st, hint: `step ${i + 1}` }))]}
-        />
-        <p className={s.stressReading} aria-live="polite">
-          {[
-            "The room supports the task, so the effort it costs matches the work. This is the counterfactual; the record describes only what happens when support fails.",
-            "The room stops supporting the task: glare on the screen, talk that carries, neighbours close. The work is exactly as long as it was.",
-            "The same work now costs more: the extra is effort spent coping with the room rather than doing the job. What changed is not the work but what it costs.",
-            "That additional effort, spent on the room rather than on the job, is what Vischer calls workspace stress.",
-            "Performance and wellbeing are affected. The record says affected, and no more: this drawing shows no direction and no amount.",
-          ][level]}
-        </p>
-        <ol className={s.chain} aria-label="The mechanism, in four steps">
-          {steps.map((st, i) => (
-            <li key={st} data-on={level > i || undefined}>
-              <span className={s.chainNum} aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
-              <span>{st}</span>
-            </li>
-          ))}
-        </ol>
+    <div className={s.stressRead}>
+      <div className={s.stressStates} role="group" aria-label="Read the proposed workspace-stress account">
+        {steps.map((step, i) => (
+          <button key={step} type="button" aria-pressed={i === index} onClick={() => setIndex(i)}>
+            <span aria-hidden="true">0{i + 1}</span>{step}
+          </button>
+        ))}
       </div>
-      <p className={s.figNote}><Glyph g="▲" /> {caption}</p>
+      <div className={s.stressCurrent} aria-live="polite" aria-atomic="true">
+        <p className={s.smallHead}>In view</p>
+        <p>{current}</p>
+      </div>
+      <p className={s.editorialCaution}><Glyph g="▲" /> {caption}</p>
     </div>
   );
 }
 
-/* ------------------------------------------------------------------------
-   The trade-off the open plan cannot escape
-   --------------------------------------------------------------------- */
-
-const ENCLOSURE = ["enclosed", "mixed", "open"] as const;
+type ThreeStateIndex = 0 | 1 | 2;
 
 export function Tradeoff({ demo, interactions }: { demo: TheoryDemo; interactions: Interaction[] }) {
-  const [i, setI] = useState(0);
-  const st = demo.states![i];
-  const roads = demo.roads!;
-  const state = ENCLOSURE[i];
+  const [index, setIndex] = useState<ThreeStateIndex>(0);
+  if (demo.type !== "dual-path" || !demo.states || !demo.roads) throw new Error("Workplace Design requires its two-road enclosure reading");
+  const selected = demo.states[index];
+  const selectedOption = demo.options[index];
+  if (!selected || !selectedOption) throw new Error(`Workplace Design is missing enclosure state ${index}`);
+  const [communication, privacy] = demo.roads;
+  if (!communication || !privacy) throw new Error("Workplace Design requires communication and privacy readings");
+
   return (
-    <div className={s.trade} data-state={state}>
-      <figure className={s.tradeFigure}>
-        <svg className={s.planSvg} viewBox="0 0 640 400" role="img" aria-label={`The office plan, ${demo.options[i]}: ${st.t}`}>
-          <PlanBase />
-          <Partitions state={state} />
-          <StrandsAndBubbles ids={CROWDED} comm={st.a} privacy={st.b} />
-          <People ids={CROWDED} />
-        </svg>
+    <div className={s.tradeoff}>
+      <figure className={s.tradeoffImage} data-state={index}>
+        <div className={s.tradeoffWindow}>
+          <Image src="/visual-language/theories/wp/wp-access-and-exposure-v1.webp" width={1536} height={1024} sizes="(max-width: 700px) 100vw, 48vw" alt="A pencil plan fragment with two workstations on either side of an opening. A blue route passes through the opening while an ochre sightline crosses both sides." loading="lazy" unoptimized />
+        </div>
+        <figcaption><Glyph g="▲" /> One constructed plan fragment: the blue line marks a possible contact route and the ochre line a sightline. Both cross the same opening; neither is a measured consequence.</figcaption>
       </figure>
-
-      <div className={s.tradePanel}>
-        <Choices<string>
-          label={demo.label}
-          value={String(i)}
-          onChange={(v) => setI(Number(v))}
-          options={demo.options.map((o, k) => ({ value: String(k), label: o }))}
-        />
-        <p className={s.srOnly} aria-live="polite">{st.t}</p>
-        <ol className={s.states} aria-label="The three layouts, in the record's words">
-          {demo.options.map((o, k) => (
-            <li key={o} data-on={k === i || undefined}>
-              <b>{o}</b> {demo.states![k].t}
-            </li>
-          ))}
-        </ol>
-        <ul className={s.roads} aria-label="What the two lines on the plan stand for">
-          <li className={s.roadComm}>
-            <svg viewBox="0 0 60 16" aria-hidden="true"><path d={L(3, 8, 57, 8, 3, 4, 0.6)} style={{ strokeWidth: 1.4 + st.a * 4.6, strokeDasharray: st.a < 0.3 ? "2 10" : st.a < 0.7 ? "9 6" : "none" }} /></svg>
-            <span><b>{roads[0].label}</b><i>{roads[0].sub}</i></span>
-          </li>
-          <li className={s.roadPriv}>
-            <svg viewBox="0 0 60 16" aria-hidden="true"><path d={hand.ring(30, 8, 22, 6, { seed: 4, wobble: 0.02 })} style={{ strokeWidth: 1.1 + st.b * 3.6, strokeDasharray: st.b > 0.8 ? "none" : st.b > 0.4 ? "10 6" : "3 12" }} /></svg>
-            <span><b>{roads[1].label}</b><i>{roads[1].sub}</i></span>
-          </li>
-        </ul>
-        <p className={s.figNote}><Glyph g="▲" /> {demo.caption}</p>
+      <div className={s.tradeoffRead}>
+        <div className={s.enclosureChoices} role="group" aria-label={demo.label}>
+          {ENCLOSURE_STATES.map((stateIndex) => {
+            const option = demo.options[stateIndex];
+            if (!option) throw new Error(`Workplace Design is missing enclosure option ${stateIndex}`);
+            return (
+              <button key={option} type="button" aria-pressed={stateIndex === index} onClick={() => setIndex(stateIndex)}>{option}</button>
+            );
+          })}
+        </div>
+        <p className={s.tradeoffCurrent} aria-live="polite" aria-atomic="true">{selected.t}</p>
+        <div className={s.tradeoffDimensions}>
+          <p><b>{communication.label}</b><span>{communication.sub}</span></p>
+          <p><b>{privacy.label}</b><span>{privacy.sub}</span></p>
+        </div>
       </div>
-
-      <ol className={s.ledger}>
-        {interactions.map((x, k) => (
-          <li key={x.title} data-finding={k === 2 || undefined}>
-            <p className={s.ledgerKick}>{x.kicker}</p>
-            <h3>{x.title}</h3>
-            <Rich as="p" html={x.body} />
+      <ol className={s.tradeoffNotes}>
+        {interactions.map((item, i) => (
+          <li key={item.title} data-current={i === 2 || undefined}>
+            <p>{item.kicker}</p><h3>{item.title}</h3><Rich as="p" html={item.body} />
           </li>
         ))}
       </ol>
+      <p className={s.editorialCaution}><Glyph g="▲" /> {demo.caption} Neither line is a quantity, and no office type is assigned an optimum.</p>
     </div>
   );
 }

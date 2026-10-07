@@ -126,10 +126,10 @@ export const CONCEPTUAL_PROBES = {
   setRules: probe(
     "set-exchange-rule",
     "toggle",
-    '#rules button:has-text("Generalised reciprocity")',
+    '#rule button:has-text("Generalised reciprocity")',
     "Generalised reciprocity",
-    "aria-pressed changes and only the return is redrawn, through the wider group, while the same helping act stays in place",
-    { stableSelector: "#rules [data-rule]", reducedMotion: true },
+    "aria-pressed changes and the live explanation identifies the selected return rule while all four rule options remain available",
+    { stableSelector: "#rule [data-rule]", reducedMotion: true },
   ),
   setResponse: probe(
     "set-response-activity",
