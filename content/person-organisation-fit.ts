@@ -21,6 +21,17 @@ export const personOrganisationFit: TheoryRecord = {
   statusChip: "Subtype of P–E Fit",
   topics: ["person-organisation fit", "values congruence", "organisational culture", "attraction selection attrition", "supplementary fit", "complementary fit", "organizational culture profile", "recruitment"],
   facts: ["a subtype of P–E fit", "Attraction–Selection–Attrition", "1987 → 2023", "7 sources"],
+  sourceNotes: [
+    { key: "supplementary-complementary", label: "Alike, or completing", body: "Kristof broadened the definition of P–O fit beyond values congruence by taking in Muchinsky and Monahan’s distinction between supplementary and complementary fit. Supplementary fit occurs when the two parties share similar levels of a characteristic. Complementary fit occurs when one party completes the other, as a puzzle piece fits into a larger whole. Value congruence is a form of supplementary fit; needs–supplies fit is complementary, with the organisation filling a need of the person, or the reverse.", source: "Kristof-Brown, Schneider & Su (2023)" },
+    { key: "asa-relative", label: "Relative sameness, not total sameness", body: "Schneider’s attraction–selection–attrition model carries three claims: organisations are relatively homogeneous inside (the homogeneity hypothesis); organisations differ from one another in the kinds of people they attract, select and keep (the organisational-differences hypothesis); and, least studied of the three, that homogeneity may make organisations less innovative and successful over time. The authors stress the word relative: Schneider argued for relative homogeneity within organisations and heterogeneity between them, not that everyone in a firm is the same.", source: "Kristof-Brown, Schneider & Su (2023)" },
+    { key: "cable-derue-outcomes", label: "What the three perceptions went with", body: "In a longitudinal study of 187 managers, perceived P–O fit was related to organisation-focused outcomes (organisational identification, citizenship behaviours, turnover decisions). Needs–supplies fit was related to job- and career-focused outcomes (job satisfaction, career satisfaction, occupational commitment). Demands–abilities fit emerged as a distinct perception but was not related to the hypothesised outcomes (job performance, raises). The abstract reports no effect sizes and none are shown here.", source: "Cable & DeRue (2002), abstract" },
+    { key: "conundrum-1", label: "What exactly is P–O fit?", body: "The term can be defined narrowly or broadly, but it has to be told apart from other forms of person–environment fit.", source: "Kristof-Brown, Schneider & Su (2023)" },
+    { key: "conundrum-2", label: "What is the best way to measure it?", body: "There are several ways, each with strengths and liabilities, and what is measured on the person’s side and on the organisation’s side can vary across many attributes.", source: "Kristof-Brown, Schneider & Su (2023)" },
+    { key: "conundrum-3", label: "At what level of analysis does it sit?", body: "It is conceptually cross-level, yet it has most often been studied as an individual-level variable.", source: "Kristof-Brown, Schneider & Su (2023)" },
+    { key: "conundrum-4", label: "To what extent does it matter?", body: "Quite a bit, especially for individual attitudes and for turnover, with many caveats, among them how it is measured and national culture.", source: "Kristof-Brown, Schneider & Su (2023)" },
+    { key: "conundrum-5", label: "Is it always desirable?", body: "For individuals generally yes, though there can be benefits of misfit; for organisations the answer is still unknown, particularly with regard to diversity.", source: "Kristof-Brown, Schneider & Su (2023)" },
+    { key: "conundrum-6", label: "What follows when fit changes over time?", body: "People clearly engage in purposeful activity to establish fit in their lives, and purposeful organisational tactics for achieving productive fit are recommended.", source: "Kristof-Brown, Schneider & Su (2023)" },
+  ],
 
   order: [
     "terminology", "relatedTo", "idea", "pathways", "categories",
@@ -89,7 +100,7 @@ export const personOrganisationFit: TheoryRecord = {
   ],
 
   categoriesLede:
-    "Kristof's review separates two things the word “fit” runs together. They are not degrees of the same thing — they pull in opposite directions.",
+    "Kristof's review separates two things the word “fit” runs together. They are not degrees of the same thing — they ask different questions, and pull apart in what a hiring process selects for.",
   categoriesNote:
     "This is where the ASA cost becomes visible. Hiring for <b>supplementary</b> fit adds resemblance; hiring for <b>complementary</b> fit adds what is missing. An organisation that recruits mainly on “culture fit” is choosing the first and calling it the second.",
   categories: [
@@ -196,7 +207,7 @@ export const personOrganisationFit: TheoryRecord = {
   ],
 
   provenance: [
-    { glyph: "●", colour: "var(--red)", label: "Source-grounded", note: "The ASA framework, the supplementary–complementary distinction, the fit targets, the Organizational Culture Profile and the three subjective fit perceptions are drawn from the seven cited works, each attributed to the paper that introduced it." },
+    { glyph: "●", colour: "var(--red)", label: "Source-grounded", note: "The ASA framework, the supplementary–complementary distinction, the fit targets, the Organizational Culture Profile and the three subjective fit perceptions are drawn from the seven cited works, each attributed to the paper that introduced it. The notes headed “What the sources add” and the six open questions restate the abstract of Cable & DeRue (2002) and the text of Kristof-Brown, Schneider & Su (2023), paraphrased rather than quoted." },
     { glyph: "■", colour: "var(--teal)", label: "Plain-language paraphrase", note: "Definitions and the ASA stages are restated in ordinary words rather than quoted. No effect size, correlation or meta-analytic magnitude appears anywhere on this page, because none was supplied." },
     { glyph: "▲", colour: "var(--pen-3)", label: "Teaching analogy", note: "The three-perception control is an explanatory device. It separates constructs; it does not score a person, an organisation or a relationship between them." },
     { glyph: "✦", colour: "var(--pen-3)", label: "Editorial framing", note: "Opening on the naming correction, and the observation that recruiting on “culture fit” selects supplementary fit while describing it as complementary, are ours. The underlying distinction is Kristof's; the application to hiring language is our reading." },

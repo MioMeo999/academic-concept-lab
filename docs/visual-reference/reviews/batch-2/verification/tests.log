@@ -1,0 +1,145 @@
+
+> site-creator-vinext-starter@0.1.0 test
+> npm run build && tsx --test tests/rendered-html.test.mjs tests/atlas-metadata.test.ts tests/neighbourhood.test.ts tests/design-manifest.test.ts tests/verification-config.test.ts
+
+
+> site-creator-vinext-starter@0.1.0 build
+> vinext build
+
+
+  vinext build  (Vite 8.0.13)
+
+[1/5] analyze client references...
+[2K
+transforming...✓ 306 modules transformed.
+rendering chunks...
+✓ built in 1.27s
+[2/5] analyze server references...
+[2K
+transforming...✓ 205 modules transformed.
+rendering chunks...
+✓ built in 706ms
+[3/5] build rsc environment...
+[2K
+transforming...✓ 312 modules transformed.
+rendering chunks...
+computing gzip size...
+✓ built in 1.44s
+[4/5] build client environment...
+[2K
+transforming...✓ 212 modules transformed.
+rendering chunks...
+computing gzip size...
+✓ built in 1.01s
+[5/5] build ssr environment...
+[2K
+transforming...✓ 211 modules transformed.
+rendering chunks...
+computing gzip size...
+✓ built in 642ms
+[0m
+  Route (app)
+  ┌ ? /
+  ├ ? /concept-lab
+  ├ ? /concept-lab/about
+  ├ ? /concept-lab/library
+  ├ ƒ /concept-lab/mechanism/:slug
+  ├ ƒ /concept-lab/method/:slug
+  ├ ? /concept-lab/method/reflexive-thematic-analysis
+  ├ ? /concept-lab/saved
+  ├ ƒ /concept-lab/study/:slug
+  ├ ƒ /concept-lab/theory/:slug
+  └ ? /concept-lab/theory/affective-events-theory
+
+  ƒ Dynamic  ? Unknown
+
+  ? Some routes could not be classified. vinext currently uses static analysis
+    and cannot detect dynamic API usage (headers(), cookies(), etc.) at build time.
+    Automatic classification will be improved in a future release.
+  Build complete. Run `vinext start` to start the production server.
+
+✔ atlas metadata validates against the current record registry (2.5583ms)
+✔ music psychology branches are ordered, scoped, and labelled (0.297ms)
+✔ knowledge forms expose the controlled values and display labels (0.1145ms)
+✔ the ten core records have stable branch and form classifications (0.3171ms)
+✔ literature standing stays plural and follows accepted record identity (0.1557ms)
+✔ Music Preference remains unassigned to a premature branch (0.0784ms)
+✔ typed relations preserve direction and generate reciprocal labels (0.271ms)
+✔ symmetric relation duplicates are rejected regardless of endpoint order (0.2349ms)
+✔ learning paths preserve the approved deterministic order (0.1711ms)
+✔ atlas presentation groups stay registry-backed and live (0.4815ms)
+✔ core theory slugs and route vocabulary remain stable (0.2556ms)
+✔ art asset ids are unique and every registered source exists (4.2375ms)
+✔ documented crop candidates stay inside their source dimensions (0.2111ms)
+✔ experience art references resolve to registered assets (0.1384ms)
+✔ canonical routes stay distinct from historical benchmark routes (0.1186ms)
+✔ Home fragments resolve every crop through the art manifest (0.1317ms)
+✔ frozen benchmark experiences point only to frozen artwork (0.1291ms)
+✔ candidate experiences use only their own record's active artwork (0.1646ms)
+✔ neighbourhood prefers several explicit outgoing relations (1.3119ms)
+✔ incoming relations are retained without reversing their wording (0.1675ms)
+✔ different record kinds remain visible in a direct relation (0.1117ms)
+✔ typed atlas relations remain available as canonical relation metadata (0.1226ms)
+✔ legacy slug references still resolve to their registered record (0.1157ms)
+✔ records without defensible relations receive a field fallback (0.0873ms)
+✔ neighbourhoods stay bounded (0.4334ms)
+✔ server renders /concept-lab (1037.4175ms)
+✔ server renders /concept-lab/library (448.276ms)
+✔ server renders /concept-lab/about (415.3736ms)
+✔ Affective Events Theory uses the dedicated canonical experience (48.7644ms)
+✔ temporary AET benchmark route is retired (222.8751ms)
+✔ Predictive Processing in Music preserves its model boundaries (0.1837ms)
+✔ IDyOM renders validated probability teaching systems (0.2333ms)
+✔ statistical learning record renders its audited teaching systems (0.2651ms)
+✔ home describes all four record kinds (0.1197ms)
+✔ Person–Environment Fit presents its canonical correspondence pairs and boundaries (0.4941ms)
+✔ Study Library renders its three-study evidence dossier (0.2528ms)
+✔ Method Library presents both canonical practices and returns to their full records (0.1718ms)
+✔ Mechanism Library traces the HPA pathway and preserves its scholarly boundary (0.3957ms)
+✔ HPA detail page preserves the canonical cascade caption (0.0997ms)
+✔ theory editorial numbers follow the rendered field and branch order (1.1447ms)
+✔ theory editorial numbers remain stable when the field is filtered (1.0694ms)
+✔ the root Library orients readers by knowledge form, discipline, and encoded routes (1.0654ms)
+✔ the library links to every record (0.0659ms)
+✔ record page /concept-lab/theory/person-environment-fit (239.3663ms)
+✔ record page /concept-lab/theory/job-demands-resources (260.9811ms)
+✔ record page /concept-lab/theory/person-organisation-fit (253.2602ms)
+✔ record page /concept-lab/theory/workplace-design (252.7805ms)
+✔ record page /concept-lab/theory/affective-events-theory (235.37ms)
+✔ record page /concept-lab/theory/self-determination-theory (276.7627ms)
+✔ record page /concept-lab/theory/social-exchange-theory (257.3634ms)
+✔ record page /concept-lab/study/tuned-out-or-dialed-in (243.6805ms)
+✔ record page /concept-lab/theory/gestalt-principles-in-music (246.2935ms)
+✔ record page /concept-lab/theory/auditory-scene-analysis (264.0212ms)
+✔ record page /concept-lab/theory/tonal-hierarchy (266.5005ms)
+✔ record page /concept-lab/theory/generative-theory-of-tonal-music (245.4679ms)
+✔ record page /concept-lab/theory/meyers-expectancy-theory (270.6684ms)
+✔ record page /concept-lab/theory/narmours-implication-realization-theory (259.0625ms)
+✔ record page /concept-lab/theory/hurons-itpra-theory-of-expectation (247.0468ms)
+✔ record page /concept-lab/theory/statistical-learning-of-music (252.9618ms)
+✔ record page /concept-lab/theory/idyom-information-dynamics-of-music (247.8068ms)
+✔ record page /concept-lab/theory/predictive-processing-in-music (262.3789ms)
+✔ record page /concept-lab/theory/music-preference (257.191ms)
+✔ record page /concept-lab/method/interpretative-phenomenological-analysis (243.1948ms)
+✔ record page /concept-lab/method/reflexive-thematic-analysis (234.2773ms)
+✔ record page /concept-lab/mechanism/hpa-axis (261.389ms)
+✔ redesigned job-demands-resources keeps its complete scholarly apparatus (252.7761ms)
+✔ redesigned hpa-axis keeps its complete scholarly apparatus (244.2985ms)
+✔ redesigned interpretative-phenomenological-analysis keeps its complete scholarly apparatus (256.6068ms)
+✔ redesigned tonal-hierarchy keeps its complete scholarly apparatus (276.5569ms)
+✔ redesigned records keep their record-specific teaching boundaries (1032.7449ms)
+✔ every internal record link resolves (5908.1853ms)
+✔ every landing-page library link opens the intended kind experience (2463.6444ms)
+✔ globals.css does not redefine class names the lab owns (20.8244ms)
+✔ verification harness keeps the required route and viewport contract (2.3761ms)
+✔ conceptual probes resolve to representative routes with an explicit policy (0.2785ms)
+✔ contact-sheet modes preserve their distinct screenshot sources (0.1182ms)
+✔ review warnings do not turn a healthy structural gate into a failure (0.1644ms)
+ℹ tests 77
+ℹ suites 0
+ℹ pass 77
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 21154.0196

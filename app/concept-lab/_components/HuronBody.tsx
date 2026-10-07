@@ -7,6 +7,7 @@ import { AudioExample } from "./AudioExample";
 import { Rich, SecHead, Divider, pad2 } from "./Sketch";
 import { RecordShell } from "./RecordShell";
 import { EvidenceXray as EvidenceCards } from "./TheoryPatterns";
+import { HuronPageHero } from "./batch2/Batch2RecordHeroes";
 
 type Block = { key: string; toc: string; title: string; colour: string; body: ReactNode };
 
@@ -47,14 +48,18 @@ function TimingStrip({ preset }: { preset: HuronTimingPreset }) {
   const actual = delayed ? 82 : 70;
   return (
     <div className="huron-timing-strip" role="img" aria-label={`${preset.label}: expected onset ${preset.expectedOnset}; actual onset ${preset.actualOnset}; delay ${preset.delay}.`}>
-      <div className="huron-timing-axis"><span>context</span><span>expected arrival</span><span>outcome</span></div>
+      <div className="huron-timing-axis"><span>shared context</span><span>later in phrase</span></div>
       <div className="huron-timing-track">
         <span className="huron-timing-context" />
         {delayed && <span className="huron-timing-expected" style={{ "--huron-left": "70%" } as CSSProperties}><b>expected</b></span>}
         <span className="huron-timing-actual" style={{ "--huron-left": `${actual}%` } as CSSProperties}><b>{delayed ? "actual" : "expected = actual"}</b></span>
         <span className="huron-timing-outcome" style={{ "--huron-left": `${actual}%` } as CSSProperties}>C5</span>
       </div>
-      <p className="huron-timing-caption">Expected: {preset.expectedOnset} · actual: {preset.actualOnset} · delay: {preset.delay}</p>
+      <dl className="huron-timing-readout">
+        <div><dt>Expected arrival</dt><dd>{preset.expectedOnset}</dd></div>
+        <div><dt>Actual arrival</dt><dd>{preset.actualOnset}</dd></div>
+        <div><dt>Delay</dt><dd>{preset.delay}</dd></div>
+      </dl>
     </div>
   );
 }
@@ -88,22 +93,22 @@ function WaitForIt({ data }: { data: HuronRecordContent["opening"]["timing"] }) 
 }
 
 function ResponseTimeline({ windows }: { windows: HuronResponseWindow[] }) {
-  const row: Record<string, number> = { imagination: 1, tension: 2, prediction: 3, reaction: 4, appraisal: 5 };
   return (
-    <div className="huron-timeline" role="img" aria-label="Outcome-centred ITPRA timeline. Imagination extends toward the outcome, tension operates near it, Prediction and Reaction begin after onset in parallel, and Appraisal forms a slower tail.">
-      <div className="huron-timeline-axis"><span>long before</span><span>approaching outcome</span><b>OUTCOME ONSET</b><span>later / recurring</span></div>
+    <div className="huron-timeline" role="group" aria-label="Outcome-centred ITPRA response windows">
+      <div className="huron-timeline-axis"><span>Response window</span><div className="huron-timeline-scale"><span>long before</span><span>approaching outcome</span><b>OUTCOME ONSET</b><span>later / recurring</span></div></div>
       <div className="huron-timeline-lanes">
-        <span className="huron-outcome-line" aria-hidden="true" />
         {windows.map((window) => (
-          <article className={`huron-response-window huron-${window.key}`} key={window.key} style={{ "--huron-start": `${window.start}%`, "--huron-width": `${window.end - window.start}%`, "--huron-colour": window.colour, gridRow: row[window.key] } as CSSProperties}>
-            <div><b>{window.label}</b><span>{window.epoch}</span></div>
-            <p>{window.question}</p>
-            <small>{window.body}</small>
+          <article className={`huron-response-window huron-${window.key}`} key={window.key} style={{ "--huron-start": `${window.start}%`, "--huron-width": `${window.end - window.start}%`, "--huron-colour": window.colour } as CSSProperties}>
+            <div className="huron-response-copy">
+              <div className="huron-response-heading"><b>{window.label}</b><span>{window.epoch}</span></div>
+              <p>{window.question}</p>
+              <small>{window.body}</small>
+              <p className="huron-response-function"><b>Function</b> {window.function}</p>
+              <small className="huron-response-boundary"><b>Boundary</b> {window.boundary}</small>
+            </div>
+            <div className="huron-response-track" aria-hidden="true"><span className="huron-response-band" /><span className="huron-response-onset" /></div>
           </article>
         ))}
-      </div>
-      <div className="huron-timeline-text">
-        {windows.map((window) => <div key={window.key}><b>{window.label}</b><span>{window.function}</span><small>Boundary: {window.boundary}</small></div>)}
       </div>
     </div>
   );
@@ -162,7 +167,7 @@ function SourceChannels({ sources }: { sources: HuronRecordContent["sourcesOfExp
 
 function FinalModel({ data }: { data: HuronRecordContent }) {
   return (
-    <div className="huron-final-model" role="img" aria-label="Concept Lab synthesis: parallel expectation sources feed an outcome-centred timeline with imagination and tension before onset, prediction and reaction in parallel after onset, and a slower appraisal tail.">
+    <div className="huron-final-model" role="group" aria-label="Concept Lab synthesis: parallel expectation sources feed an outcome-centred timeline with imagination and tension before onset, prediction and reaction in parallel after onset, and a slower appraisal tail.">
       <p className="k"><Mark>✦</Mark> Concept Lab synthesis</p>
       <SourceChannels sources={data.sourcesOfExpectation.sources} />
       <ResponseTimeline windows={data.timeline.windows} />
@@ -206,5 +211,5 @@ export function HuronBody({ record: r }: { record: TheoryRecord }) {
   add("provenance", "Provenance", "Where every claim came from", "var(--teal)", <div className="prov huron-provenance">{r.provenance.map((item) => <div className="prov-item" key={item.label} data-reveal="rise"><span className="g" style={{ color: item.colour }} aria-hidden="true">{item.glyph}</span><div><h3>{item.label}</h3><p>{item.note}</p></div></div>)}</div>);
 
   const toc: [string, string, string][] = blocks.map((block, index) => [`${String(index + 1).padStart(2, "0")}`, block.toc, `s${index + 1}`]);
-  return <RecordShell record={r} toc={toc}>{blocks.map((block, index) => <span key={block.key} style={{ display: "contents" }}>{index > 0 && <Divider />}<section className="rec" id={`s${index + 1}`}><SecHead num={pad2(index + 1)} title={block.title} colour={block.colour} />{block.body}</section></span>)}</RecordShell>;
+  return <RecordShell record={r} toc={toc} hero={<HuronPageHero record={r} />}>{blocks.map((block, index) => <span key={block.key} style={{ display: "contents" }}>{index > 0 && <Divider />}<section className="rec" id={`s${index + 1}`}><SecHead num={pad2(index + 1)} title={block.title} colour={block.colour} />{block.body}</section></span>)}</RecordShell>;
 }

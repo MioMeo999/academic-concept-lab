@@ -1,0 +1,232 @@
+/* Predictive Processing in Music · the ghost and the sound
+   A model expects, and its expectation is drawn as a dashed teal ghost; what
+   arrives is drawn solid; what is left between them is red. Plum is the model
+   itself. Colour never works alone: a ghost is dashed, a sound is filled, a
+   mismatch is a hollow spike standing on a baseline, and each is named beside
+   it. */
+
+.page {
+  --accent: var(--teal-deep);
+  --c-model: var(--plum);
+  --c-ghost: var(--teal);
+  --c-error: var(--red);
+}
+.band { width: var(--folio-w); margin-inline: auto; }
+.band .h2 { margin: 0; font: 400 clamp(2.3rem, 5vw, 4.4rem)/.97 var(--read); letter-spacing: -.055em; }
+.band .h2 em { color: var(--accent); }
+.band .h3 { margin: .3rem 0 0; font: 400 clamp(1.7rem, 3.2vw, 2.7rem)/1.02 var(--read); letter-spacing: -.045em; }
+.band .h3 em { color: var(--accent); }
+.head { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: .6rem clamp(1.5rem, 4vw, 4rem); align-items: end; margin-bottom: clamp(2rem, 4.5vw, 3.4rem); }
+.head > :first-child { grid-column: 1 / -1; margin-bottom: 0; }
+.headLede { margin: 0; color: var(--pen-2); font: 400 1.03rem/1.6 var(--read); }
+.smallHead { margin: 0 0 .7rem; color: var(--pen-3); font: 600 .66rem/1.4 var(--cat); letter-spacing: .12em; text-transform: uppercase; }
+.subhead { margin: clamp(3.5rem, 7vw, 6rem) 0 clamp(1.4rem, 3vw, 2.2rem); max-width: 46rem; }
+.subheadFig { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 1.4rem clamp(1.5rem, 4vw, 4rem); align-items: end; margin: clamp(3.5rem, 7vw, 6rem) 0 clamp(1.4rem, 3vw, 2.2rem); }
+.subheadFig .subhead { margin: 0; }
+.aside { margin: 0; min-width: 0; }
+.pastNotes { opacity: .45; }
+.subLede { margin: .9rem 0 0; color: var(--pen-2); font: 400 1.03rem/1.6 var(--read); max-width: 56ch; }
+.note { margin: 1rem 0 0; max-width: 68ch; color: var(--pen-3); font: 400 .8rem/1.55 var(--cat); }
+.figNote { margin: .8rem 0 0; color: var(--pen-3); font: 400 .78rem/1.55 var(--cat); max-width: 60ch; }
+.sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* ---------- diagrams and drawn text ---------------------------------------- */
+.diagram { display: block; width: 100%; height: auto; overflow: visible; }
+.diagHead { fill: var(--pen); font: 500 20px var(--read); }
+.diagSub { fill: var(--pen-3); font: italic 400 14px var(--read); }
+.diagTag { fill: var(--pen); font: 500 15px var(--read); }
+.tag { fill: var(--pen-3); font: 500 12px var(--cat); }
+
+/* the ghost, the sound, the mismatch */
+.rung, .modelCloud, .sound, .soundNote { shape-rendering: auto; }
+.ghostNote path { fill: none; stroke: var(--c-ghost); stroke-width: 2.4; stroke-dasharray: 4 5; stroke-linecap: round; }
+.ghostNote[data-off] { opacity: .2; }
+.soundFill { fill: var(--pen); opacity: .86; }
+.soundInk { fill: none; stroke: var(--pen); stroke-width: 2.2; }
+.emptySlot path { fill: none; stroke: var(--pen-3); stroke-width: 2; stroke-dasharray: 2 6; stroke-linecap: round; }
+.spike path { fill: none; stroke: var(--c-error); stroke-width: 3; stroke-linecap: round; }
+.zero { fill: var(--pen-3); }
+.baseline { fill: none; stroke: var(--grey); stroke-width: 1.4; }
+.predDown { fill: none; stroke: var(--c-ghost); stroke-width: 1.8; stroke-dasharray: 2 6; stroke-linecap: round; opacity: .7; }
+.predDown[data-last] { stroke-width: 2.6; opacity: 1; }
+.slotBand { fill: var(--c-model); opacity: .08; }
+
+/* ---------- controls shared by the figures ---------------------------------- */
+.reading { margin: 0; max-width: 52ch; color: var(--pen); font: 400 1.03rem/1.58 var(--read); }
+.page button[aria-pressed] { padding: .95rem 1.35rem; }
+.range { -webkit-appearance: none; appearance: none; width: 100%; height: 44px; margin: 0; background: transparent; cursor: pointer; }
+.range::-webkit-slider-runnable-track { height: 3px; border-radius: 2px; background: var(--pen); }
+.range::-moz-range-track { height: 3px; border-radius: 2px; background: var(--pen); }
+.range::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; margin-top: -11.5px; border: 2.6px solid var(--accent); border-radius: 50%; background: #fff; }
+.range::-moz-range-thumb { width: 22px; height: 22px; border: 2.6px solid var(--accent); border-radius: 50%; background: #fff; }
+.range:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 4px; }
+.dose { display: grid; gap: 0; }
+.dose label { color: var(--pen-2); font: 500 .95rem/1.4 var(--read); }
+.dose b { color: var(--pen); font-weight: 600; }
+
+.ladder, .omission, .precision, .inference, .circuit { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 0 clamp(1.5rem, 4vw, 4rem); align-items: start; }
+.ladderFigure, .omissionFigure, .precisionFigure, .inferenceFigure, .circuitFigure { margin: 0; min-width: 0; background: #fff; }
+.ladderPanel, .omissionPanel, .precisionPanel, .inferencePanel, .circuitPanel { display: grid; gap: 1.1rem; min-width: 0; align-content: start; }
+
+/* the ladder: every rung is the model, so every rung is plum; predictions run down in teal, what is left over runs up in red */
+.rung { --hue: var(--plum-deep); }
+.rungFill { fill: var(--hue); opacity: .12; }
+.rungBox { fill: none; stroke: var(--hue); stroke-width: 2.6; }
+.rungLabel { fill: var(--pen); font: 600 15px var(--cat); letter-spacing: .1em; text-transform: uppercase; }
+.wave { fill: none; stroke: var(--pen); stroke-width: 2.6; stroke-linecap: round; }
+.railDown path, .railUp path { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; transition: opacity 320ms ease; }
+.railDown path { stroke: var(--c-ghost); }
+.railUp path { stroke: var(--c-error); }
+.railDown, .railUp { transition: opacity 320ms ease; }
+.ladder[data-flow="down"] .railUp { opacity: .18; }
+.ladder[data-flow="up"] .railDown { opacity: .18; }
+.railLabelDown { fill: var(--teal-deep); font: italic 500 16px var(--read); }
+.railLabelUp { fill: var(--red); font: italic 500 16px var(--read); }
+.directions, .levelList { margin: 0; padding: 0; list-style: none; display: grid; gap: .8rem; }
+.directions li { padding-left: .9rem; border-left: 2px solid var(--hair); color: var(--pen-3); font: 400 .96rem/1.55 var(--read); transition: color 300ms ease, border-color 300ms ease; }
+.directions li[data-on] { border-left: 3px solid var(--hue, var(--accent)); color: var(--pen); }
+.directions b, .levelList b { display: block; margin-bottom: .1rem; color: var(--pen-2); font: 600 .64rem/1.5 var(--cat); letter-spacing: .1em; text-transform: uppercase; }
+.directions li[data-on] b { color: var(--hue, var(--pen-2)); }
+.levelList { --hue: var(--plum-deep); padding-top: .9rem; border-top: 1px solid var(--hair); }
+.levelList li { padding-left: .9rem; border-left: 3px solid var(--hue); color: var(--pen-2); font: 400 .96rem/1.55 var(--read); }
+.levelList b { color: var(--hue); }
+
+/* the omission */
+.states { display: grid; gap: .9rem; margin: 0; }
+.states div { display: grid; gap: .15rem; padding-left: .9rem; border-left: 2px solid var(--hair); color: var(--pen-3); transition: color 300ms ease, border-color 300ms ease; }
+.states div[data-on] { border-left: 3px solid var(--c-ghost); color: var(--pen); }
+.omission[data-present="false"] .states div[data-on] { border-left-color: var(--c-error); }
+.states dt { color: var(--pen-2); font: 600 .62rem/1.4 var(--cat); letter-spacing: .1em; text-transform: uppercase; }
+.states dd { margin: 0; font: 400 1rem/1.5 var(--read); }
+.states b { display: block; margin-bottom: .1rem; font: 600 .8rem/1.4 var(--cat); letter-spacing: .04em; text-transform: uppercase; }
+.beats { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .5rem; margin: 0; padding: 0; list-style: none; color: var(--pen-2); font: 500 .8rem/1.3 var(--cat); }
+.beats li { padding: .25rem .65rem; border: 1.5px solid var(--pen-3); border-radius: 3px 9px 3px 8px; }
+.beats .beatArrow { padding: 0; border: 0; color: var(--pen-3); }
+.beats .expectedMark { border: 1.6px dashed var(--c-ghost); color: var(--teal-deep); }
+
+/* precision */
+.refA { fill: none; stroke: var(--teal); stroke-width: 1.8; stroke-dasharray: 4 6; opacity: .5; }
+.refB { fill: none; stroke: var(--red); stroke-width: 1.8; stroke-dasharray: 4 6; opacity: .5; }
+.envFill { fill: var(--hue); opacity: .16; transition: opacity 300ms ease; }
+.envCurve { fill: none; stroke: var(--hue); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+.axis { fill: none; stroke: var(--pen-2); stroke-width: 1.8; }
+.tickMark { fill: none; stroke: var(--pen-2); stroke-width: 1.6; }
+.meanLine { fill: none; stroke: var(--pen-3); stroke-width: 2; stroke-dasharray: 3 6; }
+.targetLine { fill: none; stroke: var(--pen); stroke-width: 3; stroke-linecap: round; }
+.reach path { fill: none; stroke: var(--pen); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.precisionStatic { margin-top: clamp(1.6rem, 3vw, 2.4rem); }
+.constants { display: flex; flex-wrap: wrap; gap: .3rem .5rem; margin: 0 0 1.4rem; padding: 0; list-style: none; }
+.constants li { padding: .2rem .65rem; border: 1.5px solid var(--pen-3); border-radius: 3px 9px 3px 8px; color: var(--pen-2); font: 500 .74rem/1.4 var(--cat); letter-spacing: .04em; }
+.contexts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.4rem, 3vw, 3rem); }
+.context { padding-top: .9rem; border-top: 3px solid var(--hue); transition: background 300ms ease; }
+.context[data-on] { background: var(--hair-2); }
+.contextHead { margin: 0; color: var(--hue); font: 600 .68rem/1.4 var(--cat); letter-spacing: .12em; text-transform: uppercase; }
+.contextHistory { margin: .4rem 0 0; color: var(--pen); font: 500 1.15rem/1.35 var(--read); }
+.contextStats { display: flex; flex-wrap: wrap; gap: .2rem 1rem; margin: .5rem 0 0; color: var(--pen-3); font: 600 .7rem/1.4 var(--cat); letter-spacing: .06em; text-transform: uppercase; }
+.contextBody { margin: .5rem 0 0; color: var(--pen-2); font: 400 .98rem/1.55 var(--read); }
+
+/* two things to do about a mismatch */
+.cloudFill { fill: var(--c-model); opacity: .18; }
+.cloudInk { fill: none; stroke: var(--plum-deep); stroke-width: 2.6; }
+.waveActual { fill: none; stroke: var(--pen); stroke-width: 3; stroke-linecap: round; transition: opacity 300ms ease; }
+.waveGhost { fill: none; stroke: var(--c-ghost); stroke-width: 2.4; stroke-dasharray: 4 6; stroke-linecap: round; }
+.predArrow path { fill: none; stroke: var(--c-ghost); stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; }
+.errArrow path { fill: none; stroke: var(--c-error); stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; }
+.errArrow, .actGroup, .edit { transition: opacity 320ms ease; }
+.errArrow[data-dim] { opacity: .2; }
+.actGroup { opacity: 0; }
+.actGroup[data-on] { opacity: 1; }
+.actGroup path { fill: none; stroke: var(--gold-deep); stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; }
+.stick { stroke: var(--pen-2) !important; stroke-width: 4 !important; }
+.stickTip { fill: var(--pen-2); }
+.edit { opacity: 0; }
+.edit[data-on] { opacity: 1; }
+.edit path { fill: none; stroke: var(--plum-deep); stroke-width: 2.4; stroke-linecap: round; }
+
+/* the circuit */
+.nodeFill { fill: var(--hue); opacity: .13; transition: opacity 300ms ease; }
+.nodeBox { fill: none; stroke: var(--hue); stroke-width: 2.4; }
+.nodeText { fill: var(--pen); font: 500 15px var(--read); }
+.nodeBadge { fill: #fff; stroke: var(--hue); stroke-width: 2; }
+.nodeNum { fill: var(--pen-2); font: 700 12px var(--cat); }
+.node[data-on] .nodeBadge { fill: var(--hue); }
+.node[data-on] .nodeNum { fill: var(--pen); }
+.node[data-on] .nodeFill { opacity: .45; }
+.node[data-on] .nodeBox { stroke-width: 4; }
+.node:not([data-on]) { opacity: .8; }
+.circuitArrow path { fill: none; stroke: var(--pen-2); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.circuitList { margin: 0; padding: .9rem 0 0; border-top: 1px solid var(--hair); list-style: none; display: grid; gap: .8rem; }
+.circuitList li { padding-left: .9rem; border-left: 2px solid var(--hair); color: var(--pen-3); font: 400 .96rem/1.55 var(--read); transition: color 300ms ease, border-color 300ms ease; }
+.circuitList li[data-on] { border-left: 3px solid var(--hue, var(--accent)); color: var(--pen); }
+.circuitList b { display: block; margin-bottom: .1rem; color: var(--pen-2); font: 600 .64rem/1.5 var(--cat); letter-spacing: .1em; text-transform: uppercase; }
+
+/* ---------- cards, the boundary --------------------------------------------- */
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem clamp(1.2rem, 3vw, 2.6rem); margin: 0; padding: 0; list-style: none; }
+.cards.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.cards li { padding-top: .9rem; border-top: 2.5px solid var(--hue, var(--grey)); }
+.cards p:last-child { margin: 0; color: var(--pen-2); font: 400 .98rem/1.6 var(--read); }
+.cardKick { margin: 0 0 .35rem; color: var(--hue, var(--pen-3)); font: 600 .66rem/1.4 var(--cat); letter-spacing: .12em; text-transform: uppercase; }
+.bound { display: grid; grid-template-columns: minmax(0, 1fr) 2.4rem minmax(0, 1fr); gap: 0 clamp(1rem, 3vw, 2.6rem); align-items: stretch; }
+.edge { position: relative; min-height: 8rem; }
+.edge svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.edge path { fill: none; stroke: var(--pen); stroke-width: 1.6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.inside, .outside { min-width: 0; }
+.boundBody { margin: 0; padding-top: .8rem; border-top: 1px solid var(--hair); color: var(--pen); font: 400 1.08rem/1.6 var(--read); }
+.outside .boundBody { color: var(--pen-2); }
+.trailWrap { margin-top: clamp(3.5rem, 7vw, 6rem); padding-top: clamp(1.6rem, 3vw, 2.4rem); border-top: 1px solid var(--hair); }
+
+/* ---------- opening ---------------------------------------------------------- */
+.opening { width: min(1440px, 100%); margin: 0 auto; padding: clamp(1.4rem, 4vw, 3rem) var(--folio-gutter) 0; display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); grid-template-areas: "head side" "hero hero" "glance glance"; gap: 1rem clamp(1.5rem, 4vw, 3.5rem); }
+.openingHead { grid-area: head; padding-top: clamp(.6rem, 2.4vw, 2rem); min-width: 0; }
+:global(.acl) .title { margin: 1.2rem 0 0; font: 400 clamp(2.2rem, 5.2vw, 5.4rem)/.94 var(--read); letter-spacing: -.055em; }
+:global(.acl) .title em { color: var(--accent); letter-spacing: -.05em; }
+.openingSide { grid-area: side; align-self: end; padding-bottom: .6rem; }
+.hook { max-width: 32ch; margin: 0; color: var(--pen); font: italic 400 clamp(1.25rem, 1.9vw, 1.55rem)/1.3 var(--read); letter-spacing: -.015em; }
+.lede { max-width: 44ch; margin: 1rem 0 0; color: var(--pen-2); font: 400 1.03rem/1.62 var(--read); }
+.openingMargin { margin-top: 1rem; }
+.hero { grid-area: hero; position: relative; margin: clamp(.4rem, 2vw, 1.4rem) calc(-1 * var(--folio-gutter)) 0; }
+.hero img { display: block; width: 100%; height: auto; mix-blend-mode: multiply; }
+.heroKey { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 1.6rem; margin: .6rem 0 0; padding: 0 var(--folio-gutter); list-style: none; }
+.heroKey li { padding-top: .5rem; border-top: 3px solid var(--hue, var(--grey)); color: var(--pen-2); font: 400 .9rem/1.45 var(--read); }
+.heroKey b { display: block; color: var(--hue, var(--pen-2)); font: 600 .64rem/1.5 var(--cat); letter-spacing: .12em; text-transform: uppercase; }
+.heroCaption { max-width: 66ch; margin: 1rem 0 0; padding-inline: var(--folio-gutter); color: var(--pen-3); font: 400 .74rem/1.5 var(--cat); }
+.glance { grid-area: glance; display: grid; gap: 1rem; margin-top: .8rem; }
+.identity { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .5rem 1.6rem; margin: 0; padding: .9rem 0 0; border-top: 1px solid var(--hair); }
+.identity div { display: grid; gap: .1rem; }
+.identity dt { color: var(--pen-3); font: 600 .62rem/1.4 var(--cat); letter-spacing: .1em; text-transform: uppercase; }
+.identity dd { margin: 0; color: var(--pen-2); font: 400 .95rem/1.45 var(--read); }
+.facts { display: flex; flex-wrap: wrap; gap: .35rem 1.1rem; margin: 0; padding: 0; list-style: none; color: var(--pen-3); font: 500 .72rem/1.4 var(--cat); letter-spacing: .05em; text-transform: uppercase; }
+.limits { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 5rem); margin-top: clamp(2rem, 5vw, 4rem); align-items: start; }
+
+/* on a wide screen the figure stays in view while the longer panel beside it is read */
+@media (min-width: 900px) {
+  .ladderFigure, .omissionFigure, .precisionFigure, .inferenceFigure, .circuitFigure { position: sticky; top: 4.4rem; }
+}
+
+/* ---------- narrow screens: recompose, pin the figure, do not shrink text -- */
+@media (max-width: 899px) {
+  .opening { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "side" "hero" "glance"; }
+  .openingSide { align-self: start; }
+  .heroKey { grid-template-columns: minmax(0, 1fr); gap: .5rem; }
+  .identity { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .head, .limits, .contexts, .subheadFig { grid-template-columns: minmax(0, 1fr); }
+  .cards, .cards.four { grid-template-columns: minmax(0, 1fr); }
+  .ladder, .omission, .precision, .inference, .circuit { display: block; }
+  .ladderFigure, .omissionFigure, .precisionFigure, .inferenceFigure { position: sticky; top: 3.1rem; z-index: 3; padding: .4rem 0 .7rem; margin-bottom: .8rem; box-shadow: 0 12px 14px -14px rgba(23, 23, 26, .28); }
+  .ladderFigure .diagram, .omissionFigure .diagram, .precisionFigure .diagram, .inferenceFigure .diagram { max-height: 13rem; }
+  .circuitFigure { position: static; }
+  .ladderPanel, .omissionPanel, .precisionPanel, .inferencePanel, .circuitPanel { margin-top: 1.1rem; }
+  .tag { font-size: 21px; }
+  .diagHead { font-size: 26px; }
+  .diagTag { font-size: 21px; }
+  .diagSub { font-size: 20px; }
+  .rungLabel { font-size: 20px; }
+  .railLabelDown, .railLabelUp { font-size: 25px; }
+  .nodeText { font-size: 18px; }
+  .bound { grid-template-columns: minmax(0, 1fr); }
+  .edge { display: none; }
+  .outside { margin-top: 1.6rem; padding-top: 1rem; border-top: 1.5px dashed var(--pen); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .railDown, .railUp, .envFill, .waveActual, .errArrow, .actGroup, .edit, .nodeFill, .circuitList li, .context, .states div, .directions li { transition: none; }
+}

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { RECORDS, findRecord } from "@/content/records";
 import type { TheoryRecord } from "@/content/types";
 import { TheoryBody } from "../../_components/TheoryBody";
+import { HPAExperience } from "../../_experiences/hpa-axis/Experience";
 
 export function generateStaticParams() {
   return RECORDS.filter((r) => r.kind === "mechanism").map((r) => ({ slug: r.slug }));
@@ -18,5 +19,6 @@ export default async function MechanismPage({ params }: { params: Promise<{ slug
   const { slug } = await params;
   const record = findRecord("mechanism", slug) as TheoryRecord | undefined;
   if (!record) notFound();
+  if (slug === "hpa-axis") return <HPAExperience record={record} />;
   return <TheoryBody record={record} />;
 }

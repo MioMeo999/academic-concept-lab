@@ -1,6 +1,7 @@
 import type { PaperRecord } from "@/content/types";
 import { ArrowSmall, Bullet, Cloud, Divider, Icon, Ribbon, Rich, SecHead, Strike, pad2 } from "./Sketch";
 import { RecordShell } from "./RecordShell";
+import { TunedOutStudyExperience } from "./TunedOutStudyExperience";
 
 /* An empirical study is an argument: the design and sample stay welded to the
    result, every claim carries a verdict, and the eliminated explanations are
@@ -19,6 +20,10 @@ const TOC: [string, string][] = [
 ];
 
 export function StudyBody({ record: r }: { record: PaperRecord }) {
+  if (r.id === "tuned-out-or-dialed-in") {
+    return <TunedOutStudyExperience record={r} />;
+  }
+
   const toc = TOC.map(([short], i) => [pad2(i + 1), short, `s${i + 1}`] as [string, string, string]);
   const heads = TOC.map(([, full], i) => ({ num: pad2(i + 1), full, colour: i === 4 || i === 5 ? "var(--red)" : "var(--teal)" }));
 

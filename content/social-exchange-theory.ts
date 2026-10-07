@@ -10,9 +10,13 @@ export const socialExchangeTheory: TheoryRecord = {
   discipline: "ob",
   topics: ["social exchange", "reciprocity", "interdependence", "power and dependence", "workplace relationships"],
   facts: ["exchange ≠ every interaction", "3 reciprocity meanings", "dependence is relational", "resources carry meaning", "theory family"],
+  sourceNotes: [
+    { key: "emerson-proposition", label: "Emerson’s proposition, stated plainly", body: "The dependence of one actor on another is directly proportional to that actor’s motivational investment in goals mediated by the other, and inversely proportional to the availability of those goals outside the relation. “Goals” covers gratifications consciously sought as well as rewards unconsciously obtained, and “availability” means alternative avenues of achieving them, most notably other social relations.", source: "Emerson (1962)" },
+    { key: "post-hoc", label: "Where SET is strong and where it is weak", body: "Scholars who apply social exchange theory can explain many social phenomena after the fact but are severely limited in making useful a priori predictions about workplace behaviour. The review names four problems in the unidimensional framework (overlapping constructs, too little attention to the positive or negative hedonic value of constructs, an assumption of bipolarity, and imprecise behavioural predictions) and suggests adding a second dimension, activity.", source: "Cropanzano, Anthony, Daniels & Hall (2017), abstract" },
+  ],
   statusChip: "theory family",
   provenance: [
-    { glyph: "●", colour: "var(--red)", label: "Foundational propositions", note: "Homans, Gouldner, Blau, and Emerson supply the foundational exchange, reciprocity, and power–dependence propositions." },
+    { glyph: "●", colour: "var(--red)", label: "Foundational propositions", note: "Homans, Gouldner, Blau, and Emerson supply the foundational exchange, reciprocity, and power–dependence propositions. The notes headed “What the sources add” restate Emerson (1962) and the abstract of Cropanzano, Anthony, Daniels and Hall (2017), both checked against the source text." },
     { glyph: "■", colour: "var(--teal)", label: "Integrative review", note: "Cropanzano and Mitchell organise the contemporary SET conversation around rules, resources, relationships, and exchange forms." },
     { glyph: "▲", colour: "var(--gold-deep)", label: "Later refinements", note: "Lawler, Molm, and Cropanzano and colleagues extend the record toward emotion, exchange structures, and response activity." },
     { glyph: "✦", colour: "var(--plum-deep)", label: "Concept Lab synthesis", note: "The social–economic comparison and teaching maps are labelled syntheses, not official SET taxonomies." },

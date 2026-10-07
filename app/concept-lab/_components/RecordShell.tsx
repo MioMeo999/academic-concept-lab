@@ -28,16 +28,24 @@ export function RecordShell({
   record,
   toc,
   children,
+  hero,
+  readingRoute,
+  showContentsNav = true,
 }: {
   record: AnyRecord;
   toc: [string, string, string][];
   children: React.ReactNode;
+  /** Optional record-specific opening; the default shell remains unchanged. */
+  hero?: React.ReactNode;
+  /** Optional route-specific section navigation. */
+  readingRoute?: React.ReactNode;
+  showContentsNav?: boolean;
 }) {
   const k = KIND[record.kind];
   const cite = record.kind === "study" ? record.citation : null;
 
   return (
-    <div className="wrap">
+    <div className="wrap" data-record-id={record.id}>
       <Crumbs
         items={[
           { label: "Home", href: "/concept-lab" },
@@ -47,7 +55,7 @@ export function RecordShell({
         ]}
       />
 
-      <section className={`hero record-hero record-hero-${record.kind}`}>
+      {hero ?? <section className={`hero record-hero record-hero-${record.kind}`}>
         <div className="record-hero-copy">
           <div className="record-hero-topline">
             <div className="record-hero-labels">
@@ -78,9 +86,9 @@ export function RecordShell({
           </div>
         </div>
         <RecordKnowledgeOrbit record={record} />
-      </section>
+      </section>}
 
-      <nav className="record-reading-route" aria-label="Reading route">
+      {readingRoute ?? <nav className="record-reading-route" aria-label="Reading route">
         <span className="record-reading-route-intro"><i>read this record as</i><b>{k.nav.toLowerCase()}</b></span>
         {toc.slice(0, 4).map(([num, label, id]) => (
           <a href={`#${id}`} key={id}>
@@ -89,13 +97,13 @@ export function RecordShell({
           </a>
         ))}
         <span className="record-reading-route-tail">then check the marks in the margin ↘</span>
-      </nav>
+      </nav>}
 
-      <div className="layout">
+      <div className={`layout${showContentsNav ? "" : " record-layout-wide"}`}>
         {/* Phones get no rail, but a record can run to eleven sections — the
             map becomes a fold-out box instead of disappearing. The same
             component keeps the desktop rail and mobile map in sync. */}
-        <ContentsNav toc={toc} />
+        {showContentsNav && <ContentsNav toc={toc} />}
         <div className="record-body">{children}</div>
       </div>
 

@@ -51,6 +51,14 @@ protocol.
    behaviour, accessibility, routes, overflow, lint, tests, and—when relevant—
    production behaviour have been checked.
 
+## Visual work
+
+For visual design or redesign, read the [visual reference library](docs/visual-reference/README.md).
+Fill in its creative brief before design. Use its review guide before you present a design.
+Follow the [Visual Translation Contract](app/concept-lab/_design/VISUAL-TRANSLATION-CONTRACT.md).
+Check the art and experience manifests before changing registered artwork or page experiences.
+Reference boards are documentation, not runtime art.
+
 ## Before coding
 
 Complete the READ → MODEL → CLASSIFY → TEACH → DESIGN stages in the full

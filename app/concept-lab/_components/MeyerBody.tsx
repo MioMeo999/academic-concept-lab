@@ -5,6 +5,7 @@ import { AudioExample } from "./AudioExample";
 import { RecordShell } from "./RecordShell";
 import { Bullet, Cloud, Divider, Icon, Rich, SecHead, pad2 } from "./Sketch";
 import { EvidenceXray } from "./TheoryPatterns";
+import { MeyerPageHero } from "./batch2/Batch2RecordHeroes";
 
 type Block = { key: string; toc: string; title: string; colour: string; body: ReactNode };
 
@@ -37,22 +38,6 @@ function Cards({ items }: { items: { label: string; body: string; colour: string
           <span className="k">{item.label}</span>
           <Rich className="read" as="p" html={item.body} />
         </article>
-      ))}
-    </div>
-  );
-}
-
-function AudioChoices({ context, choices }: { context: import("@/content/types").AudioNote[]; choices: import("@/content/types").AudioChoice[] }) {
-  return (
-    <div className="music-audio-choice-grid">
-      {choices.map((choice, index) => (
-        <AudioExample
-          key={choice.label}
-          label={`${String(index + 1).padStart(2, "0")} · ${choice.label}`}
-          notes={[...context, ...choice.notes]}
-          description={choice.body}
-          colour={index % 2 ? "var(--red)" : "var(--teal)"}
-        />
       ))}
     </div>
   );
@@ -133,19 +118,6 @@ export function MeyerBody({ record: r }: { record: TheoryRecord }) {
   if (!data) return null;
   const blocks: Block[] = [];
   const add = (key: string, toc: string, title: string, colour: string, body: ReactNode) => blocks.push({ key, toc, title, colour, body });
-
-  add("opening", "Where does this want to go?", "Where does this want to go?", "var(--teal)", (
-    <>
-      <Rich className="lede" as="p" html={data.opening.lede} />
-      <div className="music-opening-context">
-        <AudioExample label="The unresolved setup" notes={data.opening.context} description="A short synthetic tonal context pauses before its continuation." />
-      </div>
-      <AudioChoices context={data.opening.context} choices={data.opening.choices} />
-      <p className="music-inline-note"><Mark>▲</Mark> Constructed tonal teaching examples. They illustrate expectation inside one learned tonal style; they are not a test of the listener and not empirical evidence.</p>
-      <p className="music-callout">You were already listening to music that had not happened yet.</p>
-      <p className="music-note">{data.opening.note}</p>
-    </>
-  ));
 
   add("embodied", "Music points forward", "Music points forward", "var(--teal)", (
     <>
@@ -326,7 +298,7 @@ export function MeyerBody({ record: r }: { record: TheoryRecord }) {
   const toc = ordered.map((block, index) => [pad2(index + 1), block.toc, `s${index + 1}`] as [string, string, string]);
 
   return (
-    <RecordShell record={r} toc={toc}>
+    <RecordShell record={r} toc={toc} hero={<MeyerPageHero record={r} opening={data.opening} />}>
       {ordered.map((block, index) => <span key={block.key} style={{ display: "contents" }}>{index > 0 && <Divider />}<section className="rec" id={`s${index + 1}`}><SecHead num={pad2(index + 1)} title={block.title} colour={block.colour} />{block.body}</section></span>)}
     </RecordShell>
   );
